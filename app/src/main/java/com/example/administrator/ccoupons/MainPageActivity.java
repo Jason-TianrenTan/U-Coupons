@@ -4,6 +4,7 @@ package com.example.administrator.ccoupons;
  */
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -12,10 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -36,7 +39,7 @@ import java.util.List;
 
 public class MainPageActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,OnItemClickListener,BottomNavigationBar.OnTabSelectedListener {
 
-    SpaceNavigationView spaceNavigationView;
+
     CategoryFragment categoryFragment;
 
     private ConvenientBanner convenientBanner;//顶部广告栏控件;
@@ -60,17 +63,8 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
 
     //初始化底部导航栏
     private void initNavigationBar() {
-        BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
-        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
-        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomNavigationBar.addItem(new BottomNavigationItem(R.mipmap.lavenderpos, "买!").setActiveColorResource(R.color.orange))
-                .addItem(new BottomNavigationItem(R.mipmap.purplepos, "卖!").setActiveColorResource(R.color.teal))
-                .addItem(new BottomNavigationItem(R.mipmap.lightgraypos, "消息").setActiveColorResource(R.color.red))
-                .addItem(new BottomNavigationItem(R.mipmap.pos, "我的").setActiveColorResource(R.color.blue))
-                .setFirstSelectedPosition(0)
-                .initialise();
-        bottomNavigationBar.setTabSelectedListener(this);
-
+        LinearLayout navigationBar = (LinearLayout)findViewById(R.id.bottom_nav_container);
+        
     }
 
 
