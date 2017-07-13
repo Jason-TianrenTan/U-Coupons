@@ -31,8 +31,11 @@
             android:name=".Search.SearchActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".Search.SearchResultActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".Search.SearchResultActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".User.UserPortraitActivity" />
+        <activity android:name=".User.UserInformationActivity"/>
     </application>
 
 </manifest>

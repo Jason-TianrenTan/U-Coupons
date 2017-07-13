@@ -15,4 +15,26 @@
     <!--历史记录-->
     <string name="HISTORY_EOF">EOF</string>
     <string name="CLEAR_HISTORY">清除历史记录</string>
+
+    <!-- 用户界面 -->
+    <string name="uopt_mycoupon">我的优惠券</string>
+    <string name="uopt_mywallet">我的钱包</string>
+    <string name="uopt_sell">我卖出的</string>
+    <string name="uopt_buy">我买到的</string>
+    <string name="uopt_collect">我关注的</string>
+    <string name="uopt_settings">应用设置</string>
+    <string name="uopt_help">帮助与反馈</string>
+
+    <!-- 用户信息修改界面 -->
+    <string name="uinf_title">我的信息</string>
+    <string name="uinf_changeportrait">更换头像</string>
+    <string name="uinf_changephone">绑定手机号</string>
+    <string name="uinf_changekey">修改密码</string>
+
+    <!-- 更换头像菜单界面 -->
+    <string name="uport_takephoto">拍照</string>
+    <string name="uport_fromalbum">从相册中选择</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

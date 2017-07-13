@@ -24,6 +24,7 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
+import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
 import com.example.administrator.ccoupons.Main.MainActivity;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
@@ -38,6 +39,7 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
 
     SpaceNavigationView spaceNavigationView;
     CategoryFragment categoryFragment;
+    UserOptionFragment userOptionFragment;
 
     private ConvenientBanner convenientBanner;//顶部广告栏控件;
     @Override
@@ -50,11 +52,13 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
 
     private void initFragments() {
         categoryFragment = new CategoryFragment();
+        userOptionFragment = new UserOptionFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment_frame,categoryFragment);
+        fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
         fragmentTransaction.commit();
-        fragmentTransaction.show(categoryFragment);
+        fragmentTransaction.show(userOptionFragment);
     }
 
 
@@ -70,9 +74,7 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
                 .setFirstSelectedPosition(0)
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(this);
-
     }
-
 
 
     /*
