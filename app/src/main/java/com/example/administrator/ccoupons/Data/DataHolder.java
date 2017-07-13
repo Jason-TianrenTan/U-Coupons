@@ -37,6 +37,13 @@ public static class Categories {
         public static String[] historyList = ("history1,h2,str3,a4,c5,v6,k7,s8,o9,i10,g234").split(",");
     }
 
-
-
+    //用户信息
+    public static class User {
+        public static String username = "用户名";
+        public static String phonenumber = "1234567890";
+        public static boolean sex = true;//true for man false for woman
+        public static int age = 18;
+        public static int portraitId = R.drawable.testportrait;
+        public static int UB = 100;
+    }
 }
