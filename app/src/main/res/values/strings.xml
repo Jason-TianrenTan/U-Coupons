@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">CCoupons</string>
+    <string name="document_string">假装这是文案</string>
+    <string name="welcome_string">欢迎来到CCoupons</string>
+    <string name="mainpage_title_string">"推荐"</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="category_title_string">类别</string>
+
+    <string name="nav_mainpage">主页</string>
+    <string name="nav_message">消费</string>
+    <string name="nav_history">交易</string>
+    <string name="nav_userinfo">我的</string>
+
+    <!--历史记录-->
+    <string name="HISTORY_EOF">EOF</string>
+    <string name="CLEAR_HISTORY">清除历史记录</string>
+</resources>

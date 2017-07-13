@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.ccoupons.Search.SearchResultActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/search_result_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:theme="@style/SearchToolBarStyle"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_marginRight="30dp"
+                android:layout_height="60dp">
+
+                <EditText
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/search_icon"
+                    android:drawablePadding="3dp"
+                    android:id="@+id/input_search_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:saveEnabled="false"
+                    android:textSize="16dp"
+                    android:padding="5dp"
+
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:background="@drawable/gray_rounded_edittext"
+                    android:imeOptions="actionSearch"
+                    android:maxLines="1"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_result_recyclerview">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
