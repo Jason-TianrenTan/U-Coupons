@@ -2,8 +2,11 @@ package com.example.administrator.ccoupons;
 /*
 *首页布局
  */
+
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -12,10 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -24,6 +30,7 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
+import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
 import com.example.administrator.ccoupons.Main.MainActivity;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
@@ -34,45 +41,75 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainPageActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,OnItemClickListener,BottomNavigationBar.OnTabSelectedListener {
+public class MainPageActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
-    SpaceNavigationView spaceNavigationView;
+
     CategoryFragment categoryFragment;
+    UserOptionFragment userOptionFragment;
 
+    Fragment[] fragments = new Fragment[2];
     private ConvenientBanner convenientBanner;//顶部广告栏控件;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        initNavigationBar();
+
         initFragments();
+        initNavigationBar();
+
     }
 
     private void initFragments() {
         categoryFragment = new CategoryFragment();
+        userOptionFragment = new UserOptionFragment();
+        fragments[0] = categoryFragment;
+        fragments[1] = userOptionFragment;
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_frame,categoryFragment);
+        fragmentTransaction.add(R.id.fragment_frame, categoryFragment);
+        fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
         fragmentTransaction.commit();
+        fragmentTransaction.hide(userOptionFragment);
         fragmentTransaction.show(categoryFragment);
     }
 
 
-    //初始化底部导航栏
-    private void initNavigationBar() {
-        BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
-        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
-        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomNavigationBar.addItem(new BottomNavigationItem(R.mipmap.lavenderpos, "买!").setActiveColorResource(R.color.orange))
-                .addItem(new BottomNavigationItem(R.mipmap.purplepos, "卖!").setActiveColorResource(R.color.teal))
-                .addItem(new BottomNavigationItem(R.mipmap.lightgraypos, "消息").setActiveColorResource(R.color.red))
-                .addItem(new BottomNavigationItem(R.mipmap.pos, "我的").setActiveColorResource(R.color.blue))
-                .setFirstSelectedPosition(0)
-                .initialise();
-        bottomNavigationBar.setTabSelectedListener(this);
-
+    private void showFragment(int index) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        hideAllFragments(ft);
+        ft.show(fragments[index - 1]);
+        ft.commitAllowingStateLoss();
     }
 
+    private void hideAllFragments(FragmentTransaction ft) {
+        if (categoryFragment != null)
+            ft.hide(categoryFragment);
+        if (userOptionFragment != null) {
+            ft.hide(userOptionFragment);
+        }
+    }
+
+    //初始化底部导航栏
+    private void initNavigationBar() {
+        LinearLayout navigationBar = (LinearLayout) findViewById(R.id.bottom_nav_container);
+        LinearLayout nav_item_main = (LinearLayout) navigationBar.findViewById(R.id.id_left1),
+                nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1);
+        nav_item_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("fragment 1");
+                showFragment(1);
+            }
+        });
+        nav_item_aboutme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("fragment 2");
+                showFragment(2);
+            }
+        });
+    }
 
 
     /*
@@ -104,7 +141,7 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
     protected void onResume() {
         super.onResume();
         //开始自动翻页
-     //  convenientBanner.startTurning(5000);
+        //  convenientBanner.startTurning(5000);
     }
 
     // 停止自动翻页
@@ -112,7 +149,7 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
     protected void onPause() {
         super.onPause();
         //停止翻页
-      //  convenientBanner.stopTurning();
+        //  convenientBanner.stopTurning();
     }
 
 
@@ -127,39 +164,6 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
 
     @Override
     public void onPageScrollStateChanged(int state) {
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        //点击第position个
-    }
-
-    @Override
-    public void onTabSelected(int position) {
-        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-    //    hideFragments(ft);
-        switch (position) {
-            case 1:
-                ft.show(categoryFragment);
-                break;
-            /*
-            case 1:
-                ft.show(fg2);
-                break;
-            case 2:
-                ft.show(fg3);
-                break;*/
-        }
-        ft.commitAllowingStateLoss();
-    }
-
-    @Override
-    public void onTabUnselected(int position) {
-    }
-
-    @Override
-    public void onTabReselected(int position) {
-
     }
 
 }
