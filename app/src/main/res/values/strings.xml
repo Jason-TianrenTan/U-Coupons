@@ -1,8 +1,17 @@
 <resources>
+
     <string name="app_name">CCoupons</string>
     <string name="document_string">假装这是文案</string>
     <string name="welcome_string">欢迎来到CCoupons</string>
     <string name="mainpage_title_string">"推荐"</string>
+
+    <!-- 登录界面 -->
+    <string name="login_name_hint">手机号</string>
+    <string name="login_pass_hint">密码</string>
+    <string name="check_string">验证码</string>
+
+    <!-- 忘记密码界面 -->
+    <string name="reset_password_title">重置密码</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="category_title_string">类别</string>

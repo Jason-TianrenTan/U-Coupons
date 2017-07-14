@@ -4,22 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.support.v4.widget.DrawerLayout;
+
 import com.example.administrator.ccoupons.MainPageActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.RegisterActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     Button login;
-    TextView register;
+    Toolbar toolbar;
     EditText signup_phone, signup_pass;
 
     @Override
@@ -28,17 +27,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //    getSupportActionBar().hide();
 
+        toolbar = (Toolbar)findViewById(R.id.login_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         login = (Button) findViewById(R.id.button_login);
-        register = (TextView) findViewById(R.id.text_register);
         signup_phone = (EditText) findViewById(R.id.signup_phone);
         signup_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         signup_pass = (EditText) findViewById(R.id.signup_password);
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            }
-        });
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         signup_phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {

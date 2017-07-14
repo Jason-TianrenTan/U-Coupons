@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Main.RegisterActivity"
             android:fitsSystemWindows="true" />
         <activity
             android:name=".MainPageActivity"
@@ -35,7 +35,8 @@
             android:name=".Search.SearchResultActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".User.UserPortraitActivity" />
-        <activity android:name=".User.UserInformationActivity"/>
+        <activity android:name=".User.UserInformationActivity" />
+        <activity android:name=".Main.ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

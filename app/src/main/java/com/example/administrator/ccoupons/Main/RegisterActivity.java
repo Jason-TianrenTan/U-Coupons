@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons;
+package com.example.administrator.ccoupons.Main;
 
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.administrator.ccoupons.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

@@ -8,11 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- Register ToolBar -->
-    <style name="RegisterToolBarStyle" parent="Theme.AppCompat">
+    <!-- 登录、注册、忘记密码 ToolBar -->
+    <style name="MainToolBarStyle" parent="Theme.AppCompat">
         <item name="android:textColorPrimary">@color/whitesmoke</item>
         <item name="android:textColorSecondary">@color/whitesmoke</item>
         <item name="actionMenuTextColor">@color/whitesmoke</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Theme.AppCompat">
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <!-- Search ToolBar -->
@@ -20,6 +28,34 @@
         <item name="android:textColorPrimary">@color/whitesmoke</item>
         <item name="android:textColorSecondary">@color/whitesmoke</item>
         <item name="actionMenuTextColor">@color/whitesmoke</item>
+    </style>
+
+    <!--登录注册界面按钮样式-->
+    <style name="MainButtonsStyle" parent="Theme.AppCompat">
+        <item name="android:background">@drawable/main_buttons_background</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/whitesmoke</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <!--登录注册界面文本框样式-->
+    <style name="MainEditTextStyle" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:saveEnabled">false</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <!-- 顶部导航栏标题样式-->
+    <style name="MainToolbarTitleStyle" parent="Theme.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/whitesmoke</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <!-- 底部菜单栏样式 -->

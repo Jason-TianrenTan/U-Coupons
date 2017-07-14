@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.administrator.ccoupons.RegisterActivity">
+    tools:context="com.example.administrator.ccoupons.Main.RegisterActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,13 +14,10 @@
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
-        app:theme="@style/RegisterToolBarStyle"
+        app:theme="@style/MainToolBarStyle"
         android:background="@color/colorPrimary">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:layout_gravity="center"
+            style="@style/MainToolbarTitleStyle"
             android:text="@string/welcome_string"
             />
     </android.support.v7.widget.Toolbar>
@@ -39,14 +36,10 @@
         android:layout_height="wrap_content">
 
         <EditText
+            style="@style/MainEditTextStyle"
             android:id="@+id/input_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:saveEnabled="false"
-            android:textSize="20dp"
             android:maxLength="13"
             android:digits="1234567890"
-            android:textColor="@color/gray"
             android:hint="手机号码"/>
     </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout

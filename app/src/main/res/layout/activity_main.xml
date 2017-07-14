@@ -8,108 +8,112 @@
     android:fillViewport="true"
     tools:context="com.example.administrator.ccoupons.Main.MainActivity">
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusableInTouchMode="true"
-        >
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/login_toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@android:color/transparent">
+        </android.support.v7.widget.Toolbar>
 
         <RelativeLayout
-            android:id="@+id/imglayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            >
+
+            <RelativeLayout
+                android:id="@+id/imglayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                >
-                <ImageView
-                    android:layout_marginTop="30dp"
-                    android:background="@mipmap/ic_launcher"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp" />
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    >
+                    <ImageView
+                        android:layout_marginTop="10dp"
+                        android:background="@mipmap/ic_launcher"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="190dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/signup_phone_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/signup_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:saveEnabled="false"
+                        android:textSize="20dp"
+                        android:maxLength="13"
+                        android:textColor="@color/gray"
+                        android:digits="1234567890"
+                        android:hint="手机号码"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/signup_password_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/signup_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:saveEnabled="false"
+                        android:inputType="textPassword"
+                        android:textColor="@color/gray"
+                        android:hint="密码"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/text_forget"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="忘记密码?"
+                        android:textColor="@color/gray"
+                        android:textSize="14dp"
+                        />
+                </RelativeLayout>
+
+                <Button style="@style/MainButtonsStyle"
+                    android:id="@+id/button_login"
+                    android:text="登录"/>
             </LinearLayout>
 
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="190dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-    
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/signup_phone_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-    
-                <EditText
-                    android:id="@+id/signup_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:textSize="20dp"
-                    android:maxLength="13"
-                    android:textColor="@color/gray"
-                    android:digits="1234567890"
-                    android:hint="手机号码"/>
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/signup_password_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-    
-                <EditText
-                    android:id="@+id/signup_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:inputType="textPassword"
-                    android:textColor="@color/gray"
-                    android:hint="密码"/>
-            </android.support.design.widget.TextInputLayout>
-            <Button
-                android:layout_gravity="center_horizontal"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button_login"
-                android:textSize="18dp"
-                android:text="登录"/>
-            <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/text_register"
-                    android:layout_alignParentLeft="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="还没有账号?"
-                    android:textColor="@color/gray"
-                    android:textSize="14dp"
-                    />
-                <TextView
-                    android:id="@+id/text_forget"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="忘记密码?"
-                    android:textColor="@color/gray"
-                    android:textSize="14dp"
-                    />
-            </RelativeLayout>
-    
-        </LinearLayout>
-    
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Demo 0.1"
-            android:textColor="@color/darkgray"
-            android:layout_alignParentBottom="true"
-            />
-    </RelativeLayout>
+                android:text="Demo 1.1"
+                android:textColor="@color/darkgray"
+                android:layout_alignParentBottom="true"
+                />
+        </RelativeLayout>
+    </LinearLayout>
 </ScrollView>
