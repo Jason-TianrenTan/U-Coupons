@@ -17,7 +17,7 @@
 
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Main.RegisterActivity"
             android:fitsSystemWindows="true" />
         <activity
             android:name=".MainPageActivity"
@@ -32,6 +32,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
+<<<<<<< HEAD
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".Main.WelcomeActivity">
             <intent-filter>
@@ -39,6 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+=======
+        <activity android:name=".Main.ResetPasswordActivity"></activity>
+>>>>>>> ttr
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Category;
@@ -45,7 +46,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 mContext = parent.getContext();
             }
             View view = LayoutInflater.from(mContext).inflate(R.layout.category_item,parent,false);
-            return new ViewHolder(view);
+            final ViewHolder holder = new ViewHolder(view);
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = holder.getAdapterPosition();
+                    Category category = mCategoryList.get(position);
+                    Toast.makeText(mContext,"Category = " + category.getName(),Toast.LENGTH_SHORT).show();
+                }
+            });
+            return holder;
         }
 
         @Override

@@ -1,13 +1,28 @@
 <resources>
+
     <string name="app_name">CCoupons</string>
     <string name="document_string">假装这是文案</string>
     <string name="welcome_string">欢迎来到CCoupons</string>
     <string name="mainpage_title_string">"推荐"</string>
 
+<<<<<<< HEAD
     <!-- 登录与注册 -->
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="welcome">欢迎来到U券！</string>
+=======
+    <!-- 登录界面 -->
+    <string name="login_name_hint">手机号</string>
+    <string name="login_pass_hint">密码</string>
+    <string name="check_string">验证码</string>
+
+    <!-- 忘记密码界面 -->
+    <string name="reset_password_title">重置密码</string>
+    <string name="reset_new_password_string">输入新密码</string>
+    <string name="reset_password_confirm_string">再次输入新密码</string>
+    <string name="get_identifyid_text">点击获取</string>
+    <string name="reset_confirm_buttontext">确认</string>
+>>>>>>> ttr
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="category_title_string">类别</string>
