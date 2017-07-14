@@ -19,30 +19,33 @@
         <activity
             android:name=".Main.RegisterActivity"
             android:fitsSystemWindows="true" />
+
         <activity
             android:name=".MainPageActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".Search.SearchActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+
         <activity
             android:name=".Search.SearchResultActivity"
             android:windowSoftInputMode="stateHidden" />
+
         <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
-<<<<<<< HEAD
         <activity android:name=".User.UserWalletActivity" />
+        <!-- 欢迎界面 -->
         <activity android:name=".Main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-=======
-        <activity android:name=".Main.ResetPasswordActivity"></activity>
->>>>>>> ttr
+
+        <activity android:name=".Main.ResetPasswordActivity" />
     </application>
 
 </manifest>
