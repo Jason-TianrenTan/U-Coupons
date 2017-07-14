@@ -27,7 +27,7 @@ import com.example.administrator.ccoupons.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     Button login;
     Toolbar toolbar;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MainPageActivity.class));
+                startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
             }
         });
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         text_forget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ResetPasswordActivity.class));
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);

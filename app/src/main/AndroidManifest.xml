@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
         <activity
-            android:name=".Main.MainActivity"
+            android:name=".Main.LoginActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
