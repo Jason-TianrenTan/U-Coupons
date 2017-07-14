@@ -37,6 +37,7 @@
         <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
         <activity android:name=".User.UserWalletActivity" />
+
         <!-- 欢迎界面 -->
         <activity android:name=".Main.WelcomeActivity">
             <intent-filter>
