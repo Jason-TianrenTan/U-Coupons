@@ -5,7 +5,7 @@
     android:background="#cf000000"
     android:gravity="center"
     android:orientation="vertical"
-    android:id="@+id/portrait_linearlayout">
+    android:id="@+id/portrait_bg">
 
     <ImageView
         android:layout_width="wrap_content"

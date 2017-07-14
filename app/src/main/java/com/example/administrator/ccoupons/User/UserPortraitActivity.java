@@ -22,7 +22,7 @@ public class UserPortraitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_portrait);
         ImageView portrait = (ImageView) findViewById(R.id.user_portrait_view);
         portrait.setImageResource(DataHolder.User.portraitId);
-        LinearLayout bg = (LinearLayout)findViewById(R.id.portrait_linearlayout);
+        LinearLayout bg = (LinearLayout) findViewById(R.id.portrait_bg);
         bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

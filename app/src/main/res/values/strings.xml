@@ -4,9 +4,13 @@
     <string name="welcome_string">欢迎来到CCoupons</string>
     <string name="mainpage_title_string">"推荐"</string>
 
+    <!-- 登录与注册 -->
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="welcome">欢迎来到U券！</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="category_title_string">类别</string>
-
     <string name="nav_mainpage">主页</string>
     <string name="nav_message">消费</string>
     <string name="nav_history">交易</string>
@@ -24,6 +28,7 @@
     <string name="uopt_collect">我关注的</string>
     <string name="uopt_settings">应用设置</string>
     <string name="uopt_help">帮助与反馈</string>
+    <string name="uopt_logout">注销</string>
 
     <!-- 用户信息修改界面 -->
     <string name="uinf_title">我的信息</string>
@@ -31,10 +36,16 @@
     <string name="uinf_changephone">绑定手机号</string>
     <string name="uinf_changekey">修改密码</string>
 
-    <!-- 更换头像菜单界面 -->
+    <!-- 更换头像菜单 -->
     <string name="uport_takephoto">拍照</string>
     <string name="uport_fromalbum">从相册中选择</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- 用户钱包界面 -->
+    <string name="uwal_title">我的钱包</string>
+    <string name="uwal_ub">钱包余额</string>
+    <string name="uwal_buy">去市场看看</string>
+    <string name="uwal_sell">出售优惠券</string>
+    <string name="uwal_recharge">充值</string>
+
+
 </resources>

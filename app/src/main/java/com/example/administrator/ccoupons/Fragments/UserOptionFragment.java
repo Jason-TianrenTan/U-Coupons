@@ -14,6 +14,7 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
+import com.example.administrator.ccoupons.User.UserWalletActivity;
 
 /**
  * Created by CZJ on 2017/7/13.
@@ -23,7 +24,7 @@ public class UserOptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_option, container, false);
-        LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_top);
+        LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_to_inf);
         toUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +41,13 @@ public class UserOptionFragment extends Fragment {
         });
         TextView ub = (TextView) view.findViewById(R.id.user_ub);
         ub.setText(Integer.toString(DataHolder.User.UB));
+        LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
+        toUserWal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), UserWalletActivity.class));
+            }
+        });
         return view;
     }
 }

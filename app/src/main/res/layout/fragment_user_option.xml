@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="#F0F3F6">
 
-    <LinearLayout style="@style/user_wrap_layout" android:id="@+id/user_top">
+    <LinearLayout style="@style/user_wrap_layout" android:id="@+id/user_to_inf">
         <LinearLayout style="@style/user_top_layout">
             <com.example.administrator.ccoupons.Tools.XCRoundImageView style="@style/user_portrait_layout"
                 android:id="@+id/user_portrait"/>
@@ -16,15 +16,17 @@
             <ImageView style="@style/user_img_big_arrow"/>
         </LinearLayout>
         <LinearLayout style="@style/user_row_layout">
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" />
             <TextView style="@style/user_text" android:text="@string/uopt_mycoupon" />
             <ImageView style="@style/user_img_arrow"/>
         </LinearLayout>
         <ImageView style="@style/user_divider"/>
-        <LinearLayout style="@style/user_row_layout">
+        <LinearLayout style="@style/user_row_layout" android:id="@+id/user_to_wal">
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" />
             <TextView style="@style/user_text" android:text="@string/uopt_mywallet" />
             <TextView android:id="@+id/user_ub" style="@style/user_text" android:textColor="@color/gray"
                 android:layout_weight="0" android:layout_marginRight="5dp" />
-            <ImageView style="@style/user_img_arrow"/>
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" android:layout_marginRight="0dp" />
         </LinearLayout>
         <ImageView style="@style/user_edgeline"/>
     </LinearLayout>
@@ -32,16 +34,19 @@
     <LinearLayout style="@style/user_wrap_layout" >
         <ImageView style="@style/user_edgeline"/>
         <LinearLayout style="@style/user_row_layout">
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" />
             <TextView style="@style/user_text" android:text="@string/uopt_sell" />
             <ImageView style="@style/user_img_arrow"/>
         </LinearLayout>
         <ImageView style="@style/user_divider"/>
         <LinearLayout style="@style/user_row_layout">
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" />
             <TextView style="@style/user_text" android:text="@string/uopt_buy" />
             <ImageView style="@style/user_img_arrow"/>
         </LinearLayout>
         <ImageView style="@style/user_divider"/>
         <LinearLayout style="@style/user_row_layout">
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" />
             <TextView style="@style/user_text" android:text="@string/uopt_collect" />
             <ImageView style="@style/user_img_arrow"/>
         </LinearLayout>
@@ -51,14 +56,27 @@
     <LinearLayout style="@style/user_wrap_layout">
         <ImageView style="@style/user_edgeline"/>
         <LinearLayout style="@style/user_row_layout">
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" />
             <TextView style="@style/user_text" android:text="@string/uopt_settings" />
             <ImageView style="@style/user_img_arrow"/>
         </LinearLayout>
         <ImageView style="@style/user_divider"/>
         <LinearLayout style="@style/user_row_layout">
+            <ImageView style="@style/user_icon_layout" android:src="@mipmap/pos" />
             <TextView style="@style/user_text" android:text="@string/uopt_help"/>
             <ImageView style="@style/user_img_arrow"/>
         </LinearLayout>
+        <ImageView style="@style/user_edgeline"/>
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_wrap_layout">
+        <ImageView style="@style/user_edgeline"/>
+            <TextView style="@style/user_text"
+                android:textColor="@color/red"
+                android:textSize="20dp"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:text="@string/uopt_logout" />
         <ImageView style="@style/user_edgeline"/>
     </LinearLayout>
 

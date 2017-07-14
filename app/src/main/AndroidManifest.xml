@@ -14,11 +14,7 @@
             android:name=".Main.MainActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -35,7 +31,14 @@
             android:name=".Search.SearchResultActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".User.UserPortraitActivity" />
-        <activity android:name=".User.UserInformationActivity"/>
+        <activity android:name=".User.UserInformationActivity" />
+        <activity android:name=".User.UserWalletActivity" />
+        <activity android:name=".Main.WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
