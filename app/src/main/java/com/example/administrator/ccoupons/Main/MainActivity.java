@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.administrator.ccoupons.MainPageActivity;
 import com.example.administrator.ccoupons.R;
@@ -58,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, MainPageActivity.class));
+            }
+        });
+
+        TextView text_forget = (TextView)findViewById(R.id.text_forget);
+        text_forget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ResetPasswordActivity.class));
             }
         });
     }

@@ -12,6 +12,9 @@
 
     <!-- 忘记密码界面 -->
     <string name="reset_password_title">重置密码</string>
+    <string name="reset_new_password_string">输入新密码</string>
+    <string name="reset_password_confirm_string">再次输入新密码</string>
+    <string name="get_identifyid_text">点击获取</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="category_title_string">类别</string>
