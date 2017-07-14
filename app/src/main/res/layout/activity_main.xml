@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:id="@+id/rootLayout"
     tools:context="com.example.administrator.ccoupons.Main.MainActivity">
 
 
@@ -49,6 +50,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/text_root_view"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="190dp"
@@ -116,4 +118,4 @@
                 />
         </RelativeLayout>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
