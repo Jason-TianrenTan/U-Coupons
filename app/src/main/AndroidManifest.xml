@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
         <activity
-            android:name=".Main.RegisterActivity"
+            android:name=".Register.RegisterActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -36,7 +36,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
-        <activity android:name=".Main.ResetPasswordActivity"></activity>
+        <activity android:name=".Main.ResetPasswordActivity" />
+        <activity android:name=".Register.RegisterIdentifyActivity" />
+        <activity android:name=".Register.RegisterPasswordActivity" />
+        <activity android:name=".Register.RegisterFinalActivity"></activity>
     </application>
 
 </manifest>
