@@ -17,9 +17,7 @@ import android.widget.TextView;
 import com.example.administrator.ccoupons.R;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    EditText input_phone, input_password;
-    TextInputLayout inputPhoneHolder, inputPassHolder;
+    
     TextView text_return;
     Toolbar toolbar;
     @Override
@@ -45,31 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        input_phone = (EditText)findViewById(R.id.input_phone);
-        input_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        inputPhoneHolder = (TextInputLayout)findViewById(R.id.input_phone_holder);
-        input_phone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String str = s.toString();
-                if (str.length() < 13) {
-                    inputPhoneHolder.setErrorEnabled(true);
-                    inputPhoneHolder.setError("请输入完整的手机号码");
-                }
-                else inputPhoneHolder.setErrorEnabled(false);
-            }
-        });
 
     }
 

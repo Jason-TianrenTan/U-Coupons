@@ -31,14 +31,6 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
-import com.example.administrator.ccoupons.Main.MainActivity;
-import com.luseen.spacenavigation.SpaceItem;
-import com.luseen.spacenavigation.SpaceNavigationView;
-import com.luseen.spacenavigation.SpaceOnClickListener;
-import com.luseen.spacenavigation.SpaceOnLongClickListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainPageActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {

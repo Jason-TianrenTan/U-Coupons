@@ -11,13 +11,13 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
         <activity
-            android:name=".Main.LoginActivity"
+            android:name=".Main.RegisterActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustResize">
 
         </activity>
         <activity
-            android:name=".Main.RegisterActivity"
+            android:name=".Main.LoginActivity"
             android:fitsSystemWindows="true" />
 
         <activity
