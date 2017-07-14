@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText signup_phone, signup_pass;
     private int mergeHeight;
+    private boolean editTextFocus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,27 +56,20 @@ public class MainActivity extends AppCompatActivity {
         signup_phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (hasFocus)
+                    editTextFocus = true;
+                if (!editTextFocus) {
                     hideKeyboard(v);
-                    if (stateShrinked)
-                        startAnimation(ANIM_EXPAND);
-                }
-                else {
-                    if (!stateShrinked)
-                        startAnimation(ANIM_SHRINK);
                 }
             }
         });
         signup_pass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+                if (hasFocus)
+                    editTextFocus = true;
+                if (!editTextFocus) {
                     hideKeyboard(v);
-                    if (stateShrinked)
-                        startAnimation(ANIM_EXPAND);
-                } else {
-                    if (!stateShrinked)
-                        startAnimation(ANIM_SHRINK);
                 }
             }
         });
@@ -94,21 +88,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ResetPasswordActivity.class));
             }
         });
-        LinearLayout rootLayout = (LinearLayout)findViewById(R.id.rootLayout);
-        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
+        mergeHeight = dp2px(120);
+
+        //
+        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
+        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+                //键盘打开
+                if (!stateShrinked)
+                    startAnimation(ANIM_SHRINK);
+            }
 
             @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                MainActivity.this.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-                //获取屏幕的高度
-                int screenHeight =  MainActivity.this.getWindow().getDecorView().getRootView().getHeight();
-                //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
-                int heightDifference = screenHeight - r.bottom;
-                System.out.println("Keyboard Size: " + heightDifference);
+            public void onSoftKeyboardClosed() {
+                //键盘关闭
+                if (stateShrinked)
+                    startAnimation(ANIM_EXPAND);
             }
         });
-        mergeHeight = dp2px(120);
     }
 
     private void hideKeyboard(View view) {
@@ -119,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean stateShrinked = false;
     private static final int ANIM_SHRINK = 0,
-                            ANIM_EXPAND = 1;
+            ANIM_EXPAND = 1;
+
     private void startAnimation(int anim_type) {
 
         if (anim_type == ANIM_SHRINK) {
@@ -148,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
             imgLayout.startAnimation(anim);
             stateShrinked = false;
         }
+
+        System.out.println("Now it is " + (stateShrinked ? "shrinked" : "not shrinked"));
 
 
     }
