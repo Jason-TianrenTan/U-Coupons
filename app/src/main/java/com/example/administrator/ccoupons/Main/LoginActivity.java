@@ -2,16 +2,13 @@ package com.example.administrator.ccoupons.Main;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ccoupons.MainPageActivity;
 import com.example.administrator.ccoupons.R;
@@ -34,24 +32,44 @@ public class LoginActivity extends AppCompatActivity {
     EditText signup_phone, signup_pass;
     private int mergeHeight;
     private boolean editTextFocus = false;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private boolean auto_login;
+    private String rem_phonenumber;
+    private String rem_pass;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         //    getSupportActionBar().hide();
 
         toolbar = (Toolbar) findViewById(R.id.login_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+                finish();
+            }
+        });
 
         login = (Button) findViewById(R.id.button_login);
         signup_phone = (EditText) findViewById(R.id.signup_phone);
         signup_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         signup_pass = (EditText) findViewById(R.id.signup_password);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        preferences = this.getSharedPreferences("UserInfomation", MODE_PRIVATE);
+        editor = preferences.edit();
 
+        rem_phonenumber = preferences.getString("phonenumber", "");
+        rem_pass = preferences.getString("password", "");
+
+        signup_phone.setText(rem_phonenumber);
+        signup_pass.setText(rem_pass);
 
         signup_phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -74,10 +92,26 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //登录
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String phonenumber = signup_phone.getText().toString();
+                String password = signup_pass.getText().toString();
+                //向后台发送手机号与密码并验证
+                //判断
+                //- 失败
+                //- 网络无连接
+                //- 成功，并收到服务器的消息
+                editor.putBoolean("auto_login", true);
+                editor.putString("phonenumber", phonenumber);
+                editor.putString("password", password);
+                if(editor.commit()) {
+                    Toast.makeText(getApplicationContext(), "登录成功\n账号:" + phonenumber +
+                            "\n密码:" + password, Toast.LENGTH_SHORT).show();    //fortest
+                }
                 startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
+                finish();
             }
         });
 
@@ -150,14 +184,17 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         System.out.println("Now it is " + (stateShrinked ? "shrinked" : "not shrinked"));
-
-
     }
-
 
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+        finish();
+    }
 }
+
