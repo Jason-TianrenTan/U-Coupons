@@ -122,6 +122,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     }
 
     private void startCountDown() {
+        current = COUNTDOWN_TIME;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new CountDownTask(), 0, 1000);
     }

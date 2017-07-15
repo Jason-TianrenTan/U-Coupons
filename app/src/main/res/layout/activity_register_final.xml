@@ -43,13 +43,15 @@
                 android:text="输入昵称:"
                 android:textSize="24dp"
                 />
-            <EditText
-                style="@style/MainEditTextStyle"
+
+            <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
                 android:id="@+id/register_final_username"
-                android:maxLength="20"
-                android:maxLines="1"
+                style="@style/MainEditTextStyle"
+                android:textColorHint="@color/colorAccent"
+                android:hint="@string/register_final_hint"
                 android:inputType="text"
-                android:hint="@string/register_final_hint"/>
+                android:maxLength="20"
+                android:maxLines="1" />
 
         </LinearLayout>
 
@@ -77,12 +79,14 @@
                     android:id="@+id/radio_button_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="24dp"
                     android:text="男"/>
 
                 <RadioButton
                     android:id="@+id/radio_button_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="24dp"
                     android:text="女"/>
 
             </RadioGroup>

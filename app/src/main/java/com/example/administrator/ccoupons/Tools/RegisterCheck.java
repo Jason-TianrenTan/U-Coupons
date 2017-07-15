@@ -1,5 +1,15 @@
 package com.example.administrator.ccoupons.Tools;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatEditText;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.lang.reflect.Field;
+
 /**
  * Created by Administrator on 2017/7/15 0015.
  */
@@ -42,11 +52,14 @@ public class RegisterCheck {
         if (length < 6 || length > 16) {
             return AlertType.LENGTH_ERROR;
         }
+        if (!LegalInputChars(pass))
+            return AlertType.ILLEGAL_CHAR;
         return AlertType.NO_ERROR;
     }
-    public int alertPassword(String str1,String str2) {
-        if (!str1.equals(str2))
-            return AlertType.PASS_DIFF_ERROR;
-        return AlertType.NO_ERROR;
+    public boolean LegalInputChars(String str) {
+        //判断合法性
+        return true;
     }
+
+
 }
