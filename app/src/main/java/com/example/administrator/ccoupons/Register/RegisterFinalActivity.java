@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.administrator.ccoupons.Gender;
-import com.example.administrator.ccoupons.MainPageActivity;
+import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 
 public class RegisterFinalActivity extends AppCompatActivity {

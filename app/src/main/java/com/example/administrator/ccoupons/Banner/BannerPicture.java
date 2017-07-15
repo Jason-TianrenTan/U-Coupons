@@ -1,0 +1,23 @@
+package com.example.administrator.ccoupons.Banner;
+
+/**
+ * Created by Administrator on 2017/7/15 0015.
+ */
+
+public class BannerPicture {
+    private String name;
+    private int resId;
+
+    public BannerPicture(String sname, int id) {
+        name = sname;
+        resId = id;
+    }
+
+    public int getResId() {
+        return this.resId;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+}

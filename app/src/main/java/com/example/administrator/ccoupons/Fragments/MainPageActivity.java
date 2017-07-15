@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons;
+package com.example.administrator.ccoupons.Fragments;
 /*
 *首页布局
  */
@@ -31,9 +31,10 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
+import com.example.administrator.ccoupons.R;
 
 
-public class MainPageActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainPageActivity extends AppCompatActivity {
 
 
     CategoryFragment categoryFragment;
@@ -104,58 +105,5 @@ public class MainPageActivity extends AppCompatActivity implements ViewPager.OnP
     }
 
 
-    /*
-    //初始化展示板
-    private void initBanner(){
-        for (int i = 0; i< DataHolder.Banners.covers.length; i++)
-            localImages.add(DataHolder.Banners.covers[i]);
-
-        //本地图片例子
-        convenientBanner = (ConvenientBanner)findViewById(R.id.convenientBanner);
-        convenientBanner.setPages(
-                new com.bigkoo.convenientbanner.holder.CBViewHolderCreator<LocalImageHolderView>() {
-                    @Override
-                    public LocalImageHolderView createHolder() {
-                        return new LocalImageHolderView();
-                    }
-                }, localImages)
-                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
-                .setOnItemClickListener(this);
-                //设置指示器的方向
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-//                .setOnPageChangeListener(this)//监听翻页事件
-
-    }*/
-
-
-    // 开始自动翻页
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //开始自动翻页
-        //  convenientBanner.startTurning(5000);
-    }
-
-    // 停止自动翻页
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //停止翻页
-        //  convenientBanner.stopTurning();
-    }
-
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-    }
 
 }
