@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.MainPageActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Register.RegisterActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
     private SharedPreferences preferences;
@@ -30,14 +31,12 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-                finish();
             }
         });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
-                finish();
             }
         });
         preferences = this.getSharedPreferences("UserInfomation", MODE_PRIVATE);

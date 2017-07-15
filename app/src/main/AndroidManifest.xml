@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
         <activity
-            android:name=".Main.RegisterActivity"
+            android:name=".Register.RegisterActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
@@ -30,18 +30,19 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
+        <activity android:name=".Main.ResetPasswordActivity" />
+        <activity android:name=".Register.RegisterIdentifyActivity" />
+        <activity android:name=".Register.RegisterPasswordActivity" />
         <activity android:name=".User.UserWalletActivity" />
+        <activity android:name=".User.UserSettingActivity"></activity>
 
         <!-- 欢迎界面 -->
         <activity android:name=".Main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main.ResetPasswordActivity" />
-        <activity android:name=".User.UserSettingActivity"></activity>
     </application>
 
 </manifest>
