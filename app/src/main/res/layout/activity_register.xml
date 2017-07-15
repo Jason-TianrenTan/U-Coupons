@@ -22,47 +22,47 @@
             />
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="30dp">
+                android:padding="30dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="+86"
+                    android:textSize="24dp" />
+
+                <EditText
+                    android:id="@+id/register_phone_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:digits="1234567890"
+                    android:hint="@string/register_phone_hint"
+                    android:inputType="number"
+                    android:maxLength="11" />
+
+            </LinearLayout>
+
+        <Button
+            style="@style/MainButtonsStyle"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="@string/register_next_string"
+            android:id="@+id/register_button_next"
+            />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="+86"
-            android:textSize="24dp" />
-
-        <EditText
-            android:id="@+id/register_phone_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:digits="1234567890"
-            android:hint="@string/register_phone_hint"
-            android:inputType="number"
-            android:maxLength="11" />
-
-    </LinearLayout>
-
-    <Button
-        style="@style/MainButtonsStyle"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:text="@string/register_next_string"
-        android:id="@+id/register_button_next"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="已经有账户了?直接登录"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:id="@+id/text_return"/>
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="已经有账户了?直接登录"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:id="@+id/text_return"/>
 
 
 </LinearLayout>

@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.AlertType;
+import com.example.administrator.ccoupons.Tools.RegisterCheck;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,9 +30,11 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     Button button_next,
             button_reget;
 
+    private String[] AlertStrings = "不能含有非法字符,长度必须为6位".split(",");
     private boolean reget_permission = false;
     public static final int COUNTDOWN_TIME = 20;
 
+    private RegisterCheck checker;
     private Handler TimerHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -68,6 +72,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_identify);
 
+        checker = new RegisterCheck();
         Toolbar toolbar = (Toolbar) findViewById(R.id.register_identify_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,7 +107,15 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         button_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RegisterIdentifyActivity.this,RegisterPasswordActivity.class));
+                String str = editText.getText().toString();
+                int err_type = checker.alertIdentifyCode(str);
+                if (err_type != AlertType.NO_ERROR) {
+                    //有错误
+                    editText.setError(AlertStrings[err_type - 1]);
+                }
+                else {
+                    startActivity(new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class));
+                }
             }
         });
         startCountDown();

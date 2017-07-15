@@ -11,7 +11,7 @@ import com.example.administrator.ccoupons.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 
 public class RegisterPasswordActivity extends AppCompatActivity {
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
