@@ -22,6 +22,7 @@ public class UserInformationActivity extends SlideBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -32,6 +33,7 @@ public class UserInformationActivity extends SlideBackActivity {
                 finish();
             }
         });
+
         TextView name = (TextView) findViewById(R.id.user_name);
         TextView sex = (TextView) findViewById(R.id.user_sex);
         TextView age = (TextView) findViewById(R.id.user_age);
@@ -61,7 +63,6 @@ public class UserInformationActivity extends SlideBackActivity {
                     public void onClick(View v) {
                         Toast.makeText(UserInformationActivity.this, "拍照", Toast.LENGTH_SHORT).show();
                         mBottomSheetDialog.dismiss();
-                        finish();
                     }
                 });
                 tv_compare.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,6 @@ public class UserInformationActivity extends SlideBackActivity {
                     public void onClick(View v) {
                         Toast.makeText(UserInformationActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
                         mBottomSheetDialog.dismiss();
-                        finish();
                     }
                 });
             }
