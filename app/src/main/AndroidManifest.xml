@@ -36,12 +36,9 @@
 
         <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
-<<<<<<< HEAD
         <activity android:name=".Main.ResetPasswordActivity" />
         <activity android:name=".Register.RegisterIdentifyActivity" />
         <activity android:name=".Register.RegisterPasswordActivity" />
-        <activity android:name=".Register.RegisterFinalActivity"></activity>
-=======
         <activity android:name=".User.UserWalletActivity" />
 
         <!-- 欢迎界面 -->
@@ -51,9 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Main.ResetPasswordActivity" />
->>>>>>> origin/Czj
     </application>
 
 </manifest>
