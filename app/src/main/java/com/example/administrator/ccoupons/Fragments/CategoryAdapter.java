@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.R;
@@ -21,52 +22,56 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/7/11 0011.
  */
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context mContext;
     private ArrayList<Category> mCategoryList;
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         ImageView imageView;
         TextView textView;
-        public ViewHolder(View view) {
+
+        public CategoryViewHolder(View view) {
             super(view);
-            cardView = (CardView)view;
-            imageView = (ImageView)view.findViewById(R.id.category_imageview);
-            textView = (TextView)view.findViewById(R.id.category_textview);
+            cardView = (CardView) view;
+            imageView = (ImageView) view.findViewById(R.id.category_imageview);
+            textView = (TextView) view.findViewById(R.id.category_textview);
         }
     }
+
 
     public CategoryAdapter(ArrayList<Category> cList) {
         this.mCategoryList = cList;
     }
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (mContext == null) {
-                mContext = parent.getContext();
+
+    @Override
+    public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mContext == null) {
+            mContext = parent.getContext();
+        }
+        View view = LayoutInflater.from(mContext).inflate(R.layout.category_item, parent, false);
+        final CategoryViewHolder holder = new CategoryViewHolder(view);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Category category = mCategoryList.get(position);
+                Toast.makeText(mContext, "Category = " + category.getName(), Toast.LENGTH_SHORT).show();
             }
-            View view = LayoutInflater.from(mContext).inflate(R.layout.category_item,parent,false);
-            final ViewHolder holder = new ViewHolder(view);
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = holder.getAdapterPosition();
-                    Category category = mCategoryList.get(position);
-                    Toast.makeText(mContext,"Category = " + category.getName(),Toast.LENGTH_SHORT).show();
-                }
-            });
-            return holder;
-        }
+        });
+        return holder;
+    }
 
-        @Override
-        public void onBindViewHolder(ViewHolder holder,int position) {
-            Category category = mCategoryList.get(position);
-            holder.textView.setText(category.getName());
-            Glide.with(mContext).load(category.getResId()).into(holder.imageView);
-        }
+    @Override
+    public void onBindViewHolder(CategoryViewHolder holder, int position) {
+        Category category = mCategoryList.get(position);
+        holder.textView.setText(category.getName());
+        Glide.with(mContext).load(category.getResId()).into(holder.imageView);
+    }
 
-        @Override
-        public int getItemCount() {
-            return mCategoryList.size();
-        }
+    @Override
+    public int getItemCount() {
+        return mCategoryList.size();
+    }
 }
