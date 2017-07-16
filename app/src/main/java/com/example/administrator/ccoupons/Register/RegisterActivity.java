@@ -1,6 +1,7 @@
 package com.example.administrator.ccoupons.Register;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button button_next;
     EditText phoneInput;
     RegisterCheck checker;
+    TextInputLayout inputLayout;
     private String[] AlertStrings = "不能含有非法字符,长度必须为11位".split(",");
 
     @Override
@@ -35,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         phoneInput = (EditText) findViewById(R.id.register_phone_input);
-
+        inputLayout = (TextInputLayout) findViewById(R.id.register_phone_inputlayout);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
                 int err_type = checker.alertPhoneNumber(str);
                 if (err_type != AlertType.NO_ERROR) {
                     //有错误
-                    phoneInput.setError(AlertStrings[err_type - 1]);
+                    inputLayout.setError(AlertStrings[err_type - 1]);
                 }
                 else {
                     Intent intent = new Intent(RegisterActivity.this, RegisterIdentifyActivity.class);

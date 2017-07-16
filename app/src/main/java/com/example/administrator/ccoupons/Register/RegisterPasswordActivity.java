@@ -1,6 +1,7 @@
 package com.example.administrator.ccoupons.Register;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,11 +18,12 @@ import com.example.administrator.ccoupons.Tools.RegisterCheck;
 
 public class RegisterPasswordActivity extends AppCompatActivity {
 
-    private PasswordToggleEditText inputPass,confirmPass;
+    private PasswordToggleEditText inputPass, confirmPass;
     private RegisterCheck checker = new RegisterCheck();
     private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,两次密码不匹配".split(",");
     private boolean valid = false;
-    private String first_input;
+    private TextInputLayout firstlayout, confirmLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class RegisterPasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
-        Button button_next = (Button)findViewById(R.id.register_password_button_next);
+        Button button_next = (Button) findViewById(R.id.register_password_button_next);
         button_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,8 +51,10 @@ public class RegisterPasswordActivity extends AppCompatActivity {
             }
         });
 
-        inputPass = (PasswordToggleEditText)findViewById(R.id.register_input_pass);
-        confirmPass = (PasswordToggleEditText)findViewById(R.id.register_input_confirmpass);
+        inputPass = (PasswordToggleEditText) findViewById(R.id.register_input_pass);
+        confirmPass = (PasswordToggleEditText) findViewById(R.id.register_input_confirmpass);
+        firstlayout = (TextInputLayout)findViewById(R.id.register_firstpassword_inputlayout);
+        confirmLayout = (TextInputLayout)findViewById(R.id.register_confirmpassword_inputlayout);
 
         inputPass.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,11 +68,11 @@ public class RegisterPasswordActivity extends AppCompatActivity {
                 int err_type = checker.alertPassword(pass);
                 if (err_type != AlertType.NO_ERROR) {
                     EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.red));
-                    inputPass.setError(errorStrings[err_type - 1]);
+                    firstlayout.setError(errorStrings[err_type - 1]);
                     valid = false;
-                }
-                else {
+                } else {
                     EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.colorAccent));
+                    firstlayout.setErrorEnabled(false);
                     valid = true;
                 }
             }
@@ -90,17 +94,16 @@ public class RegisterPasswordActivity extends AppCompatActivity {
                 int err_type = checker.alertPassword(pass);
                 if (err_type != AlertType.NO_ERROR) {
                     EditTextTools.setCursorColor(confirmPass, getResources().getColor(R.color.red));
-                    confirmPass.setError(errorStrings[err_type - 1]);
+                    confirmLayout.setError(errorStrings[err_type - 1]);
                     valid = false;
-                }
-                else {
+                } else {
                     if (inputPass.getText().toString().equals(confirmPass.getText().toString())) {
                         EditTextTools.setCursorColor(confirmPass, getResources().getColor(R.color.colorAccent));
+                        confirmLayout.setErrorEnabled(false);
                         valid = true;
-                    }
-                    else {
+                    } else {
                         EditTextTools.setCursorColor(confirmPass, getResources().getColor(R.color.red));
-                        confirmPass.setError(errorStrings[2]);
+                        confirmLayout.setError(errorStrings[2]);
                         valid = false;
                     }
                 }
