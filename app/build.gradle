@@ -37,4 +37,5 @@ dependencies {
     compile 'com.android.support:support-v4:26.0.0-alpha1'
     compile 'com.github.armcha:SpaceNavigationView:1.6.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/AMap_Location_V3.4.1_20170629.jar')
 }
