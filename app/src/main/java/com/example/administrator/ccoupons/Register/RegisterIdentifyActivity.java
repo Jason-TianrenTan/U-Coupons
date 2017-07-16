@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,8 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
 
+import org.w3c.dom.Text;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,6 +32,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     EditText editText;
     Button button_next,
             button_reget;
+    TextInputLayout inputLayout;
 
     private String[] AlertStrings = "不能含有非法字符,长度必须为6位".split(",");
     private boolean reget_permission = false;
@@ -89,7 +93,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         button_next = (Button) findViewById(R.id.register_identify_button_next);
         button_reget = (Button) findViewById(R.id.register_identify_button_reget);
         timerText = (TextView) findViewById(R.id.register_timer_text);
-
+        inputLayout = (TextInputLayout) findViewById(R.id.indentify_inputlayout);
         String phoneString = getIntent().getStringExtra("phone_number");
         upperText.setText(getResources().getString(R.string.register_identify_text) + " +86 " + phoneString);
 
@@ -111,13 +115,15 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 int err_type = checker.alertIdentifyCode(str);
                 if (err_type != AlertType.NO_ERROR) {
                     //有错误
-                    editText.setError(AlertStrings[err_type - 1]);
+                    inputLayout.setError(AlertStrings[err_type - 1]);
                 }
                 else {
                     startActivity(new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class));
                 }
             }
         });
+
+
         startCountDown();
     }
 
