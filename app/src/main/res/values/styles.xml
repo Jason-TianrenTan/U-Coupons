@@ -74,6 +74,14 @@
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
 
+    <!-- 所有界面背景样式 -->
+    <style name="user_bg">
+        <item name="android:layout_width">match_parent</item>
+       <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+       <item name="android:background">#F0F3F6</item>
+    </style>
+
     <!-- 标题栏文字样式 -->
     <style name="user_title_text">
         <item name="android:textColor">@color/white</item>
@@ -127,11 +135,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">12dp</item>
         <item name="android:paddingRight">12dp</item>
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/user_row_selector</item>
     </style>
 
     <!-- 用户界面小图标样式 -->
@@ -173,10 +182,13 @@
         <item name="android:src">@drawable/arrow</item><!-- 箭头图片 -->
     </style>
 
-    <style name="user_img_big_arrow">
+    <style name="user_img_big_arrow" parent="@style/user_img_arrow">
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
-        <item name="android:src">@drawable/arrow</item><!-- 箭头图片 -->
+    </style>
+
+    <style name="uwal_top_layout" parent="@style/user_top_layout">
+        <item name="android:layout_height">80dp</item>
     </style>
 
     <!-- 欢迎界面logo样式 -->

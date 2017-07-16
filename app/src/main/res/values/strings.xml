@@ -56,12 +56,12 @@
     <string name="uopt_collect">我关注的</string>
     <string name="uopt_settings">应用设置</string>
     <string name="uopt_help">帮助与反馈</string>
-    <string name="uopt_logout">注销</string>
+    <string name="uopt_logoff">注销</string>
 
     <!-- 用户信息修改界面 -->
     <string name="uinf_title">我的信息</string>
     <string name="uinf_changeportrait">更换头像</string>
-    <string name="uinf_changephone">绑定手机号</string>
+    <string name="uinf_changephone">修改手机号</string>
     <string name="uinf_changekey">修改密码</string>
 
     <!-- 更换头像菜单 -->
@@ -71,8 +71,11 @@
     <!-- 用户钱包界面 -->
     <string name="uwal_title">我的钱包</string>
     <string name="uwal_ub">钱包余额</string>
-    <string name="uwal_buy">去市场看看</string>
     <string name="uwal_sell">出售优惠券</string>
-    <string name="uwal_recharge">充值</string>
+    <string name="uwal_recharge">充值U币</string>
+
+    <!-- 用户设置界面 -->
+    <string name="uset_title">应用设置</string>
+    <string name="uset_clear">清除缓存</string>
 
 </resources>

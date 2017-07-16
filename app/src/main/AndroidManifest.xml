@@ -18,33 +18,28 @@
         <activity
             android:name=".Register.RegisterActivity"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".Main.LoginActivity"
             android:fitsSystemWindows="true" />
-
         <activity
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".Search.SearchActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
         <activity
             android:name=".Search.SearchResultActivity"
             android:windowSoftInputMode="stateHidden" />
-
         <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
         <activity android:name=".Main.ResetPasswordActivity" />
         <activity android:name=".Register.RegisterIdentifyActivity" />
         <activity android:name=".Register.RegisterPasswordActivity" />
         <activity android:name=".User.UserWalletActivity" />
+        <activity android:name=".User.UserSettingActivity"></activity>
 
         <!-- 欢迎界面 -->
         <activity android:name=".Main.WelcomeActivity">

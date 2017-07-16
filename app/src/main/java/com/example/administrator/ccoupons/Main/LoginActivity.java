@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -194,7 +195,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
-        finish();
+        super.onBackPressed();
     }
 }
-

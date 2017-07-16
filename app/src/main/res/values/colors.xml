@@ -123,6 +123,7 @@
     <color name="deepskyblue">#00bfff</color><!--深天蓝色 -->
     <color name="navy">#000080</color><!--海军色 -->
     <color name="black">#000000</color><!--黑色 -->
+    <color name="black_with_alpha">#cf000000</color><!-- 半透明黑色 -->
     <color name="darkslategray">#2f4f4f</color><!--暗瓦灰色 -->
     <color name="darkslategrey">#2f4f4f</color><!--暗瓦灰色 -->
     <color name="seagreen">#2e8b57</color><!--海绿色 -->

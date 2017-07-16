@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 
 /**
- * Created by CZJ on 2017/7/14.
+ * 从该类继承活动使活动支持向右滑动返回
  */
 
 public class SlideBackActivity extends AppCompatActivity {
