@@ -33,9 +33,12 @@ import com.example.administrator.ccoupons.Fragments.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
 import com.example.administrator.ccoupons.R;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class MainPageActivity extends AppCompatActivity {
-
+    private boolean exit = false;
 
     CategoryFragment categoryFragment;
     UserOptionFragment userOptionFragment;
@@ -103,7 +106,27 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
     }
-
+    //按返回键回到F1,在F1双击返回键退出
+    @Override
+    public void onBackPressed() {
+        if (!categoryFragment.isHidden()) {
+            if (exit) {
+                super.onBackPressed();
+            } else {
+                exit = true;
+                Toast.makeText(getApplicationContext(),
+                        "再按返回键退出程序", Toast.LENGTH_SHORT).show();
+                final Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        exit = false;
+                        timer.cancel();
+                    }
+                }, 2000);
+            }
+        } else showFragment(1);
+    }
 
 
 }

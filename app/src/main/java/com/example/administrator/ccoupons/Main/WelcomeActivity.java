@@ -11,9 +11,10 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
+import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 
 public class WelcomeActivity extends AppCompatActivity {
-    private SharedPreferences preferences;
+    private LoginInformationManager loginInformationManager;
     private boolean auto_login;
     private String phonenumber;
     private String password;
@@ -30,23 +31,25 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                finish();
             }
         });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
+                finish();
             }
         });
-        preferences = this.getSharedPreferences("UserInfomation", MODE_PRIVATE);
-        auto_login = preferences.getBoolean("auto_login", false);
+        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        auto_login = loginInformationManager.getAutoLogin();
         if (auto_login == false) {
             login.setVisibility(View.VISIBLE);
             register.setVisibility(View.VISIBLE);
         }
         if (auto_login == true) {
-            phonenumber = preferences.getString("phonenumber", "");
-            password = preferences.getString("password", "");
+            phonenumber = loginInformationManager.getPhoneNumber();
+            password = loginInformationManager.getPassword();
             //向服务器发送账号密码并验证
             //判断
             //- 失败

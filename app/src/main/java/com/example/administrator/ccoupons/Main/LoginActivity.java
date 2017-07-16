@@ -23,7 +23,11 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
+
+import java.security.NoSuchAlgorithmException;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,8 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText signup_phone, signup_pass;
     private int mergeHeight;
     private boolean editTextFocus = false;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
+    private LoginInformationManager loginInformationManager;
     private boolean auto_login;
     private String rem_phonenumber;
     private String rem_pass;
@@ -63,12 +66,11 @@ public class LoginActivity extends AppCompatActivity {
         signup_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         signup_pass = (EditText) findViewById(R.id.signup_password);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        preferences = this.getSharedPreferences("UserInfomation", MODE_PRIVATE);
-        editor = preferences.edit();
+        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
 
-        rem_phonenumber = preferences.getString("phonenumber", "");
-        rem_pass = preferences.getString("password", "");
-
+        //读取记忆的账号
+        rem_phonenumber = loginInformationManager.getPhoneNumber();
+        rem_pass = loginInformationManager.getPassword();
         signup_phone.setText(rem_phonenumber);
         signup_pass.setText(rem_pass);
 
@@ -99,18 +101,27 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String phonenumber = signup_phone.getText().toString();
                 String password = signup_pass.getText().toString();
+                String passwordcode;
+                //如果不存在保存的密码，则将密码加密
+                if (rem_pass.equals("")) {
+                    PasswordEncoder encoder = new PasswordEncoder();
+                    try {
+                        passwordcode = encoder.EncodeByMd5(password);
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                        passwordcode = "";
+                    }
+                } else passwordcode = password;
                 //向后台发送手机号与密码并验证
                 //判断
                 //- 失败
                 //- 网络无连接
                 //- 成功，并收到服务器的消息
-                editor.putBoolean("auto_login", true);
-                editor.putString("phonenumber", phonenumber);
-                editor.putString("password", password);
-                if(editor.commit()) {
-                    Toast.makeText(getApplicationContext(), "登录成功\n账号:" + phonenumber +
-                            "\n密码:" + password, Toast.LENGTH_SHORT).show();    //fortest
-                }
+
+                //保存账号与密码
+                loginInformationManager.setAutoLogin(true).setPhoneNumber(phonenumber).setPassword(passwordcode);
+                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + phonenumber +
+                        "\n密码:" + passwordcode, Toast.LENGTH_SHORT).show();    //fortest
                 startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
                 finish();
             }
