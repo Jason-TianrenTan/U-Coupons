@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
@@ -72,7 +73,6 @@ public class UserOptionFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -84,8 +84,9 @@ public class UserOptionFragment extends Fragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("UserInfomation", MODE_PRIVATE).edit();
-                        editor.putBoolean("auto_login", false).remove("password").commit();
+                        LoginInformationManager loginInformationManager =
+                                new LoginInformationManager(getActivity().getSharedPreferences("UserInfomation", MODE_PRIVATE));
+                        loginInformationManager.setAutoLogin(false).removePassword();
                         startActivity(new Intent(getActivity(), WelcomeActivity.class));
                         getActivity().finish();
                     }

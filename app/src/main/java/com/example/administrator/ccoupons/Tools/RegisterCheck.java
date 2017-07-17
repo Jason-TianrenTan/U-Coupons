@@ -1,14 +1,5 @@
 package com.example.administrator.ccoupons.Tools;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatEditText;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import java.lang.reflect.Field;
 
 /**
  * Created by Administrator on 2017/7/15 0015.
@@ -52,14 +43,28 @@ public class RegisterCheck {
         if (length < 6 || length > 16) {
             return AlertType.LENGTH_ERROR;
         }
-        if (!LegalInputChars(pass))
+        if (pass.matches("^.*[^a-zA-Z0-9~!@#$%^&*()_\\-+=|\\<>,.?/:;'\\[\\]{}\"]+.*$"))
             return AlertType.ILLEGAL_CHAR;
+        if (passwordStrength(pass))
+            return AlertType.TOO_SIMPLE;
         return AlertType.NO_ERROR;
     }
-    public boolean LegalInputChars(String str) {
-        //判断合法性
-        return true;
+
+    private boolean passwordStrength(String pass) {
+        //判断密码是否过于简单
+        int strength = 0;
+
+        if (pass.matches("^.*[a-z]+.*$"))
+            strength++;
+        if (pass.matches("^.*[A-Z]+.*$"))
+            strength++;
+        if (pass.matches("^.*[0-9]+.*$"))
+            strength++;
+        if (pass.matches("^.*[~!@#$%^&*()_\\-+=|\\<>,.?/:;'\\[\\]{}\"]+.*$"))
+            strength++;
+
+        if (strength < 2)
+            return true;
+        return false;
     }
-
-
 }
