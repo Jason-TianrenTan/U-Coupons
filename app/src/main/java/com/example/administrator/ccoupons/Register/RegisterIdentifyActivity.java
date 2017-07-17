@@ -34,6 +34,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
             button_reget;
     TextInputLayout inputLayout;
 
+    private String phoneString;
     private String[] AlertStrings = "不能含有非法字符,长度必须为6位".split(",");
     private boolean reget_permission = false;
     public static final int COUNTDOWN_TIME = 20;
@@ -75,7 +76,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_identify);
-
         checker = new RegisterCheck();
         Toolbar toolbar = (Toolbar) findViewById(R.id.register_identify_toolbar);
         setSupportActionBar(toolbar);
@@ -94,7 +94,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         button_reget = (Button) findViewById(R.id.register_identify_button_reget);
         timerText = (TextView) findViewById(R.id.register_timer_text);
         inputLayout = (TextInputLayout) findViewById(R.id.indentify_inputlayout);
-        String phoneString = getIntent().getStringExtra("phone_number");
+        phoneString = getIntent().getStringExtra("phone_number");
         upperText.setText(getResources().getString(R.string.register_identify_text) + " +86 " + phoneString);
 
         button_reget.setEnabled(false);
@@ -118,10 +118,13 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                     inputLayout.setError(AlertStrings[err_type - 1]);
                 }
                 else {
-                    startActivity(new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class));
+                    Intent intent = new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class);
+                    intent.putExtra("phone_number",phoneString);
+                    startActivity(intent);
                 }
             }
         });
+
 
 
         startCountDown();

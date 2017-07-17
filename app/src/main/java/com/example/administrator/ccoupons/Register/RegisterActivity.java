@@ -1,9 +1,12 @@
 package com.example.administrator.ccoupons.Register;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button button_next;
     EditText phoneInput;
     RegisterCheck checker;
+    TextInputLayout inputLayout;
     private String[] AlertStrings = "不能含有非法字符,长度必须为11位".split(",");
 
     @Override
@@ -35,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         phoneInput = (EditText) findViewById(R.id.register_phone_input);
-
+        inputLayout = (TextInputLayout) findViewById(R.id.register_phone_inputlayout);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +54,25 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        phoneInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String str = phoneInput.getText().toString();
+                if (str.length() == 11) {
+                    inputLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         button_next = (Button) findViewById(R.id.register_button_next);
         button_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                 int err_type = checker.alertPhoneNumber(str);
                 if (err_type != AlertType.NO_ERROR) {
                     //有错误
-                    phoneInput.setError(AlertStrings[err_type - 1]);
+                    inputLayout.setError(AlertStrings[err_type - 1]);
                 }
                 else {
                     Intent intent = new Intent(RegisterActivity.this, RegisterIdentifyActivity.class);

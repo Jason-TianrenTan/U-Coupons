@@ -195,7 +195,6 @@ public class LoginActivity extends AppCompatActivity {
             stateShrinked = false;
         }
 
-        System.out.println("Now it is " + (stateShrinked ? "shrinked" : "not shrinked"));
     }
 
     private int dp2px(int dp) {
