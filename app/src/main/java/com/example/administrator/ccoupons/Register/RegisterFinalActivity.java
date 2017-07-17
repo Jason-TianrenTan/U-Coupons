@@ -21,8 +21,9 @@ import java.net.URL;
 
 public class RegisterFinalActivity extends AppCompatActivity {
 
+    //127.0.0.1
 
-    private final static String requestURL = "http://192.168.207.242:8000/post_signup";
+    private final static String requestURL = "http://192.168.203.205:8000/post_signup";
     Button button_next;
     RadioGroup radioGroup;
     int gender;
@@ -82,8 +83,8 @@ public class RegisterFinalActivity extends AppCompatActivity {
         //nickname
         //gender
         String url_str =requestURL;
-     //   RegisterThread thread = new RegisterThread(url_str, phoneString,password,nickname,gender);
-        RequestDataThread thread = new RequestDataThread();
+        RegisterThread thread = new RegisterThread(url_str, phoneString,password,nickname,gender);
+     //   RequestDataThread thread = new RequestDataThread();
         System.out.println("On Thread Start");
         thread.start();
     }

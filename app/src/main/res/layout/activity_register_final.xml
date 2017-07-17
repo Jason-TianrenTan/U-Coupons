@@ -45,7 +45,7 @@
                 />
 
             <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
-                android:text="ABCD"
+                android:text="妈卖批哦"
                 android:id="@+id/register_final_username"
                 style="@style/MainEditTextStyle"
                 android:textColorHint="@color/colorAccent"
