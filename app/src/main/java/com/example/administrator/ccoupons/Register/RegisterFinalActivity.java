@@ -1,7 +1,8 @@
 package com.example.administrator.ccoupons.Register;
 
-import android.app.DownloadManager;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,24 +12,59 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.RegisterThread;
+import com.example.administrator.ccoupons.Connections.UHuiConnection;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.MessageType;
+import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 
-import java.net.URL;
+import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 public class RegisterFinalActivity extends AppCompatActivity {
 
     //127.0.0.1
 
-    private final static String requestURL = "http://192.168.203.205:8000/post_signup";
-    Button button_next;
-    RadioGroup radioGroup;
-    int gender;
-    ClearableEditText nickname_edittext;
-    String phoneString,password;
+    private RegisterThread thread;
+    private final static String requestURL = "http://192.168.204.83:8000/post_signUpForAndroid";
+    private Button button_next;
+    private RadioGroup radioGroup;
+    private int gender;
+    private ClearableEditText nickname_edittext;
+    private String phoneString,password;
+
+    private Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MessageType.CONNECTION_ERROR:
+                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_TIMEOUT:
+                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_SUCCESS:
+                    parseMessage(thread.getResponse());
+                    /*
+                    Toast.makeText(getApplicationContext(), "注册成功\n账号:" + phoneString +
+                            "\n密码:" + password, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
+                    intent.putExtra("username", phoneString);
+                    intent.putExtra("password", password);
+                    startActivity(intent);
+                    finish();*/
+                    //判断注册成功
+                    break;
+            }
+        }
+    };
+
+    private void parseMessage(String response) {
+        
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,10 +119,56 @@ public class RegisterFinalActivity extends AppCompatActivity {
         //nickname
         //gender
         String url_str =requestURL;
-        RegisterThread thread = new RegisterThread(url_str, phoneString,password,nickname,gender);
+        thread = new RegisterThread(url_str, phoneString,password,nickname,gender);
      //   RequestDataThread thread = new RequestDataThread();
         System.out.println("On Thread Start");
         thread.start();
+    }
+
+
+    public class RegisterThread extends Thread{
+
+        private UHuiConnection connection;
+        private String username, password, nickname;
+        private int gender;
+        private String url;
+        String[] GenderChars = {"男", "女"};
+
+        public RegisterThread(String url, String name, String pass, String nick, int gender) {
+            this.url = url;
+            this.username = name;
+            try {
+                this.password = new PasswordEncoder().EncodeByMd5(pass);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            this.nickname = nick;
+            this.gender = gender;
+        }
+
+        public String getResponse() {
+            return connection.getContent();
+        }
+
+        private void connect(String url){
+            try {
+                connection = new UHuiConnection(url, handler);
+                connection.setHeader("User-Agent", USER_AGENT);
+                connection.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                connection.add("username", username);
+                connection.add("password", password);
+                connection.add("nickname", nickname);
+                connection.add("gender", GenderChars[gender]);
+                connection.connect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void run(){
+            connect(this.url);
+        }
     }
 
 }

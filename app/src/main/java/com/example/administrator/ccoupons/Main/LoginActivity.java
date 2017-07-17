@@ -3,7 +3,8 @@ package com.example.administrator.ccoupons.Main;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,24 +22,50 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.UHuiConnection;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
-import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
-import java.security.NoSuchAlgorithmException;
+import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button login;
-    Toolbar toolbar;
-    EditText signup_phone, signup_pass;
+    private static String url = "http://192.168.204.83:8000/post_loginForAndroid";
+    private Button login;
+    private Toolbar toolbar;
+    private EditText signup_phone, signup_pass;
+    private String myUsername, myPassword;
+    private Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MessageType.CONNECTION_ERROR:
+                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_TIMEOUT:
+                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_SUCCESS:
+                    Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
+                            "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+                    intent.putExtra("username", myUsername);
+                    intent.putExtra("password", myPassword);
+                    startActivity(intent);
+                    finish();
+                    break;
+            }
+        }
+    };
+
     private int mergeHeight;
     private boolean editTextFocus = false;
     private LoginInformationManager loginInformationManager;
-    private boolean auto_login;
+//    private boolean auto_login;
     private String rem_phonenumber;
     private String rem_pass;
 
@@ -99,9 +126,23 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phonenumber = signup_phone.getText().toString();
+                String username = signup_phone.getText().toString();
                 String password = signup_pass.getText().toString();
-                String passwordcode;
+                String passwordEncoded = null;
+                try {
+                    passwordEncoded = new PasswordEncoder().EncodeByMd5(password);
+                    loginInformationManager.setAutoLogin(true).setPhoneNumber(username).setPassword(passwordEncoded);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "遇到未知错误,我也很绝望", Toast.LENGTH_SHORT).show();
+                }
+                if (passwordEncoded != null) {
+                    requestLogin(url, username, password);
+
+
+                }
+
+                /*
                 //如果不存在保存的密码，则将密码加密
                 if (rem_pass.equals("")) {
                     PasswordEncoder encoder = new PasswordEncoder();
@@ -111,19 +152,9 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                         passwordcode = "";
                     }
-                } else passwordcode = password;
-                //向后台发送手机号与密码并验证
-                //判断
-                //- 失败
-                //- 网络无连接
-                //- 成功，并收到服务器的消息
+                } else passwordcode = password; */
 
-                //保存账号与密码
-                loginInformationManager.setAutoLogin(true).setPhoneNumber(phonenumber).setPassword(passwordcode);
-                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + phonenumber +
-                        "\n密码:" + passwordcode, Toast.LENGTH_SHORT).show();    //fortest
-                startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
-                finish();
+
             }
         });
 
@@ -154,6 +185,15 @@ public class LoginActivity extends AppCompatActivity {
                     startAnimation(ANIM_EXPAND);
             }
         });
+    }
+
+    private boolean requestLogin(String url, String username, String password) {
+        myUsername = username;
+        myPassword = password;
+        LoginThread thread = new LoginThread(url, username, password);
+        thread.start();
+        //TODO
+        return false;
     }
 
     private void hideKeyboard(View view) {
@@ -206,5 +246,46 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
         super.onBackPressed();
+    }
+
+    public class LoginThread extends Thread {
+
+        private String username, password;
+        private String url;
+
+        public LoginThread(String url, String name, String pass) {
+            this.url = url;
+            this.username = name;
+            try {
+                this.password = new PasswordEncoder().EncodeByMd5(pass);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "遇到未知错误(MD5),我也很绝望", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+        private void connect(String url) {
+            try {
+                UHuiConnection connection = new UHuiConnection(url, handler);
+                connection.setHeader("User-Agent", USER_AGENT);
+                connection.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                connection.add("username", username);
+                connection.add("password", password);
+                connection.connect();
+
+                Message msg = new Message();
+                msg.what = MessageType.CONNECTION_SUCCESS;
+                handler.sendMessage(msg);
+            } catch (Exception e) {
+                Message message = new Message();
+                message.what = MessageType.CONNECTION_ERROR;
+                handler.sendMessage(message);
+            }
+        }
+
+        public void run() {
+            connect(this.url);
+        }
+
     }
 }
