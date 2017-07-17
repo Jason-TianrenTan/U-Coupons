@@ -19,6 +19,7 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
+import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,6 +29,9 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 public class RegisterFinalActivity extends AppCompatActivity {
 
     //127.0.0.1
+
+    private CustomDialog customDialog = null;
+    private boolean dialog_onSpinning = false;
 
     private RegisterThread thread;
     private final static String requestURL = "http://192.168.204.83:8000/post_signUpForAndroid";
@@ -40,6 +44,21 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
+            dialog_onSpinning = false;
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(200);
+                        customDialog.dismiss();;//关闭ProgressDialog
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+
             switch (msg.what) {
                 case MessageType.CONNECTION_ERROR:
                     Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
@@ -49,6 +68,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
                     break;
                 case MessageType.CONNECTION_SUCCESS:
                     parseMessage(thread.getResponse());
+
                     /*
                     Toast.makeText(getApplicationContext(), "注册成功\n账号:" + phoneString +
                             "\n密码:" + password, Toast.LENGTH_SHORT).show();
@@ -82,6 +102,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +145,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
         });
     }
 
-    private void LogIn() {
+    private void Login() {
         Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
         intent.putExtra("phone_number",phoneString)
                 .putExtra("nickname",nickname_edittext.getText().toString());
@@ -139,8 +160,10 @@ public class RegisterFinalActivity extends AppCompatActivity {
         String url_str =requestURL;
         thread = new RegisterThread(url_str, phoneString,password,nickname,gender);
      //   RequestDataThread thread = new RequestDataThread();
-        System.out.println("On Thread Start");
         thread.start();
+        customDialog = new CustomDialog(this, R.style.CustomDialog);
+        customDialog.show();
+        dialog_onSpinning = true;
     }
 
 
@@ -181,6 +204,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+
             }
         }
 

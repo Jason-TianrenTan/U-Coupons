@@ -78,9 +78,9 @@
     <!-- 所有界面背景样式 -->
     <style name="user_bg">
         <item name="android:layout_width">match_parent</item>
-       <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-       <item name="android:background">#F0F3F6</item>
+        <item name="android:background">#F0F3F6</item>
     </style>
 
     <!-- 标题栏文字样式 -->
@@ -201,10 +201,10 @@
 
     <!--欢迎界面button样式 -->
     <style name="welcome_button">
-        <item name ="android:textSize">25dp</item>
-        <item name ="android:textColor">@color/white</item>
-        <item name ="android:layout_width">120dp</item>
-        <item name ="android:layout_height">50dp</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:background">@drawable/welcome_buttom</item>
         <item name="android:visibility">invisible</item>
     </style>
@@ -212,10 +212,18 @@
     <!-- 欢迎词 -->
     <style name="welcome_word">
         <item name="android:layout_width">match_parent</item>
-       <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">30dp</item>
         <item name="android:gravity">center</item>
         <item name="android:text">@string/welcome</item>
     </style>
+
+    <!--旋转条 -->
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
 </resources>

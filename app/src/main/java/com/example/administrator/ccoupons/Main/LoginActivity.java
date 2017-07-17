@@ -283,13 +283,8 @@ public class LoginActivity extends AppCompatActivity {
                 connection.add("password", password);
                 connection.connect();
 
-                Message msg = new Message();
-                msg.what = MessageType.CONNECTION_SUCCESS;
-                handler.sendMessage(msg);
             } catch (Exception e) {
-                Message message = new Message();
-                message.what = MessageType.CONNECTION_ERROR;
-                handler.sendMessage(message);
+                e.printStackTrace();
             }
         }
 
