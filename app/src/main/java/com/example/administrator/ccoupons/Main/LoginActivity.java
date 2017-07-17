@@ -29,6 +29,9 @@ import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 
@@ -69,6 +72,12 @@ public class LoginActivity extends AppCompatActivity {
     private String rem_phonenumber;
     private String rem_pass;
 
+    //处理返回回来的json
+    private void parseMessage(String response) {
+        if (response.equals("result"))
+            System.out.println("Login success");
+        else System.out.println("Login failed");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,12 +196,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //登录
     private boolean requestLogin(String url, String username, String password) {
         myUsername = username;
         myPassword = password;
         LoginThread thread = new LoginThread(url, username, password);
         thread.start();
-        //TODO
+        //TODO 播放动画
         return false;
     }
 

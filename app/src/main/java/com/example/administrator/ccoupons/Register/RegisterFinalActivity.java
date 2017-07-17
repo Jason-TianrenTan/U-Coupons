@@ -20,6 +20,9 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 public class RegisterFinalActivity extends AppCompatActivity {
@@ -60,9 +63,24 @@ public class RegisterFinalActivity extends AppCompatActivity {
         }
     };
 
+    //处理返回回来的json
     private void parseMessage(String response) {
-        
-
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String errno = jsonObject.getString("errno");
+            if (errno.equals("1")) {
+                //注册失败
+                Toast.makeText(getApplicationContext(), "账号已经存在", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(RegisterFinalActivity.this, RegisterActivity.class));
+            }
+            else {
+                Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
+                intent.putExtra("username", phoneString).putExtra("password", password);
+                startActivity(intent);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -28,6 +28,10 @@ import java.util.List;
 
 public class UHuiConnection {
 
+    //{"result":"success"} 登录成功
+    //{"error": "\u7528\u6237\u4e0d\u5b58\u5728"} 登录失败
+    //{"errno": "0", "message": "\u6ce8\u518c\u6210\u529f"} 注册成功
+    //{"errno": "1", "message": "\u6635\u79f0\u5df2\u5b58\u5728"} 注册失败
 
     private static final int REQUEST_TIMEOUT = 5 * 1000;
 
