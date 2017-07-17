@@ -38,4 +38,6 @@ dependencies {
     compile 'com.github.armcha:SpaceNavigationView:1.6.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/AMap_Location_V3.4.1_20170629.jar')
+    compile 'com.github.kevinsawicki:http-request:6.0'
+    compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 }

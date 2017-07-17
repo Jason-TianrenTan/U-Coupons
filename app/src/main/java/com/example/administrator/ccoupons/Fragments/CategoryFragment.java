@@ -64,7 +64,6 @@ public class CategoryFragment extends Fragment {
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("On Click");
                 getActivity().startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
@@ -77,6 +76,7 @@ public class CategoryFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
         return view;
     }
 

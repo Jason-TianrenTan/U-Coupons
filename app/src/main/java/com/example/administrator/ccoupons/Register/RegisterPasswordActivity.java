@@ -20,15 +20,16 @@ public class RegisterPasswordActivity extends AppCompatActivity {
 
     private PasswordToggleEditText inputPass, confirmPass;
     private RegisterCheck checker = new RegisterCheck();
-    private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,两次密码不匹配".split(",");
-    private boolean valid = false;
+    private String[] errorStrings = "不能含有非法字符,长度必须为6~16位".split(",");
+    private boolean valid = true;
     private TextInputLayout firstlayout, confirmLayout;
-
+    private String phoneString,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_password);
 
+        phoneString = getIntent().getStringExtra("phone_number");
         Toolbar toolbar = (Toolbar) findViewById(R.id.register_password_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,7 +46,10 @@ public class RegisterPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (valid) {
+                    password = inputPass.getText().toString();
                     Intent intent = new Intent(RegisterPasswordActivity.this, RegisterFinalActivity.class);
+                    intent.putExtra("phone_number",phoneString);
+                    intent.putExtra("password",password);
                     startActivity(intent);
                 }
             }
@@ -64,21 +68,24 @@ public class RegisterPasswordActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String pass = inputPass.getText().toString();
-                int err_type = checker.alertPassword(pass);
-                if (err_type != AlertType.NO_ERROR) {
-                    EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.red));
-                    firstlayout.setError(errorStrings[err_type - 1]);
-                    valid = false;
-                } else {
-                    EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.colorAccent));
-                    firstlayout.setErrorEnabled(false);
-                    valid = true;
-                }
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                String pass = inputPass.getText().toString();
+                int err_type = checker.alertPassword(pass);
+                if (err_type != AlertType.NO_ERROR) {
+                    EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.red));
+                    firstlayout.setErrorEnabled(true);
+                    firstlayout.setError(errorStrings[err_type - 1]);
+                    valid = false;
+                } else {
+                    EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.colorAccent));
+                    firstlayout.setError("");
+                    firstlayout.setErrorEnabled(false);
+                    valid = true;
+                }
             }
         });
 
@@ -103,7 +110,7 @@ public class RegisterPasswordActivity extends AppCompatActivity {
                         valid = true;
                     } else {
                         EditTextTools.setCursorColor(confirmPass, getResources().getColor(R.color.red));
-                        confirmLayout.setError(errorStrings[2]);
+                        confirmLayout.setError("两次密码不匹配");
                         valid = false;
                     }
                 }

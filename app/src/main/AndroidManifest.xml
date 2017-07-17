@@ -38,6 +38,7 @@
         <activity android:name=".Main.ResetPasswordActivity" />
         <activity android:name=".Register.RegisterIdentifyActivity" />
         <activity android:name=".Register.RegisterPasswordActivity" />
+        <activity android:name=".Register.RegisterFinalActivity"/>
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity"></activity>
 
@@ -72,5 +73,6 @@
     <!--用于申请获取蓝牙信息进行室内定位-->
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <!-- c296a0f6c75d92cfa711456893eac5a8 -->
 </manifest>
