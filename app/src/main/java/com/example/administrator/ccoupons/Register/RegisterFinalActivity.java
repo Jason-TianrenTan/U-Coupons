@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.RegisterThread;
 import com.example.administrator.ccoupons.Connections.UHuiConnection;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.UI.CustomDialog;
@@ -31,8 +33,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
     //127.0.0.1
 
     private CustomDialog customDialog = null;
-    private boolean dialog_onSpinning = false;
-
+    private LoginInformationManager loginInformationManager;
     private RegisterThread thread;
     private final static String requestURL = "http://192.168.204.83:8000/post_signUpForAndroid";
     private Button button_next;
@@ -44,7 +45,6 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
-            dialog_onSpinning = false;
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -94,6 +94,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterFinalActivity.this, RegisterActivity.class));
             }
             else {
+                loginInformationManager.setAutoLogin(true).setPhoneNumber(phoneString).setPassword(password);
                 Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
                 intent.putExtra("username", phoneString).putExtra("password", password);
                 startActivity(intent);
@@ -158,59 +159,12 @@ public class RegisterFinalActivity extends AppCompatActivity {
         //nickname
         //gender
         String url_str =requestURL;
-        thread = new RegisterThread(url_str, phoneString,password,nickname,gender);
+        thread = new RegisterThread(url_str, phoneString,password,nickname,gender, handler,getApplicationContext());
      //   RequestDataThread thread = new RequestDataThread();
         thread.start();
         customDialog = new CustomDialog(this, R.style.CustomDialog);
         customDialog.show();
-        dialog_onSpinning = true;
     }
 
-
-    public class RegisterThread extends Thread{
-
-        private UHuiConnection connection;
-        private String username, password, nickname;
-        private int gender;
-        private String url;
-        String[] GenderChars = {"男", "女"};
-
-        public RegisterThread(String url, String name, String pass, String nick, int gender) {
-            this.url = url;
-            this.username = name;
-            try {
-                this.password = new PasswordEncoder().EncodeByMd5(pass);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            this.nickname = nick;
-            this.gender = gender;
-        }
-
-        public String getResponse() {
-            return connection.getContent();
-        }
-
-        private void connect(String url){
-            try {
-                connection = new UHuiConnection(url, handler);
-                connection.setHeader("User-Agent", USER_AGENT);
-                connection.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                connection.add("username", username);
-                connection.add("password", password);
-                connection.add("nickname", nickname);
-                connection.add("gender", GenderChars[gender]);
-                connection.connect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
-        }
-
-        public void run(){
-            connect(this.url);
-        }
-    }
 
 }

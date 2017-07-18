@@ -48,8 +48,8 @@ public class LoginInformationManager {
         return this;
     }
 
-    public LoginInformationManager removePhoneNumber(){
-        editor.remove("phone_number").commit();
+    public LoginInformationManager removeUserName(){
+        editor.remove("username").commit();
         return this;
     }
 

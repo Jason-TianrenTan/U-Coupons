@@ -22,21 +22,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.UHuiConnection;
+import com.example.administrator.ccoupons.Connections.LoginThread;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
-import com.example.administrator.ccoupons.Tools.PasswordEncoder;
+import com.example.administrator.ccoupons.UI.CustomDialog;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 
 public class LoginActivity extends AppCompatActivity {
+
 
     private static String url = "http://192.168.204.83:8000/post_loginForAndroid";
     private LoginThread thread;
@@ -84,12 +82,15 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
                         "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
                 saveUserLoginInfo();//缓存密码
+
+
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
                 intent.putExtra("username", myUsername);
                 intent.putExtra("password", myPassword);
                 startActivity(intent);
                 finish();
             } catch (Exception e) {
+                login.setEnabled(true);
                 e.printStackTrace();
             }
 
@@ -125,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
 
         //读取记忆的账号
-        rem_phonenumber = loginInformationManager.getPhoneNumber();
+        rem_phonenumber = loginInformationManager.getUsername();
         rem_pass = loginInformationManager.getPassword();
         signup_phone.setText(rem_phonenumber);
         signup_pass.setText(rem_pass);
@@ -157,11 +158,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = signup_phone.getText().toString();
                 String password = signup_pass.getText().toString();
+                login.setEnabled(false);
                 if (password != null) {
                     requestLogin(url, username, password);
                 }
-
-
             }
         });
 
