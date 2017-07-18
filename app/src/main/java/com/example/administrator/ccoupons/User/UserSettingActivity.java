@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
 public class UserSettingActivity extends SlideBackActivity {

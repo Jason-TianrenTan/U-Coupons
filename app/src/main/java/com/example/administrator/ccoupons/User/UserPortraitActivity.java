@@ -1,9 +1,18 @@
 package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,10 +20,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.BuildConfig;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class UserPortraitActivity extends AppCompatActivity {
+    private File mOutputImage;
+    private static final int REQUEST_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

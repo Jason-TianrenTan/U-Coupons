@@ -77,5 +77,6 @@
     <!-- 用户设置界面 -->
     <string name="uset_title">应用设置</string>
     <string name="uset_clear">清除缓存</string>
+    <string name="title_activity_user_photo">UserPhotoActivity</string>
 
 </resources>

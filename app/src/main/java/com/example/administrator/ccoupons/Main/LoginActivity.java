@@ -3,7 +3,6 @@ package com.example.administrator.ccoupons.Main;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,9 +22,8 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
-import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -69,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
 
         //读取记忆的账号
-        rem_phonenumber = loginInformationManager.getPhoneNumber();
+        rem_phonenumber = loginInformationManager.getUserName();
         rem_pass = loginInformationManager.getPassword();
         signup_phone.setText(rem_phonenumber);
         signup_pass.setText(rem_pass);
@@ -119,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                 //- 成功，并收到服务器的消息
 
                 //保存账号与密码
-                loginInformationManager.setAutoLogin(true).setPhoneNumber(phonenumber).setPassword(passwordcode);
+                loginInformationManager.setAutoLogin(true).setUserNmae(phonenumber).setPassword(passwordcode);
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + phonenumber +
                         "\n密码:" + passwordcode, Toast.LENGTH_SHORT).show();    //fortest
                 startActivity(new Intent(LoginActivity.this, MainPageActivity.class));

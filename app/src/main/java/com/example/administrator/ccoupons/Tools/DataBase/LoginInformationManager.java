@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.Tools;
+package com.example.administrator.ccoupons.Tools.DataBase;
 
 import android.content.SharedPreferences;
 
@@ -20,8 +20,8 @@ public class LoginInformationManager {
         return preferences.getBoolean("auto_login", false);
     }
 
-    public String getPhoneNumber() {
-        return preferences.getString("phone_number", "");
+    public String getUserName() {
+        return preferences.getString("user_name", "");
     }
 
     public String getPassword() {
@@ -33,8 +33,8 @@ public class LoginInformationManager {
         return this;
     }
 
-    public LoginInformationManager setPhoneNumber(String str) {
-        editor.putString("phone_number", str).commit();
+    public LoginInformationManager setUserNmae(String str) {
+        editor.putString("user_name", str).commit();
         return this;
     }
 
@@ -48,8 +48,8 @@ public class LoginInformationManager {
         return this;
     }
 
-    public LoginInformationManager removePhoneNumber(){
-        editor.remove("phone_number").commit();
+    public LoginInformationManager removeUserName(){
+        editor.remove("user_name").commit();
         return this;
     }
 

@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.Main;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,12 +10,12 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 
 public class WelcomeActivity extends AppCompatActivity {
     private LoginInformationManager loginInformationManager;
     private boolean auto_login;
-    private String phonenumber;
+    private String username;
     private String password;
     Button login;
     Button register;
@@ -48,14 +47,14 @@ public class WelcomeActivity extends AppCompatActivity {
             register.setVisibility(View.VISIBLE);
         }
         if (auto_login == true) {
-            phonenumber = loginInformationManager.getPhoneNumber();
+            username = loginInformationManager.getUserName();
             password = loginInformationManager.getPassword();
             //向服务器发送账号密码并验证
             //判断
             //- 失败
             //- 网络无连接
             //- 成功，并收到服务器的消息
-            Toast.makeText(getApplicationContext(), "登录成功\n账号:" + phonenumber +
+            Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
                     "\n密码:" + password, Toast.LENGTH_SHORT).show();    //fortest
             startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
             finish();

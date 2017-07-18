@@ -1,9 +1,6 @@
-package com.example.administrator.ccoupons.Tools;
+package com.example.administrator.ccoupons.Tools.DataBase;
 
 import android.support.annotation.NonNull;
-
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by CZJ on 2017/7/16.

@@ -1,15 +1,11 @@
-package com.example.administrator.ccoupons.Tools;
+package com.example.administrator.ccoupons.Tools.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.administrator.ccoupons.Tools.DatabaseHelper;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -71,6 +67,10 @@ public class MassageManager {
 
     public void deleteMassage(String destinationId) {
         db.execSQL("delete from Massage where destinationId = ?", new String[]{destinationId});
+    }
+
+    public void clearMassage(){
+        db.execSQL("delete from Massage");
     }
 
     private void collectMassage(Cursor cursor, ArrayList<Massage> arrayList) {

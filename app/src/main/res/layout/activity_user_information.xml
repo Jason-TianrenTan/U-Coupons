@@ -7,45 +7,93 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        <TextView style="@style/user_title_text" android:layout_gravity="center" android:text="@string/uinf_title"/>
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <TextView
+            style="@style/user_title_text"
+            android:layout_gravity="center"
+            android:text="@string/uinf_title" />
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout style="@style/user_wrap_layout" >
-        <LinearLayout style="@style/user_row_layout" android:id="@+id/change_portrait">
+    <LinearLayout style="@style/user_wrap_layout">
+
+        <LinearLayout
+            android:id="@+id/change_portrait"
+            style="@style/user_row_layout">
+
             <com.example.administrator.ccoupons.Tools.XCRoundImageView
-                style="@style/user_portrait_layout" android:layout_marginRight="15dp"
-                android:layout_height="60dp" android:layout_width="60dp" android:id="@+id/uinf_portrait"/>
-            <TextView style="@style/user_text" android:textSize="20dp" android:text="@string/uinf_changeportrait" />
-            <ImageView style="@style/user_img_arrow"/>
+                android:id="@+id/uinf_portrait"
+                style="@style/user_portrait_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                style="@style/user_text"
+                android:text="@string/uinf_changeportrait"
+                android:textSize="20dp" />
+
+            <ImageView style="@style/user_img_arrow" />
         </LinearLayout>
-        <ImageView style="@style/user_divider" android:layout_margin="0dp"/>
+
+        <ImageView
+            style="@style/user_divider"
+            android:layout_margin="0dp" />
+
         <LinearLayout style="@style/user_row_layout">
-            <TextView style="@style/user_text" android:textColor="@color/lightgray" android:id="@+id/user_name" />
+
+            <TextView
+                android:id="@+id/user_name"
+                style="@style/user_text"
+                android:textColor="@color/lightgray" />
         </LinearLayout>
-        <ImageView style="@style/user_divider"/>
+
+        <ImageView style="@style/user_divider" />
+
         <LinearLayout style="@style/user_row_layout">
-            <TextView style="@style/user_text" android:id="@+id/user_sex" />
+
+            <TextView
+                android:id="@+id/user_sex"
+                style="@style/user_text" />
         </LinearLayout>
-        <ImageView style="@style/user_divider"/>
+
+        <ImageView style="@style/user_divider" />
+
         <LinearLayout style="@style/user_row_layout">
-            <TextView style="@style/user_text" android:id="@+id/user_age" />
+
+            <TextView
+                android:id="@+id/user_age"
+                style="@style/user_text" />
         </LinearLayout>
-        <ImageView style="@style/user_edgeline"/>
+
+        <ImageView style="@style/user_edgeline" />
     </LinearLayout>
 
     <LinearLayout style="@style/user_wrap_layout">
-        <ImageView style="@style/user_edgeline"/>
+
+        <ImageView style="@style/user_edgeline" />
+
         <LinearLayout style="@style/user_row_layout">
-            <TextView style="@style/user_text" android:text="@string/uinf_changephone" />
-            <ImageView style="@style/user_img_arrow"/>
+
+            <TextView
+                style="@style/user_text"
+                android:text="@string/uinf_changephone" />
+
+            <ImageView style="@style/user_img_arrow" />
         </LinearLayout>
-        <ImageView style="@style/user_divider"/>
+
+        <ImageView style="@style/user_divider" />
+
         <LinearLayout style="@style/user_row_layout">
-            <TextView style="@style/user_text" android:text="@string/uinf_changekey"/>
-            <ImageView style="@style/user_img_arrow"/>
+
+            <TextView
+                style="@style/user_text"
+                android:text="@string/uinf_changekey" />
+
+            <ImageView style="@style/user_img_arrow" />
         </LinearLayout>
-        <ImageView style="@style/user_edgeline"/>
+
+        <ImageView style="@style/user_edgeline" />
     </LinearLayout>
 </LinearLayout>
