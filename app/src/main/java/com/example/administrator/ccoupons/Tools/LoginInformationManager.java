@@ -20,8 +20,8 @@ public class LoginInformationManager {
         return preferences.getBoolean("auto_login", false);
     }
 
-    public String getPhoneNumber() {
-        return preferences.getString("phone_number", "");
+    public String getUsername() {
+        return preferences.getString("username", "");
     }
 
     public String getPassword() {
@@ -34,7 +34,7 @@ public class LoginInformationManager {
     }
 
     public LoginInformationManager setPhoneNumber(String str) {
-        editor.putString("phone_number", str).commit();
+        editor.putString("username", str).commit();
         return this;
     }
 

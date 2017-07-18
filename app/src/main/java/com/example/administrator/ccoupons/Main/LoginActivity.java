@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.UHuiConnection;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
@@ -38,6 +39,7 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 public class LoginActivity extends AppCompatActivity {
 
     private static String url = "http://192.168.204.83:8000/post_loginForAndroid";
+    private LoginThread thread;
     private Button login;
     private Toolbar toolbar;
     private EditText signup_phone, signup_pass;
@@ -53,13 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
                     break;
                 case MessageType.CONNECTION_SUCCESS:
-                    Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
-                            "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
-                    intent.putExtra("username", myUsername);
-                    intent.putExtra("password", myPassword);
-                    startActivity(intent);
-                    finish();
+                    parseMessage(thread.getResponse());
                     break;
             }
         }
@@ -68,15 +64,39 @@ public class LoginActivity extends AppCompatActivity {
     private int mergeHeight;
     private boolean editTextFocus = false;
     private LoginInformationManager loginInformationManager;
-//    private boolean auto_login;
+    //    private boolean auto_login;
     private String rem_phonenumber;
     private String rem_pass;
 
+    private void saveUserLoginInfo() {
+        loginInformationManager.setAutoLogin(true).setPhoneNumber(myUsername).setPassword(myPassword);
+    }
+
     //处理返回回来的json
     private void parseMessage(String response) {
-        if (response.equals("result"))
+        if (response.indexOf("result") != -1) {
             System.out.println("Login success");
-        else System.out.println("Login failed");
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String userId = jsonObject.getString("userid");
+                MyApp app = (MyApp) getApplicationContext();
+                app.setUserId(userId);
+                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
+                        "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
+                saveUserLoginInfo();//缓存密码
+                Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+                intent.putExtra("username", myUsername);
+                intent.putExtra("password", myPassword);
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            System.out.println("Login failed");
+            Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -137,31 +157,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = signup_phone.getText().toString();
                 String password = signup_pass.getText().toString();
-                String passwordEncoded = null;
-                try {
-                    passwordEncoded = new PasswordEncoder().EncodeByMd5(password);
-                    loginInformationManager.setAutoLogin(true).setPhoneNumber(username).setPassword(passwordEncoded);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "遇到未知错误,我也很绝望", Toast.LENGTH_SHORT).show();
-                }
-                if (passwordEncoded != null) {
+                if (password != null) {
                     requestLogin(url, username, password);
-
-
                 }
-
-                /*
-                //如果不存在保存的密码，则将密码加密
-                if (rem_pass.equals("")) {
-                    PasswordEncoder encoder = new PasswordEncoder();
-                    try {
-                        passwordcode = encoder.EncodeByMd5(password);
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                        passwordcode = "";
-                    }
-                } else passwordcode = password; */
 
 
             }
@@ -197,13 +195,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //登录
-    private boolean requestLogin(String url, String username, String password) {
+    private void requestLogin(String url, String username, String password) {
         myUsername = username;
         myPassword = password;
-        LoginThread thread = new LoginThread(url, username, password);
+        thread = new LoginThread(url, username, password, handler, getApplicationContext());
         thread.start();
         //TODO 播放动画
-        return false;
     }
 
     private void hideKeyboard(View view) {
@@ -258,39 +255,5 @@ public class LoginActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    public class LoginThread extends Thread {
 
-        private String username, password;
-        private String url;
-
-        public LoginThread(String url, String name, String pass) {
-            this.url = url;
-            this.username = name;
-            try {
-                this.password = new PasswordEncoder().EncodeByMd5(pass);
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "遇到未知错误(MD5),我也很绝望", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-
-        private void connect(String url) {
-            try {
-                UHuiConnection connection = new UHuiConnection(url, handler);
-                connection.setHeader("User-Agent", USER_AGENT);
-                connection.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                connection.add("username", username);
-                connection.add("password", password);
-                connection.connect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void run() {
-            connect(this.url);
-        }
-
-    }
 }
