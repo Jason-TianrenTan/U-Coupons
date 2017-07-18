@@ -153,6 +153,7 @@
 
     <!-- 用户界面样式 -->
     <style name="user_text">
+        <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16dp</item>
         <item name="android:layout_width">wrap_content</item>

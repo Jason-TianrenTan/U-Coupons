@@ -50,7 +50,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
                 public void run() {
                     try {
                         Thread.sleep(200);
-                        customDialog.dismiss();;//关闭ProgressDialog
+                        customDialog.dismiss();//关闭ProgressDialog
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
