@@ -45,6 +45,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
+            //节目效果
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -68,16 +69,6 @@ public class RegisterFinalActivity extends AppCompatActivity {
                     break;
                 case MessageType.CONNECTION_SUCCESS:
                     parseMessage(thread.getResponse());
-
-                    /*
-                    Toast.makeText(getApplicationContext(), "注册成功\n账号:" + phoneString +
-                            "\n密码:" + password, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
-                    intent.putExtra("username", phoneString);
-                    intent.putExtra("password", password);
-                    startActivity(intent);
-                    finish();*/
-                    //判断注册成功
                     break;
             }
         }

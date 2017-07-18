@@ -45,7 +45,6 @@ public class LoginThread extends Thread {
             connection.add("username", username);
             connection.add("password", password);
             connection.connect();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

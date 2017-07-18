@@ -43,9 +43,9 @@ public class UHuiConnection {
     private Handler handler;
     public UHuiConnection(String url, Handler handler) {
         this.url = url;
-        client = new DefaultHttpClient();
-        post = new HttpPost(url);
-        urlParameters = new ArrayList<NameValuePair>();
+        this.client = new DefaultHttpClient();
+        this.post = new HttpPost(url);
+        this.urlParameters = new ArrayList<NameValuePair>();
         this.handler = handler;
     }
 
@@ -70,15 +70,22 @@ public class UHuiConnection {
             HttpResponse response = client.execute(post);
             HttpEntity entity = response.getEntity();
             content = EntityUtils.toString(entity);
+
             System.out.println(content);
-            Message msg = new Message();
-            msg.what = MessageType.CONNECTION_SUCCESS;
-            handler.sendMessage(msg);
+
+            if (handler != null) {
+                Message msg = new Message();
+                msg.what = MessageType.CONNECTION_SUCCESS;
+                handler.sendMessage(msg);
+            }
+
         }catch (Exception e) {
             e.printStackTrace();
-            Message msg = new Message();
-            msg.what = MessageType.CONNECTION_ERROR;
-            handler.sendMessage(msg);
+            if (handler != null) {
+                Message msg = new Message();
+                msg.what = MessageType.CONNECTION_ERROR;
+                handler.sendMessage(msg);
+            }
         }
     }
 }

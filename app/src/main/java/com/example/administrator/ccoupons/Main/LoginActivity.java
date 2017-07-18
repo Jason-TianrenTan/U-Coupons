@@ -48,9 +48,11 @@ public class LoginActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MessageType.CONNECTION_ERROR:
                     Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    login.setEnabled(true);
                     break;
                 case MessageType.CONNECTION_TIMEOUT:
                     Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    login.setEnabled(true);
                     break;
                 case MessageType.CONNECTION_SUCCESS:
                     parseMessage(thread.getResponse());
@@ -90,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } catch (Exception e) {
-                login.setEnabled(true);
                 e.printStackTrace();
             }
 

@@ -6,7 +6,13 @@ package com.example.administrator.ccoupons.Fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +35,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.example.administrator.ccoupons.Connections.MessageGetService;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
@@ -41,11 +48,14 @@ import java.util.TimerTask;
 public class MainPageActivity extends AppCompatActivity {
     private boolean exit = false;
 
-    CategoryFragment categoryFragment;
-    UserOptionFragment userOptionFragment;
-    MessageFragment messageFragment;
+    private CategoryFragment categoryFragment;
+    private UserOptionFragment userOptionFragment;
+    private MessageFragment messageFragment;
 
-    Fragment[] fragments = new Fragment[3];
+
+
+
+    private Fragment[] fragments = new Fragment[3];
     private ConvenientBanner convenientBanner;//顶部广告栏控件;
 
     @Override
@@ -53,10 +63,17 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+        initService();
         initFragments();
         initNavigationBar();
 
     }
+
+    private void initService() {
+        Intent intent = new Intent(this, MessageGetService.class);
+        startService(intent);
+    }
+
 
     private void initFragments() {
         categoryFragment = new CategoryFragment();
@@ -146,5 +163,21 @@ public class MainPageActivity extends AppCompatActivity {
         } else showFragment(1);
     }
 
+    private void parseMessageJSON(String msg) {
+        //TODO:parse JSON string
+    }
+
+    public class AlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String json = intent.getStringExtra("content");
+            parseMessageJSON(json);
+            System.out.println("Another loop starts...");
+            Intent i = new Intent(context, MessageGetService.class);
+            context.startService(i);
+        }
+
+    }
 
 }

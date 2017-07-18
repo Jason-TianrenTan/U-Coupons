@@ -9,4 +9,5 @@ public class MessageType {
     public final static int CONNECTION_ERROR = 2;
     public final static int CONNECTION_SUCCESS = 3;
 
+
 }
