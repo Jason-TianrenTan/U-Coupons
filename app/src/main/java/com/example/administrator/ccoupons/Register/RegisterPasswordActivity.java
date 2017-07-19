@@ -20,8 +20,8 @@ public class RegisterPasswordActivity extends AppCompatActivity {
 
     private PasswordToggleEditText inputPass, confirmPass;
     private RegisterCheck checker = new RegisterCheck();
-    private String[] errorStrings = "不能含有非法字符,长度必须为6~16位".split(",");
-    private boolean valid = true;
+    private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,密码强度太弱".split(",");
+    private boolean valid = false;
     private TextInputLayout firstlayout, confirmLayout;
     private String phoneString,password;
     @Override
@@ -97,6 +97,11 @@ public class RegisterPasswordActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
                 String pass = confirmPass.getText().toString();
                 int err_type = checker.alertPassword(pass);
                 if (err_type != AlertType.NO_ERROR) {
@@ -114,11 +119,6 @@ public class RegisterPasswordActivity extends AppCompatActivity {
                         valid = false;
                     }
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
     }

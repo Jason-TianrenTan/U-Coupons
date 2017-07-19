@@ -13,20 +13,15 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.RegisterThread;
-import com.example.administrator.ccoupons.Connections.UHuiConnection;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
-import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 public class RegisterFinalActivity extends AppCompatActivity {
 
@@ -35,7 +30,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private CustomDialog customDialog = null;
     private LoginInformationManager loginInformationManager;
     private RegisterThread thread;
-    private final static String requestURL = "http://192.168.204.83:8000/post_signUpForAndroid";
+    private final static String requestURL = "http://192.168.204.83:1080/post_signUpForAndroid";
     private Button button_next;
     private RadioGroup radioGroup;
     private int gender;
@@ -113,6 +108,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
         });
         nickname_edittext = (ClearableEditText)findViewById(R.id.register_final_username);
 
+        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInformation",MODE_PRIVATE));
         phoneString = getIntent().getStringExtra("phone_number");
         password = getIntent().getStringExtra("password");
         gender = Gender.MALE;

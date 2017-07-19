@@ -20,6 +20,7 @@ import com.example.administrator.ccoupons.Tools.MessageType;
 import org.json.JSONObject;
 
 public class WelcomeActivity extends AppCompatActivity {
+    private static String url = "http://192.168.204.83:1080/post_loginForAndroid";
     private LoginInformationManager loginInformationManager;
     private boolean auto_login;
     private String username;
@@ -53,6 +54,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 String userId = jsonObject.getString("userid");
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
+                System.out.println("Response = " + response);
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
                         "\n密码:" + password, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
@@ -104,11 +106,7 @@ public class WelcomeActivity extends AppCompatActivity {
             //- 失败
             //- 网络无连接
             //- 成功，并收到服务器的消息\
-
-            Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
-                    "\n密码:" + password, Toast.LENGTH_SHORT).show();    //fortest
-            startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
-            finish();
+            requestLogin(url, username, password);
         }
     }
 

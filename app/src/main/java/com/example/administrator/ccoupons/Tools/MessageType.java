@@ -8,6 +8,6 @@ public class MessageType {
     public final static int CONNECTION_TIMEOUT = 1;
     public final static int CONNECTION_ERROR = 2;
     public final static int CONNECTION_SUCCESS = 3;
-
+    public final static int REENABLE_LOGIN = 4;
 
 }

@@ -72,7 +72,7 @@ public class CategoryFragment extends Fragment {
         initBanner();
         initLocation();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);//测试
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 5);//测试
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);

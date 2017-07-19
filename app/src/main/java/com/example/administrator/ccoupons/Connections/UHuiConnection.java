@@ -5,7 +5,6 @@ import android.os.Message;
 
 import com.example.administrator.ccoupons.Tools.MessageType;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -23,9 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/7/17 0017.
+ * Created by Administrator on 2017/7/19 0019.
  */
-
 public class UHuiConnection {
 
     //{"result":"success"} 登录成功
@@ -71,7 +69,7 @@ public class UHuiConnection {
             HttpEntity entity = response.getEntity();
             content = EntityUtils.toString(entity);
 
-            System.out.println(content);
+        //    System.out.println(content);
 
             if (handler != null) {
                 Message msg = new Message();

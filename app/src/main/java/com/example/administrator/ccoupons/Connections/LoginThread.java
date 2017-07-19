@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.UHuiConnection;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
@@ -16,7 +15,7 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 public class LoginThread extends Thread {
 
     private UHuiConnection connection;
-    private String username, password, response;
+    private String username, password;
     private String url;
     private Handler handler;
     private Context mContext;

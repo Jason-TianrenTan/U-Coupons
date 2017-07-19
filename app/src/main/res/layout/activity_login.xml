@@ -69,7 +69,7 @@
                         android:layout_height="wrap_content"
                         android:saveEnabled="false"
                         android:textSize="20dp"
-                        android:maxLength="13"
+                        android:maxLength="11"
                         android:textColor="@color/gray"
                         android:digits="1234567890"
                         android:hint="手机号码"/>

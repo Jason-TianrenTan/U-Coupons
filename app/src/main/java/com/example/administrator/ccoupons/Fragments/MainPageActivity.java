@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.IBinder;
@@ -47,7 +48,7 @@ import java.util.TimerTask;
 
 public class MainPageActivity extends AppCompatActivity {
     private boolean exit = false;
-
+    private AlarmReceiver receiver;
     private CategoryFragment categoryFragment;
     private UserOptionFragment userOptionFragment;
     private MessageFragment messageFragment;
@@ -63,15 +64,23 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-        initService();
         initFragments();
         initNavigationBar();
+
+        initService();
 
     }
 
     private void initService() {
-        Intent intent = new Intent(this, MessageGetService.class);
+
+        receiver = new AlarmReceiver();
+        IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.MESSAGE_BROADCAST");
+        registerReceiver(receiver,filter);
+
+        Intent intent = MessageGetService.newIntent(this);
         startService(intent);
+        MessageGetService.setServiceAlarm(this);
+
     }
 
 
@@ -173,11 +182,18 @@ public class MainPageActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String json = intent.getStringExtra("content");
             parseMessageJSON(json);
-            System.out.println("Another loop starts...");
-            Intent i = new Intent(context, MessageGetService.class);
-            context.startService(i);
+            System.out.println("Received, content = " + json);
+        }
+
+        public AlarmReceiver() {
+
         }
 
     }
 
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
 }
