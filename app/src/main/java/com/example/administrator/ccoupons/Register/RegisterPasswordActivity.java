@@ -75,16 +75,25 @@ public class RegisterPasswordActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String pass = inputPass.getText().toString();
                 int err_type = checker.alertPassword(pass);
-                if (err_type != AlertType.NO_ERROR) {
+                if (err_type != AlertType.NO_ERROR && err_type!=  AlertType.TOO_SIMPLE) {
                     EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.red));
                     firstlayout.setErrorEnabled(true);
                     firstlayout.setError(errorStrings[err_type - 1]);
                     valid = false;
                 } else {
-                    EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.colorAccent));
-                    firstlayout.setError("");
-                    firstlayout.setErrorEnabled(false);
-                    valid = true;
+                    if (err_type == AlertType.NO_ERROR) {
+                        //密码合格
+                        EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.colorAccent));
+                        firstlayout.setError("");
+                        firstlayout.setErrorEnabled(false);
+                        valid = true;
+                    }
+                    else {
+                        //强度不够
+                        EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.skyblue));
+                        firstlayout.setErrorEnabled(true);
+                        firstlayout.setError(errorStrings[err_type - 1]);
+                    }
                 }
             }
         });
@@ -104,7 +113,7 @@ public class RegisterPasswordActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String pass = confirmPass.getText().toString();
                 int err_type = checker.alertPassword(pass);
-                if (err_type != AlertType.NO_ERROR) {
+                if (err_type != AlertType.NO_ERROR && err_type!=  AlertType.TOO_SIMPLE) {
                     EditTextTools.setCursorColor(confirmPass, getResources().getColor(R.color.red));
                     confirmLayout.setError(errorStrings[err_type - 1]);
                     valid = false;

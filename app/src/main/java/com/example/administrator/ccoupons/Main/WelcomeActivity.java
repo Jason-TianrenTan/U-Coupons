@@ -6,6 +6,8 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -70,8 +72,7 @@ public class WelcomeActivity extends AppCompatActivity {
         } else {
             System.out.println("Login failed");
             Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
-            login.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
+            startButtonAnimation();
         }
     }
 
@@ -98,8 +99,10 @@ public class WelcomeActivity extends AppCompatActivity {
         loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
         auto_login = loginInformationManager.getAutoLogin();
         if (auto_login == false) {
+            /*
             login.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);*/
+            startButtonAnimation();
         }
         if (auto_login == true) {
             username = loginInformationManager.getUsername();
@@ -114,6 +117,12 @@ public class WelcomeActivity extends AppCompatActivity {
         thread.start();
         //TODO 播放动画
         return false;
+    }
+
+    private void startButtonAnimation() {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        login.startAnimation(animation);
+        register.startAnimation(animation);
     }
 }
 
