@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.Connections;
 import android.content.Context;
 import android.os.Handler;
 
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.MyApp;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
@@ -14,7 +15,7 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 public class RequestMessageThread extends Thread {
 
     private UHuiConnection connection;
-    private static String Request_URL = "http://192.168.204.83:1080/post_sendMessage";//TODO:请求url
+    private static String Request_URL = DataHolder.base_URL + DataHolder.requestMsg_URL;//TODO:请求url
     private String userId;
     public RequestMessageThread(Handler handler, Context context) {
         connection = new UHuiConnection(Request_URL, handler);

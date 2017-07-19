@@ -54,8 +54,6 @@ public class MainPageActivity extends AppCompatActivity {
     private MessageFragment messageFragment;
 
 
-
-
     private Fragment[] fragments = new Fragment[3];
     private ConvenientBanner convenientBanner;//顶部广告栏控件;
 

@@ -7,6 +7,11 @@ import com.example.administrator.ccoupons.R;
  */
 
 public class DataHolder {
+    public static final String base_URL = "http://192.168.207.221";
+    public static final String login_URL = ":8000/post_loginForAndroid";
+    public static final String register_URL = ":8000/post_signUpForAndroid";
+    public static final String requestMsg_URL = ":8000/post_sendMessage";
+
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
         public static String[] detailList = "Title1,Title2,Title3,Title4,Title5,Title6,Title7".split(",");

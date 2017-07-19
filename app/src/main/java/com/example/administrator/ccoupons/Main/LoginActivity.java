@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.LoginThread;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
 
-    private static String url = "http://192.168.204.83:1080/post_loginForAndroid";
+    private static String url = DataHolder.base_URL + DataHolder.login_URL;
     private LoginThread thread;
     private Button login;
     private Toolbar toolbar;

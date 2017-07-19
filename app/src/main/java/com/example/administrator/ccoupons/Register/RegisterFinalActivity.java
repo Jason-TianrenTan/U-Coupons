@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.RegisterThread;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
@@ -30,7 +31,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private CustomDialog customDialog = null;
     private LoginInformationManager loginInformationManager;
     private RegisterThread thread;
-    private final static String requestURL = "http://192.168.204.83:1080/post_signUpForAndroid";
+    private final static String requestURL = DataHolder.base_URL + DataHolder.register_URL;
     private Button button_next;
     private RadioGroup radioGroup;
     private int gender;

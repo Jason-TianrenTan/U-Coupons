@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.LoginThread;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -20,7 +21,7 @@ import com.example.administrator.ccoupons.Tools.MessageType;
 import org.json.JSONObject;
 
 public class WelcomeActivity extends AppCompatActivity {
-    private static String url = "http://192.168.204.83:1080/post_loginForAndroid";
+    private static String url = DataHolder.base_URL + DataHolder.login_URL;
     private LoginInformationManager loginInformationManager;
     private boolean auto_login;
     private String username;
@@ -48,7 +49,6 @@ public class WelcomeActivity extends AppCompatActivity {
     //处理返回回来的json
     private void parseMessage(String response) {
         if (response.indexOf("result") != -1) {
-            System.out.println("Login success");
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String userId = jsonObject.getString("userid");
@@ -61,6 +61,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 intent.putExtra("username", username);
                 intent.putExtra("password", password);
                 startActivity(intent);
+                System.out.println("Login success");
                 finish();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -69,6 +70,8 @@ public class WelcomeActivity extends AppCompatActivity {
         } else {
             System.out.println("Login failed");
             Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
+            login.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
         }
     }
 
@@ -101,11 +104,6 @@ public class WelcomeActivity extends AppCompatActivity {
         if (auto_login == true) {
             username = loginInformationManager.getUsername();
             password = loginInformationManager.getPassword();
-            //向服务器发送账号密码并验证
-            //判断
-            //- 失败
-            //- 网络无连接
-            //- 成功，并收到服务器的消息\
             requestLogin(url, username, password);
         }
     }

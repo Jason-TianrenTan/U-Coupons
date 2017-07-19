@@ -40,6 +40,7 @@ public class UHuiConnection {
     private List<NameValuePair> urlParameters;
     private Handler handler;
     public UHuiConnection(String url, Handler handler) {
+        System.out.println("Initializing new connection to url: " + url);
         this.url = url;
         this.client = new DefaultHttpClient();
         this.post = new HttpPost(url);
@@ -61,7 +62,7 @@ public class UHuiConnection {
 
     public void connect(){
         try {
-            System.out.println("ON connect");
+            System.out.println("ON connect " + url);
             BasicHttpParams params = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(params,REQUEST_TIMEOUT);
             post.setEntity(new UrlEncodedFormEntity(urlParameters, HTTP.UTF_8));
