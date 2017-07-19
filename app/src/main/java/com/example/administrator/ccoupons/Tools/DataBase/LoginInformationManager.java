@@ -20,8 +20,8 @@ public class LoginInformationManager {
         return preferences.getBoolean("auto_login", false);
     }
 
-    public String getUserName() {
-        return preferences.getString("user_name", "");
+    public String getUsername() {
+        return preferences.getString("username", "");
     }
 
     public String getPassword() {
@@ -37,8 +37,9 @@ public class LoginInformationManager {
         return this;
     }
 
-    public LoginInformationManager setUserNmae(String str) {
-        editor.putString("user_name", str).commit();
+    public LoginInformationManager setUsername(String str) {
+        editor.putString("username", str).commit();
+
         return this;
     }
 
@@ -57,8 +58,9 @@ public class LoginInformationManager {
         return this;
     }
 
-    public LoginInformationManager removeUserName(){
-        editor.remove("user_name").commit();
+    public LoginInformationManager removeUsername(){
+
+        editor.remove("username").commit();
         return this;
     }
 

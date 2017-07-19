@@ -33,7 +33,7 @@
 
     <!--登录注册界面按钮样式-->
     <style name="MainButtonsStyle" parent="Theme.AppCompat">
-        <item name="android:background">@drawable/main_buttons_background</item>
+        <item name="android:background">@drawable/main_button_selector</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:textSize">18dp</item>
@@ -153,6 +153,7 @@
 
     <!-- 用户界面样式 -->
     <style name="user_text">
+        <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16dp</item>
         <item name="android:layout_width">wrap_content</item>
@@ -219,7 +220,9 @@
         <item name="android:text">@string/welcome</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!--旋转条 -->
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

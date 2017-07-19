@@ -10,7 +10,7 @@ import android.widget.Toast;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String CREATE_MASSAGE = "create table Massage ("
+    public static final String CREATE_MASSAGE = "create table Message ("
             + "id text primary key, "
             + "fromSystem integer, "
             + "send integer, "

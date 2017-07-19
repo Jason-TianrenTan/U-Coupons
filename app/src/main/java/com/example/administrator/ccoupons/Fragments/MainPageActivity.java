@@ -6,7 +6,13 @@ package com.example.administrator.ccoupons.Fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -22,12 +28,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.example.administrator.ccoupons.Connections.MessageGetService;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
@@ -40,10 +48,14 @@ import java.util.TimerTask;
 public class MainPageActivity extends AppCompatActivity {
     private boolean exit = false;
 
-    CategoryFragment categoryFragment;
-    UserOptionFragment userOptionFragment;
+    private CategoryFragment categoryFragment;
+    private UserOptionFragment userOptionFragment;
+    private MessageFragment messageFragment;
 
-    Fragment[] fragments = new Fragment[2];
+
+
+
+    private Fragment[] fragments = new Fragment[3];
     private ConvenientBanner convenientBanner;//顶部广告栏控件;
 
     @Override
@@ -51,23 +63,32 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+        initService();
         initFragments();
         initNavigationBar();
 
     }
 
+    private void initService() {
+        Intent intent = new Intent(this, MessageGetService.class);
+        startService(intent);
+    }
+
+
     private void initFragments() {
         categoryFragment = new CategoryFragment();
         userOptionFragment = new UserOptionFragment();
+        messageFragment = new MessageFragment();
         fragments[0] = categoryFragment;
         fragments[1] = userOptionFragment;
+        fragments[2] = messageFragment;
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment_frame, categoryFragment);
         fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
+        fragmentTransaction.add(R.id.fragment_frame, messageFragment);
         fragmentTransaction.commit();
-        fragmentTransaction.hide(userOptionFragment);
-        fragmentTransaction.show(categoryFragment);
+        showFragment(1);
     }
 
 
@@ -84,28 +105,42 @@ public class MainPageActivity extends AppCompatActivity {
         if (userOptionFragment != null) {
             ft.hide(userOptionFragment);
         }
+        if (messageFragment != null)
+            ft.hide(messageFragment);
     }
 
     //初始化底部导航栏
     private void initNavigationBar() {
         LinearLayout navigationBar = (LinearLayout) findViewById(R.id.bottom_nav_container);
         LinearLayout nav_item_main = (LinearLayout) navigationBar.findViewById(R.id.id_left1),
-                nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1);
+                nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1),
+                nav_item_message = (LinearLayout) navigationBar.findViewById(R.id.id_left2);
+        TextView titleView_main = (TextView) nav_item_main.findViewById(R.id.navigation_icon_text);
+        titleView_main.setText("首页");
+        TextView titleView_message = (TextView) nav_item_message.findViewById(R.id.navigation_icon_text);
+        titleView_message.setText("消息");
+        TextView titleView_aboutme = (TextView) nav_item_aboutme.findViewById(R.id.navigation_icon_text);
+        titleView_aboutme.setText("我的");
         nav_item_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("fragment 1");
                 showFragment(1);
             }
         });
         nav_item_aboutme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("fragment 2");
                 showFragment(2);
             }
         });
+        nav_item_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showFragment(3);
+            }
+        });
     }
+
     //按返回键回到F1,在F1双击返回键退出
     @Override
     public void onBackPressed() {
@@ -128,5 +163,21 @@ public class MainPageActivity extends AppCompatActivity {
         } else showFragment(1);
     }
 
+    private void parseMessageJSON(String msg) {
+        //TODO:parse JSON string
+    }
+
+    public class AlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String json = intent.getStringExtra("content");
+            parseMessageJSON(json);
+            System.out.println("Another loop starts...");
+            Intent i = new Intent(context, MessageGetService.class);
+            context.startService(i);
+        }
+
+    }
 
 }

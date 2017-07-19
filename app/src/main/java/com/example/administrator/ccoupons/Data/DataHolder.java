@@ -40,10 +40,15 @@ public static class Categories {
     //用户信息
     public static class User {
         public static String username = "用户名";
-        public static String phonenumber = "1234567890";
-        public static boolean sex = true;//true for man false for woman
+        public static boolean sex = true;//TODO:要改成gender那样的
         public static int age = 18;
         public static int portraitId = R.drawable.testportrait;
         public static int UB = 100;
+    }
+
+    public static class MessageClasses {
+        public static int[] strings = {R.string.coupon_bought_title, R.string.coupon_abouttoexpire_title,
+            R.string.coupon_expired_title, R.string.coupon_followed_abouttoexpire_title, R.string.coupon_mine_aboutto_expire_title,
+            R.string.coupon_system_title};
     }
 }

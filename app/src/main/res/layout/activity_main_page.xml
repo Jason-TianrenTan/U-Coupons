@@ -7,27 +7,44 @@
         android:id="@+id/bottom_nav_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="3"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
-        <include layout="@layout/navigation_item"
-            android:id="@+id/id_left1"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content">
+            <include layout="@layout/navigation_item"
+                android:id="@+id/id_left1"/>
+
+            <include layout="@layout/navigation_item"
+                android:id="@+id/id_left2"/>
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center">
         </LinearLayout>
 
-        <include layout="@layout/navigation_item"
-            android:id="@+id/id_right1"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content">
+            <include layout="@layout/navigation_item"
+                android:id="@+id/id_right1"/>
+
+            <include layout="@layout/navigation_item"
+                android:id="@+id/id_right2"/>
+        </LinearLayout>
     </LinearLayout>
     <FrameLayout
         android:id="@+id/fragment_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/antiquewhite"
+        android:background="#F0F3F6"
         android:layout_marginBottom="45dp"
         />
     <ImageView
