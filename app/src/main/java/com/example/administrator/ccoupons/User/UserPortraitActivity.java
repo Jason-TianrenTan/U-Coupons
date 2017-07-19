@@ -23,24 +23,41 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.BuildConfig;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
+import com.jph.takephoto.model.TResult;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserPortraitActivity extends AppCompatActivity {
-    private File mOutputImage;
-    private static final int REQUEST_CAPTURE = 1;
+    TakePhotoUtil takePhotoUtil;
+    LoginInformationManager informationManager;
+    ImageView portrait;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_portrait);
-        ImageView portrait = (ImageView) findViewById(R.id.user_portrait_view);
-        portrait.setImageResource(DataHolder.User.portraitId);
+        takePhotoUtil = new TakePhotoUtil(this);
+        if (useTakePhoto()) {
+            takePhotoUtil.onCreate(savedInstanceState);
+        }
+        informationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+
+        portrait = (ImageView) findViewById(R.id.user_portrait_view);
+        //portrait.setImageResource(DataHolder.User.portraitId);
         LinearLayout bg = (LinearLayout) findViewById(R.id.portrait_bg);
+        takePhotoUtil = new TakePhotoUtil(this);
+        if (useTakePhoto()) {
+            takePhotoUtil.onCreate(savedInstanceState);
+        }
+        initPortrait();
         bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,14 +80,33 @@ public class UserPortraitActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(UserPortraitActivity.this, "拍照", Toast.LENGTH_SHORT).show();
+                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_TAKE, new TakePhotoUtil.SimpleTakePhotoListener() {
+                            @Override
+                            public void takeSuccess(TResult result) {
+                                String s = result.getImage().getCompressPath();
+                                System.out.println(s);
+                                Bitmap bitmap = BitmapFactory.decodeFile(s);
+                                portrait.setImageBitmap(bitmap);
+                                updatePortrait(s);
+                            }
+                        });
                         mBottomSheetDialog.dismiss();
-                        finish();
                     }
                 });
                 tv_compare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(UserPortraitActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
+                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_SELECT, new TakePhotoUtil.SimpleTakePhotoListener() {
+                            @Override
+                            public void takeSuccess(TResult result) {
+                                String s = result.getImage().getCompressPath();
+                                System.out.println(s);
+                                Bitmap bitmap = BitmapFactory.decodeFile(s);
+                                portrait.setImageBitmap(bitmap);
+                                updatePortrait(s);
+                            }
+                        });
                         mBottomSheetDialog.dismiss();
                         finish();
                     }
@@ -78,5 +114,50 @@ public class UserPortraitActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onSaveInstanceState(outState);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onActivityResult(requestCode, resultCode, data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    protected boolean useTakePhoto() {
+        return true;
+    }
+
+    public void updatePortrait(String path) {
+        Pattern pat = Pattern.compile("(portrait_)([0-9]+)(.jpg)");
+        Matcher mat = pat.matcher(path);
+        boolean rs = mat.find();
+        Long millis = Long.parseLong(mat.group(2));
+        informationManager.setPortraitPath(path);
+        //上传Millis和图片到服务器
+    }
+
+    public void initPortrait() {
+        String s = informationManager.getPortraitPath();
+        if (s != "") {
+            Bitmap bitmap = BitmapFactory.decodeFile(s);
+            portrait.setImageBitmap(bitmap);
+        } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

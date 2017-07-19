@@ -31,140 +31,160 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
     private Activity activity;
-    public TakePhotoUtil(Activity activity){
+
+    public TakePhotoUtil(Activity activity) {
         this.activity = activity;
     }
+
     /**
-     *  获取TakePhoto实例
+     * 获取TakePhoto实例
+     *
      * @return
      */
-    public TakePhoto getTakePhoto(){
-        if (takePhoto==null){
-            takePhoto= (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(activity,this));
+    public TakePhoto getTakePhoto() {
+        if (takePhoto == null) {
+            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(activity, this));
         }
         return takePhoto;
     }
-    public void onCreate(Bundle savedInstanceState){
+
+    public void onCreate(Bundle savedInstanceState) {
         getTakePhoto().onCreate(savedInstanceState);
     }
-    public void onSaveInstanceState(Bundle outState){
+
+    public void onSaveInstanceState(Bundle outState) {
         getTakePhoto().onSaveInstanceState(outState);
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         getTakePhoto().onActivityResult(requestCode, resultCode, data);
     }
+
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        PermissionManager.TPermissionType type=PermissionManager.onRequestPermissionsResult(requestCode,permissions,grantResults);
-        PermissionManager.handlePermissionsResult(activity,type,invokeParam,this);
+        PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.handlePermissionsResult(activity, type, invokeParam, this);
     }
+
     /**
-     *
      * @param result
      */
     @Override
     public void takeSuccess(TResult result) {
-        if(listener != null){
+        if (listener != null) {
             listener.takeSuccess(result);
         }
 //        deleteCachePic();
     }
+
     @Override
     public void takeFail(TResult result, String msg) {
-        if(listener != null){
+        if (listener != null) {
             listener.takeFail(result, msg);
         }
 //        deleteCachePic();
     }
+
     @Override
     public void takeCancel() {
-        if(listener != null){
+        if (listener != null) {
             listener.takeCancel();
         }
     }
-    public void deleteCachePic(){
-        File file=new File(Environment.getExternalStorageDirectory(), "/takephoto/");
-        if(!file.exists()) return;
+
+    public void deleteCachePic() {
+        File file = new File(Environment.getExternalStorageDirectory(), "/takephoto/");
+        if (!file.exists()) return;
         File[] files = file.listFiles();
-        for (File f: files) {
+        for (File f : files) {
             f.delete();
         }
     }
-    public interface TakePhotoListener{
+
+    public interface TakePhotoListener {
         void takeSuccess(TResult result);
+
         void takeFail(TResult result, String msg);
+
         void takeCancel();
     }
+
     public TakePhotoListener listener;
-    public void setTakePhotoListener(SimpleTakePhotoListener listener){
+
+    public void setTakePhotoListener(SimpleTakePhotoListener listener) {
         this.listener = listener;
     }
-    public static class SimpleTakePhotoListener implements TakePhotoListener{
+
+    public static class SimpleTakePhotoListener implements TakePhotoListener {
         @Override
         public void takeSuccess(TResult result) {
         }
+
         @Override
         public void takeFail(TResult result, String msg) {
         }
+
         @Override
         public void takeCancel() {
         }
     }
+
     @Override
     public PermissionManager.TPermissionType invoke(InvokeParam invokeParam) {
-        PermissionManager.TPermissionType type=PermissionManager.checkPermission(TContextWrap.of(activity),invokeParam.getMethod());
-        if(PermissionManager.TPermissionType.WAIT.equals(type)){
-            this.invokeParam=invokeParam;
+        PermissionManager.TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(activity), invokeParam.getMethod());
+        if (PermissionManager.TPermissionType.WAIT.equals(type)) {
+            this.invokeParam = invokeParam;
         }
         return type;
     }
+
     /**
-     *
      * @param select_type
      */
-    public void takePhoto(Select_type select_type, SimpleTakePhotoListener listener){
+    public void takePhoto(Select_type select_type, SimpleTakePhotoListener listener) {
         takePhoto(select_type, null, listener);
     }
-    public void takePhoto(Select_type select_type, PhotoConfigOptions cropOptions, SimpleTakePhotoListener listener){
-        if (takePhoto == null){
+
+    public void takePhoto(Select_type select_type, PhotoConfigOptions cropOptions, SimpleTakePhotoListener listener) {
+        if (takePhoto == null) {
             Toast.makeText(activity, "请先开启照片功能", Toast.LENGTH_SHORT).show();
             return;
         }
         setTakePhotoListener(listener);
-        if(cropOptions == null){
+        if (cropOptions == null) {
             cropOptions = new PhotoConfigOptions();
         }
         cropOptions.configCompress();   //压缩配置
         cropOptions.configTakePhoto();  //拍照配置
-        File file=new File(Environment.getExternalStorageDirectory(), "/takephoto/"+System.currentTimeMillis() + ".jpg");
-        if (!file.getParentFile().exists())file.getParentFile().mkdirs();
+        File file = new File(Environment.getExternalStorageDirectory(), "/takephoto/portrait_" + System.currentTimeMillis() + ".jpg");
+        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
         Uri imageUri = Uri.fromFile(file);
-        switch (select_type){
+        switch (select_type) {
             case PICK_BY_SELECT:  //从相册获取
-                if(cropOptions.limit > 1){
-                    if(cropOptions.crop == true){
+                if (cropOptions.limit > 1) {
+                    if (cropOptions.crop == true) {
                         takePhoto.onPickMultipleWithCrop(cropOptions.limit, cropOptions.getCropOptions());
-                    }else {
+                    } else {
                         takePhoto.onPickMultiple(cropOptions.limit);
                     }
                 }
-                if(cropOptions.chooseFromFile){
-                    if(cropOptions.crop == true){
+                if (cropOptions.chooseFromFile) {
+                    if (cropOptions.crop == true) {
                         takePhoto.onPickFromDocumentsWithCrop(imageUri, cropOptions.getCropOptions());
-                    }else {
+                    } else {
                         takePhoto.onPickFromDocuments();
                     }
-                }else {
-                    if(cropOptions.crop == true){
+                } else {
+                    if (cropOptions.crop == true) {
                         takePhoto.onPickFromGalleryWithCrop(imageUri, cropOptions.getCropOptions());
-                    }else {
+                    } else {
                         takePhoto.onPickFromGallery();
                     }
                 }
                 break;
             case PICK_BY_TAKE:  //拍照获取
-                if(cropOptions.crop == true){
+                if (cropOptions.crop == true) {
                     takePhoto.onPickFromCaptureWithCrop(imageUri, cropOptions.getCropOptions());
-                }else {
+                } else {
                     takePhoto.onPickFromCapture(imageUri);
                 }
                 break;
@@ -172,13 +192,14 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
                 break;
         }
     }
+
     /**
      * 图片的裁剪配置选项内部类
      */
-    public class PhotoConfigOptions{
+    public class PhotoConfigOptions {
         //裁剪配置
         private boolean crop = true;  //是否裁剪
-        private boolean withWonCrop = true;  //是否采用自带的裁剪工具，默认选取第三方的裁剪工具
+        private boolean withWonCrop = false;  //是否采用自带的裁剪工具，默认选取第三方的裁剪工具
         private boolean cropSize = true; //尺寸还是比例
         //压缩配置
         private boolean useOwnCompressTool = true;  //使用自带的压缩工具
@@ -187,7 +208,7 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
         //        private
         private int maxSize = 102400;
         //选择图片配置
-        private boolean useOwnGallery = true; //选择使用自带的相册
+        private boolean useOwnGallery = false; //选择使用自带的相册
         private boolean chooseFromFile = false;  //从文件获取图片
         private int limit = 1;  //选择最多图片的配置，选择多张图片会自动切换到TakePhoto自带相册
         //其它配置
@@ -195,37 +216,40 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
         private boolean correctTool = false; //纠正拍照的照片旋转角度
         private int height = 800;
         private int width = 800;
+
         /**
          * 裁剪相关配置
+         *
          * @return
          */
-        public CropOptions getCropOptions(){
-            if(crop == false) return null;
+        public CropOptions getCropOptions() {
+            if (crop == false) return null;
             CropOptions.Builder builder = new CropOptions.Builder();
-            if(cropSize){
+            if (cropSize) {
                 builder.setOutputX(width).setOutputY(height);
-            }else {
+            } else {
                 builder.setAspectX(width).setAspectY(height);
             }
             builder.setWithOwnCrop(withWonCrop);  //默认采用第三方配置
             return builder.create();
         }
+
         /**
-         *  图片压缩相关配置
+         * 图片压缩相关配置
          */
-        public void configCompress(){
-            if(isCompress == false) {
+        public void configCompress() {
+            if (isCompress == false) {
                 takePhoto.onEnableCompress(null, false);
                 return;
             }
             CompressConfig config;
-            if(useOwnCompressTool){
+            if (useOwnCompressTool) {
                 config = new CompressConfig.Builder()
                         .setMaxSize(maxSize)
-                        .setMaxPixel(width>height?width:height)
+                        .setMaxPixel(width > height ? width : height)
                         .enableReserveRaw(savePic)
                         .create();
-            }else {
+            } else {
                 LubanOptions options = new LubanOptions.Builder()
                         .setMaxHeight(height)
                         .setMaxWidth(maxSize)
@@ -235,63 +259,79 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
             }
             takePhoto.onEnableCompress(config, showProgressBar);
         }
-        public void configTakePhoto(){
+
+        public void configTakePhoto() {
             TakePhotoOptions.Builder builder = new TakePhotoOptions.Builder();
-            if(useOwnGallery){
+            if (useOwnGallery) {
                 builder.setWithOwnGallery(true);
             }
-            if(correctTool){
+            if (correctTool) {
                 builder.setCorrectImage(true);
             }
             takePhoto.setTakePhotoOptions(builder.create());
         }
+
         public void setCrop(boolean crop) {
             this.crop = crop;
         }
+
         public void setWithWonCrop(boolean withWonCrop) {
             this.withWonCrop = withWonCrop;
         }
+
         public void setCropSize(boolean cropSize) {
             this.cropSize = cropSize;
         }
+
         public void setUseOwnCompressTool(boolean useOwnCompressTool) {
             this.useOwnCompressTool = useOwnCompressTool;
         }
+
         public void setCompress(boolean compress) {
             isCompress = compress;
         }
+
         public void setShowProgressBar(boolean showProgressBar) {
             this.showProgressBar = showProgressBar;
         }
+
         public void setMaxSize(int maxSize) {
             this.maxSize = maxSize;
         }
+
         public void setUseOwnGallery(boolean useOwnGallery) {
             this.useOwnGallery = useOwnGallery;
         }
+
         public void setChooseFromFile(boolean chooseFromFile) {
             this.chooseFromFile = chooseFromFile;
         }
+
         public void setLimit(int limit) {
             this.limit = limit;
         }
+
         public void setSavePic(boolean savePic) {
             this.savePic = savePic;
         }
+
         public void setCorrectTool(boolean correctTool) {
             this.correctTool = correctTool;
         }
+
         public void setHeight(int height) {
             this.height = height;
         }
+
         public void setWidth(int width) {
             this.width = width;
         }
     }
+
     /**
-     *  照片获取方式, 从相册获取或拍照处理
+     * 照片获取方式, 从相册获取或拍照处理
      */
-    public enum Select_type{
+    public enum Select_type {
         PICK_BY_SELECT, PICK_BY_TAKE
     }
 }

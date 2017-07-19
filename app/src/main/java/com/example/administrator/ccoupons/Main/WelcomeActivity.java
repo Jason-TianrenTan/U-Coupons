@@ -12,6 +12,8 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 
+import java.io.File;
+
 public class WelcomeActivity extends AppCompatActivity {
     private LoginInformationManager loginInformationManager;
     private boolean auto_login;

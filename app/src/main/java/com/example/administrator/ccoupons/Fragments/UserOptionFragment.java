@@ -3,8 +3,11 @@ package com.example.administrator.ccoupons.Fragments;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,23 +32,28 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class UserOptionFragment extends Fragment {
+    LoginInformationManager informationManager;
+    ImageView portrait;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_option, container, false);
-        ImageView userportait = (ImageView) view.findViewById(R.id.user_portrait);
-        userportait.setImageResource(DataHolder.User.portraitId);
+        portrait = (ImageView) view.findViewById(R.id.user_portrait);
         TextView ub = (TextView) view.findViewById(R.id.user_ub);
         ub.setText(Integer.toString(DataHolder.User.UB));
         LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_to_inf);
         LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
         LinearLayout toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
         LinearLayout logoff = (LinearLayout) view.findViewById(R.id.user_logoff);
+        informationManager = new LoginInformationManager(getActivity().getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        initPortrait();
 
         //OnClickListener
-        userportait.setOnClickListener(new View.OnClickListener() {
+        portrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), UserPortraitActivity.class));
+                initPortrait();
             }
         });
         toUserInfo.setOnClickListener(new View.OnClickListener() {
@@ -98,5 +106,13 @@ public class UserOptionFragment extends Fragment {
                     }
                 });
         logOffDialog.show();
+    }
+
+    public void initPortrait() {
+        String s = informationManager.getPortraitPath();
+        if (s != "") {
+            Bitmap bitmap = BitmapFactory.decodeFile(s);
+            portrait.setImageBitmap(bitmap);
+        } else portrait.setImageResource(R.drawable.testportrait);
     }
 }
