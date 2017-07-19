@@ -44,6 +44,7 @@ public class CategoryFragment extends Fragment {
     private TextView location_text;
     private ArrayList<Integer> localImages;
     private ConvenientBanner convenientBanner;
+    //TODO:handler
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +59,18 @@ public class CategoryFragment extends Fragment {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)location_text.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.search_input_layout);
         location_text.setLayoutParams(params);
+        location_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String location = location_text.getText().toString();
+                Intent intent = new Intent(getActivity(), LocationSelectActivity.class);
+                if (location != null) {
+                    intent.putExtra("location", location);
+                    startActivity(intent);
+                }
+            }
+        });
+
 
         EditText searchText = (EditText) view.findViewById(R.id.search_text);
         searchText.setFocusable(false);
