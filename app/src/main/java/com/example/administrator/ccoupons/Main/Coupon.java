@@ -7,49 +7,104 @@ import org.json.JSONObject;
  */
 
 public class Coupon {
-    private String name;
-    private double price;
-    private String detail;
-    private int resId;//temporary
-    public Coupon(String sName,double Iprice,String sDetail,int id) {
-        this.name = sName;
-        this.price = Iprice;
-        this.detail = sDetail;
-        this.resId = id;
-    }
+
+    private static final int STAT_ONSALE = 1;
+    private static final int STAT_EXPIRED = 2;
+    private static final int STAT_USED = 3;
+    private static final int STAT_STORE = 4;
+
+
+    private String name;//=>product
+    private int couponId;
+    private int brandId;//品牌id
+    private int catId;//类别
+    private double listPrice;//用户列出来的价格
+    private double evaluatePrice;//估值价格 =>value
+    private double discount;//打折多少 20表示20元
+    private int stat;//状态 详见下
+    private String imgURL;//url
+    private String expireDate;//过期时间
+    /*
+    状态:
+    onSale => 正在卖
+    expired =>过期的
+    used  =>用过的
+    store =>储存的
+     */
     public Coupon() {
 
-    }
-    public void setResId(int id) {
-        this.resId = id;
     }
     public void setName(String str) {
         this.name = str;
     }
-    public void setPrice(int p) {
-        this.price = p;
-    }
-    public void setDetail(String det) {
-        this.detail = det;
-    }
     public String getName() {
         return this.name;
     }
-    public double getPrice() {
-        return this.price;
+    public void setListPrice(double price) {
+        this.listPrice = price;
     }
-    public String getDetail() {
-        return this.detail;
+    public void setEvaluatePrice(double price) {
+        this.evaluatePrice = price;
     }
-    public int getResId() {
-        return this.resId;
+    public double getListPrice() {
+        return this.listPrice;
+    }
+    public double getEvaluatePrice() {
+        return this.evaluatePrice;
+    }
+    public int getCategory() {
+        return this.catId;
+    }
+    public int getBrand() {
+        return this.brandId;
+    }
+    public int getCouponId() {
+        return this.couponId;
+    }
+    public double getDiscount() {
+        return this.discount;
+    }
+    public int getStat() {
+        return this.stat;
+    }
+    public String getImgURL() {
+        return this.imgURL;
+    }
+    public String getExpireDate() {
+        return this.expireDate;
     }
 
 
-    public static Coupon decodeFromString(String str) {
+//{"model": "UHuiWebApp.coupon", "pk": "001",
+// "fields": {"brandid": 1, "catid": 1, "listprice": "1", "value": "1",
+// "product": "\u9e21", "discount": "20", "stat": "onSale", "pic": null, "expiredtime": null}},
+    public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
-            JSONObject jsonObject = new JSONObject(str);
+            coupon.couponId = Integer.parseInt(jsonObject.getString("pk"));
+            JSONObject fieldObject = jsonObject.getJSONObject("fields");
+            coupon.brandId = Integer.parseInt(fieldObject.getString("brandid"));
+            coupon.catId = Integer.parseInt(fieldObject.getString("catid"));
+            coupon.listPrice = Double.parseDouble(fieldObject.getString("listprice"));
+            coupon.evaluatePrice = Double.parseDouble(fieldObject.getString("value"));
+            coupon.name = fieldObject.getString("product");
+            coupon.discount = Double.parseDouble(fieldObject.getString("discount"));
+
+            String statStr = fieldObject.getString("stat");
+            int coupon_stat = -1;
+            if (statStr.equals("onSale"))
+                coupon_stat = STAT_ONSALE;
+            if (statStr.equals("expired"))
+                coupon_stat = STAT_EXPIRED;
+            if (statStr.equals("used"))
+                coupon_stat = STAT_USED;
+            if (statStr.equals("store"))
+                coupon_stat = STAT_STORE;
+
+            coupon.stat = coupon_stat;
+            coupon.imgURL = fieldObject.getString("pic");
+            coupon.expireDate = fieldObject.getString("expiredtime");
+
         }catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();

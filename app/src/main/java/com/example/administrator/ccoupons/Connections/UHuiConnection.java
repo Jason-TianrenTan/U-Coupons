@@ -70,7 +70,7 @@ public class UHuiConnection {
             HttpEntity entity = response.getEntity();
             content = EntityUtils.toString(entity);
 
-        //    System.out.println(content);
+            System.out.println(content);
 
             if (handler != null) {
                 Message msg = new Message();
