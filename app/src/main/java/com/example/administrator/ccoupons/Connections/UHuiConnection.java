@@ -39,10 +39,12 @@ public class UHuiConnection {
     private String content;
     private List<NameValuePair> urlParameters;
     private Handler handler;
+
     public UHuiConnection(String url, Handler handler) {
-        System.out.println("Initializing new connection to url: " + url);
         this.url = url;
-        this.client = new DefaultHttpClient();
+        BasicHttpParams params = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(params, REQUEST_TIMEOUT);
+        this.client = new DefaultHttpClient(params);
         this.post = new HttpPost(url);
         this.urlParameters = new ArrayList<NameValuePair>();
         this.handler = handler;
@@ -60,11 +62,10 @@ public class UHuiConnection {
         urlParameters.add(new BasicNameValuePair(name, val));
     }
 
-    public void connect(){
+    public void connect() {
         try {
             System.out.println("ON connect " + url);
-            BasicHttpParams params = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(params,REQUEST_TIMEOUT);
+
             post.setEntity(new UrlEncodedFormEntity(urlParameters, HTTP.UTF_8));
             HttpResponse response = client.execute(post);
             HttpEntity entity = response.getEntity();
@@ -78,10 +79,11 @@ public class UHuiConnection {
                 handler.sendMessage(msg);
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             if (handler != null) {
                 Message msg = new Message();
+                System.out.println("Send message: error");
                 msg.what = MessageType.CONNECTION_ERROR;
                 handler.sendMessage(msg);
             }

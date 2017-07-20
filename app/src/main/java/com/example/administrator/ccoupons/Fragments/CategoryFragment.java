@@ -5,7 +5,7 @@ import com.amap.api.location.AMapLocation;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
+import android.os.*;
 import android.support.v4.view.LinkagePager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,20 +31,41 @@ import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
+import com.example.administrator.ccoupons.Tools.LocationGet;
+import com.example.administrator.ccoupons.Tools.MessageType;
+import com.example.administrator.ccoupons.UI.CustomDialog;
+import com.example.administrator.ccoupons.UI.CustomLoader;
 
 import java.util.ArrayList;
 
 public class CategoryFragment extends Fragment {
 
 
-    private AMapLocationClient mLocationClient;
-    private AMapLocationClientOption mLocationOption;
+    private CustomLoader customLoader;
     private ArrayList<Category> categoryList;
     private CategoryAdapter adapter;
     private TextView location_text;
     private ArrayList<Integer> localImages;
     private ConvenientBanner convenientBanner;
+    private String location = null;
+    private LocationGet locationFetchr;
     //TODO:handler
+    private Handler handler = new Handler() {
+
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case MessageType.LOCATION_GET:
+                    location = locationFetchr.getCity();
+                    location_text.setText(location);
+                    customLoader.finish();
+                    break;
+                case MessageType.LOCATION_FAILED:
+                    Toast.makeText(getActivity().getApplicationContext(), "获取当前定位失败，请检查设置或者网络连接",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,12 +83,9 @@ public class CategoryFragment extends Fragment {
         location_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String location = location_text.getText().toString();
                 Intent intent = new Intent(getActivity(), LocationSelectActivity.class);
-                if (location != null) {
+                if (location != null)
                     intent.putExtra("location", location);
-
-                }
                 startActivity(intent);
             }
         });
@@ -131,28 +149,23 @@ public class CategoryFragment extends Fragment {
     }
 
     public void initLocation() {
-        mLocationClient = new AMapLocationClient(getActivity().getApplicationContext());
-        mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setOnceLocation(true);
-        mLocationClient.setLocationOption(mLocationOption);
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        mLocationOption.setHttpTimeOut(20 * 1000);
-        mLocationOption.setNeedAddress(true);
-
-        AMapLocationListener aMapLocationListener = new AMapLocationListener() {
+        locationFetchr = new LocationGet(getActivity(), handler);
+        locationFetchr.requestLocation();
+        customLoader = new CustomLoader(5, handler, getActivity());
+        customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
             @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        String address = aMapLocation.getCity();
-                        location_text.setText(address);
-                    }
-                }
-            }
-        };
-        mLocationClient.setLocationListener(aMapLocationListener);
+            public void onTimeChanged() {
 
-        mLocationClient.startLocation();
+            }
+            @Override
+            public void onTimeFinish() {
+                android.os.Message msg = new android.os.Message();
+                msg.what = MessageType.LOCATION_FAILED;
+                handler.sendMessage(msg);
+            }
+
+        });
+        customLoader.start();
     }
 
 

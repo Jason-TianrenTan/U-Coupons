@@ -156,7 +156,7 @@ public class MainPageActivity extends AppCompatActivity {
                 super.onBackPressed();
             } else {
                 exit = true;
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(this,
                         "再按返回键退出程序", Toast.LENGTH_SHORT).show();
                 final Timer timer = new Timer();
                 timer.schedule(new TimerTask() {

@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
+
             switch (msg.what) {
                 case MessageType.CONNECTION_ERROR:
                     Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
