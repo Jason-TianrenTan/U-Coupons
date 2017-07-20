@@ -7,7 +7,7 @@ import com.example.administrator.ccoupons.R;
  */
 
 public class DataHolder {
-    public static final String base_URL = "http://192.168.207.221";
+    public static final String base_URL = "http://172.27.35.1";
     public static final String login_URL = ":8000/post_loginForAndroid";
     public static final String register_URL = ":8000/post_signUpForAndroid";
     public static final String requestMsg_URL = ":8000/post_sendMessage";
@@ -19,7 +19,9 @@ public class DataHolder {
         public static int[] covers = {R.mipmap.ic_cover_1, R.mipmap.ic_cover_2, R.mipmap.ic_cover_3, R.mipmap.ic_cover_4,
                 R.mipmap.ic_cover_5, R.mipmap.ic_cover_6, R.mipmap.ic_cover_7};
     }
-
+    public static class Cities {
+        public static String[] cityList = "北京 上海 广州 杭州 成都 苏州 深圳 南京 天津 重庆 厦门 西安".split(" ");
+    }
 
     public static class Categories {
         public static String[] nameList = "类别1 类别2 类别3 类别4 类别5 类别6 类别7 类别8 类别9".split(" ");

@@ -85,7 +85,7 @@ public class QuickIndexBar extends View {
                     //对index进行合法性的判断
                     if(index>=0 && index<letterArr.length){
                         String letter = letterArr[index];
-
+                        System.out.println("pressed letter " + letter);
                         if(listener!=null){
                             listener.onLetterChange(letter);
                         }

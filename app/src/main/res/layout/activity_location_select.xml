@@ -55,7 +55,6 @@
             android:layout_height="match_parent">
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -96,11 +95,24 @@
 
                 </android.support.v7.widget.CardView>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="热门城市"
+                    android:textSize="20dp"
+                    android:padding="10dp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/popular_city_recyclerview"
+                    android:layout_marginRight="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/citylist_recyclerview"
+                    android:padding="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/current_gps_cardview" />
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
@@ -110,9 +122,9 @@
         <com.example.administrator.ccoupons.UI.QuickIndexBar
             android:id="@+id/location_sideindexbar"
             android:layout_width="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right"/>
+            android:layout_gravity="right"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp" />
     </FrameLayout>
 </LinearLayout>

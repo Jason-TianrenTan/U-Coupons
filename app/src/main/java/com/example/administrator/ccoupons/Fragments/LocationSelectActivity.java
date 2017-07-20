@@ -7,16 +7,23 @@ import android.graphics.Rect;
 import android.os.*;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
@@ -36,7 +43,7 @@ public class LocationSelectActivity extends AppCompatActivity {
     private TextView locationText;
     private CustomLoader customLoader;
     private ArrayList<String> cityList = new ArrayList<>();
-
+    private ArrayList<String> pop_cityList = new ArrayList<>();
 
     private Handler handler = new Handler() {
 
@@ -63,7 +70,7 @@ public class LocationSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_select);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.location_select_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.location_select_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -73,8 +80,6 @@ public class LocationSelectActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
         locationText = (TextView) findViewById(R.id.location_select_textview);
         String localCity = getIntent().getStringExtra("location");
@@ -89,13 +94,18 @@ public class LocationSelectActivity extends AppCompatActivity {
 
         cityList = getCityList();
         LocationAdapter adapter = new LocationAdapter(cityList);
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.citylist_recyclerview);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.citylist_recyclerview);
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-
+        pop_cityList = getPopularCityList();
+        RecyclerView popCityRecyclerView =(RecyclerView)findViewById(R.id.popular_city_recyclerview);
+        PCityAdapter pAdapter = new PCityAdapter(pop_cityList);
+        popCityRecyclerView.setAdapter(pAdapter);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        popCityRecyclerView.setLayoutManager(gridLayoutManager);
     }
 
     private void startCountDown() {
@@ -105,6 +115,7 @@ public class LocationSelectActivity extends AppCompatActivity {
             public void onTimeChanged() {
 
             }
+
             @Override
             public void onTimeFinish() {
                 Message msg = new Message();
@@ -117,13 +128,75 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<String> getCityList() {
+    private ArrayList<String> getPopularCityList() {
         ArrayList<String> arrayList = new ArrayList<>();
-        for (int i =0;i<20;i++) {
-            String str = "City No." + i;
+        for (int i = 0; i < DataHolder.Cities.cityList.length; i++) {
+            String str = DataHolder.Cities.cityList[i];
             arrayList.add(str);
         }
         return arrayList;
+    }
+    private ArrayList<String> getCityList() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (int i = 0; i < 5 * 26; i++) {
+            int index = i/5;
+            String str = "City No." + Integer.toString(index + 'a');
+            arrayList.add(str);
+        }
+        return arrayList;
+    }
+
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+    private int getWindowWidth() {
+        DisplayMetrics dm =getResources().getDisplayMetrics();
+        return px2dip(this, dm.widthPixels);
+    }
+
+    public class PCityAdapter extends RecyclerView.Adapter<PCityAdapter.PCityViewHolder> {
+
+        private Context mContext;
+        private ArrayList<String> mCityList;
+
+        public class PCityViewHolder extends RecyclerView.ViewHolder {
+            TextView textView;
+            CardView rootView;
+            public PCityViewHolder(View view) {
+                super(view);
+                rootView = (CardView)view;
+                textView = (TextView) view.findViewById(R.id.pop_city_textview);
+            }
+        }
+
+
+        public PCityAdapter(ArrayList<String> cList) {
+            this.mCityList = cList;
+        }
+
+
+        @Override
+        public PCityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (mContext == null) {
+                mContext = parent.getContext();
+            }
+            View view = LayoutInflater.from(mContext).inflate(R.layout.popular_city_item, parent, false);
+            final PCityViewHolder holder = new PCityViewHolder(view);
+
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(PCityViewHolder holder, int position) {
+            String Location = mCityList.get(position);
+            holder.textView.setText(Location);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mCityList.size();
+        }
     }
 
 }

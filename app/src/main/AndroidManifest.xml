@@ -77,7 +77,8 @@
 
         <service android:name=".Connections.MessageGetService" />
 
-        <activity android:name=".Fragments.LocationSelectActivity"></activity>
+        <activity android:name=".Fragments.LocationSelectActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"  ></activity>
     </application>
 
 </manifest>
