@@ -55,8 +55,8 @@ public class CategoryFragment extends Fragment {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
 
-        location_text = (TextView)view.findViewById(R.id.location_textview);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)location_text.getLayoutParams();
+        location_text = (TextView) view.findViewById(R.id.location_textview);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) location_text.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.search_input_layout);
         location_text.setLayoutParams(params);
         location_text.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +66,9 @@ public class CategoryFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), LocationSelectActivity.class);
                 if (location != null) {
                     intent.putExtra("location", location);
-                    startActivity(intent);
+
                 }
+                startActivity(intent);
             }
         });
 
