@@ -1,6 +1,9 @@
-package com.example.administrator.ccoupons.Tools;
+package com.example.administrator.ccoupons.Tools.DataBase;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by CZJ on 2017/7/16.
@@ -11,8 +14,8 @@ public class LoginInformationManager {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
-    public LoginInformationManager(SharedPreferences p) {
-        preferences = p;
+    public LoginInformationManager(Activity activity) {
+        preferences = activity.getSharedPreferences("UserInfomation", MODE_PRIVATE);
         editor = preferences.edit();
     }
 
@@ -28,13 +31,18 @@ public class LoginInformationManager {
         return preferences.getString("password", "");
     }
 
+    public String getPortraitPath() {
+        return preferences.getString("portrait_path", "");
+    }
+
     public LoginInformationManager setAutoLogin(boolean b) {
         editor.putBoolean("auto_login", b).commit();
         return this;
     }
 
-    public LoginInformationManager setPhoneNumber(String str) {
+    public LoginInformationManager setUsername(String str) {
         editor.putString("username", str).commit();
+
         return this;
     }
 
@@ -43,12 +51,18 @@ public class LoginInformationManager {
         return this;
     }
 
+    public LoginInformationManager setPortraitPath(String str) {
+        editor.putString("portrait_path", str).commit();
+        return this;
+    }
+
     public LoginInformationManager clear() {
         editor.clear().commit();
         return this;
     }
 
-    public LoginInformationManager removeUserName(){
+    public LoginInformationManager removeUsername(){
+
         editor.remove("username").commit();
         return this;
     }

@@ -17,9 +17,8 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
-
 import org.json.JSONObject;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -96,7 +95,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 finish();
             }
         });
-        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        loginInformationManager = new LoginInformationManager(this);
         auto_login = loginInformationManager.getAutoLogin();
         if (auto_login == false) {
             /*

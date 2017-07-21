@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.Tools;
+package com.example.administrator.ccoupons.Tools.DataBase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +10,7 @@ import android.widget.Toast;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public  static final String CREATE_MASSAGE = "create table Massage ("
+    public static final String CREATE_MASSAGE = "create table Message ("
             + "id text primary key, "
             + "fromSystem integer, "
             + "send integer, "
@@ -20,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "timestamp real)";
 
     private Context mContext;
+
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         mContext = context;
@@ -32,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 }

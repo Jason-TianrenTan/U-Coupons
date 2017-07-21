@@ -18,7 +18,7 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 
@@ -81,7 +81,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterFinalActivity.this, RegisterActivity.class));
             }
             else {
-                loginInformationManager.setAutoLogin(true).setPhoneNumber(phoneString).setPassword(password);
+                loginInformationManager.setAutoLogin(true).setUsername(phoneString).setPassword(password);
                 Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
                 intent.putExtra("username", phoneString).putExtra("password", password);
                 startActivity(intent);

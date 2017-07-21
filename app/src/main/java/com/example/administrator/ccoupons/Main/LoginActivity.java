@@ -27,7 +27,7 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.UI.CustomDialog;
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     private String rem_pass;
 
     private void saveUserLoginInfo() {
-        loginInformationManager.setAutoLogin(true).setPhoneNumber(myUsername).setPassword(myPassword);
+        loginInformationManager.setAutoLogin(true).setUsername(myUsername).setPassword(myPassword);
     }
 
     //处理返回回来的json
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
         signup_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         signup_pass = (EditText) findViewById(R.id.signup_password);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        loginInformationManager = new LoginInformationManager(this);
 
         //读取记忆的账号
         rem_phonenumber = loginInformationManager.getUsername();
@@ -180,10 +180,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = signup_phone.getText().toString();
                 String password = signup_pass.getText().toString();
+
                 login.setEnabled(false);
                 if (password != null) {
                     requestLogin(url, username, password);
                 }
+                //finish();
             }
         });
 
@@ -272,6 +274,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
         super.onBackPressed();
     }
-
-
 }
