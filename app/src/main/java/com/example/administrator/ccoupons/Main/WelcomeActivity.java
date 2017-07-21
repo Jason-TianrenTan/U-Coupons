@@ -89,7 +89,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 finish();
             }
         });
-        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        loginInformationManager = new LoginInformationManager(this);
         auto_login = loginInformationManager.getAutoLogin();
         if (auto_login == false) {
             login.setVisibility(View.VISIBLE);

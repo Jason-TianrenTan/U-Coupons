@@ -1,6 +1,9 @@
 package com.example.administrator.ccoupons.Tools.DataBase;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by CZJ on 2017/7/16.
@@ -11,8 +14,8 @@ public class LoginInformationManager {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
-    public LoginInformationManager(SharedPreferences p) {
-        preferences = p;
+    public LoginInformationManager(Activity activity) {
+        preferences = activity.getSharedPreferences("UserInfomation", MODE_PRIVATE);
         editor = preferences.edit();
     }
 

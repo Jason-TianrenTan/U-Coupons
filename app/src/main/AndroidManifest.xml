@@ -61,7 +61,7 @@
         <activity
             android:name=".Search.SearchResultActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".User.UserPortraitActivity" />
+        <activity android:name=".User.UserPortraitActivity"/>
         <activity android:name=".User.UserInformationActivity" />
         <activity android:name=".Main.ResetPasswordActivity" />
         <activity android:name=".Register.RegisterIdentifyActivity" />

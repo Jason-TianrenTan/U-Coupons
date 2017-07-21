@@ -49,7 +49,7 @@ public class UserSettingActivity extends SlideBackActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //清空登录信息
                         LoginInformationManager loginInformationManager =
-                                new LoginInformationManager(UserSettingActivity.this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+                                new LoginInformationManager(UserSettingActivity.this);
                         loginInformationManager.clear();
                         //清空用户信息
                         //清空所有缓存内容

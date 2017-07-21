@@ -86,7 +86,7 @@
     <!-- 标题栏文字样式 -->
     <style name="user_title_text">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">20dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -95,20 +95,22 @@
     <!-- 用户栏样式 -->
     <style name="user_top_layout">
         <item name="android:orientation">horizontal</item>
-        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingRight">20dp</item>
         <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingTop">30dp</item>
+        <item name="android:paddingBottom">30dp</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
     <!-- 头像样式 -->
     <style name="user_portrait_layout">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_marginLeft">3dp</item>
-        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
     </style>
 
     <!-- 用户名样式-->
@@ -125,19 +127,17 @@
         <item name="android:orientation">vertical</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginBottom">20dp</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:background">@color/lightgray</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <!-- 用户界面选择条样式 -->
-    <style name="user_row_layout">
+    <style name="user_option_layout">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
+        <item name="android:padding">8dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
@@ -146,8 +146,8 @@
 
     <!-- 用户界面小图标样式 -->
     <style name="user_icon_layout">
-        <item name="android:layout_width">20dp</item>
-        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:layout_marginRight">5dp</item>
     </style>
 
@@ -189,9 +189,6 @@
         <item name="android:layout_height">30dp</item>
     </style>
 
-    <style name="uwal_top_layout" parent="@style/user_top_layout">
-        <item name="android:layout_height">80dp</item>
-    </style>
 
     <!-- 欢迎界面logo样式 -->
     <style name="welcome_logo">
@@ -224,5 +221,15 @@
     <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <!-- 头像界面缩放动画 -->
+    <style name="AnimTheme">
+        <item name="android:windowAnimationStyle">@style/PortraitTheme</item>
+    </style>
+
+    <style name="PortraitTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/portrait_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/portrait_out</item>
     </style>
 </resources>

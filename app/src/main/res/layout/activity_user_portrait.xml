@@ -3,7 +3,8 @@
     style="@style/user_bg"
     android:background="@color/black_with_alpha"
     android:gravity="center"
-    android:id="@+id/portrait_bg">
+    android:id="@+id/portrait_bg"
+    >
 
     <ImageView
         android:layout_width="wrap_content"

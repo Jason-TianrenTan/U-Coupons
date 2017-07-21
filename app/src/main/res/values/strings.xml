@@ -49,6 +49,7 @@
     <string name="CLEAR_HISTORY">清除历史记录</string>
 
     <!-- 用户界面 -->
+    <string name="uopt_title">我的</string>
     <string name="uopt_mycoupon">我的优惠券</string>
     <string name="uopt_mywallet">我的钱包</string>
     <string name="uopt_sell">我卖出的</string>

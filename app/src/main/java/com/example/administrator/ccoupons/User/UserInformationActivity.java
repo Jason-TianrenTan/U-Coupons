@@ -53,7 +53,7 @@ public class UserInformationActivity extends SlideBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
 
-        informationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        informationManager = new LoginInformationManager(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -82,6 +82,14 @@ public class UserInformationActivity extends SlideBackActivity {
             sex.setText("女");
         //portrait.setImageResource(DataHolder.User.portraitId);
         LinearLayout changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
+        portrait.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserInformationActivity.this, UserPortraitActivity.class));
+                overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
+                initPortrait();
+            }
+        });
 
         changeportrait.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,11 +178,11 @@ public class UserInformationActivity extends SlideBackActivity {
         //上传Millis和图片到服务器
     }
 
-    public void initPortrait(){
+    public void initPortrait() {
         String s = informationManager.getPortraitPath();
         if (s != "") {
             Bitmap bitmap = BitmapFactory.decodeFile(s);
             portrait.setImageBitmap(bitmap);
-        }else portrait.setImageResource(R.drawable.testportrait);
+        } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

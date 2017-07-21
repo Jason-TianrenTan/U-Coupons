@@ -48,7 +48,7 @@ public class UserPortraitActivity extends AppCompatActivity {
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);
         }
-        informationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        informationManager = new LoginInformationManager(this);
 
         portrait = (ImageView) findViewById(R.id.user_portrait_view);
         //portrait.setImageResource(DataHolder.User.portraitId);
@@ -62,6 +62,7 @@ public class UserPortraitActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.noanim, R.anim.portrait_out);
             }
         });
         bg.setOnLongClickListener(new View.OnLongClickListener() {

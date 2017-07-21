@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         signup_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         signup_pass = (EditText) findViewById(R.id.signup_password);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        loginInformationManager = new LoginInformationManager(this);
 
         //读取记忆的账号
         rem_phonenumber = loginInformationManager.getUsername();
