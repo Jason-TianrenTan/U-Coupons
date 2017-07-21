@@ -40,6 +40,5 @@ dependencies {
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile 'liji.library.dev:takephotolib:1.0.2'
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
-    compile 'com.google.android.gms:play-services:11.0.2'
     testCompile 'junit:junit:4.12'
 }
