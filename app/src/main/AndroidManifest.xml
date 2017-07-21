@@ -25,7 +25,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -61,7 +60,7 @@
         <activity
             android:name=".Search.SearchResultActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".User.UserPortraitActivity"/>
+        <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
         <activity android:name=".Main.ResetPasswordActivity" />
         <activity android:name=".Register.RegisterIdentifyActivity" />
@@ -84,7 +83,7 @@
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
-        <activity android:name=".User.UserMyCouponActivity"></activity>
+        <activity android:name=".User.UserMyCouponActivity" />
     </application>
 
 </manifest>

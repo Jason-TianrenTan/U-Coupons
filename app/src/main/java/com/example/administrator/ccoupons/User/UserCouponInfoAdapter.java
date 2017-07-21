@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> mUserCouponInfoList;
+    private ArrayList<Coupon> mUserCouponInfoList;
 
     public static class UserCouponInfoViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
@@ -33,7 +34,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
     }
 
 
-    public UserCouponInfoAdapter(ArrayList<String> cList) {
+    public UserCouponInfoAdapter(ArrayList<Coupon> cList) {
         this.mUserCouponInfoList = cList;
     }
 
@@ -48,8 +49,8 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                String UserCouponInfo = mUserCouponInfoList.get(position);
-                Toast.makeText(mContext, "UserCouponInfo = " + UserCouponInfo, Toast.LENGTH_SHORT).show();
+                Coupon coupon = mUserCouponInfoList.get(position);
+                Toast.makeText(mContext, "UserCouponInfo = " + coupon.getName(), Toast.LENGTH_SHORT).show();
             }
         });
         return holder;
@@ -57,8 +58,9 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
 
     @Override
     public void onBindViewHolder(UserCouponInfoAdapter.UserCouponInfoViewHolder holder, int position) {
-        String UserCouponInfo = mUserCouponInfoList.get(position);
-        holder.textView.setText(UserCouponInfo);
+        Coupon coupon = mUserCouponInfoList.get(position);
+        holder.textView.setText(coupon.getName());
+        //TODO:有待完善
     }
 
     @Override
