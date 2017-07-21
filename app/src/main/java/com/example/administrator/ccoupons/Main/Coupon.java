@@ -24,6 +24,7 @@ public class Coupon {
     private int stat;//状态 详见下
     private String imgURL;//url
     private String expireDate;//过期时间
+
     /*
     状态:
     onSale => 正在卖
@@ -34,63 +35,72 @@ public class Coupon {
     public Coupon() {
 
     }
+
     public void setName(String str) {
         this.name = str;
     }
+
     public String getName() {
         return this.name;
     }
+
     public void setListPrice(double price) {
         this.listPrice = price;
     }
+
     public void setEvaluatePrice(double price) {
         this.evaluatePrice = price;
     }
+
     public double getListPrice() {
         return this.listPrice;
     }
+
     public double getEvaluatePrice() {
         return this.evaluatePrice;
     }
+
     public int getCategory() {
         return this.catId;
     }
+
     public int getBrand() {
         return this.brandId;
     }
+
     public int getCouponId() {
         return this.couponId;
     }
+
     public double getDiscount() {
         return this.discount;
     }
+
     public int getStat() {
         return this.stat;
     }
+
     public String getImgURL() {
         return this.imgURL;
     }
+
     public String getExpireDate() {
         return this.expireDate;
     }
 
 
-//{"model": "UHuiWebApp.coupon", "pk": "001",
-// "fields": {"brandid": 1, "catid": 1, "listprice": "1", "value": "1",
-// "product": "\u9e21", "discount": "20", "stat": "onSale", "pic": null, "expiredtime": null}},
     public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
-            coupon.couponId = Integer.parseInt(jsonObject.getString("pk"));
-            JSONObject fieldObject = jsonObject.getJSONObject("fields");
-            coupon.brandId = Integer.parseInt(fieldObject.getString("brandid"));
-            coupon.catId = Integer.parseInt(fieldObject.getString("catid"));
-            coupon.listPrice = Double.parseDouble(fieldObject.getString("listprice"));
-            coupon.evaluatePrice = Double.parseDouble(fieldObject.getString("value"));
-            coupon.name = fieldObject.getString("product");
-            coupon.discount = Double.parseDouble(fieldObject.getString("discount"));
+            coupon.couponId = Integer.parseInt(jsonObject.getString("couponid"));
+            coupon.brandId = Integer.parseInt(jsonObject.getString("brandid_id"));
+            coupon.catId = Integer.parseInt(jsonObject.getString("catid_id"));
+            coupon.listPrice = Double.parseDouble(jsonObject.getString("listprice"));
+            coupon.evaluatePrice = Double.parseDouble(jsonObject.getString("value"));
+            coupon.name = jsonObject.getString("product");
+            coupon.discount = Double.parseDouble(jsonObject.getString("discount"));
 
-            String statStr = fieldObject.getString("stat");
+            String statStr = jsonObject.getString("stat");
             int coupon_stat = -1;
             if (statStr.equals("onSale"))
                 coupon_stat = STAT_ONSALE;
@@ -102,10 +112,10 @@ public class Coupon {
                 coupon_stat = STAT_STORE;
 
             coupon.stat = coupon_stat;
-            coupon.imgURL = fieldObject.getString("pic");
-            coupon.expireDate = fieldObject.getString("expiredtime");
+            coupon.imgURL = jsonObject.getString("pic");
+            coupon.expireDate = jsonObject.getString("expiredtime");
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();
         }

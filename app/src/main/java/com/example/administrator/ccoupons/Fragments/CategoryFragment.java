@@ -72,7 +72,6 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_category, container, false);
-
         convenientBanner = (ConvenientBanner) view.findViewById(R.id.category_banner);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -167,22 +166,6 @@ public class CategoryFragment extends Fragment {
 
         });
         customLoader.start();
-    }
-
-    public class SpaceItemDecoration extends RecyclerView.ItemDecoration{
-
-        private int space;
-
-        public SpaceItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-
-            outRect.left = space;
-            outRect.right = space;
-        }
     }
 
 }

@@ -146,7 +146,8 @@ public class SearchResultActivity extends AppCompatActivity {
 
         int count = 0;
         try {
-            JSONArray jsonArray = new JSONArray(resultString);
+            JSONObject jsObj = new JSONObject(resultString);
+            JSONArray jsonArray = jsObj.getJSONArray("coupons");
             for (int i = start; i < jsonArray.length(); i++, count++) {
                 if (count >= SEARCH_MAX_RESULT)
                     break;
@@ -164,7 +165,6 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultViewHolder> {
 
-        private RecyclerView mRecyclerView;
         private Context mContext;
 
         private ArrayList<Coupon> mCouponList;
@@ -205,8 +205,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            //url初始化...
-            //getImageURL()...
+
             String url = DataHolder.base_URL + coupon.getImgURL();
             ImageFetchr fetchr = new ImageFetchr(url, holder.imageView);
             fetchr.execute();

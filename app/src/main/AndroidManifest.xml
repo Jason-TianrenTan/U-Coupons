@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_LOGS" />
+
     <!-- c296a0f6c75d92cfa711456893eac5a8 -->
     <application
         android:name=".MyApp"
@@ -77,8 +78,10 @@
 
         <service android:name=".Connections.MessageGetService" />
 
-        <activity android:name=".Fragments.LocationSelectActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"  ></activity>
+        <activity
+            android:name=".Fragments.LocationSelectActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity android:name=".User.UserMyCouponActivity"></activity>
     </application>
 
 </manifest>
