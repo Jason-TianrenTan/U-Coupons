@@ -7,96 +7,75 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-<<<<<<< HEAD
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <TextView
-            style="@style/user_title_text"
-=======
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:elevation="3dp">
-        <TextView style="@style/user_title_text"
->>>>>>> origin/Czj
-            android:layout_gravity="center"
-            android:text="@string/uwal_title" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
 
         <TextView
-            style="@style/user_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="@string/uwal_title"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+
+        <TextView
             android:id="@+id/user_wallet_about"
-            android:text="说明"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginRight="10dp"
-            android:textSize="15dp"
-            android:layout_gravity="right"/>
+            android:text="说明"
+            android:textSize="15dp" />
+
+
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout style="@style/user_wrap_layout">
-<<<<<<< HEAD
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
 
-        <LinearLayout style="@style/uwal_top_layout">
+        <TextView
+            style="@style/user_text"
+            android:text="@string/uwal_ub"
+            android:textColor="@color/white"
+            android:textSize="35dp" />
 
-            <TextView
-                style="@style/user_text"
-                android:textColor="@color/white"
-                android:textSize="25dp"
-                android:text="@string/uwal_ub" />
+        <TextView
+            android:id="@+id/uwal_ub"
 
-            <TextView
-                style="@style/user_text"
-=======
-        <LinearLayout style="@style/user_top_layout">
-            <TextView style="@style/user_text"
-                android:textColor="@color/white"
-                android:textSize="28dp"
-                android:text="@string/uwal_ub"
-                android:layout_width="wrap_content"/>
-            <TextView style="@style/user_text"
->>>>>>> origin/Czj
-                android:id="@+id/uwal_ub"
-                android:textColor="@color/white"
-                android:textSize="30dp"
-                android:gravity="right"
-                android:layout_marginRight="10dp" />
+            style="@style/user_text"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="40dp" />
 
-            <ImageView
-                style="@style/user_icon_layout"
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:src="@drawable/plus" />
-        </LinearLayout>
+        <ImageView
+            style="@style/user_icon_layout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/plus" />
     </LinearLayout>
 
-<<<<<<< HEAD
     <Button
         android:id="@+id/button_purchase_ub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="5dp"
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
-        android:text="充值U币"
-        android:textSize="25dp"
         android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="充值U币"
         android:textColor="@color/white"
-        android:background="@color/colorPrimary"
-        />
-=======
-    <LinearLayout style="@style/user_wrap_layout">
-        <ImageView style="@style/user_edgeline"/>
-        <LinearLayout style="@style/user_option_layout">
-            <TextView style="@style/user_text"
-                android:text="@string/uwal_sell"/>
-            <ImageView style="@style/user_img_arrow"/>
-        </LinearLayout>
-        <ImageView style="@style/user_divider"/>
-        <LinearLayout style="@style/user_option_layout">
-            <TextView style="@style/user_text"
-                android:text="@string/uwal_recharge"/>
-            <ImageView style="@style/user_img_arrow"/>
-        </LinearLayout>
-        <ImageView style="@style/user_edgeline"/>
-    </LinearLayout>
->>>>>>> origin/Czj
+        android:textSize="25dp" />
+
 
 </LinearLayout>

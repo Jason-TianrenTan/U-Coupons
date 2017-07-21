@@ -109,7 +109,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
         });
         nickname_edittext = (ClearableEditText)findViewById(R.id.register_final_username);
 
-        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInformation",MODE_PRIVATE));
+        loginInformationManager = new LoginInformationManager(this);
         phoneString = getIntent().getStringExtra("phone_number");
         password = getIntent().getStringExtra("password");
         gender = Gender.MALE;

@@ -23,6 +23,7 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
@@ -47,6 +48,7 @@ public class UserOptionFragment extends Fragment {
         portrait = (ImageView) view.findViewById(R.id.user_portrait);
         TextView ub = (TextView) view.findViewById(R.id.user_ub);
         ub.setText(Integer.toString(DataHolder.User.UB));
+        LinearLayout toUserMyCoupons = (LinearLayout)view.findViewById(R.id.user_to_mycoupons);
         LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_to_inf);
         LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
         LinearLayout toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
@@ -61,6 +63,12 @@ public class UserOptionFragment extends Fragment {
                 getActivity().startActivity(new Intent(getActivity(), UserPortraitActivity.class));
                 getActivity().overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
                 initPortrait();
+            }
+        });
+        toUserMyCoupons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getActivity(), UserMyCouponActivity.class));
             }
         });
         toUserInfo.setOnClickListener(new View.OnClickListener() {
