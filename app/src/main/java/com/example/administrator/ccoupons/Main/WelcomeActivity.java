@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,7 +20,28 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
+import com.mob.MobApplication;
+import com.mob.MobSDK;
+
 import org.json.JSONObject;
+
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 public class WelcomeActivity extends AppCompatActivity {
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
@@ -75,10 +97,14 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        //MobSDK.init(this, "");
+
         login = (Button) findViewById(R.id.welcome_login_button);
         register = (Button) findViewById(R.id.welcome_register_button);
         login.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +134,9 @@ public class WelcomeActivity extends AppCompatActivity {
             password = loginInformationManager.getPassword();
             requestLogin(url, username, password);
         }
+
+
+
     }
 
     //登录
@@ -123,5 +152,9 @@ public class WelcomeActivity extends AppCompatActivity {
         login.startAnimation(animation);
         register.startAnimation(animation);
     }
+
+
+
+
 }
 

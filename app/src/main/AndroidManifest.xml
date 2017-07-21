@@ -3,6 +3,9 @@
     package="com.example.administrator.ccoupons">
 
     <service android:name="com.amap.api.location.APSService" />
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 用于访问GPS定位 -->
@@ -29,6 +32,11 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -41,6 +49,20 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c296a0f6c75d92cfa711456893eac5a8" />
+
+
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="1f9b9ca305a93"/>
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="e890303b7e846ea8defa4cc59fdb9887" />
+
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name=".Register.RegisterActivity"
