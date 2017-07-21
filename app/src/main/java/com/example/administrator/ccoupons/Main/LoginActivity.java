@@ -29,6 +29,7 @@ import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONObject;
@@ -194,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
-        mergeHeight = dp2px(120);
+        mergeHeight = PixelUtils.dp2px(this, 120);
 
         //
         SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
@@ -265,10 +266,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
-    }
 
     @Override
     public void onBackPressed() {

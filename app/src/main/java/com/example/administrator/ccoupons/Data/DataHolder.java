@@ -7,11 +7,11 @@ import com.example.administrator.ccoupons.R;
  */
 
 public class DataHolder {
-    public static final String base_URL = "http://172.27.35.1";
-    public static final String login_URL = ":8000/post_loginForAndroid";
-    public static final String register_URL = ":8000/post_signUpForAndroid";
-    public static final String requestMsg_URL = ":8000/post_sendMessage";
-    public static final String requestSearch_URL = ":8000/post_searchForAndroid";
+    public static final String base_URL = "http://192.168.204.83:1080";
+    public static final String login_URL = "/post_loginForAndroid";
+    public static final String register_URL = "/post_signUpForAndroid";
+    public static final String requestMsg_URL = "/post_sendMessage";
+    public static final String requestSearch_URL = "/post_searchForAndroid";
 
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
@@ -24,9 +24,9 @@ public class DataHolder {
     }
 
     public static class Categories {
-        public static String[] nameList = "类别1 类别2 类别3 类别4 类别5 类别6 类别7 类别8 类别9".split(" ");
-        public static int[] covers = {R.drawable.category1, R.drawable.category2, R.drawable.category3, R.drawable.category4,
-                R.drawable.category5, R.drawable.category6, R.drawable.category7, R.drawable.category8, R.drawable.category9};
+        public static String[] nameList = "生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
+        public static int[] covers = {R.drawable.category_daily, R.drawable.category_decorate, R.drawable.category_sports, R.drawable.category_furnitures,
+                R.drawable.category_electronics, R.drawable.category_cloths, R.drawable.category_travel, R.drawable.category_food};
     }
 
     public static class History {

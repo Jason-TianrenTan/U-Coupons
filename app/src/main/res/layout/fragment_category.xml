@@ -92,6 +92,8 @@
                         android:layout_height="150dp" />
 
                     <android.support.v7.widget.RecyclerView
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
                         android:id="@+id/category_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />

@@ -5,6 +5,7 @@ import com.amap.api.location.AMapLocation;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.*;
 import android.support.v4.view.LinkagePager;
 import android.support.v7.widget.GridLayoutManager;
@@ -104,7 +105,7 @@ public class CategoryFragment extends Fragment {
         initBanner();
         initLocation();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 5);//测试
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);//测试
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);
@@ -168,5 +169,20 @@ public class CategoryFragment extends Fragment {
         customLoader.start();
     }
 
+    public class SpaceItemDecoration extends RecyclerView.ItemDecoration{
+
+        private int space;
+
+        public SpaceItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+            outRect.left = space;
+            outRect.right = space;
+        }
+    }
 
 }

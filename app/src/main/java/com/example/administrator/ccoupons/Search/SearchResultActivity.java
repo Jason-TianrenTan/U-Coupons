@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Category;
+import com.example.administrator.ccoupons.Connections.ImageFetchr;
 import com.example.administrator.ccoupons.Connections.SearchThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryAdapter;
@@ -53,14 +54,15 @@ public class SearchResultActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MessageType.CONNECTION_ERROR:
                     Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-
+                    customDialog.dismiss();
                     break;
                 case MessageType.CONNECTION_TIMEOUT:
                     Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-
+                    customDialog.dismiss();
                     break;
                 case MessageType.CONNECTION_SUCCESS:
                     parseMessage(thread.getResponse());
+                    customDialog.dismiss();
                     break;
             }
         }
@@ -205,7 +207,9 @@ public class SearchResultActivity extends AppCompatActivity {
         private void setImage(ResultViewHolder holder, Coupon coupon) {
             //url初始化...
             //getImageURL()...
-            Glide.with(mContext).load(R.mipmap.huaji).into(holder.imageView);
+            String url = DataHolder.base_URL + coupon.getImgURL();
+            ImageFetchr fetchr = new ImageFetchr(url, holder.imageView);
+            fetchr.execute();
         }
 
         @Override
