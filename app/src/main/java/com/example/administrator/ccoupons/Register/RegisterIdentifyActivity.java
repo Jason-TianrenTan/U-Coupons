@@ -43,7 +43,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     TextInputLayout inputLayout;
 
     private String phoneString;
-    private String[] AlertStrings = "不能含有非法字符,长度必须为6位".split(",");
+    private String[] AlertStrings = "不能含有非法字符,长度必须为4位".split(",");
     private boolean reget_permission = false;
     public static final int COUNTDOWN_TIME = 20;
 

@@ -36,6 +36,19 @@ public class Coupon {
 
     }
 
+    public Coupon(String name, int couponId, int brandId, int catId, double listPrice, double evaluatePrice, double discount, int stat, String imgURL, String expireDate) {
+        this.name = name;
+        this.couponId = couponId;
+        this.brandId = brandId;
+        this.catId = catId;
+        this.listPrice = listPrice;
+        this.evaluatePrice = evaluatePrice;
+        this.discount = discount;
+        this.stat = stat;
+        this.imgURL = imgURL;
+        this.expireDate = expireDate;
+    }
+
     public void setName(String str) {
         this.name = str;
     }

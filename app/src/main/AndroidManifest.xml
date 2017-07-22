@@ -31,7 +31,6 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -49,11 +48,9 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c296a0f6c75d92cfa711456893eac5a8" />
-
-
         <meta-data
             android:name="Mob-AppKey"
-            android:value="1f9b9ca305a93"/>
+            android:value="1f9b9ca305a93" />
         <meta-data
             android:name="Mob-AppSecret"
             android:value="e890303b7e846ea8defa4cc59fdb9887" />
@@ -63,7 +60,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".Register.RegisterActivity"
             android:fitsSystemWindows="true"
@@ -106,6 +102,7 @@
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
+        <activity android:name=".Main.CoupoonShowerActivity"></activity>
     </application>
 
 </manifest>
