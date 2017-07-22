@@ -30,9 +30,9 @@ public class RegisterCheck {
 
     public int alertIdentifyCode(String codeStr) {
         char[] cArray = codeStr.toCharArray();
-        if (codeStr.length() < 6)
+        if (codeStr.length() < 4)
             return AlertType.LENGTH_ERROR;
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 4; i++)
             if (cArray[i] < '0' || cArray[i] > '9')
                 return AlertType.ILLEGAL_CHAR;
         return AlertType.NO_ERROR;

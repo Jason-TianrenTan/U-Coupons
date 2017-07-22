@@ -11,7 +11,7 @@ public class DataHolder {
     public static final String SID = "ACd40e7f8fa4c7538dbf15d38354f096ec";
     public static final String TOKEN = "4f6f13d3a03bccff6aa95333ed2389b5";
 
-    static final String localBase = "http://192.168.207.221:8000";
+    static final String localBase = "http://172.17.223.1:8000";
     static final String teamBase = "http://192.168.204.83:1080";
     public static final String base_URL = localBase;
     public static final String login_URL = "/post_loginForAndroid";
