@@ -71,6 +71,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 case SMS_FAILED:
                     inputLayout.setErrorEnabled(true);
                     inputLayout.setError("验证码错误!");
+                    System.out.println("Error!!!!!!!!!!!!!!!!!");
                     break;
                 case SMS_SUCCESS:
                     Intent intent = new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class);
@@ -129,22 +130,20 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {//返回支持发送验证码的国家列表
                     Toast.makeText(getApplicationContext(), "获取国家列表成功", Toast.LENGTH_SHORT).show();
 
+                }
+            } else {
+                if (verify_cord) {
+                    ((Throwable) data).printStackTrace();
+                    Message sms_msg = new Message();
+                    sms_msg.what = SMS_FAILED;
+                    SMSVerifyHandler.sendMessage(sms_msg);
                 } else {
-                    if (verify_cord) {
-                        ((Throwable) data).printStackTrace();
-                        Message sms_msg = new Message();
-                        sms_msg.what = SMS_FAILED;
-                        SMSVerifyHandler.sendMessage(sms_msg);
-                    }
-
-                    else {
-                        Toast.makeText(getApplicationContext(), "验证码获取失败!", Toast.LENGTH_SHORT).show();
-                    }
-
+                    Toast.makeText(getApplicationContext(), "验证码获取失败!", Toast.LENGTH_SHORT).show();
                 }
 
-
             }
+
+
         }
     };
 
@@ -197,6 +196,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 } else {
                     String iCord = editText.getText().toString().trim();
                     SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
+                    verify_cord = true;
                     /*
                     */
                 }
