@@ -109,7 +109,6 @@ public class UserPortraitActivity extends AppCompatActivity {
                             }
                         });
                         mBottomSheetDialog.dismiss();
-                        finish();
                     }
                 });
                 return true;

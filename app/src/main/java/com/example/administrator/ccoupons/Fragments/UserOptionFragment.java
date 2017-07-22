@@ -32,6 +32,7 @@ import com.example.administrator.ccoupons.User.UserWalletActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -62,7 +63,6 @@ public class UserOptionFragment extends Fragment {
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), UserPortraitActivity.class));
                 getActivity().overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
-                initPortrait();
             }
         });
         toUserMyCoupons.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +129,12 @@ public class UserOptionFragment extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeFile(s);
             portrait.setImageBitmap(bitmap);
         } else portrait.setImageResource(R.drawable.testportrait);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initPortrait();
     }
 }
 /*

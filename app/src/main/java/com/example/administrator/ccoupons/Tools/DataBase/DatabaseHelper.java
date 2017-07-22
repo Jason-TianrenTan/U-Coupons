@@ -19,16 +19,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "content text, "
             + "timestamp real)";
 
+    public static final String CREATE_COUPON = "create table Coupon ("
+            + "id integer primary key, "
+            + "name text, "
+            + "brandId integer, "
+            + "catId integer, "
+            + "listPrice real, "
+            + "evaluatePrice real, "
+            + "discount real, "
+            + "stat integer, "
+            + "imgURL text, "
+            + "expireDate text, "
+            + "limit text)";
+
     private Context mContext;
+    private String dbName;
 
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         mContext = context;
+        dbName = name;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_MASSAGE);
+        //db.execSQL(CREATE_MASSAGE);
+        if (dbName.equals("Coupon.db")){
+            db.execSQL(CREATE_COUPON);
+        }
         Toast.makeText(mContext, "Create succeeded", Toast.LENGTH_SHORT).show();
     }
 

@@ -141,6 +141,7 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());
+
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         searchText.setOnClickListener(new View.OnClickListener() {

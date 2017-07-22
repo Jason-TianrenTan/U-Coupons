@@ -88,4 +88,6 @@
     <string name="coupon_mine_aboutto_expire_title">我的优惠券即将过期</string>
     <string name="coupon_system_title">系统消息</string>
 
+    <string name="coupon_info">优惠券详情</string>
+
 </resources>
