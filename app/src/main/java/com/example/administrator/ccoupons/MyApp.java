@@ -5,7 +5,9 @@ package com.example.administrator.ccoupons;
  */
 import android.app.Application;
 
-public class MyApp extends Application {
+import com.mob.MobApplication;
+
+public class MyApp extends MobApplication {
 
     private static MyApp instance = null;
 

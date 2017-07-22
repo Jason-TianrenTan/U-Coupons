@@ -186,6 +186,7 @@ public class SearchActivity extends AppCompatActivity {
     private void search(String requestStr) {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
+        mHistoryList.remove(mHistoryList.size() - 2);
         mHistoryList.add(0, requestStr);
         //还需要更新缓存，添加内容
         adapter.notifyDataSetChanged();
@@ -231,7 +232,7 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == HISTORY_MAX_RESULT)
+            if (position == (mHistoryList.size() - 1))
                 return CLEAR_TYPE;
             return HISTORY_TYPE;
         }
@@ -259,13 +260,12 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String historyString = mHistoryList.get(position);
-            if (position != HISTORY_MAX_RESULT) {
+            System.out.println("String = " + historyString + ", pos = " + position);
+            if (position != (mHistoryList.size() - 1)) {
                 HistoryViewHolder viewHolder = (HistoryViewHolder) holder;
                 viewHolder.textView.setText(historyString);
                 //   holder.imageView.
                 viewHolder.imageView.setImageResource(R.drawable.search_icon_big);
-            } else {
-
             }
         }
 

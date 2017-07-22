@@ -20,8 +20,8 @@ public class RegisterPasswordActivity extends AppCompatActivity {
 
     private PasswordToggleEditText inputPass, confirmPass;
     private RegisterCheck checker = new RegisterCheck();
-    private String[] errorStrings = "不能含有非法字符,长度必须为6~16位".split(",");
-    private boolean valid = true;
+    private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,密码强度太弱".split(",");
+    private boolean valid = false;
     private TextInputLayout firstlayout, confirmLayout;
     private String phoneString,password;
     @Override
@@ -75,16 +75,25 @@ public class RegisterPasswordActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String pass = inputPass.getText().toString();
                 int err_type = checker.alertPassword(pass);
-                if (err_type != AlertType.NO_ERROR) {
+                if (err_type != AlertType.NO_ERROR && err_type!=  AlertType.TOO_SIMPLE) {
                     EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.red));
                     firstlayout.setErrorEnabled(true);
                     firstlayout.setError(errorStrings[err_type - 1]);
                     valid = false;
                 } else {
-                    EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.colorAccent));
-                    firstlayout.setError("");
-                    firstlayout.setErrorEnabled(false);
-                    valid = true;
+                    if (err_type == AlertType.NO_ERROR) {
+                        //密码合格
+                        EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.colorAccent));
+                        firstlayout.setError("");
+                        firstlayout.setErrorEnabled(false);
+                        valid = true;
+                    }
+                    else {
+                        //强度不够
+                        EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.skyblue));
+                        firstlayout.setErrorEnabled(true);
+                        firstlayout.setError(errorStrings[err_type - 1]);
+                    }
                 }
             }
         });
@@ -97,9 +106,14 @@ public class RegisterPasswordActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
                 String pass = confirmPass.getText().toString();
                 int err_type = checker.alertPassword(pass);
-                if (err_type != AlertType.NO_ERROR) {
+                if (err_type != AlertType.NO_ERROR && err_type!=  AlertType.TOO_SIMPLE) {
                     EditTextTools.setCursorColor(confirmPass, getResources().getColor(R.color.red));
                     confirmLayout.setError(errorStrings[err_type - 1]);
                     valid = false;
@@ -114,11 +128,6 @@ public class RegisterPasswordActivity extends AppCompatActivity {
                         valid = false;
                     }
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
     }

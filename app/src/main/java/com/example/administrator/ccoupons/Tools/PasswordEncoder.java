@@ -12,17 +12,22 @@ public class PasswordEncoder {
 
     public String EncodeByMd5(String str) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
-        str += "uhui";
+        str += "UHui";
         md5.update(str.getBytes());
         byte[] m = md5.digest(); //加密
-        return getString(m);
+        return toHex(m);
     }
 
-    private static String getString(byte[] b) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < b.length; i++) {
-            sb.append(b[i]);
+    public static final String toHex(byte hash[]) {
+        StringBuffer buf = new StringBuffer(hash.length * 2);
+        int i;
+
+        for (i = 0; i < hash.length; i++) {
+            if (((int) hash[i] & 0xff) < 0x10) {
+                buf.append("0");
+            }
+            buf.append(Long.toString((int) hash[i] & 0xff, 16));
         }
-        return sb.toString();
+        return buf.toString();
     }
 }

@@ -23,11 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.LoginThread;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONObject;
@@ -36,7 +38,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
 
-    private static String url = "http://192.168.204.83:8000/post_loginForAndroid";
+    private static String url = DataHolder.base_URL + DataHolder.login_URL;
     private LoginThread thread;
     private Button login;
     private Toolbar toolbar;
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
+
             switch (msg.what) {
                 case MessageType.CONNECTION_ERROR:
                     Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
@@ -56,6 +59,9 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case MessageType.CONNECTION_SUCCESS:
                     parseMessage(thread.getResponse());
+                    break;
+                case MessageType.REENABLE_LOGIN:
+                    login.setEnabled(true);
                     break;
             }
         }
@@ -79,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String userId = jsonObject.getString("userid");
+                System.out.println("Response = " + response);
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
@@ -92,12 +99,26 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } catch (Exception e) {
+                Message msg = new Message();
+                msg.what = MessageType.REENABLE_LOGIN;
+                handler.sendMessage(msg);
                 e.printStackTrace();
             }
 
-        } else {
-            System.out.println("Login failed");
-            Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if (response.indexOf("error") != -1) {
+                System.out.println("Login failed");
+                Message msg = new Message();
+                msg.what = MessageType.REENABLE_LOGIN;
+                handler.sendMessage(msg);
+                Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Message msg = new Message();
+                msg.what = MessageType.CONNECTION_ERROR;
+                handler.sendMessage(msg);
+            }
         }
     }
 
@@ -176,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
-        mergeHeight = dp2px(120);
+        mergeHeight = PixelUtils.dp2px(this, 120);
 
         //
         SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
@@ -247,10 +268,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
-    }
 
     @Override
     public void onBackPressed() {

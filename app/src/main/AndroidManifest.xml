@@ -3,6 +3,9 @@
     package="com.example.administrator.ccoupons">
 
     <service android:name="com.amap.api.location.APSService" />
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 用于访问GPS定位 -->
@@ -25,16 +28,20 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <!-- c296a0f6c75d92cfa711456893eac5a8 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MyApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -42,6 +49,20 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c296a0f6c75d92cfa711456893eac5a8" />
+
+
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="1f9b9ca305a93"/>
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="e890303b7e846ea8defa4cc59fdb9887" />
+
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name=".Register.RegisterActivity"
@@ -61,7 +82,7 @@
         <activity
             android:name=".Search.SearchResultActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".User.UserPortraitActivity"/>
+        <activity android:name=".User.UserPortraitActivity" />
         <activity android:name=".User.UserInformationActivity" />
         <activity android:name=".Main.ResetPasswordActivity" />
         <activity android:name=".Register.RegisterIdentifyActivity" />
@@ -78,8 +99,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".Connections.MessageGetService"/>
 
+        <service android:name=".Connections.MessageGetService" />
+
+        <activity
+            android:name=".Fragments.LocationSelectActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity android:name=".User.UserMyCouponActivity" />
     </application>
 
 </manifest>

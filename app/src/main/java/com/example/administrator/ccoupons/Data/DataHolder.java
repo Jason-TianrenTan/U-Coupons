@@ -7,33 +7,39 @@ import com.example.administrator.ccoupons.R;
  */
 
 public class DataHolder {
+
+    public static final String SID = "ACd40e7f8fa4c7538dbf15d38354f096ec";
+    public static final String TOKEN = "4f6f13d3a03bccff6aa95333ed2389b5";
+
+    static final String localBase = "http://192.168.207.221:8000";
+    static final String teamBase = "http://192.168.204.83:1080";
+    public static final String base_URL = localBase;
+    public static final String login_URL = "/post_loginForAndroid";
+    public static final String register_URL = "/post_signUpForAndroid";
+    public static final String requestMsg_URL = "/post_sendMessage";
+    public static final String requestSearch_URL = "/post_searchForAndroid";
+
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
         public static String[] detailList = "Title1,Title2,Title3,Title4,Title5,Title6,Title7".split(",");
         public static int[] covers = {R.mipmap.ic_cover_1, R.mipmap.ic_cover_2, R.mipmap.ic_cover_3, R.mipmap.ic_cover_4,
                 R.mipmap.ic_cover_5, R.mipmap.ic_cover_6, R.mipmap.ic_cover_7};
     }
+    public static class Cities {
+        public static String[] cityList = "北京 上海 广州 杭州 成都 苏州 深圳 南京 天津 重庆 厦门 西安".split(" ");
+    }
 
-    public static class Coupons {
-        public static double[] priceList = {119.99,233.3,399.99,499.99,566.66,666.66,789,899.99,1999.99,2999.9,5000.00,1246.00,6668,8888,10000};
-        public static String[] nameList= ("Naruto Shippuden,Dota2,League of Legends,Diablo III,World of Warcraft," +
-                "Tokyo Ghoul,Starcraft II,C++,C#,Java,Python,PHP,iOS,Android").split(",");
-        public static String[] detailList = ("火影忍者疾风传,刀塔2,英雄联盟,暗黑破坏神3,魔兽世界,东京喰种,星际争霸II," +
-                ".cpp,.cs,.java,.py,.php,.swift,.apk").split(",");
-        public static int[] resIds = {R.mipmap.naruto,R.mipmap.dota2,R.mipmap.lol,R.mipmap.diablo3,R.mipmap.wow,R.mipmap.tokyoghoul,
-            R.mipmap.sc2,R.mipmap.cpp,R.mipmap.csharp,R.mipmap.java,R.mipmap.python,R.mipmap.php,R.mipmap.apple,R.mipmap.android};
-}
-
-public static class Categories {
-    public static String[] nameList = "类别1 类别2 类别3 类别4 类别5 类别6 类别7 类别8 类别9".split(" ");
-    public static int[] covers = {R.drawable.category1, R.drawable.category2, R.drawable.category3, R.drawable.category4,
-            R.drawable.category5, R.drawable.category6, R.drawable.category7, R.drawable.category8, R.drawable.category9};
-}
+    public static class Categories {
+        public static String[] nameList = "生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
+        public static int[] covers = {R.drawable.category_daily, R.drawable.category_decorate, R.drawable.category_sports, R.drawable.category_furnitures,
+                R.drawable.category_electronics, R.drawable.category_cloths, R.drawable.category_travel, R.drawable.category_food};
+    }
 
     public static class History {
         public static String requestData(int index) {
             return historyList[index];
         }
+
         public static String[] historyList = ("history1,h2,str3,a4,c5,v6,k7,s8,o9,i10,g234").split(",");
     }
 
@@ -48,7 +54,7 @@ public static class Categories {
 
     public static class MessageClasses {
         public static int[] strings = {R.string.coupon_bought_title, R.string.coupon_abouttoexpire_title,
-            R.string.coupon_expired_title, R.string.coupon_followed_abouttoexpire_title, R.string.coupon_mine_aboutto_expire_title,
-            R.string.coupon_system_title};
+                R.string.coupon_expired_title, R.string.coupon_followed_abouttoexpire_title, R.string.coupon_mine_aboutto_expire_title,
+                R.string.coupon_system_title};
     }
 }

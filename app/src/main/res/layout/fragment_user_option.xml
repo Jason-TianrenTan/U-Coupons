@@ -45,7 +45,8 @@
             <LinearLayout style="@style/user_wrap_layout"
                 android:layout_marginTop="20dp">
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout style="@style/user_option_layout"
+                    android:id="@+id/user_to_mycoupons">
 
                     <ImageView
                         style="@style/user_icon_layout"
