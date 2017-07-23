@@ -93,7 +93,8 @@
 
                 <ImageView style="@style/user_edgeline" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout style="@style/user_option_layout"
+                    android:id="@+id/user_sell">
 
                     <ImageView
                         style="@style/user_icon_layout"
@@ -108,7 +109,8 @@
 
                 <ImageView style="@style/user_divider" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout style="@style/user_option_layout"
+                    android:id="@+id/user_buy">
 
                     <ImageView
                         style="@style/user_icon_layout"
@@ -123,7 +125,8 @@
 
                 <ImageView style="@style/user_divider" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout style="@style/user_option_layout"
+                    android:id="@+id/user_follow">
 
                     <ImageView
                         style="@style/user_icon_layout"

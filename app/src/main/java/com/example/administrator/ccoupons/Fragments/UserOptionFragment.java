@@ -1,16 +1,12 @@
 package com.example.administrator.ccoupons.Fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,22 +14,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.User.UserBuyCoupons;
+import com.example.administrator.ccoupons.User.UserFollowCoupon;
+import com.example.administrator.ccoupons.User.UserSellCoupons;
 import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 import com.example.administrator.ccoupons.User.UserWalletActivity;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by CZJ on 2017/7/13.
@@ -54,6 +46,9 @@ public class UserOptionFragment extends Fragment {
         LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
         LinearLayout toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
         LinearLayout logoff = (LinearLayout) view.findViewById(R.id.user_logoff);
+        LinearLayout toUserSell = (LinearLayout) view.findViewById(R.id.user_sell);
+        LinearLayout toUserBuy = (LinearLayout) view.findViewById(R.id.user_buy);
+        LinearLayout toUserFollow = (LinearLayout) view.findViewById(R.id.user_follow);
         informationManager = new LoginInformationManager(getActivity());
         initPortrait();
 
@@ -87,6 +82,24 @@ public class UserOptionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), UserSettingActivity.class));
+            }
+        });
+        toUserSell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), UserSellCoupons.class));
+            }
+        });
+        toUserBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), UserBuyCoupons.class));
+            }
+        });
+        toUserFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), UserFollowCoupon.class));
             }
         });
         logoff.setOnClickListener(new View.OnClickListener() {
