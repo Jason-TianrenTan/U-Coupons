@@ -140,8 +140,4 @@ public class Coupon implements Serializable{
         return coupon;
     }
 
-    public static Coupon getInstance() {
-        Coupon coupon = new Coupon();
-        coupon.name = "沉重"
-    }
 }

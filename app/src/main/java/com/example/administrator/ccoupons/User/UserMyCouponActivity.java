@@ -96,6 +96,14 @@ public class UserMyCouponActivity extends AppCompatActivity {
         unusedList = new ArrayList<Coupon>();
         onsaleList = new ArrayList<Coupon>();
         notonsaleList = new ArrayList<Coupon>();
+
+        //TODO:init coupons
+        for (int i = 0; i < 10; i++) {
+            Coupon coupon = new Coupon();
+            unusedList.add(coupon);
+            onsaleList.add(coupon);
+            notonsaleList.add(coupon);
+        }
         if (unusedList.size() > 0) {
             UnusedFragment.setData(unusedList);
             fr1 = UnusedFragment;
@@ -108,7 +116,24 @@ public class UserMyCouponActivity extends AppCompatActivity {
             NotOnSaleFragment.setData(notonsaleList);
             fr3 = NotOnSaleFragment;
         }
-        //TODO:init Coupons
+    }
+
+    private void selectPage(int position) {
+        slideTo(position);
+        title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+        title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+        title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+        switch (position) {
+            case 0:
+                title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                break;
+            case 1:
+                title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                break;
+            case 2:
+                title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                break;
+        }
     }
 
     private void initTabs() {
@@ -118,7 +143,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
         frList.add(fr2);
         frList.add(fr3);
         MyCouponFragmentAdapter frAdapter = new MyCouponFragmentAdapter(fragmentManager, frList);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.mycoupon_viewpager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.mycoupon_viewpager);
         viewPager.setAdapter(frAdapter);
         viewPager.setCurrentItem(0);
 
@@ -131,26 +156,36 @@ public class UserMyCouponActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                slideTo(position);
-                title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
-                title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
-                title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
-                switch (position) {
-                    case 0:
-                        title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                        break;
-                    case 1:
-                        title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                        break;
-                    case 2:
-                        title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                        break;
-                }
+                selectPage(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+        title_unused.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPage(0);
+                viewPager.setCurrentItem(0);
+            }
+        });
+
+        title_onsale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPage(1);
+                viewPager.setCurrentItem(1);
+            }
+        });
+
+        title_nonsale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPage(2);
+                viewPager.setCurrentItem(2);
             }
         });
 
