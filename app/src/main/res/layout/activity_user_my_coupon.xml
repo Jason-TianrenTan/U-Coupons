@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
+        app:theme="@style/MainToolBarStyle"
         app:layout_scrollFlags="scroll|enterAlways|snap">
 
         <TextView
@@ -26,6 +27,49 @@
 
 
     </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whitesmoke"
+        android:paddingBottom="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/ViewPageHeaderStyle"
+            android:id="@+id/unused_title_text"
+            android:text="未使用"
+            />
+        <TextView
+            style="@style/ViewPageHeaderStyle"
+            android:id="@+id/onsale_title_text"
+            android:text="已上架"
+            />
+        <TextView
+            style="@style/ViewPageHeaderStyle"
+            android:id="@+id/nonsale_title_text"
+            android:text="未上架"
+            />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/whitesmoke"/>
+
+        <LinearLayout
+            android:id="@+id/mycoupon_scrollbar"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp" />
+    </FrameLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mycoupon_viewpager"

@@ -29,6 +29,7 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
+import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomDialog;
@@ -197,11 +198,19 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ResultViewHolder holder, int position) {
-            Coupon coupon = mCouponList.get(position);
+            final Coupon coupon = mCouponList.get(position);
             setImage(holder, coupon);
             holder.nameText.setText(coupon.getName());
             holder.detailText.setText(coupon.getExpireDate());
             holder.priceText.setText(coupon.getListPrice() + "");
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(SearchResultActivity.this, CouponDetailActivity.class);
+                    intent.putExtra("Coupon", coupon);
+                    startActivity(intent);
+                }
+            });
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {

@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.*;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,6 +51,8 @@ public class LocationSelectActivity extends AppCompatActivity {
     private ArrayList<String> pop_cityList = new ArrayList<>();
     private RecyclerView popCityRecyclerView, recyclerView;
     private CardView gpsCardView;
+
+    private int[] CharIndex = new int[26];
     private Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
@@ -101,11 +105,15 @@ public class LocationSelectActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.citylist_recyclerview);
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        final NestedScrollView scrollView = (NestedScrollView)findViewById(R.id.location_nestscrollview);
-        gpsCardView = (CardView)findViewById(R.id.current_gps_cardview);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        final NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.location_nestscrollview);
+        gpsCardView = (CardView) findViewById(R.id.current_gps_cardview);
 
 
         pop_cityList = getPopularCityList();
@@ -120,8 +128,8 @@ public class LocationSelectActivity extends AppCompatActivity {
             public void onLetterChange(String letter) {
                 char[] arr = letter.toCharArray();
                 char ch = arr[0];
-                int index = (int) ch - 'A';
-                scroll(scrollView, index * 5);
+                int index = ch - 'A';
+                scroll(scrollView, index);
             }
 
             @Override
@@ -133,10 +141,10 @@ public class LocationSelectActivity extends AppCompatActivity {
 
     private void scroll(NestedScrollView scrollView, int index) {
         int ViewHeight = popCityRecyclerView.getHeight() + gpsCardView.getHeight();
-        int y = ViewHeight + index * PixelUtils.dp2px(this, 55);
-        scrollView.smoothScrollTo(0 ,y);
-        System.out.println("y = " + PixelUtils.px2dp(this, y));
+        int y = ViewHeight + CharIndex[index] * PixelUtils.dp2px(this, 45) + PixelUtils.dp2px(this, CharIndex[index]);
+        scrollView.smoothScrollTo(0, y);
     }
+
     private void startCountDown() {
         customLoader = new CustomLoader(5, handler, this);
         customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
@@ -159,23 +167,29 @@ public class LocationSelectActivity extends AppCompatActivity {
 
     private ArrayList<String> getPopularCityList() {
         ArrayList<String> arrayList = new ArrayList<>();
+        for (int i = 0; i < DataHolder.Cities.popCityList.length; i++) {
+            String str = DataHolder.Cities.popCityList[i];
+            arrayList.add(str);
+        }
+        return arrayList;
+    }
+
+
+    //获取城市列表
+    private ArrayList<String> getCityList() {
+
+        ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < DataHolder.Cities.cityList.length; i++) {
             String str = DataHolder.Cities.cityList[i];
+            if (str.length() == 1) {//是字母
+                char ch = str.charAt(0);
+                CharIndex[ch - 'A'] = i;
+
+            }
             arrayList.add(str);
         }
         return arrayList;
     }
-
-    private ArrayList<String> getCityList() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0; i < 5 * 26; i++) {
-            int index = i / 5;
-            String str = "City No." + (char) (index + 'a');
-            arrayList.add(str);
-        }
-        return arrayList;
-    }
-
 
 
     public class PCityAdapter extends RecyclerView.Adapter<PCityAdapter.PCityViewHolder> {
@@ -222,7 +236,6 @@ public class LocationSelectActivity extends AppCompatActivity {
             return mCityList.size();
         }
     }
-
 
 
 }

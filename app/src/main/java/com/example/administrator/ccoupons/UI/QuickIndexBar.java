@@ -19,8 +19,7 @@ import com.example.administrator.ccoupons.R;
 public class QuickIndexBar extends View {
 
     private String[] letterArr = {"热门", "A", "B", "C", "D", "E", "F", "G", "H",
-            "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
-            "V", "W", "X", "Y", "Z"};
+             "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "W", "X", "Y", "Z"};
 
     public QuickIndexBar(Context context) {
         this(context, null);

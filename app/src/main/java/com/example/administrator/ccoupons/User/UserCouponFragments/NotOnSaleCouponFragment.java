@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
@@ -19,13 +20,14 @@ import java.util.ArrayList;
  */
 //未上架的优惠券
 public class NotOnSaleCouponFragment extends Fragment{
+
+
     private UserCouponInfoAdapter adapter;
     private ArrayList<Coupon> mCouponList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_user_notonsalecoupon, container, false);
-
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.notonsale_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);

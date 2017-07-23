@@ -25,24 +25,6 @@ import com.mob.MobSDK;
 
 import org.json.JSONObject;
 
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
-
 public class WelcomeActivity extends AppCompatActivity {
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
     private LoginInformationManager loginInformationManager;
@@ -110,7 +92,7 @@ public class WelcomeActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));//为了能直接登录而修改了
+                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
                 finish();
             }
         });

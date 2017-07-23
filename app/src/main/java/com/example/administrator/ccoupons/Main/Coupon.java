@@ -2,11 +2,13 @@ package com.example.administrator.ccoupons.Main;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/7/11 0011.
  */
 
-public class Coupon {
+public class Coupon implements Serializable{
 
     private static final int STAT_ONSALE = 1;
     private static final int STAT_EXPIRED = 2;

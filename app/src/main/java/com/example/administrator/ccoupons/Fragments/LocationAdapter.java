@@ -1,6 +1,8 @@
 package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,13 +28,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
     private Context mContext;
     private ArrayList<String> mLocationList;
-
     public static class LocationViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        CardView rootView;
+        LinearLayout rootView;
+
         public LocationViewHolder(View view) {
             super(view);
-            rootView = (CardView)view;
+            rootView = (LinearLayout) view;
             textView = (TextView) view.findViewById(R.id.city_name_textview);
         }
     }
@@ -64,6 +66,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public void onBindViewHolder(LocationViewHolder holder, int position) {
         String Location = mLocationList.get(position);
         holder.textView.setText(Location);
+        if (Location.length() == 1) {
+            holder.textView.setTextColor(ContextCompat.getColor(mContext.getApplicationContext(),R.color.colorPrimary));
+        }
     }
 
     @Override
