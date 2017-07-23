@@ -41,7 +41,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
             couponEvalText = (TextView)view.findViewById(R.id.coupon_evalprice_text);
             couponNameText = (TextView)view.findViewById(R.id.usercoupon_name_text);
             couponDetailText = (TextView)view.findViewById(R.id.coupon_detail_text);
-            couponExpireText = (TextView)view.findViewById(R.id.coupon_expire_date);
+            couponExpireText = (TextView)view.findViewById(R.id.coupon_detail_expire_date);
         }
     }
 

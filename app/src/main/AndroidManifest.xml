@@ -90,7 +90,7 @@
         <activity android:name=".User.UserSettingActivity" />
 
 
-        <!--
+
         <activity android:name=".Main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -98,19 +98,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Purchase.CouponDetailActivity" /> -->
-
-        <!--测试版本-->
-        <activity android:name=".Main.WelcomeActivity">
-
-        </activity>
-        <activity android:name=".Purchase.CouponDetailActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Purchase.CouponDetailActivity" />
 
 
         <activity

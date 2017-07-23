@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="360dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_cover_1" />
+                android:background="@color/gainsboro"/>
 
             <View
                 android:id="@+id/anchor"
@@ -45,7 +45,7 @@
 
 
                     <TextView
-                        android:id="@+id/coupon_name"
+                        android:id="@+id/coupon_detail_name_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
@@ -53,7 +53,7 @@
                         android:textSize="28dp" />
 
                     <TextView
-                        android:id="@+id/coupon_list_price"
+                        android:id="@+id/coupon_detail_list_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
@@ -62,7 +62,7 @@
                         android:textSize="40dp" />
 
                     <TextView
-                        android:id="@+id/coupon_evaluate_price"
+                        android:id="@+id/coupon_detail_evaluate_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
@@ -85,7 +85,7 @@
                             android:text="优惠额度" />
 
                         <TextView
-                            android:id="@+id/coupon_discount_price"
+                            android:id="@+id/coupon_detail_discount_price"
                             style="@style/coupon_detail_text"
                             android:text="¥198以上" />
                     </LinearLayout>
@@ -108,7 +108,7 @@
                             android:text="商家名：" />
 
                         <TextView
-                            android:id="@+id/coupon_business_name"
+                            android:id="@+id/coupon_detail_business_name"
                             style="@style/coupon_detail_text"
                             android:text="C4-725" />
                     </LinearLayout>
@@ -128,7 +128,7 @@
                             android:text="使用期限：" />
 
                         <TextView
-                            android:id="@+id/coupon_expire_date"
+                            android:id="@+id/coupon_detail_expire_date"
                             style="@style/coupon_detail_text"
                             android:text="就在今天" />
                     </LinearLayout>
@@ -149,6 +149,7 @@
 
                         <TextView
                             style="@style/coupon_detail_text"
+                            android:id="@+id/coupon_detail_constraints_text"
                             android:text="满100送1000\n啦啦啦\n啦啦啦\n我只是\n啦啦啦\n一个\n啦啦啦\n换行符\n啦啦啦"
                             android:textColor="@color/black"
                             android:textSize="20dp" />

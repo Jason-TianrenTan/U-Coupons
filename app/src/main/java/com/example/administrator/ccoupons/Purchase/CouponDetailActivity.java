@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Purchase;
 
+import android.renderscript.Double2;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +13,10 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.administrator.ccoupons.Connections.ImageFetchr;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -22,28 +26,36 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
 
+import org.w3c.dom.Text;
+
 public class CouponDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
-    Coupon coupon;
-    ImageView mImageView;
+    private Coupon coupon;
+    private ImageView mImageView;
     private ObservableScrollView mScrollView;
-    Toolbar mToolbarView;
+    private Toolbar mToolbarView;
     private int mParallaxImageHeight;
+    private TextView nameText, listpriceText, evalpriceText,
+            discountText, businessText, expireText, constaintsText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupon_detail);
-        mImageView = (ImageView)findViewById(R.id.coupon_image);
-        mToolbarView = (Toolbar)findViewById(R.id.fading_toolbar);
+        mImageView = (ImageView) findViewById(R.id.coupon_image);
+        mToolbarView = (Toolbar) findViewById(R.id.fading_toolbar);
+        nameText = (TextView) findViewById(R.id.coupon_detail_name_text);
+        listpriceText = (TextView) findViewById(R.id.coupon_detail_list_price);
+        evalpriceText = (TextView) findViewById(R.id.coupon_detail_evaluate_price);
+        discountText = (TextView) findViewById(R.id.coupon_detail_discount_price);
+        businessText = (TextView) findViewById(R.id.coupon_detail_business_name);
+        expireText = (TextView) findViewById(R.id.coupon_detail_expire_date);
+        constaintsText = (TextView) findViewById(R.id.coupon_detail_constraints_text);
+
+
         setSupportActionBar(mToolbarView);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,11 +72,43 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screen_width = displayMetrics.widthPixels;
         mParallaxImageHeight = PixelUtils.px2dp(this, screen_width);
+        showInfo();
     }
 
 
     private void showInfo() {
+        Coupon coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
+        //url
+        String url = coupon.getImgURL();
+        ImageFetchr fetchr = new ImageFetchr(DataHolder.base_URL + url, mImageView);
+        fetchr.execute();
+
+        //name
+        String name = coupon.getName();
+        nameText.setText(name);
+
+        //list price
+        double listprice = coupon.getListPrice();
+        listpriceText.setText("¥" + listprice + "");
+
+        //eval price
+        double evalprice = coupon.getEvaluatePrice();
+        evalpriceText.setText("¥" + evalprice + "");
+
+        //优惠额度
+        double discount = coupon.getDiscount();
+        discountText.setText("¥" + discount);
+
+        //商家名
+        String businessName = "懒得起名字的公司" + coupon.getBrand();
+        businessText.setText(businessName);
+
+        String expireDate = coupon.getExpireDate();
+        expireText.setText(expireDate + "");
+
+        String constraints = "后台居然懒到没加这个=.=";
+        constaintsText.setText(constraints);
     }
 
     @Override
