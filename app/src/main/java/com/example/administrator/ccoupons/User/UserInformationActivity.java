@@ -72,8 +72,8 @@ public class UserInformationActivity extends SlideBackActivity {
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
         age = (TextView) findViewById(R.id.user_age);
-   //     portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
-    //    initPortrait();
+        portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
+        initPortrait();
         name.setText(DataHolder.User.username);
         age.setText(Integer.toString(DataHolder.User.age));
         if (DataHolder.User.sex)

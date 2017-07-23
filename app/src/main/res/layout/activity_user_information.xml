@@ -1,11 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/user_bg">
-
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/uinf_toolbar"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <TextView
             style="@style/user_title_text"
@@ -34,23 +37,59 @@
             <ImageView style="@style/user_img_arrow" />
         </LinearLayout>
 
+        <ImageView
+            style="@style/user_divider" />
 
+        <LinearLayout style="@style/user_option_layout">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            <TextView
+                android:id="@+id/user_name"
+                style="@style/user_text"
+                android:textColor="@color/lightgray" />
         </LinearLayout>
+
+        <ImageView style="@style/user_divider" />
+
+        <LinearLayout style="@style/user_option_layout">
+
+            <TextView
+                android:id="@+id/user_sex"
+                style="@style/user_text" />
+        </LinearLayout>
+
+        <ImageView style="@style/user_divider" />
+
+        <LinearLayout style="@style/user_option_layout">
+
+            <TextView
+                android:id="@+id/user_age"
+                style="@style/user_text" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/user_wrap_layout">
+
+        <ImageView style="@style/user_edgeline" />
+
+        <LinearLayout style="@style/user_option_layout">
+
+            <TextView
+                style="@style/user_text"
+                android:text="@string/uinf_changephone" />
+
+            <ImageView style="@style/user_img_arrow" />
+        </LinearLayout>
+
+        <ImageView style="@style/user_divider" />
+
+        <LinearLayout style="@style/user_option_layout">
+
+            <TextView
+                style="@style/user_text"
+                android:text="@string/uinf_changekey" />
+
+            <ImageView style="@style/user_img_arrow" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
