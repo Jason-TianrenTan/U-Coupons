@@ -59,6 +59,13 @@ public class Coupon implements Serializable{
         return this.name;
     }
 
+    public void setDetail(String str) {
+        this.expireDate = str;
+    }
+
+    public void setImgURL(String url) {
+        this.imgURL = url;
+    }
     public void setListPrice(double price) {
         this.listPrice = price;
     }

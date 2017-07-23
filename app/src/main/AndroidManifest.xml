@@ -89,7 +89,8 @@
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
 
-        <!-- 欢迎界面 -->
+
+        <!--
         <activity android:name=".Main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -97,12 +98,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Purchase.CouponDetailActivity" /> -->
+
+        <!--测试版本-->
+        <activity android:name=".Main.WelcomeActivity">
+
+        </activity>
+        <activity android:name=".Purchase.CouponDetailActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
-        <activity android:name=".Main.CoupoonShowerActivity" />
-        <activity android:name=".Purchase.CouponDetailActivity" />
+
         <activity android:name=".Purchase.CouponPurchaseActivity"></activity>
     </application>
 
