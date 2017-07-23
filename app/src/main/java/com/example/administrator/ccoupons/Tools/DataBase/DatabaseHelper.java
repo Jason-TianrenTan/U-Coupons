@@ -11,13 +11,15 @@ import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_MASSAGE = "create table Message ("
-            + "id text primary key, "
-            + "fromSystem integer, "
-            + "send integer, "
-            + "read integer, "
-            + "destinationId text, "
+            + "id integer primary key, "
+            + "isNew integer, "
+            + "messageCat integer, "
+            + "userId integer, "
+            + "time text, "
             + "content text, "
-            + "timestamp real)";
+            + "couponName text, "
+            + "couponId integer, "
+            + "couponURL integer)";
 
     public static final String CREATE_COUPON = "create table Coupon ("
             + "id integer primary key, "
@@ -43,8 +45,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //db.execSQL(CREATE_MASSAGE);
+        if (dbName.equals("Message.db")){
+            db.execSQL(CREATE_MASSAGE);
+        }
         if (dbName.equals("Coupon.db")){
+            db.execSQL(CREATE_COUPON);
+        }
+        if (dbName.equals("CouponCache.db")){
             db.execSQL(CREATE_COUPON);
         }
         Toast.makeText(mContext, "Create succeeded", Toast.LENGTH_SHORT).show();

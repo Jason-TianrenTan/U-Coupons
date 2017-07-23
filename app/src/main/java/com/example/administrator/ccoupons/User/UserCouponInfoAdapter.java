@@ -51,6 +51,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
                 int position = holder.getAdapterPosition();
                 Coupon coupon = mUserCouponInfoList.get(position);
                 Toast.makeText(mContext, "UserCouponInfo = " + coupon.getName(), Toast.LENGTH_SHORT).show();
+                //Todo:获得当前Coupon编号，跳转到Coupon页面
             }
         });
         return holder;

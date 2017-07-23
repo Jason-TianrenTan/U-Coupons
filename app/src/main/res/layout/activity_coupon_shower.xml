@@ -59,8 +59,15 @@
             <LinearLayout style="@style/coupon_wrap_layout">
 
 
+                <TextView
+                    android:id="@+id/coupon_list_price"
+                    style="@style/coupon_text"
+                    android:paddingBottom="0dp"
+                    android:text="￥100"
+                    android:textColor="@color/orangered"
+                    android:textSize="35dp" />
 
-                    <TextView
+                <TextView
                         android:id="@+id/coupon_name"
                         style="@style/coupon_text"
                         android:layout_weight="1"
@@ -88,14 +95,6 @@
                         android:text="名字就是要长长长长长长长长才霸气"
                         android:textSize="16dp" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/coupon_list_price"
-                    style="@style/coupon_text"
-                    android:paddingBottom="0dp"
-                    android:text="￥100"
-                    android:textColor="@color/orangered"
-                    android:textSize="35dp" />
 
                 <TextView
                     android:id="@+id/coupon_evaluate_price"

@@ -102,7 +102,10 @@
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
-        <activity android:name=".Main.CoupoonShowerActivity"></activity>
+        <activity android:name=".Main.CoupoonShowerActivity" />
+        <activity android:name=".User.MySellCoupons" />
+        <activity android:name=".User.MyBuyCoupons" />
+        <activity android:name=".User.MyFollowCoupon"></activity>
     </application>
 
 </manifest>
