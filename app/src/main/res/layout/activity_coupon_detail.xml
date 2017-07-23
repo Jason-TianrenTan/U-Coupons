@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/user_bg">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black_with_alpha">
+
+                <ImageView
+                    android:id="@+id/coupon_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/ic_cover_4" />
+            </LinearLayout>
+
+            <ImageView style="@style/user_edgeline" />
+
+            <LinearLayout style="@style/coupon_wrap_layout">
+
+
+                <TextView
+                    android:id="@+id/coupon_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="乌金牌钓鱼网"
+                    android:textSize="28dp" />
+
+                <TextView
+                    android:id="@+id/coupon_list_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="¥100"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="40dp" />
+
+                <TextView
+                    android:id="@+id/coupon_evaluate_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="估值：¥90"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <ImageView style="@style/user_edgeline" />
+
+            <LinearLayout style="@style/coupon_wrap_layout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/coupon_label_text"
+                        android:text="优惠额度" />
+
+                    <TextView
+                        android:id="@+id/coupon_discount_price"
+                        style="@style/coupon_detail_text"
+                        android:text="¥198以上" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView style="@style/user_edgeline" />
+
+            <LinearLayout style="@style/coupon_wrap_layout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        style="@style/coupon_label_text"
+                        android:layout_marginBottom="15dp"
+                        android:text="商家名：" />
+
+                    <TextView
+                        android:id="@+id/coupon_business_name"
+                        style="@style/coupon_detail_text"
+                        android:text="C4-725"/>
+                </LinearLayout>
+
+
+                <ImageView style="@style/user_divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        style="@style/coupon_label_text"
+                        android:text="使用期限：" />
+
+                    <TextView
+                        style="@style/coupon_detail_text"
+                        android:id="@+id/coupon_expire_date"
+                        android:text="就在今天"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/coupon_wrap_layout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/coupon_label_text"
+                        android:text="使用限制："
+                        android:textSize="20dp" />
+
+                    <TextView
+                        style="@style/coupon_detail_text"
+                        android:text="满100送1000"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/coupon_detail_back_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="left|top"
+        android:background="@drawable/arrow_back_bg"
+        android:padding="5dp"
+        android:src="@mipmap/pos" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+<!-- 3 Buttons -->
+
+    </LinearLayout>
+</FrameLayout>

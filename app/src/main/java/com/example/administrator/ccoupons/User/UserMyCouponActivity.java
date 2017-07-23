@@ -54,7 +54,12 @@ public class UserMyCouponActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         title_unused = (TextView) findViewById(R.id.unused_title_text);
         title_onsale = (TextView) findViewById(R.id.onsale_title_text);
         title_nonsale = (TextView) findViewById(R.id.nonsale_title_text);
