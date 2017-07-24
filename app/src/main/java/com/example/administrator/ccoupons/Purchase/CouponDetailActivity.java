@@ -1,5 +1,9 @@
 package com.example.administrator.ccoupons.Purchase;
 
+import android.app.DownloadManager;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.renderscript.Double2;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +18,14 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ImageFetchr;
+import com.example.administrator.ccoupons.Connections.RequestCouponDetailThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -37,6 +44,25 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     private int mParallaxImageHeight;
     private TextView nameText, listpriceText, evalpriceText,
             discountText, businessText, expireText, constaintsText;
+    private RequestCouponDetailThread detailThread;
+
+    private Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MessageType.CONNECTION_ERROR:
+                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_TIMEOUT:
+                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_SUCCESS:
+                    System.out.println("Response = " + detailThread.getResponse());
+                    //TODO:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +135,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
         String constraints = "后台居然懒到没加这个=.=";
         constaintsText.setText(constraints);
+
+        System.out.println("Coupon id  = " + coupon.getCouponId());
+        detailThread = new RequestCouponDetailThread(DataHolder.base_URL + DataHolder.requestDetail_URL, coupon.getCouponId(),handler, this);
+        detailThread.start();
     }
 
     @Override

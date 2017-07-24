@@ -17,9 +17,9 @@ public class Coupon implements Serializable{
 
 
     private String name;//=>product
-    private int couponId;
-    private int brandId;//品牌id
-    private int catId;//类别
+    private String couponId;
+    private String brandId;//品牌id
+    private String catId;//类别
     private double listPrice;//用户列出来的价格
     private double evaluatePrice;//估值价格 =>value
     private double discount;//打折多少 20表示20元
@@ -38,7 +38,7 @@ public class Coupon implements Serializable{
 
     }
 
-    public Coupon(String name, int couponId, int brandId, int catId, double listPrice, double evaluatePrice, double discount, int stat, String imgURL, String expireDate) {
+    public Coupon(String name, String couponId, String brandId, String catId, double listPrice, double evaluatePrice, double discount, int stat, String imgURL, String expireDate) {
         this.name = name;
         this.couponId = couponId;
         this.brandId = brandId;
@@ -82,15 +82,15 @@ public class Coupon implements Serializable{
         return this.evaluatePrice;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return this.catId;
     }
 
-    public int getBrand() {
+    public String getBrand() {
         return this.brandId;
     }
 
-    public int getCouponId() {
+    public String getCouponId() {
         return this.couponId;
     }
 
@@ -114,9 +114,9 @@ public class Coupon implements Serializable{
     public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
-            coupon.couponId = Integer.parseInt(jsonObject.getString("couponid"));
-            coupon.brandId = Integer.parseInt(jsonObject.getString("brandid_id"));
-            coupon.catId = Integer.parseInt(jsonObject.getString("catid_id"));
+            coupon.couponId = jsonObject.getString("couponid");
+            coupon.brandId = jsonObject.getString("brandid_id");
+            coupon.catId = jsonObject.getString("catid_id");
             coupon.listPrice = Double.parseDouble(jsonObject.getString("listprice"));
             coupon.evaluatePrice = Double.parseDouble(jsonObject.getString("value"));
             coupon.name = jsonObject.getString("product");

@@ -8,12 +8,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,22 +41,36 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by CZJ on 2017/7/13.
  */
 
-public class UserOptionFragment extends Fragment {
+public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener{
     private LoginInformationManager informationManager;
     private ImageView portrait;
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.6f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
+    private static final int ALPHA_ANIMATIONS_DURATION              = 200;
+
+    private boolean mIsTheTitleVisible          = false;
+    private boolean mIsTheTitleContainerVisible = true;
+
+    private LinearLayout mTitleContainer;
+    private TextView mTitle;
+    private AppBarLayout mAppBarLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_option, container, false);
-        portrait = (ImageView) view.findViewById(R.id.user_portrait);
+        portrait = (ImageView) view.findViewById(R.id.user_portrait     );
         TextView ub = (TextView) view.findViewById(R.id.user_ub);
         ub.setText(Integer.toString(DataHolder.User.UB));
         LinearLayout toUserMyCoupons = (LinearLayout)view.findViewById(R.id.user_to_mycoupons);
-        LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_to_inf);
+      //  LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_to_inf);
         LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
         LinearLayout toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
         LinearLayout logoff = (LinearLayout) view.findViewById(R.id.user_logoff);
+        mTitle          = (TextView) view.findViewById(R.id.main_textview_title);
+        mTitleContainer = (LinearLayout) view.findViewById(R.id.main_linearlayout_title);
+        mAppBarLayout   = (AppBarLayout) view.findViewById(R.id.main_appbar);
         informationManager = new LoginInformationManager(getActivity());
+        mAppBarLayout.addOnOffsetChangedListener(this);
         initPortrait();
 
         //OnClickListener
@@ -71,12 +87,11 @@ public class UserOptionFragment extends Fragment {
                 getActivity().startActivity(new Intent(getActivity(), UserMyCouponActivity.class));
             }
         });
-        toUserInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+     /*   toUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override            public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
             }
-        });
+        });*/
         toUserWal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,8 +110,10 @@ public class UserOptionFragment extends Fragment {
                 showLogOffDialog();
             }
         });
+        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
         return view;
     }
+
 
     private void showLogOffDialog() {
         final AlertDialog.Builder logOffDialog =
@@ -135,6 +152,58 @@ public class UserOptionFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initPortrait();
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+        int maxScroll = appBarLayout.getTotalScrollRange();
+        float percentage = (float) Math.abs(offset) / (float) maxScroll;
+
+        handleAlphaOnTitle(percentage);
+        handleToolbarTitleVisibility(percentage);
+    }
+
+    private void handleToolbarTitleVisibility(float percentage) {
+        if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+
+            if(!mIsTheTitleVisible) {
+                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleVisible = true;
+            }
+
+        } else {
+
+            if (mIsTheTitleVisible) {
+                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleVisible = false;
+            }
+        }
+    }
+
+    private void handleAlphaOnTitle(float percentage) {
+        if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
+            if(mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleContainerVisible = false;
+            }
+
+        } else {
+
+            if (!mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleContainerVisible = true;
+            }
+        }
+    }
+
+    public static void startAlphaAnimation (View v, long duration, int visibility) {
+        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
+                ? new AlphaAnimation(0f, 1f)
+                : new AlphaAnimation(1f, 0f);
+
+        alphaAnimation.setDuration(duration);
+        alphaAnimation.setFillAfter(true);
+        v.startAnimation(alphaAnimation);
     }
 }
 /*

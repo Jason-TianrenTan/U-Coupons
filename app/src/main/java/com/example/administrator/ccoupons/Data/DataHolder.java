@@ -8,14 +8,15 @@ import com.example.administrator.ccoupons.R;
 
 public class DataHolder {
 
-    static final String dormBase = "http://172.25.7.1:8000";
+    static final String dormBase = "http://172.29.12.1:8000";
     static final String localBase = "http://192.168.207.221:8000";
     static final String teamBase = "http://192.168.204.83:1080";
-    public static final String base_URL = dormBase;
+    public static final String base_URL = teamBase;
     public static final String login_URL = "/post_loginForAndroid";
     public static final String register_URL = "/post_signUpForAndroid";
     public static final String requestMsg_URL = "/post_sendMessage";
     public static final String requestSearch_URL = "/post_searchForAndroid";
+    public static final String requestDetail_URL = "/post_returnInformation";
 
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
