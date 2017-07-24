@@ -51,7 +51,7 @@ public class MainPageActivity extends AppCompatActivity {
     private AlarmReceiver receiver;
     private CategoryFragment categoryFragment;
     private UserOptionFragment userOptionFragment;
-    private MessageFragment messageFragment;
+
 
     private Fragment[] fragments = new Fragment[3];
 
@@ -83,15 +83,12 @@ public class MainPageActivity extends AppCompatActivity {
     private void initFragments() {
         categoryFragment = new CategoryFragment();
         userOptionFragment = new UserOptionFragment();
-        messageFragment = new MessageFragment();
         fragments[0] = categoryFragment;
         fragments[1] = userOptionFragment;
-        fragments[2] = messageFragment;
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment_frame, categoryFragment);
         fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
-        fragmentTransaction.add(R.id.fragment_frame, messageFragment);
         fragmentTransaction.commit();
         showFragment(1);
     }
@@ -110,20 +107,15 @@ public class MainPageActivity extends AppCompatActivity {
         if (userOptionFragment != null) {
             ft.hide(userOptionFragment);
         }
-        if (messageFragment != null)
-            ft.hide(messageFragment);
     }
 
     //初始化底部导航栏
     private void initNavigationBar() {
         LinearLayout navigationBar = (LinearLayout) findViewById(R.id.bottom_nav_container);
         LinearLayout nav_item_main = (LinearLayout) navigationBar.findViewById(R.id.id_left1),
-                nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1),
-                nav_item_message = (LinearLayout) navigationBar.findViewById(R.id.id_left2);
+                nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1);
         TextView titleView_main = (TextView) nav_item_main.findViewById(R.id.navigation_icon_text);
         titleView_main.setText("首页");
-        TextView titleView_message = (TextView) nav_item_message.findViewById(R.id.navigation_icon_text);
-        titleView_message.setText("消息");
         TextView titleView_aboutme = (TextView) nav_item_aboutme.findViewById(R.id.navigation_icon_text);
         titleView_aboutme.setText("我的");
         nav_item_main.setOnClickListener(new View.OnClickListener() {
@@ -136,12 +128,6 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showFragment(2);
-            }
-        });
-        nav_item_message.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showFragment(3);
             }
         });
     }

@@ -17,8 +17,6 @@
             <include layout="@layout/navigation_item"
                 android:id="@+id/id_left1"/>
 
-            <include layout="@layout/navigation_item"
-                android:id="@+id/id_left2"/>
         </LinearLayout>
 
 
@@ -36,8 +34,6 @@
             <include layout="@layout/navigation_item"
                 android:id="@+id/id_right1"/>
 
-            <include layout="@layout/navigation_item"
-                android:id="@+id/id_right2"/>
         </LinearLayout>
     </LinearLayout>
     <FrameLayout

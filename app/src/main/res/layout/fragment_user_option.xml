@@ -38,9 +38,10 @@
                         android:padding="2dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="一个懒得起名字的懒人"
+                        android:text="一个懒得起名字的懒佳"
                         android:textColor="@android:color/white"
                         android:textSize="20dp"
+                        android:maxLines="1"
                         />
 
 
