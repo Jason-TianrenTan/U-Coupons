@@ -67,7 +67,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
     private void setImage(CouponViewHolder holder, Coupon coupon) {
 
         String url = coupon.getImgURL();
-        ImageFetchr fetchr = new ImageFetchr(url, holder.imageView);
+        ImageFetchr fetchr = new ImageFetchr(url, holder.imageView, false);
         fetchr.execute();
     }
 

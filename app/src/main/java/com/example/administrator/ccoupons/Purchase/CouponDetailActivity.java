@@ -2,6 +2,8 @@ package com.example.administrator.ccoupons.Purchase;
 
 import android.app.DownloadManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.renderscript.Double2;
@@ -25,6 +27,7 @@ import com.example.administrator.ccoupons.Connections.RequestCouponDetailThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
@@ -118,9 +121,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
         //url
-        String url = coupon.getImgURL();
-        ImageFetchr fetchr = new ImageFetchr(DataHolder.base_URL + url, mImageView);
-        fetchr.execute();
+        String url = DataHolder.base_URL + coupon.getImgURL();
+        Bitmap bitmap = ImageLruCache.getInstance().getFromMemoryCache(url);
+        BitmapDrawable drawable = new BitmapDrawable(bitmap);
+        mImageView.setImageDrawable(drawable);
 
         //name
         String name = coupon.getName();
