@@ -1,18 +1,11 @@
 package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,44 +13,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.BuildConfig;
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserPortraitActivity extends AppCompatActivity {
-    TakePhotoUtil takePhotoUtil;
-    LoginInformationManager informationManager;
-    ImageView portrait;
+    private TakePhotoUtil takePhotoUtil;
+    private LoginInformationManager informationManager;
+    private ImageView portrait;
+    private LinearLayout bg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_portrait);
-        takePhotoUtil = new TakePhotoUtil(this);
-        if (useTakePhoto()) {
-            takePhotoUtil.onCreate(savedInstanceState);
-        }
-        informationManager = new LoginInformationManager(this);
+        initView();
 
-        portrait = (ImageView) findViewById(R.id.user_portrait_view);
-        //portrait.setImageResource(DataHolder.User.portraitId);
-        LinearLayout bg = (LinearLayout) findViewById(R.id.portrait_bg);
         takePhotoUtil = new TakePhotoUtil(this);
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);
         }
         initPortrait();
+        setOnLongClickListeners();
+    }
+
+    private void setOnLongClickListeners() {
         bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +49,7 @@ public class UserPortraitActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.noanim, R.anim.portrait_out);
             }
         });
+
         bg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -114,6 +99,13 @@ public class UserPortraitActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void initView() {
+        informationManager = new LoginInformationManager(this);
+        portrait = (ImageView) findViewById(R.id.user_portrait_view);
+        //portrait.setImageResource(DataHolder.User.portraitId);
+        bg = (LinearLayout) findViewById(R.id.portrait_bg);
     }
 
     @Override

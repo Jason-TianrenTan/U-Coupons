@@ -1,12 +1,10 @@
 package com.example.administrator.ccoupons.Fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,35 +20,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.User.UserBuyCoupons;
+import com.example.administrator.ccoupons.User.UserFollowCoupon;
+import com.example.administrator.ccoupons.User.UserSellCoupons;
 import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 import com.example.administrator.ccoupons.User.UserWalletActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
-
 /**
  * Created by CZJ on 2017/7/13.
  */
 
-public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener{
+public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
     private LoginInformationManager informationManager;
     private ImageView portrait;
-    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.6f;
-    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
-    private static final int ALPHA_ANIMATIONS_DURATION              = 200;
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.6f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
+    private static final int ALPHA_ANIMATIONS_DURATION = 200;
 
-    private boolean mIsTheTitleVisible          = false;
+    private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
 
     private LinearLayout mTitleContainer;
@@ -64,14 +58,17 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         portrait = (ImageView) view.findViewById(R.id.user_portrait);
         TextView ub = (TextView) view.findViewById(R.id.user_ub);
         ub.setText(Integer.toString(DataHolder.User.UB));
-        LinearLayout toUserMyCoupons = (LinearLayout)view.findViewById(R.id.user_to_mycoupons);
+        LinearLayout toUserMyCoupons = (LinearLayout) view.findViewById(R.id.user_to_mycoupons);
         LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
         LinearLayout toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
         LinearLayout logoff = (LinearLayout) view.findViewById(R.id.user_logoff);
+        LinearLayout toUserSell = (LinearLayout) view.findViewById(R.id.user_sell);
+        LinearLayout toUserBuy = (LinearLayout) view.findViewById(R.id.user_buy);
+        LinearLayout toUserFollow = (LinearLayout) view.findViewById(R.id.user_follow);
         CollapsingToolbarLayout toUserInfo = (CollapsingToolbarLayout) view.findViewById(R.id.user_to_inf);
-        mTitle          = (TextView) view.findViewById(R.id.main_textview_title);
+        mTitle = (TextView) view.findViewById(R.id.main_textview_title);
         mTitleContainer = (LinearLayout) view.findViewById(R.id.main_linearlayout_title);
-        mAppBarLayout   = (AppBarLayout) view.findViewById(R.id.main_appbar);
+        mAppBarLayout = (AppBarLayout) view.findViewById(R.id.main_appbar);
         toolbar = (Toolbar) view.findViewById(R.id.user_main_toolbar);
 
 
@@ -99,7 +96,8 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
             }
         });
         toUserInfo.setOnClickListener(new View.OnClickListener() {
-            @Override            public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
             }
         });
@@ -113,6 +111,24 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), UserSettingActivity.class));
+            }
+        });
+        toUserSell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), UserSellCoupons.class));
+            }
+        });
+        toUserBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), UserBuyCoupons.class));
+            }
+        });
+        toUserFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), UserFollowCoupon.class));
             }
         });
         logoff.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +193,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     private void handleToolbarTitleVisibility(float percentage) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
-            if(!mIsTheTitleVisible) {
+            if (!mIsTheTitleVisible) {
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleVisible = true;
             }
@@ -193,7 +209,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
 
     private void handleAlphaOnTitle(float percentage) {
         if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            if(mIsTheTitleContainerVisible) {
+            if (mIsTheTitleContainerVisible) {
                 startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleContainerVisible = false;
             }
@@ -207,7 +223,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         }
     }
 
-    public static void startAlphaAnimation (View v, long duration, int visibility) {
+    public static void startAlphaAnimation(View v, long duration, int visibility) {
         AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
                 ? new AlphaAnimation(0f, 1f)
                 : new AlphaAnimation(1f, 0f);

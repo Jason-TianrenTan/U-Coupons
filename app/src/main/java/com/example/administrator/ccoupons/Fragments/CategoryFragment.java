@@ -90,7 +90,7 @@ public class CategoryFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), LocationSelectActivity.class);
                 if (location != null)
                     intent.putExtra("location", location);
-                
+
                 startActivity(intent);
             }
         });

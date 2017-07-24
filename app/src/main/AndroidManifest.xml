@@ -95,13 +95,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Purchase.CouponDetailActivity" />
+
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
-        <activity android:name=".Purchase.CouponPurchaseActivity" />
+
         <activity android:name=".Fragments.MyMessageActivity"></activity>
+
+        <activity android:name=".User.UserSellCoupons" />
+        <activity android:name=".User.UserBuyCoupons" />
+        <activity android:name=".User.UserFollowCoupon"></activity>
+        <activity android:name=".Purchase.CouponDetailActivity" />
+        <activity android:name=".Purchase.CouponPurchaseActivity"></activity>
     </application>
 
 </manifest>

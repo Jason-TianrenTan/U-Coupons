@@ -22,7 +22,7 @@
             <FrameLayout
                 android:id="@+id/main.framelayout.title"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:layout_marginLeft="150dp">
 
                 <LinearLayout
@@ -35,7 +35,7 @@
 
                     <TextView
                         android:layout_marginTop="?attr/actionBarSize"
-                        android:padding="2dp"
+                        android:layout_marginRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="一个懒得起名字的懒佳"
@@ -114,7 +114,8 @@
 
                 <ImageView style="@style/user_edgeline" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout style="@style/user_option_layout"
+                    android:id="@+id/user_sell">
 
                     <ImageView
                         style="@style/user_icon_layout"
@@ -129,7 +130,8 @@
 
                 <ImageView style="@style/user_divider" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout style="@style/user_option_layout"
+                    android:id="@+id/user_buy">
 
                     <ImageView
                         style="@style/user_icon_layout"
@@ -144,7 +146,8 @@
 
                 <ImageView style="@style/user_divider" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout style="@style/user_option_layout"
+                    android:id="@+id/user_follow">
 
                     <ImageView
                         style="@style/user_icon_layout"

@@ -8,25 +8,23 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.administrator.ccoupons.Main.Coupon;
 
 import java.util.ArrayList;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
- * Created by CZJ on 2017/7/22.
+ * Created by CZJ on 2017/7/23.
  */
 
-public class CouponsManager {
-
+public class CouponsCache {
     protected DatabaseHelper databaseHelper;
     protected SQLiteDatabase db;
-    static final String dbName = "Coupon.db";
+    static final String dbName = "CouponCache.db";
 
-    public CouponsManager(Context context) {
+    public CouponsCache(Context context) {
         databaseHelper = new DatabaseHelper(context, dbName, null, 1);
         db = databaseHelper.getWritableDatabase();
+        clear();
     }
 
-    public CouponsManager addCoupon(Coupon coupon) {
+    public CouponsCache addCoupon(Coupon coupon) {
         ContentValues values = new ContentValues();
         values.put("id", coupon.getCouponId());
         values.put("name", coupon.getName());
@@ -103,4 +101,3 @@ public class CouponsManager {
         return arrayList;
     }
 }
-

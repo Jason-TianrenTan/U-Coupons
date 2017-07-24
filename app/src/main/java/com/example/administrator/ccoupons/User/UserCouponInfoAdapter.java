@@ -34,6 +34,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
                 couponNameText,
                 couponDetailText,
                 couponExpireText;
+
         public UserCouponInfoViewHolder(View view) {
             super(view);
             rootView = (FrameLayout)view;
@@ -61,7 +62,10 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
             @Override
             public void onClick(View view) {/*
                 int position = holder.getAdapterPosition();
+                Coupon coupon = mUserCouponInfoList.get(position);
+                Toast.makeText(mContext, "UserCouponInfo = " + coupon.getName(), Toast.LENGTH_SHORT).show();
                 Coupon coupon = mUserCouponInfoList.get(position);*/
+                //Todo:获得当前Coupon编号，跳转到Coupon页面
             }
         });
         return holder;
@@ -69,7 +73,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
 
     @Override
     public void onBindViewHolder(UserCouponInfoAdapter.UserCouponInfoViewHolder holder, int position) {
-     //   Coupon coupon = mUserCouponInfoList.get(position);
+        //   Coupon coupon = mUserCouponInfoList.get(position);
         Random random = new Random();
         int index = random.nextInt(names.length);
         holder.couponNameText.setText(names[index]);

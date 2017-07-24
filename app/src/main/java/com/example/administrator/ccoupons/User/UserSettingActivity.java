@@ -13,24 +13,32 @@ import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
 public class UserSettingActivity extends SlideBackActivity {
+    private Toolbar toolbar;
+    private LinearLayout clear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
+        initView();
+        setOnClickListeners();
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.uset_toolbar);
+    private void initView(){
+        toolbar = (Toolbar) findViewById(R.id.uset_toolbar);
+        clear = (LinearLayout) findViewById(R.id.uset_clear);;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setOnClickListeners(){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
-        LinearLayout clear = (LinearLayout) findViewById(R.id.uset_clear);
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
