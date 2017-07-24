@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Main;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * Created by Administrator on 2017/7/11 0011.
  */
 
-public class Coupon implements Serializable{
+public class Coupon implements Serializable {
 
     private static final int STAT_ONSALE = 1;
     private static final int STAT_EXPIRED = 2;
@@ -16,9 +17,10 @@ public class Coupon implements Serializable{
     private static final int STAT_STORE = 4;
 
 
-    private String name;//=>product
+    private String address;//地址
+    private String name;//=>product 优惠券名字
     private String couponId;
-    private String brandId;//品牌id
+    private String brandName;//品牌id ->可口可乐、吮指原味鸡->肯德基
     private String catId;//类别
     private double listPrice;//用户列出来的价格
     private double evaluatePrice;//估值价格 =>value
@@ -26,6 +28,10 @@ public class Coupon implements Serializable{
     private int stat;//状态 详见下
     private String imgURL;//url
     private String expireDate;//过期时间
+    private String[] constraints;//限制
+
+    private String sellerNickname;//卖家名字
+    private String sellerAvatarURL;//头像URL
 
     /*
     状态:
@@ -38,10 +44,10 @@ public class Coupon implements Serializable{
 
     }
 
-    public Coupon(String name, String couponId, String brandId, String catId, double listPrice, double evaluatePrice, double discount, int stat, String imgURL, String expireDate) {
+    public Coupon(String name, String couponId, String brand, String catId, double listPrice, double evaluatePrice, double discount, int stat, String imgURL, String expireDate) {
         this.name = name;
         this.couponId = couponId;
-        this.brandId = brandId;
+        this.brandName = brand;
         this.catId = catId;
         this.listPrice = listPrice;
         this.evaluatePrice = evaluatePrice;
@@ -55,23 +61,67 @@ public class Coupon implements Serializable{
         this.name = str;
     }
 
-    public String getName() {
-        return this.name;
+
+    public void setAddress(String str) {
+        this.address = str;
     }
 
     public void setDetail(String str) {
         this.expireDate = str;
     }
 
+    //商家信息
+    public void setBrandName(String str) {
+        this.brandName = str;
+    }
+    public String getBrandName() {
+        return this.brandName;
+    }
+
+    //卖家昵称
+    public void setSellerName(String str) {
+        this.sellerNickname = str;
+    }
+    public String getSellerNickname() {
+        return this.sellerNickname;
+    }
+    public void setSellerAvatarURL(String url) {
+        this.sellerAvatarURL = url;
+    }
+    public String getSellerAvatarURL() {
+        return this.sellerAvatarURL;
+    }
+
+
+    //使用限制
+    public void setConstraints(String[] arr) {
+        this.constraints = arr;
+    }
+
+    public String[] getConstraints() {
+        return this.constraints;
+    }
+
+
     public void setImgURL(String url) {
         this.imgURL = url;
     }
+
     public void setListPrice(double price) {
         this.listPrice = price;
     }
 
     public void setEvaluatePrice(double price) {
         this.evaluatePrice = price;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+
+    public String getName() {
+        return this.name;
     }
 
     public double getListPrice() {
@@ -86,9 +136,6 @@ public class Coupon implements Serializable{
         return this.catId;
     }
 
-    public String getBrand() {
-        return this.brandId;
-    }
 
     public String getCouponId() {
         return this.couponId;
@@ -111,31 +158,29 @@ public class Coupon implements Serializable{
     }
 
 
+    private void setCouponStat(String statStr) {
+        int coupon_stat = -1;
+        if (statStr.equals("onSale"))
+            coupon_stat = STAT_ONSALE;
+        if (statStr.equals("expired"))
+            coupon_stat = STAT_EXPIRED;
+        if (statStr.equals("used"))
+            coupon_stat = STAT_USED;
+        if (statStr.equals("store"))
+            coupon_stat = STAT_STORE;
+    }
+
     public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
             coupon.couponId = jsonObject.getString("couponid");
-            coupon.brandId = jsonObject.getString("brandid_id");
-            coupon.catId = jsonObject.getString("catid_id");
             coupon.listPrice = Double.parseDouble(jsonObject.getString("listprice"));
             coupon.evaluatePrice = Double.parseDouble(jsonObject.getString("value"));
             coupon.name = jsonObject.getString("product");
             coupon.discount = Double.parseDouble(jsonObject.getString("discount"));
-
-            String statStr = jsonObject.getString("stat");
-            int coupon_stat = -1;
-            if (statStr.equals("onSale"))
-                coupon_stat = STAT_ONSALE;
-            if (statStr.equals("expired"))
-                coupon_stat = STAT_EXPIRED;
-            if (statStr.equals("used"))
-                coupon_stat = STAT_USED;
-            if (statStr.equals("store"))
-                coupon_stat = STAT_STORE;
-
-            coupon.stat = coupon_stat;
-            coupon.imgURL = jsonObject.getString("pic");
             coupon.expireDate = jsonObject.getString("expiredtime");
+            coupon.imgURL = jsonObject.getString("pic");
+
 
         } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
@@ -143,8 +188,43 @@ public class Coupon implements Serializable{
         }
         //name price detail expire_date
 
-
         return coupon;
     }
+
+    //二次解析
+    public void getDetails(String str) {
+        try {
+            JSONObject mainObj = new JSONObject(str);
+
+            //brand
+            JSONObject brandObj = mainObj.getJSONArray("brand").getJSONObject(0);
+            this.brandName = brandObj.getString("name");
+            this.address = brandObj.getString("address");
+
+            //limit
+            JSONArray limitArray = mainObj.getJSONArray("limit");
+            String[] constraintList = new String[limitArray.length()];
+            for (int i = 0; i < limitArray.length(); i++) {
+                JSONObject contentObj = limitArray.getJSONObject(i);
+                String content = contentObj.getString("content");
+                constraintList[i] = content;
+            }
+            this.constraints = constraintList;
+
+            //seller 卖家
+            JSONObject sellerObj = mainObj.getJSONArray("seller").getJSONObject(0);
+            this.sellerNickname = sellerObj.getString("nickname");
+            this.sellerAvatarURL = sellerObj.getString("avatar");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /*{"brand": [{"name": "\u80af\u5fb7\u57fa",
+    "address": "\u7fa4\u5149"}],
+    "limit": [{"content": "\u53ea\u9650\u7fa4\u5149\u4f7f\u7528"},
+     {"content": "\u6bcf\u4e2a\u5ba2\u6237\u4f7f\u7528\u4e00\u4e00\u5f20"},
+     {"content": "\u6ee140\u5143\u53ef\u4f7f\u7528"}], "seller": [{"nickname": "\u5988\u5356\u6279\u54e6", "avatar": null}]}
+      */
 
 }

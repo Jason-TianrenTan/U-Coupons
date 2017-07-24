@@ -13,46 +13,36 @@
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/main.collapsing"
+            android:id="@+id/user_to_inf"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="140dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             >
 
             <FrameLayout
                 android:id="@+id/main.framelayout.title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                >
+                android:layout_height="120dp"
+                android:layout_marginLeft="150dp">
 
                 <LinearLayout
                     android:id="@+id/main.linearlayout.title"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingBottom="12dp"
-                    >
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:layout_marginTop="?attr/actionBarSize"
+                        android:padding="2dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="bottom|center_horizontal"
                         android:text="一个懒得起名字的懒人"
                         android:textColor="@android:color/white"
-                        android:textSize="30dp"
+                        android:textSize="20dp"
                         />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
-                        android:text="居然连手机号也没有_(:з」∠)_"
-                        android:textColor="@android:color/white"
-                        />
 
                 </LinearLayout>
             </FrameLayout>
@@ -223,11 +213,11 @@
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/main.toolbar"
+        android:id="@+id/user.main.toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:layout_anchor="@id/main.collapsing"
+        app:layout_anchor="@id/user_to_inf"
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:title="">
         <LinearLayout
@@ -253,6 +243,7 @@
                 android:textSize="20dp"
                 />
 
+            <!--
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -263,17 +254,18 @@
                 android:textSize="20dp"
                 android:layout_gravity="right|center_vertical"
                 android:gravity="right"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"/> -->
 
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
 
     <com.example.administrator.ccoupons.Tools.XCRoundImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="36dp"
         android:src="@mipmap/android"
         android:id="@+id/user_portrait"
         app:finalHeight="32dp"

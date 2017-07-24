@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.administrator.ccoupons.Main.Coupon;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Created by CZJ on 2017/7/22.
  */
@@ -25,7 +28,7 @@ public class CouponsManager {
         ContentValues values = new ContentValues();
         values.put("id", coupon.getCouponId());
         values.put("name", coupon.getName());
-        values.put("brandId", coupon.getBrand());
+        values.put("brandId", coupon.getBrandName());
         values.put("catId", coupon.getCategory());
         values.put("listPrice", coupon.getListPrice());
         values.put("evaluatePrice", coupon.getEvaluatePrice());
@@ -45,7 +48,7 @@ public class CouponsManager {
         return c;
     }
 
-    private Coupon collectOneCoupon(Cursor cursor){
+    private Coupon collectOneCoupon(Cursor cursor) {
         String name = cursor.getString(cursor.getColumnIndex("name"));
         String id = cursor.getString(cursor.getColumnIndex("id"));
         String brandId = cursor.getString(cursor.getColumnIndex("brandId"));
@@ -57,8 +60,10 @@ public class CouponsManager {
         String imgURL = cursor.getString(cursor.getColumnIndex("imgURL"));
         String expireDate = cursor.getString(cursor.getColumnIndex("expireDate"));
         String limit = cursor.getString(cursor.getColumnIndex("limit"));
-        Coupon coupon = new Coupon(name,id,brandId,catId,listPrice,evaluatePrice,discount,stat,imgURL,expireDate);
+        Coupon coupon = new Coupon(name, id, brandId, catId, listPrice, evaluatePrice, discount, stat, imgURL, expireDate);
         return coupon;
     }
+
+
 }
 

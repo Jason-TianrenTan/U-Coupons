@@ -43,7 +43,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     private Toolbar mToolbarView;
     private int mParallaxImageHeight;
     private TextView nameText, listpriceText, evalpriceText,
-            discountText, businessText, expireText, constaintsText;
+            discountText, brandNameText, expireText, constaintsText, sellerNameText;
     private RequestCouponDetailThread detailThread;
 
     private Handler handler = new Handler() {
@@ -57,8 +57,20 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                     Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
                     break;
                 case MessageType.CONNECTION_SUCCESS:
+                    coupon.getDetails(detailThread.getResponse());
                     System.out.println("Response = " + detailThread.getResponse());
-                    //TODO:
+                    //卖家
+                    sellerNameText.setText(coupon.getSellerNickname());
+                    //商家 品牌
+                    brandNameText.setText(coupon.getBrandName());
+
+                    //使用限制
+                    String[] constraints = coupon.getConstraints();
+                    StringBuilder sb = new StringBuilder();
+                    int index = 1;
+                    for (String str : constraints)
+                        sb.append(index + ". " + str + '\n');
+                    constaintsText.setText(sb.toString());
                     break;
             }
         }
@@ -74,10 +86,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         listpriceText = (TextView) findViewById(R.id.coupon_detail_list_price);
         evalpriceText = (TextView) findViewById(R.id.coupon_detail_evaluate_price);
         discountText = (TextView) findViewById(R.id.coupon_detail_discount_price);
-        businessText = (TextView) findViewById(R.id.coupon_detail_business_name);
+        brandNameText = (TextView) findViewById(R.id.coupon_detail_brand_name);//品牌
         expireText = (TextView) findViewById(R.id.coupon_detail_expire_date);
         constaintsText = (TextView) findViewById(R.id.coupon_detail_constraints_text);
-
+        sellerNameText = (TextView) findViewById(R.id.coupon_detail_seller_name);
 
         setSupportActionBar(mToolbarView);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -103,7 +115,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
 
     private void showInfo() {
-        Coupon coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
+        coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
         //url
         String url = coupon.getImgURL();
@@ -127,17 +139,18 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         discountText.setText("¥" + discount);
 
         //商家名
-        String businessName = "懒得起名字的公司" + coupon.getBrand();
-        businessText.setText(businessName);
+        String brandName = "懒得起名字的公司" + coupon.getBrandName();
+        brandNameText.setText(brandName);
 
         String expireDate = coupon.getExpireDate();
         expireText.setText(expireDate + "");
+
 
         String constraints = "后台居然懒到没加这个=.=";
         constaintsText.setText(constraints);
 
         System.out.println("Coupon id  = " + coupon.getCouponId());
-        detailThread = new RequestCouponDetailThread(DataHolder.base_URL + DataHolder.requestDetail_URL, coupon.getCouponId(),handler, this);
+        detailThread = new RequestCouponDetailThread(DataHolder.base_URL + DataHolder.requestDetail_URL, coupon.getCouponId(), handler, this);
         detailThread.start();
     }
 

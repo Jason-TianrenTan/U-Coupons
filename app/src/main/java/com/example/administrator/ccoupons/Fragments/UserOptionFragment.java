@@ -9,9 +9,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,31 +56,40 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     private LinearLayout mTitleContainer;
     private TextView mTitle;
     private AppBarLayout mAppBarLayout;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_option, container, false);
-        portrait = (ImageView) view.findViewById(R.id.user_portrait     );
+        portrait = (ImageView) view.findViewById(R.id.user_portrait);
         TextView ub = (TextView) view.findViewById(R.id.user_ub);
         ub.setText(Integer.toString(DataHolder.User.UB));
         LinearLayout toUserMyCoupons = (LinearLayout)view.findViewById(R.id.user_to_mycoupons);
-      //  LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_to_inf);
         LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
         LinearLayout toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
         LinearLayout logoff = (LinearLayout) view.findViewById(R.id.user_logoff);
+        CollapsingToolbarLayout toUserInfo = (CollapsingToolbarLayout) view.findViewById(R.id.user_to_inf);
         mTitle          = (TextView) view.findViewById(R.id.main_textview_title);
         mTitleContainer = (LinearLayout) view.findViewById(R.id.main_linearlayout_title);
         mAppBarLayout   = (AppBarLayout) view.findViewById(R.id.main_appbar);
+        toolbar = (Toolbar) view.findViewById(R.id.user_main_toolbar);
+
+
         informationManager = new LoginInformationManager(getActivity());
         mAppBarLayout.addOnOffsetChangedListener(this);
         initPortrait();
 
         //OnClickListener
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
+            }
+        });
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserPortraitActivity.class));
-                getActivity().overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
+                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
             }
         });
         toUserMyCoupons.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +98,11 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
                 getActivity().startActivity(new Intent(getActivity(), UserMyCouponActivity.class));
             }
         });
-     /*   toUserInfo.setOnClickListener(new View.OnClickListener() {
+        toUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override            public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
             }
-        });*/
+        });
         toUserWal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
