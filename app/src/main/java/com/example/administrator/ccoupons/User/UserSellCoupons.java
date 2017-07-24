@@ -25,12 +25,17 @@ public class UserSellCoupons extends SlideBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_sell_coupons);
+        initView();
         setToolBar();
-        recyclerView = (RecyclerView) findViewById(R.id.usel_recyclerview);
         setRecyclerView();
-        linearLayout = (LinearLayout)findViewById(R.id.usel_bg);
         isEmpty();
     }
+
+    private void initView(){
+        linearLayout = (LinearLayout)findViewById(R.id.usel_bg);
+        recyclerView = (RecyclerView) findViewById(R.id.usel_recyclerview);
+    }
+
 
     private void setToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.usel_toolbar);

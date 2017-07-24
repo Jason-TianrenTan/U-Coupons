@@ -21,29 +21,38 @@ public class UserBuyCoupons extends SlideBackActivity {
     ArrayList<Coupon> arrayList = new ArrayList<Coupon>();
     private RecyclerView recyclerView;
     LinearLayout linearLayout;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_buy_coupons);
+        initView();
         setToolBar();
-        recyclerView = (RecyclerView) findViewById(R.id.ubuy_recyclerview);
         setRecyclerView();
-        linearLayout = (LinearLayout)findViewById(R.id.ubuy_bg);
+        setOnClickListeners();
         isEmpty();
     }
 
-    private void setToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.ubuy_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void setOnClickListeners(){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+    }
+
+    private void initView(){
+        linearLayout = (LinearLayout)findViewById(R.id.ubuy_bg);
+        recyclerView = (RecyclerView) findViewById(R.id.ubuy_recyclerview);
+    }
+
+    private void setToolBar() {
+        toolbar = (Toolbar) findViewById(R.id.ubuy_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initData() {

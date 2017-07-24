@@ -1,22 +1,11 @@
 package com.example.administrator.ccoupons.User;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -29,12 +18,7 @@ import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
-import com.jph.takephoto.model.InvokeParam;
-import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TResult;
-import com.jph.takephoto.permission.InvokeListener;
-import com.jph.takephoto.app.TakePhoto;
-import com.jph.takephoto.permission.PermissionManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,16 +29,35 @@ public class UserInformationActivity extends SlideBackActivity {
     private TextView sex;
     private TextView age;
     private XCRoundImageView portrait;
-    protected TakePhotoUtil takePhotoUtil;
-    LoginInformationManager informationManager;
+    private TakePhotoUtil takePhotoUtil;
+    private Toolbar toolbar;
+    private LinearLayout changeportrait;
+    private LoginInformationManager informationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
+        initView();
+        if (useTakePhoto()) {
+            takePhotoUtil.onCreate(savedInstanceState);
+        }
 
+        initPortrait();
+        //portrait.setImageResource(DataHolder.User.portraitId);
+
+        setOnClickListeners();
+    }
+
+    private void initView(){
+        name = (TextView) findViewById(R.id.user_name);
+        sex = (TextView) findViewById(R.id.user_sex);
+        age = (TextView) findViewById(R.id.user_age);
+        portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
+        toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
+        changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
         informationManager = new LoginInformationManager(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
+        takePhotoUtil = new TakePhotoUtil(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,24 +67,15 @@ public class UserInformationActivity extends SlideBackActivity {
                 finish();
             }
         });
-        takePhotoUtil = new TakePhotoUtil(this);
-        if (useTakePhoto()) {
-            takePhotoUtil.onCreate(savedInstanceState);
-        }
-
-        name = (TextView) findViewById(R.id.user_name);
-        sex = (TextView) findViewById(R.id.user_sex);
-        age = (TextView) findViewById(R.id.user_age);
-        portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
-        initPortrait();
         name.setText(DataHolder.User.username);
         age.setText(Integer.toString(DataHolder.User.age));
         if (DataHolder.User.sex)
             sex.setText("男");
         else
             sex.setText("女");
-        //portrait.setImageResource(DataHolder.User.portraitId);
-        LinearLayout changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
+    }
+
+    private void setOnClickListeners(){
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +169,7 @@ public class UserInformationActivity extends SlideBackActivity {
         boolean rs = mat.find();
         Long millis = Long.parseLong(mat.group(2));
         informationManager.setPortraitPath(path);
-        //上传Millis和图片到服务器
+        //Todo:上传Millis和图片到服务器
     }
 
     public void initPortrait() {

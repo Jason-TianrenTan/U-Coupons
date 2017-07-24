@@ -26,11 +26,15 @@ public class UserFollowCoupon extends SlideBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_follow_coupon);
+        initView();
         setToolBar();
-        recyclerView = (RecyclerView) findViewById(R.id.ufol_recyclerview);
         setRecyclerView();
-        linearLayout = (LinearLayout)findViewById(R.id.ufol_bg);
         isEmpty();
+    }
+
+    private void initView() {
+        recyclerView = (RecyclerView) findViewById(R.id.ufol_recyclerview);
+        linearLayout = (LinearLayout) findViewById(R.id.ufol_bg);
     }
 
     private void setToolBar() {
@@ -81,8 +85,8 @@ public class UserFollowCoupon extends SlideBackActivity {
         recyclerView.addItemDecoration(new UserFollowCoupon.SpacesItemDecoration(3));
     }
 
-    public void isEmpty(){
-        if (arrayList.size() == 0){
+    public void isEmpty() {
+        if (arrayList.size() == 0) {
             linearLayout.setVisibility(View.VISIBLE);
         }
     }
