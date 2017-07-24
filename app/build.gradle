@@ -30,8 +30,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile files('libs/AMap_Location_V3.4.1_20170629.jar')
-
-
     compile files('libs/MobCommons-2017.0607.1736.jar')
     compile files('libs/MobTools-2017.0607.1736.jar')
     compile name: "SMSSDK-3.0.0", ext: 'aar'
@@ -50,4 +48,6 @@ dependencies {
     compile 'liji.library.dev:takephotolib:1.0.2'
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

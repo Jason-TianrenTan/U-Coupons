@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_MASSAGE = "create table Message ("
-            + "id integer primary key, "
+            + "id text primary key, "
             + "isNew integer, "
             + "messageCat integer, "
-            + "userId integer, "
+            + "userId text, "
             + "time text, "
             + "content text, "
             + "couponName text, "
@@ -22,10 +22,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "couponURL integer)";
 
     public static final String CREATE_COUPON = "create table Coupon ("
-            + "id integer primary key, "
+            + "id text primary key, "
             + "name text, "
-            + "brandId integer, "
-            + "catId integer, "
+            + "brandId text, "
+            + "catId text, "
             + "listPrice real, "
             + "evaluatePrice real, "
             + "discount real, "

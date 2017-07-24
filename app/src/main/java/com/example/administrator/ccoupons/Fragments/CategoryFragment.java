@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.os.*;
 import android.support.v4.view.LinkagePager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import com.example.administrator.ccoupons.Banner.BannerPicture;
 import com.example.administrator.ccoupons.Banner.LocalImageHolderView;
 import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
@@ -38,12 +41,14 @@ import com.example.administrator.ccoupons.UI.CustomDialog;
 import com.example.administrator.ccoupons.UI.CustomLoader;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CategoryFragment extends Fragment {
 
 
     private CustomLoader customLoader;
     private ArrayList<Category> categoryList;
+    private ArrayList<Coupon> RCouponList;
     private CategoryAdapter adapter;
     private TextView location_text;
     private ArrayList<Integer> localImages;
@@ -101,15 +106,53 @@ public class CategoryFragment extends Fragment {
         });
         //   SearchView searchView = (SearchView)view.findViewById(R.id.search_view);
         initCategory();
+        initRecommends();
         initBanner();
         initLocation();
+        initRecyclerViews(view);
+        return view;
+    }
+
+    String[] urls = ("http://dxcb2.leiting.com/static/pc/images/occupation/zs/4.png?v=201706025," +
+            "http://dxcb2.leiting.com/static/pc/images/occupation/zs/3.png?v=201706025," +
+    "http://dxcb2.leiting.com/static/pc/images/occupation/sz/4.png?v=201706025," +
+            "http://dxcb2.leiting.com/static/pc/images/occupation/sz/5.png?v=201706025," +
+            "http://dxcb2.leiting.com/static/pc/images/occupation/fs/4.png?v=201706025," +
+            "http://dxcb2.leiting.com/static/pc/images/occupation/qxz/4.png?v=201706025," +
+            "http://dxcb2.leiting.com/static/pc/images/occupation/qxz/5.png?v=201706025").split(",");
+    String[] coupon_names = "云之国剑士,无名的剑士,大力小萝莉,力魔圣骑士,黑袍术士,夜魇暗潮,诡术猎手".split(",");
+    private void initRecommends() {
+        RCouponList = new ArrayList<>();
+        //TODO:测试
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            Coupon coupon = new Coupon();
+
+            coupon.setDetail("2017-7-23");
+            coupon.setListPrice(198.0);
+            int index= random.nextInt(urls.length);
+            coupon.setName("SS招募券 - " + coupon_names[index]);
+            coupon.setImgURL(urls[index]);
+            RCouponList.add(coupon);
+        }
+    }
+
+    private void initRecyclerViews(View view) {
+        //类别Recylcerview
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);//测试
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
-        return view;
+
+        //推荐
+        RecyclerView recommendView = (RecyclerView) view.findViewById(R.id.recommend_recyclerview);
+        LinearLayoutManager recLayoutManager = new LinearLayoutManager(getActivity());
+        recommendView.setLayoutManager(recLayoutManager);
+        MainPageCouponAdapter rec_adapter = new MainPageCouponAdapter(RCouponList);
+        recommendView.setAdapter(rec_adapter);
+        recommendView.setNestedScrollingEnabled(false);
     }
 
     //初始化展示板
@@ -157,6 +200,7 @@ public class CategoryFragment extends Fragment {
             public void onTimeChanged() {
 
             }
+
             @Override
             public void onTimeFinish() {
                 android.os.Message msg = new android.os.Message();

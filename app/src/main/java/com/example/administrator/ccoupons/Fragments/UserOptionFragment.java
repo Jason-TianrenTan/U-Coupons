@@ -6,10 +6,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,9 +37,20 @@ import com.example.administrator.ccoupons.User.UserWalletActivity;
  * Created by CZJ on 2017/7/13.
  */
 
-public class UserOptionFragment extends Fragment {
+public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
     private LoginInformationManager informationManager;
     private ImageView portrait;
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.6f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
+    private static final int ALPHA_ANIMATIONS_DURATION = 200;
+
+    private boolean mIsTheTitleVisible = false;
+    private boolean mIsTheTitleContainerVisible = true;
+
+    private LinearLayout mTitleContainer;
+    private TextView mTitle;
+    private AppBarLayout mAppBarLayout;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,23 +58,35 @@ public class UserOptionFragment extends Fragment {
         portrait = (ImageView) view.findViewById(R.id.user_portrait);
         TextView ub = (TextView) view.findViewById(R.id.user_ub);
         ub.setText(Integer.toString(DataHolder.User.UB));
-        LinearLayout toUserMyCoupons = (LinearLayout)view.findViewById(R.id.user_to_mycoupons);
-        LinearLayout toUserInfo = (LinearLayout) view.findViewById(R.id.user_to_inf);
+        LinearLayout toUserMyCoupons = (LinearLayout) view.findViewById(R.id.user_to_mycoupons);
         LinearLayout toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
         LinearLayout toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
         LinearLayout logoff = (LinearLayout) view.findViewById(R.id.user_logoff);
         LinearLayout toUserSell = (LinearLayout) view.findViewById(R.id.user_sell);
         LinearLayout toUserBuy = (LinearLayout) view.findViewById(R.id.user_buy);
         LinearLayout toUserFollow = (LinearLayout) view.findViewById(R.id.user_follow);
+        CollapsingToolbarLayout toUserInfo = (CollapsingToolbarLayout) view.findViewById(R.id.user_to_inf);
+        mTitle = (TextView) view.findViewById(R.id.main_textview_title);
+        mTitleContainer = (LinearLayout) view.findViewById(R.id.main_linearlayout_title);
+        mAppBarLayout = (AppBarLayout) view.findViewById(R.id.main_appbar);
+        toolbar = (Toolbar) view.findViewById(R.id.user_main_toolbar);
+
+
         informationManager = new LoginInformationManager(getActivity());
+        mAppBarLayout.addOnOffsetChangedListener(this);
         initPortrait();
 
         //OnClickListener
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
+            }
+        });
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserPortraitActivity.class));
-                getActivity().overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
+                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
             }
         });
         toUserMyCoupons.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +137,10 @@ public class UserOptionFragment extends Fragment {
                 showLogOffDialog();
             }
         });
+        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
         return view;
     }
+
 
     private void showLogOffDialog() {
         final AlertDialog.Builder logOffDialog =
@@ -148,6 +179,58 @@ public class UserOptionFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initPortrait();
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+        int maxScroll = appBarLayout.getTotalScrollRange();
+        float percentage = (float) Math.abs(offset) / (float) maxScroll;
+
+        handleAlphaOnTitle(percentage);
+        handleToolbarTitleVisibility(percentage);
+    }
+
+    private void handleToolbarTitleVisibility(float percentage) {
+        if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+
+            if (!mIsTheTitleVisible) {
+                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleVisible = true;
+            }
+
+        } else {
+
+            if (mIsTheTitleVisible) {
+                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleVisible = false;
+            }
+        }
+    }
+
+    private void handleAlphaOnTitle(float percentage) {
+        if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
+            if (mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleContainerVisible = false;
+            }
+
+        } else {
+
+            if (!mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleContainerVisible = true;
+            }
+        }
+    }
+
+    public static void startAlphaAnimation(View v, long duration, int visibility) {
+        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
+                ? new AlphaAnimation(0f, 1f)
+                : new AlphaAnimation(1f, 0f);
+
+        alphaAnimation.setDuration(duration);
+        alphaAnimation.setFillAfter(true);
+        v.startAnimation(alphaAnimation);
     }
 }
 /*

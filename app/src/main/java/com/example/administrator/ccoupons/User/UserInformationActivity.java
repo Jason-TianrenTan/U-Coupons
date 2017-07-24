@@ -76,6 +76,7 @@ public class UserInformationActivity extends SlideBackActivity {
     }
 
     private void setOnClickListeners(){
+        changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

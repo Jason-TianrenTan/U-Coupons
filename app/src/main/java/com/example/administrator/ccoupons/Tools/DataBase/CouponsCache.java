@@ -28,7 +28,7 @@ public class CouponsCache {
         ContentValues values = new ContentValues();
         values.put("id", coupon.getCouponId());
         values.put("name", coupon.getName());
-        values.put("brandId", coupon.getBrand());
+        values.put("brandId", coupon.getBrandName());
         values.put("catId", coupon.getCategory());
         values.put("listPrice", coupon.getListPrice());
         values.put("evaluatePrice", coupon.getEvaluatePrice());
@@ -76,9 +76,9 @@ public class CouponsCache {
 
     private Coupon collectOneCoupon(Cursor cursor) {
         String name = cursor.getString(cursor.getColumnIndex("name"));
-        int id = cursor.getInt(cursor.getColumnIndex("id"));
-        int brandId = cursor.getInt(cursor.getColumnIndex("brandId"));
-        int catId = cursor.getInt(cursor.getColumnIndex("catId"));
+        String id = cursor.getString(cursor.getColumnIndex("id"));
+        String brandId = cursor.getString(cursor.getColumnIndex("brandId"));
+        String catId = cursor.getString(cursor.getColumnIndex("catId"));
         double listPrice = cursor.getDouble(cursor.getColumnIndex("listPrice"));
         double evaluatePrice = cursor.getDouble(cursor.getColumnIndex("evaluatePrice"));
         double discount = cursor.getDouble(cursor.getColumnIndex("discount"));

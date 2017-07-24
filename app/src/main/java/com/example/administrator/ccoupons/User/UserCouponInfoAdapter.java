@@ -37,12 +37,12 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
 
         public UserCouponInfoViewHolder(View view) {
             super(view);
-            rootView = (FrameLayout) view;
-            couponListText = (TextView) view.findViewById(R.id.coupon_listprice_text);
-            couponEvalText = (TextView) view.findViewById(R.id.coupon_evalprice_text);
-            couponNameText = (TextView) view.findViewById(R.id.usercoupon_name_text);
-            couponDetailText = (TextView) view.findViewById(R.id.coupon_detail_text);
-            couponExpireText = (TextView) view.findViewById(R.id.coupon_expire_date);
+            rootView = (FrameLayout)view;
+            couponListText = (TextView)view.findViewById(R.id.coupon_listprice_text);
+            couponEvalText = (TextView)view.findViewById(R.id.coupon_evalprice_text);
+            couponNameText = (TextView)view.findViewById(R.id.usercoupon_name_text);
+            couponDetailText = (TextView)view.findViewById(R.id.coupon_detail_text);
+            couponExpireText = (TextView)view.findViewById(R.id.coupon_detail_expire_date);
         }
     }
 
