@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
