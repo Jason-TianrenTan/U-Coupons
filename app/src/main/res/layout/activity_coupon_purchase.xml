@@ -41,6 +41,7 @@
 
 
             <TextView
+                android:id="@+id/purchase_coupon_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -56,12 +57,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:paddingLeft="15dp"
             android:background="@color/white"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/coupon_label_text"
-                android:layout_marginLeft="10dp"
                 android:padding="10dp"
                 android:paddingLeft="15dp"
                 android:text="优惠额度: " />
@@ -69,6 +70,7 @@
             <TextView
                 style="@style/coupon_detail_text"
                 android:gravity="right"
+                android:id="@+id/purchase_discount_text"
                 android:text="屠龙宝刀点击就送" />
 
         </LinearLayout>
@@ -77,13 +79,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:paddingLeft="15dp"
             android:background="@color/white"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:padding="10dp"
                 android:paddingLeft="15dp"
                 android:text="使用门槛: "
@@ -93,27 +95,38 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/purchase_constraints_text"
                 android:text="1.陈中津别水群了\n2.陈中津快去写BUG\n3.陈中津怎么又写了个BUG\n4.陈中津又DE出了一个BUG"
                 android:textSize="16dp" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="horizontal">
 
             <TextView
-                style="@style/coupon_label_text"
-                android:layout_marginLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="20dp"
+                android:textColor="@color/black"
                 android:padding="10dp"
-                android:paddingLeft="15dp"
                 android:text="价格: " />
 
             <TextView
-                style="@style/coupon_detail_text"
+                android:id="@+id/purchase_price_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:gravity="right"
                 android:text="¥100"
+                android:textSize="20dp"
+                android:padding="10dp"
                 android:textColor="@color/colorPrimary" />
         </LinearLayout>
 

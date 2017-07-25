@@ -85,8 +85,6 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        //MobSDK.init(this, "");
-        startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
 
         login = (Button) findViewById(R.id.welcome_login_button);
         register = (Button) findViewById(R.id.welcome_register_button);
@@ -106,6 +104,7 @@ public class WelcomeActivity extends AppCompatActivity {
         });
         loginInformationManager = new LoginInformationManager(this);
         auto_login = loginInformationManager.getAutoLogin();
+        System.out.println("auto login = " + auto_login);
         if (auto_login == false) {
             /*
             login.setVisibility(View.VISIBLE);

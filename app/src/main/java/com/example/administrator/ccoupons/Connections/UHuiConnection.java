@@ -71,7 +71,7 @@ public class UHuiConnection {
             HttpEntity entity = response.getEntity();
             content = EntityUtils.toString(entity);
 
-            System.out.println(content);
+            System.out.println("Received content = " + content);
 
             if (handler != null) {
                 Message msg = new Message();
@@ -83,7 +83,6 @@ public class UHuiConnection {
             e.printStackTrace();
             if (handler != null) {
                 Message msg = new Message();
-                System.out.println("Send message: error");
                 msg.what = MessageType.CONNECTION_ERROR;
                 handler.sendMessage(msg);
             }
