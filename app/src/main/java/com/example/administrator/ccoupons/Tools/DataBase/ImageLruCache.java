@@ -1,7 +1,7 @@
 package com.example.administrator.ccoupons.Tools.DataBase;
 
 import android.graphics.Bitmap;
-import android.util.LruCache;
+import android.support.v4.util.LruCache;
 
 /**
  * Created by CZJ on 2017/7/24.

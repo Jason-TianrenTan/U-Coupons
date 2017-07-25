@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -31,6 +32,7 @@ import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 
@@ -215,8 +217,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
             String url = DataHolder.base_URL + coupon.getImgURL();
-            ImageFetchr fetchr = new ImageFetchr(url, holder.imageView, true);
-            fetchr.execute();
+            ImageManager.GlideImage(url, holder.imageView);
         }
 
         @Override

@@ -12,4 +12,5 @@ public class MessageType {
     public final static int LOCATION_GET = 5;
     public final static int LOCATION_FAILED = 6;
 
+
 }

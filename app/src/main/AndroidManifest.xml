@@ -69,10 +69,7 @@
         <activity
             android:name=".Main.LoginActivity"
             android:fitsSystemWindows="true" />
-        <activity
-            android:name=".Fragments.MainPageActivity"
-            android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".Search.SearchActivity"
             android:fitsSystemWindows="true"
@@ -89,13 +86,19 @@
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
         <activity android:name=".Main.WelcomeActivity">
+
+        </activity>
+        <activity
+            android:name=".Fragments.MainPageActivity"
+            android:fitsSystemWindows="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
+        </activity>
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />

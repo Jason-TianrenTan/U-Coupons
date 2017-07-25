@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 
 public class CouponPurchaseActivity extends AppCompatActivity {
 
@@ -49,7 +51,17 @@ public class CouponPurchaseActivity extends AppCompatActivity {
 
     private void initInfo() {
         Coupon coupon = (Coupon) getIntent().getSerializableExtra("coupon");
-        
+        ImageManager.GlideImage(DataHolder.base_URL + coupon.getImgURL(), couponImg);
+        couponNameText.setText(coupon.getName());
+        couponPriceText.setText("¥" + coupon.getListPrice());
+
+        String[] constraints = coupon.getConstraints();
+        StringBuilder sb = new StringBuilder();
+        int index = 1;
+        for (String str : constraints)
+            sb.append(index + ". " + str + '\n');
+        couponConstraintsText.setText(sb.toString());
+        couponDiscountText.setText("¥" + coupon.getDiscount());
     }
 
 
