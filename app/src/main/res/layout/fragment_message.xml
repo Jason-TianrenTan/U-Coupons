@@ -4,33 +4,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:theme="@style/MainToolBarStyle">
-
-            <TextView
-                android:layout_gravity="center"
-                android:text="消息"
-                style="@style/MainToolbarTitleStyle"
-                />
-
-        </android.support.v7.widget.Toolbar>
-
-        <!--    app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-
-    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/messageclass_recyclerview">
 
 
     </android.support.v7.widget.RecyclerView>

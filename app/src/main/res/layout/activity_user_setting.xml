@@ -16,7 +16,7 @@
 
     <LinearLayout style="@style/user_wrap_layout">
         <ImageView style="@style/user_edgeline"/>
-        <LinearLayout style="@style/user_row_layout"
+        <LinearLayout style="@style/user_option_layout"
             android:id="@+id/uset_clear">
             <TextView style="@style/user_text"
                 android:textColor="@color/red"

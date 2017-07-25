@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.ccoupons.User.UserMyCouponActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/user_mycoupons_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:theme="@style/MainToolBarStyle"
+        app:layout_scrollFlags="scroll|enterAlways|snap">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="我的优惠券"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whitesmoke"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/ViewPageHeaderStyle"
+            android:id="@+id/unused_title_text"
+            android:text="未使用"
+            android:paddingBottom="12dp"
+            />
+        <TextView
+            style="@style/ViewPageHeaderStyle"
+            android:id="@+id/onsale_title_text"
+            android:text="已上架"
+            android:paddingBottom="12dp"
+            />
+        <TextView
+            style="@style/ViewPageHeaderStyle"
+            android:id="@+id/nonsale_title_text"
+            android:text="未上架"
+            android:paddingBottom="12dp"
+            />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/whitesmoke"/>
+
+        <LinearLayout
+            android:id="@+id/mycoupon_scrollbar"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp" />
+    </FrameLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mycoupon_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

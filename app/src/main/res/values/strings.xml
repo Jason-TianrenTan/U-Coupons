@@ -49,6 +49,7 @@
     <string name="CLEAR_HISTORY">清除历史记录</string>
 
     <!-- 用户界面 -->
+    <string name="uopt_title">我的</string>
     <string name="uopt_mycoupon">我的优惠券</string>
     <string name="uopt_mywallet">我的钱包</string>
     <string name="uopt_sell">我卖出的</string>
@@ -77,5 +78,16 @@
     <!-- 用户设置界面 -->
     <string name="uset_title">应用设置</string>
     <string name="uset_clear">清除缓存</string>
+    <string name="title_activity_user_photo">UserPhotoActivity</string>
+
+    <!--消息界面-->
+    <string name="coupon_bought_title">上架的优惠券被购买</string>
+    <string name="coupon_abouttoexpire_title">上架的优惠券即将过期</string>
+    <string name="coupon_expired_title">上架的优惠券已过期</string>
+    <string name="coupon_followed_abouttoexpire_title">关注的优惠券即将过期,</string>
+    <string name="coupon_mine_aboutto_expire_title">我的优惠券即将过期</string>
+    <string name="coupon_system_title">系统消息</string>
+
+    <string name="coupon_info">优惠券详情</string>
 
 </resources>

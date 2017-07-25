@@ -17,7 +17,7 @@ import android.widget.ImageView;
  * Created by CZJ on 2017/7/11.
  */
 
-public class XCRoundImageView extends ImageView {
+public class XCRoundImageView extends android.support.v7.widget.AppCompatImageView {
     private Paint paint ;
 
     public XCRoundImageView(Context context) {

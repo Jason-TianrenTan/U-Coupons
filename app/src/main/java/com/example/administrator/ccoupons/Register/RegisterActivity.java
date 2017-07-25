@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Main.LoginActivity;
+import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
@@ -27,6 +28,12 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout inputLayout;
     private String[] AlertStrings = "不能含有非法字符,长度必须为11位".split(",");
 
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(RegisterActivity.this, WelcomeActivity.class));
+        super.onBackPressed();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

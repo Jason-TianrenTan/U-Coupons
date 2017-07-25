@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +29,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private ArrayList<Category> mCategoryList;
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
         ImageView imageView;
         TextView textView;
-
+        LinearLayout rootView;
         public CategoryViewHolder(View view) {
             super(view);
-            cardView = (CardView) view;
+            rootView = (LinearLayout)view;
             imageView = (ImageView) view.findViewById(R.id.category_imageview);
             textView = (TextView) view.findViewById(R.id.category_textview);
         }
@@ -52,7 +52,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.category_item, parent, false);
         final CategoryViewHolder holder = new CategoryViewHolder(view);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();

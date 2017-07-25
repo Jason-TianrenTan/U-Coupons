@@ -3,7 +3,8 @@ package com.example.administrator.ccoupons.Main;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,27 +22,105 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.LoginThread;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.PasswordEncoder;
-import com.example.administrator.ccoupons.Tools.SlideBackActivity;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.MessageType;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.UI.CustomDialog;
 
-import java.security.NoSuchAlgorithmException;
+import org.json.JSONObject;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button login;
-    Toolbar toolbar;
-    EditText signup_phone, signup_pass;
+
+    private static String url = DataHolder.base_URL + DataHolder.login_URL;
+    private LoginThread thread;
+    private Button login;
+    private Toolbar toolbar;
+    private EditText signup_phone, signup_pass;
+    private String myUsername, myPassword;
+    private Handler handler = new Handler() {
+
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case MessageType.CONNECTION_ERROR:
+                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    login.setEnabled(true);
+                    break;
+                case MessageType.CONNECTION_TIMEOUT:
+                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    login.setEnabled(true);
+                    break;
+                case MessageType.CONNECTION_SUCCESS:
+                    parseMessage(thread.getResponse());
+                    break;
+                case MessageType.REENABLE_LOGIN:
+                    login.setEnabled(true);
+                    break;
+            }
+        }
+    };
+
     private int mergeHeight;
     private boolean editTextFocus = false;
     private LoginInformationManager loginInformationManager;
-    private boolean auto_login;
+    //    private boolean auto_login;
     private String rem_phonenumber;
     private String rem_pass;
 
+    private void saveUserLoginInfo() {
+        loginInformationManager.setAutoLogin(true).setUsername(myUsername).setPassword(myPassword);
+    }
+
+    //处理返回回来的json
+    private void parseMessage(String response) {
+        if (response.indexOf("result") != -1) {
+            System.out.println("Login success");
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String userId = jsonObject.getString("userid");
+                System.out.println("Response = " + response);
+                MyApp app = (MyApp) getApplicationContext();
+                app.setUserId(userId);
+                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
+                        "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
+                saveUserLoginInfo();//缓存密码
+
+
+                Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+                intent.putExtra("username", myUsername);
+                intent.putExtra("password", myPassword);
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+                Message msg = new Message();
+                msg.what = MessageType.REENABLE_LOGIN;
+                handler.sendMessage(msg);
+                e.printStackTrace();
+            }
+
+        }
+        else {
+            if (response.indexOf("error") != -1) {
+                System.out.println("Login failed");
+                Message msg = new Message();
+                msg.what = MessageType.REENABLE_LOGIN;
+                handler.sendMessage(msg);
+                Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Message msg = new Message();
+                msg.what = MessageType.CONNECTION_ERROR;
+                handler.sendMessage(msg);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +145,10 @@ public class LoginActivity extends AppCompatActivity {
         signup_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         signup_pass = (EditText) findViewById(R.id.signup_password);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        loginInformationManager = new LoginInformationManager(this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+        loginInformationManager = new LoginInformationManager(this);
 
         //读取记忆的账号
-        rem_phonenumber = loginInformationManager.getPhoneNumber();
+        rem_phonenumber = loginInformationManager.getUsername();
         rem_pass = loginInformationManager.getPassword();
         signup_phone.setText(rem_phonenumber);
         signup_pass.setText(rem_pass);
@@ -99,31 +178,14 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phonenumber = signup_phone.getText().toString();
+                String username = signup_phone.getText().toString();
                 String password = signup_pass.getText().toString();
-                String passwordcode;
-                //如果不存在保存的密码，则将密码加密
-                if (rem_pass.equals("")) {
-                    PasswordEncoder encoder = new PasswordEncoder();
-                    try {
-                        passwordcode = encoder.EncodeByMd5(password);
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                        passwordcode = "";
-                    }
-                } else passwordcode = password;
-                //向后台发送手机号与密码并验证
-                //判断
-                //- 失败
-                //- 网络无连接
-                //- 成功，并收到服务器的消息
 
-                //保存账号与密码
-                loginInformationManager.setAutoLogin(true).setPhoneNumber(phonenumber).setPassword(passwordcode);
-                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + phonenumber +
-                        "\n密码:" + passwordcode, Toast.LENGTH_SHORT).show();    //fortest
-                startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
-                finish();
+                login.setEnabled(false);
+                if (password != null) {
+                    requestLogin(url, username, password);
+                }
+                //finish();
             }
         });
 
@@ -135,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
-        mergeHeight = dp2px(120);
+        mergeHeight = PixelUtils.dp2px(this, 120);
 
         //
         SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
@@ -154,6 +216,15 @@ public class LoginActivity extends AppCompatActivity {
                     startAnimation(ANIM_EXPAND);
             }
         });
+    }
+
+    //登录
+    private void requestLogin(String url, String username, String password) {
+        myUsername = username;
+        myPassword = password;
+        thread = new LoginThread(url, username, password, handler, getApplicationContext());
+        thread.start();
+        //TODO 播放动画
     }
 
     private void hideKeyboard(View view) {
@@ -197,10 +268,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
-    }
 
     @Override
     public void onBackPressed() {

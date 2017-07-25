@@ -6,7 +6,14 @@ package com.example.administrator.ccoupons.Fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -22,12 +29,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.example.administrator.ccoupons.Connections.MessageGetService;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
@@ -39,12 +48,12 @@ import java.util.TimerTask;
 
 public class MainPageActivity extends AppCompatActivity {
     private boolean exit = false;
+    private AlarmReceiver receiver;
+    private CategoryFragment categoryFragment;
+    private UserOptionFragment userOptionFragment;
 
-    CategoryFragment categoryFragment;
-    UserOptionFragment userOptionFragment;
 
-    Fragment[] fragments = new Fragment[2];
-    private ConvenientBanner convenientBanner;//顶部广告栏控件;
+    private Fragment[] fragments = new Fragment[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +63,22 @@ public class MainPageActivity extends AppCompatActivity {
         initFragments();
         initNavigationBar();
 
+        initService();
+
     }
+
+    private void initService() {
+
+        receiver = new AlarmReceiver();
+        IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.MESSAGE_BROADCAST");
+        registerReceiver(receiver,filter);
+
+        Intent intent = MessageGetService.newIntent(this);
+        startService(intent);
+        MessageGetService.setServiceAlarm(this);
+
+    }
+
 
     private void initFragments() {
         categoryFragment = new CategoryFragment();
@@ -66,8 +90,7 @@ public class MainPageActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.fragment_frame, categoryFragment);
         fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
         fragmentTransaction.commit();
-        fragmentTransaction.hide(userOptionFragment);
-        fragmentTransaction.show(categoryFragment);
+        showFragment(1);
     }
 
 
@@ -91,21 +114,24 @@ public class MainPageActivity extends AppCompatActivity {
         LinearLayout navigationBar = (LinearLayout) findViewById(R.id.bottom_nav_container);
         LinearLayout nav_item_main = (LinearLayout) navigationBar.findViewById(R.id.id_left1),
                 nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1);
+        TextView titleView_main = (TextView) nav_item_main.findViewById(R.id.navigation_icon_text);
+        titleView_main.setText("首页");
+        TextView titleView_aboutme = (TextView) nav_item_aboutme.findViewById(R.id.navigation_icon_text);
+        titleView_aboutme.setText("我的");
         nav_item_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("fragment 1");
                 showFragment(1);
             }
         });
         nav_item_aboutme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("fragment 2");
                 showFragment(2);
             }
         });
     }
+
     //按返回键回到F1,在F1双击返回键退出
     @Override
     public void onBackPressed() {
@@ -114,7 +140,7 @@ public class MainPageActivity extends AppCompatActivity {
                 super.onBackPressed();
             } else {
                 exit = true;
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(this,
                         "再按返回键退出程序", Toast.LENGTH_SHORT).show();
                 final Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
@@ -128,5 +154,28 @@ public class MainPageActivity extends AppCompatActivity {
         } else showFragment(1);
     }
 
+    private void parseMessageJSON(String msg) {
+        //TODO:parse JSON string
+    }
 
+    public class AlarmReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String json = intent.getStringExtra("content");
+            parseMessageJSON(json);
+            System.out.println("Received, content = " + json);
+        }
+
+        public AlarmReceiver() {
+
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
 }

@@ -12,4 +12,5 @@
     <dimen name="pager_margin">-30dp</dimen>
 
     <dimen name="overlap_pager_margin">-60dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

@@ -1,76 +1,61 @@
 package com.example.administrator.ccoupons.Connections;
 
-import com.example.administrator.ccoupons.Tools.StringEncoder;
-
-import java.io.*;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.apache.http.protocol.HTTP.USER_AGENT;
-
 /**
- * Created by Administrator on 2017/7/16 0016.
+ * Created by Administrator on 2017/7/18 0018.
  */
 
-public class RegisterThread extends Thread {
+import android.content.Context;
+import android.os.Handler;
 
+import com.example.administrator.ccoupons.Tools.PasswordEncoder;
+
+import static org.apache.http.protocol.HTTP.USER_AGENT;
+public class RegisterThread extends Thread{
+
+    private UHuiConnection connection;
     private String username, password, nickname;
     private int gender;
     private String url;
+    private Context mContext;
+    private Handler handler;
     String[] GenderChars = {"男", "女"};
 
-    public RegisterThread(String url, String name, String pass, String nick, int gender) {
+    public RegisterThread(String url, String name, String pass, String nick, int gender, Handler handler, Context context) {
         this.url = url;
         this.username = name;
         try {
-            this.password = new StringEncoder(pass).getMD5();
+            this.password = new PasswordEncoder().EncodeByMd5(pass);
         } catch (Exception e) {
             e.printStackTrace();
         }
         this.nickname = nick;
         this.gender = gender;
+        this.mContext = context;
+        this.handler = handler;
     }
 
+    public String getResponse() {
+        return connection.getContent();
+    }
 
-
-    private void connect(String url) {
+    private void connect(String url){
         try {
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(url);
-            post.setHeader("User-Agent", USER_AGENT);
-            post.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-            urlParameters.add(new BasicNameValuePair("username", username));
-            urlParameters.add(new BasicNameValuePair("password", password));
-            urlParameters.add(new BasicNameValuePair("nickname", nickname));
-            urlParameters.add(new BasicNameValuePair("gender", GenderChars[gender]));
-            post.setEntity(new UrlEncodedFormEntity(urlParameters, HTTP.UTF_8));
-            HttpResponse response = client.execute(post);
-            HttpEntity entity = response.getEntity();
-            String content = EntityUtils.toString(entity);
-            System.out.println(content);
-
+            connection = new UHuiConnection(url, handler);
+            connection.setHeader("User-Agent", USER_AGENT);
+            connection.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+            connection.add("username", username);
+            connection.add("password", password);
+            connection.add("nickname", nickname);
+            connection.add("gender", GenderChars[gender]);
+            connection.connect();
 
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
+
         }
     }
 
-    public void run() {
+    public void run(){
         connect(this.url);
     }
 }

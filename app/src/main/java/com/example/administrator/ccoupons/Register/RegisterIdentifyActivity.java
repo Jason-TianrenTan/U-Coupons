@@ -11,22 +11,33 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
+import com.mob.MobSDK;
 
 import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
+
+import static com.mob.tools.utils.ResHelper.getStringRes;
+
 //注册界面 验证码界面
 public class RegisterIdentifyActivity extends AppCompatActivity {
+
+    public static final int SMS_FAILED = 1;//验证失败
+    public static final int SMS_SUCCESS = 2;//验证通过
 
     TextView upperText, timerText;
     EditText editText;
@@ -34,10 +45,11 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
             button_reget;
     TextInputLayout inputLayout;
 
+    private boolean verify_cord = false;
     private String phoneString;
-    private String[] AlertStrings = "不能含有非法字符,长度必须为6位".split(",");
+    private String[] AlertStrings = "不能含有非法字符,长度必须为4位".split(",");
     private boolean reget_permission = false;
-    public static final int COUNTDOWN_TIME = 20;
+    public static final int COUNTDOWN_TIME = 30;
 
     private RegisterCheck checker;
     private Handler TimerHandler = new Handler() {
@@ -51,7 +63,28 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         }
     };
 
+
+    private Handler SMSVerifyHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SMS_FAILED:
+                    inputLayout.setErrorEnabled(true);
+                    inputLayout.setError("验证码错误!");
+                    System.out.println("Error!!!!!!!!!!!!!!!!!");
+                    break;
+                case SMS_SUCCESS:
+                    Intent intent = new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class);
+                    intent.putExtra("phone_number", phoneString);
+                    startActivity(intent);
+                    break;
+
+            }
+        }
+    };
+
     int current = COUNTDOWN_TIME;
+
     private void updateTimer() {
         if (!reget_permission) {
             current--;
@@ -63,7 +96,9 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
             }
         }
     }
+
     private class CountDownTask extends TimerTask {// public abstract class TimerTask implements Runnable{}
+
         @Override
         public void run() {
             Message msg = new Message();
@@ -71,6 +106,47 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
             TimerHandler.sendMessage(msg);
         }
     }
+
+    Handler SMShandler = new Handler() {
+
+
+        @Override
+
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int event = msg.arg1;
+            int result = msg.arg2;
+            Object data = msg.obj;
+            System.out.println("Event = " + event + ", Result = " + result);
+            if (result == SMSSDK.RESULT_COMPLETE) {
+                //短信注册成功后，返回MainActivity,然后提示新好友
+                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//提交验证码成功,验证通过
+                    Toast.makeText(getApplicationContext(), "验证码校验成功", Toast.LENGTH_SHORT).show();
+                    Message sms_msg = new Message();
+                    sms_msg.what = SMS_SUCCESS;
+                    SMSVerifyHandler.sendMessage(sms_msg);
+                } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) //服务器验证码发送成功
+                    Toast.makeText(getApplicationContext(), "验证码已经发送", Toast.LENGTH_SHORT).show();
+                else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {//返回支持发送验证码的国家列表
+                    Toast.makeText(getApplicationContext(), "获取国家列表成功", Toast.LENGTH_SHORT).show();
+
+                }
+            } else {
+                if (verify_cord) {
+                    ((Throwable) data).printStackTrace();
+                    Message sms_msg = new Message();
+                    sms_msg.what = SMS_FAILED;
+                    SMSVerifyHandler.sendMessage(sms_msg);
+                } else {
+                    Toast.makeText(getApplicationContext(), "验证码获取失败!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +178,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //发送验证码
+                sendSMS();
                 reget_permission = false;
                 button_reget.setEnabled(false);
                 startCountDown();
@@ -116,18 +193,41 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 if (err_type != AlertType.NO_ERROR) {
                     //有错误
                     inputLayout.setError(AlertStrings[err_type - 1]);
-                }
-                else {
-                    Intent intent = new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class);
-                    intent.putExtra("phone_number",phoneString);
-                    startActivity(intent);
+                } else {
+                    String iCord = editText.getText().toString().trim();
+                    SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
+                    verify_cord = true;
+                    /*
+                    */
                 }
             }
         });
 
 
+        EventHandler eh = new EventHandler() {
 
+
+            @Override
+
+            public void afterEvent(int event, int result, Object data) {
+                Message msg = new Message();
+                msg.arg1 = event;
+                msg.arg2 = result;
+                msg.obj = data;
+                SMShandler.sendMessage(msg);
+            }
+
+
+        };
+        SMSSDK.registerEventHandler(eh);
+        sendSMS();
         startCountDown();
+    }
+
+    private void sendSMS() {
+        //发送验证码
+        System.out.println("Sent SMS code to +86" + phoneString.trim());
+        SMSSDK.getVerificationCode("86", phoneString.trim());//请求获取短信验证码
     }
 
     private void startCountDown() {

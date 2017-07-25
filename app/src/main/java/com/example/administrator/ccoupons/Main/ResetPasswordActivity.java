@@ -22,7 +22,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        Button button_next = (Button)findViewById(R.id.register_password_button_next);
+        Button button_next = (Button)findViewById(R.id.reset_button_ok);
         button_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

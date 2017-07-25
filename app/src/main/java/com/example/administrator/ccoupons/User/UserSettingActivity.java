@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,28 +9,36 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
 public class UserSettingActivity extends SlideBackActivity {
+    private Toolbar toolbar;
+    private LinearLayout clear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
+        initView();
+        setOnClickListeners();
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.uset_toolbar);
+    private void initView(){
+        toolbar = (Toolbar) findViewById(R.id.uset_toolbar);
+        clear = (LinearLayout) findViewById(R.id.uset_clear);;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setOnClickListeners(){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
-        LinearLayout clear = (LinearLayout) findViewById(R.id.uset_clear);
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +57,7 @@ public class UserSettingActivity extends SlideBackActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //清空登录信息
                         LoginInformationManager loginInformationManager =
-                                new LoginInformationManager(UserSettingActivity.this.getSharedPreferences("UserInfomation", MODE_PRIVATE));
+                                new LoginInformationManager(UserSettingActivity.this);
                         loginInformationManager.clear();
                         //清空用户信息
                         //清空所有缓存内容

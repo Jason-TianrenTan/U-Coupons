@@ -2,7 +2,8 @@ package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -13,17 +14,51 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
+import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
+import com.jph.takephoto.model.TResult;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class UserInformationActivity extends SlideBackActivity {
+    private TextView name;
+    private TextView sex;
+    private TextView age;
+    private XCRoundImageView portrait;
+    private TakePhotoUtil takePhotoUtil;
+    private Toolbar toolbar;
+    private LinearLayout changeportrait;
+    private LoginInformationManager informationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
+        initView();
+        if (useTakePhoto()) {
+            takePhotoUtil.onCreate(savedInstanceState);
+        }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
+        initPortrait();
+        //portrait.setImageResource(DataHolder.User.portraitId);
+
+        setOnClickListeners();
+    }
+
+    private void initView(){
+        name = (TextView) findViewById(R.id.user_name);
+        sex = (TextView) findViewById(R.id.user_sex);
+        age = (TextView) findViewById(R.id.user_age);
+        portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
+        toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
+        changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
+        informationManager = new LoginInformationManager(this);
+        takePhotoUtil = new TakePhotoUtil(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -33,19 +68,25 @@ public class UserInformationActivity extends SlideBackActivity {
                 finish();
             }
         });
-
-        TextView name = (TextView) findViewById(R.id.user_name);
-        TextView sex = (TextView) findViewById(R.id.user_sex);
-        TextView age = (TextView) findViewById(R.id.user_age);
-        XCRoundImageView portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
         name.setText(DataHolder.User.username);
         age.setText(Integer.toString(DataHolder.User.age));
         if (DataHolder.User.sex)
             sex.setText("男");
         else
             sex.setText("女");
-        portrait.setImageResource(DataHolder.User.portraitId);
-        LinearLayout changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
+    }
+
+    private void setOnClickListeners(){
+        changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
+        portrait.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserInformationActivity.this, UserPortraitActivity.class));
+                overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
+                initPortrait();
+            }
+        });
+
         changeportrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +103,16 @@ public class UserInformationActivity extends SlideBackActivity {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(UserInformationActivity.this, "拍照", Toast.LENGTH_SHORT).show();
+                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_TAKE, new TakePhotoUtil.SimpleTakePhotoListener() {
+                            @Override
+                            public void takeSuccess(TResult result) {
+                                String s = result.getImage().getCompressPath();
+                                System.out.println(s);
+                                Bitmap bitmap = BitmapFactory.decodeFile(s);
+                                portrait.setImageBitmap(bitmap);
+                                updatePortrait(s);
+                            }
+                        });
                         mBottomSheetDialog.dismiss();
                     }
                 });
@@ -69,10 +120,65 @@ public class UserInformationActivity extends SlideBackActivity {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(UserInformationActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
+                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_SELECT, new TakePhotoUtil.SimpleTakePhotoListener() {
+                            @Override
+                            public void takeSuccess(TResult result) {
+                                String s = result.getImage().getCompressPath();
+                                System.out.println(s);
+                                Bitmap bitmap = BitmapFactory.decodeFile(s);
+                                portrait.setImageBitmap(bitmap);
+                                updatePortrait(s);
+                            }
+                        });
                         mBottomSheetDialog.dismiss();
                     }
                 });
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onSaveInstanceState(outState);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onActivityResult(requestCode, resultCode, data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    protected boolean useTakePhoto() {
+        return true;
+    }
+
+    public void updatePortrait(String path) {
+        Pattern pat = Pattern.compile("(portrait_)([0-9]+)(.jpg)");
+        Matcher mat = pat.matcher(path);
+        boolean rs = mat.find();
+        Long millis = Long.parseLong(mat.group(2));
+        informationManager.setPortraitPath(path);
+        //Todo:上传Millis和图片到服务器
+    }
+
+    public void initPortrait() {
+        String s = informationManager.getPortraitPath();
+        if (s != "") {
+            Bitmap bitmap = BitmapFactory.decodeFile(s);
+            portrait.setImageBitmap(bitmap);
+        } else portrait.setImageResource(R.drawable.testportrait);
     }
 }
