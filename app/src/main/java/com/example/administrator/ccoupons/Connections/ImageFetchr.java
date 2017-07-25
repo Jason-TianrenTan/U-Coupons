@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
+import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
@@ -20,9 +22,11 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
     private ImageView imgView;
     private String url;
 
-    public ImageFetchr(String reqURL, ImageView parentView) {
+    private boolean cache;
+    public ImageFetchr(String reqURL, ImageView parentView, boolean cache) {
         this.imgView = parentView;
         this.url = reqURL;
+        this.cache = cache;
     }
 
     @Override
@@ -37,6 +41,9 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
         BufferedInputStream bis = new BufferedInputStream(in);
         Bitmap bitmap = BitmapFactory.decodeStream(bis);
 
+        if (cache) {
+            ImageLruCache.getInstance().addToMemoryCache(url, bitmap);
+        }
         try {
             in.close();
             bis.close();

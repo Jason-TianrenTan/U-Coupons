@@ -88,9 +88,6 @@
         <activity android:name=".Register.RegisterFinalActivity" />
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
-
-
-
         <activity android:name=".Main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -103,6 +100,9 @@
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
+
+        <activity android:name=".Fragments.MyMessageActivity"></activity>
+
         <activity android:name=".User.UserSellCoupons" />
         <activity android:name=".User.UserBuyCoupons" />
         <activity android:name=".User.UserFollowCoupon"></activity>

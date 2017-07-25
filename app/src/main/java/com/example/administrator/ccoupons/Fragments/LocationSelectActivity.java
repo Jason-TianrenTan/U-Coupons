@@ -69,6 +69,8 @@ public class LocationSelectActivity extends AppCompatActivity {
         }
     };
 
+
+
     private void makeErrorToast() {
         Toast.makeText(this, "获取当前定位失败，请检查设置或者网络连接", Toast.LENGTH_SHORT).show();
     }
@@ -99,6 +101,7 @@ public class LocationSelectActivity extends AppCompatActivity {
             locationFetchr.requestLocation();
             startCountDown();
         }
+
 
         cityList = getCityList();
         final LocationAdapter adapter = new LocationAdapter(cityList);
@@ -144,6 +147,8 @@ public class LocationSelectActivity extends AppCompatActivity {
         int y = ViewHeight + CharIndex[index] * PixelUtils.dp2px(this, 45) + PixelUtils.dp2px(this, CharIndex[index]);
         scrollView.smoothScrollTo(0, y);
     }
+
+
 
     private void startCountDown() {
         customLoader = new CustomLoader(5, handler, this);

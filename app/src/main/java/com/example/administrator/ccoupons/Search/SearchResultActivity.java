@@ -215,7 +215,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
             String url = DataHolder.base_URL + coupon.getImgURL();
-            ImageFetchr fetchr = new ImageFetchr(url, holder.imageView);
+            ImageFetchr fetchr = new ImageFetchr(url, holder.imageView, true);
             fetchr.execute();
         }
 
