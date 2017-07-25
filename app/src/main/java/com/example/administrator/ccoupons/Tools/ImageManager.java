@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.Tools.DataBase;
+package com.example.administrator.ccoupons.Tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -25,7 +25,7 @@ public class ImageManager {
     }
 
     public void saveToDisk(String imgUrl, Bitmap bitmap) {
-        imageDiskCache.writeImageToDiskCache(imgUrl, bitmap);
+        imageDiskCache.writeToDiskCache(imgUrl, bitmap);
     }
 
     public Bitmap getImage(String imgUrl) {

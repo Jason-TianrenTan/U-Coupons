@@ -101,7 +101,7 @@ public class ImageDiskCache {
     }
 
     //传入url作为缓存文件的文件名
-    public void writeImageToDiskCache(String imageUrl, Bitmap bitmap){
+    public void writeToDiskCache(String imageUrl, Bitmap bitmap){
         try {
             String key = hashKeyForDisk(imageUrl);
             DiskLruCache.Editor editor = mDiskLruCache.edit(key);
