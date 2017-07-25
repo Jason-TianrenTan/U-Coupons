@@ -22,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class ImageDiskCache {
+    private static int MAX_SIZE = 100 * 1024 * 1024;//最大缓存大小
     private static ImageDiskCache imageDiskCache;
     DiskLruCache mDiskLruCache = null;
 
@@ -32,7 +33,7 @@ public class ImageDiskCache {
             if (!cacheDir.exists()) {
                 cacheDir.mkdirs();
             }
-            mDiskLruCache = DiskLruCache.open(cacheDir, getAppVersion(context), 1, 10 * 1024 * 1024);
+            mDiskLruCache = DiskLruCache.open(cacheDir, getAppVersion(context), 1, MAX_SIZE);
         } catch (IOException e) {
             e.printStackTrace();
         }

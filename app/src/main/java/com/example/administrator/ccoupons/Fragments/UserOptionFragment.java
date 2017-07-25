@@ -3,14 +3,10 @@ package com.example.administrator.ccoupons.Fragments;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +20,12 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.User.UserBuyCoupons;
 import com.example.administrator.ccoupons.User.UserFollowCoupon;
 import com.example.administrator.ccoupons.User.UserSellCoupons;
 import com.example.administrator.ccoupons.User.UserMyCouponActivity;
-import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 import com.example.administrator.ccoupons.User.UserWalletActivity;
@@ -168,10 +165,9 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     }
 
     public void initPortrait() {
-        String s = informationManager.getPortraitPath();
-        if (s != "") {
-            Bitmap bitmap = BitmapFactory.decodeFile(s);
-            portrait.setImageBitmap(bitmap);
+        String url = (new UserInfoManager(getActivity())).getPortraitUrl();
+        if (url != "") {
+            ImageManager.GlideImage(url, portrait, getActivity().getApplicationContext());
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 

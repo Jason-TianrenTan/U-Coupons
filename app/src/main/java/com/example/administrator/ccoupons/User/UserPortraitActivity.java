@@ -15,15 +15,19 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.mob.MobSDK.getContext;
+
 public class UserPortraitActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
-    private LoginInformationManager informationManager;
+    private UserInfoManager userInfo;
     private ImageView portrait;
     private LinearLayout bg;
 
@@ -102,7 +106,7 @@ public class UserPortraitActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        informationManager = new LoginInformationManager(this);
+        userInfo = new UserInfoManager(this);
         portrait = (ImageView) findViewById(R.id.user_portrait_view);
         //portrait.setImageResource(DataHolder.User.portraitId);
         bg = (LinearLayout) findViewById(R.id.portrait_bg);
@@ -141,15 +145,14 @@ public class UserPortraitActivity extends AppCompatActivity {
         Matcher mat = pat.matcher(path);
         boolean rs = mat.find();
         Long millis = Long.parseLong(mat.group(2));
-        informationManager.setPortraitPath(path);
-        //上传Millis和图片到服务器
+        //Todo:上传图片到服务器 并返回图片对应的url
+        //Todo:更新头像 更新本地储存的url
     }
 
     public void initPortrait() {
-        String s = informationManager.getPortraitPath();
-        if (s != "") {
-            Bitmap bitmap = BitmapFactory.decodeFile(s);
-            portrait.setImageBitmap(bitmap);
+        String url = (new UserInfoManager(UserPortraitActivity.this)).getPortraitUrl();
+        if (url != "") {
+            ImageManager.GlideImage(url, portrait, getContext());
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -16,6 +17,8 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
@@ -23,6 +26,8 @@ import com.jph.takephoto.model.TResult;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.mob.MobSDK.getContext;
 
 
 public class UserInformationActivity extends SlideBackActivity {
@@ -50,7 +55,7 @@ public class UserInformationActivity extends SlideBackActivity {
         setOnClickListeners();
     }
 
-    private void initView(){
+    private void initView() {
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
         age = (TextView) findViewById(R.id.user_age);
@@ -76,7 +81,7 @@ public class UserInformationActivity extends SlideBackActivity {
             sex.setText("女");
     }
 
-    private void setOnClickListeners(){
+    private void setOnClickListeners() {
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,15 +175,14 @@ public class UserInformationActivity extends SlideBackActivity {
         Matcher mat = pat.matcher(path);
         boolean rs = mat.find();
         Long millis = Long.parseLong(mat.group(2));
-        informationManager.setPortraitPath(path);
-        //Todo:上传Millis和图片到服务器
+        //Todo:上传图片到服务器 并返回图片对应的url
+        //Todo:更新头像  更新本地储存的url
     }
 
     public void initPortrait() {
-        String s = informationManager.getPortraitPath();
-        if (s != "") {
-            Bitmap bitmap = BitmapFactory.decodeFile(s);
-            portrait.setImageBitmap(bitmap);
+        String url = (new UserInfoManager(UserInformationActivity.this)).getPortraitUrl();
+        if (url != "") {
+            ImageManager.GlideImage(url, portrait, getContext());
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 }
