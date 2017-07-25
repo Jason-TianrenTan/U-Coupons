@@ -105,7 +105,7 @@ public class ImageDiskCache {
         try {
             String key = hashKeyForDisk(imageUrl);
             DiskLruCache.Editor editor = mDiskLruCache.edit(key);
-            if (editor != null) {
+            if (editor != null && bitmap != null) {
                 OutputStream outputStream = editor.newOutputStream(0);
                 if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)) {
                     editor.commit();

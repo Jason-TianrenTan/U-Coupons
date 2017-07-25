@@ -51,4 +51,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.jakewharton:disklrucache:2.0.2'
     testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
+    compile 'com.jakewharton:disklrucache:2.0.2'
 }

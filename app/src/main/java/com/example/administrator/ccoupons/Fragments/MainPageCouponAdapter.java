@@ -16,6 +16,7 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchResultActivity;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 
 import java.util.ArrayList;
 
@@ -67,8 +68,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
     private void setImage(CouponViewHolder holder, Coupon coupon) {
 
         String url = coupon.getImgURL();
-        ImageFetchr fetchr = new ImageFetchr(url, holder.imageView, false);
-        fetchr.execute();
+        ImageManager.GlideImage(url, holder.imageView, mContext);
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
@@ -156,9 +157,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
         //url
         String url = DataHolder.base_URL + coupon.getImgURL();
-        Bitmap bitmap = ImageLruCache.getInstance().getFromMemoryCache(url);
-        BitmapDrawable drawable = new BitmapDrawable(bitmap);
-        mImageView.setImageDrawable(drawable);
+        ImageManager.GlideImage(url, mImageView, getApplicationContext());
 
         //name
         String name = coupon.getName();
