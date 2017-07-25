@@ -10,7 +10,7 @@ import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 /**
  * Created by CZJ on 2017/7/25.
  */
-
+/*
 public class ImageManager {
     private ImageDiskCache imageDiskCache;
     private ImageLruCache imageLruCache;
@@ -38,4 +38,4 @@ public class ImageManager {
         }
         return bitmap;
     }
-}
+}*/

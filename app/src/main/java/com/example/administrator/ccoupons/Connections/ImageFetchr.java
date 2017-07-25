@@ -79,7 +79,7 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
         if (this.lruCache != null)
             lruCache.addToMemoryCache(url, bitmap);
         if (this.diskCache != null)
-            diskCache.writeImageToDiskCache(url, bitmap);
+            diskCache.writeToDiskCache(url, bitmap);
         System.out.println("Cache url  = " + url);
     }
 
