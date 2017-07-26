@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
+import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
@@ -43,12 +44,23 @@ public class WelcomeActivity extends AppCompatActivity {
                 System.out.println("Response = " + response);
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
                         "\n密码:" + password, Toast.LENGTH_SHORT).show();
+
+                String nickname = jsonObject.getString("nickname");
+                String avatar = jsonObject.getString("avatar");
+                String sex = jsonObject.getString("gender");
+                int UB = jsonObject.getInt("Ucoin");
+                app.setNickname(nickname);
+                app.setAvatar(avatar);
+                app.setUcoin(UB);
+                if (!avatar.equals("null")) {
+                    app.setAvatar(DataHolder.base_URL + avatar);
+                }
+
+                app.setGender(Gender.MALE);
+                if (sex.equals("女")) {
+                    app.setGender(Gender.FEMALE);
+                }
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("password", password);
-                intent.putExtra("nickname", "nickname");
-                intent.putExtra("avatar", "/static/images/pic/3.png");
-                intent.putExtra("ucoin", "20");
                 startActivity(intent);
                 System.out.println("Login success");
                 finish();

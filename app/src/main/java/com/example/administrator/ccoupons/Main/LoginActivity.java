@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
+import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
@@ -71,28 +72,31 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String userId = jsonObject.getString("userid");
-                System.out.println("Response = " + response);
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
-
-                String nickname = jsonObject.getString("nickname");
-                String avatar_URL = jsonObject.getString("avatar");
-                String ucoin = jsonObject.getString("Ucoin");
-                app.setNickname(nickname);
-                app.setUcoin(Integer.parseInt(ucoin));
-                app.setAvatar(avatar_URL);
-                //TODO:缓存头像
+                System.out.println("Response = " + response);
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
                         "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
-                saveUserLoginInfo();//缓存密码
 
+                String nickname = jsonObject.getString("nickname");
+                String avatar = jsonObject.getString("avatar");
+                String sex = jsonObject.getString("gender");
+                int UB = jsonObject.getInt("Ucoin");
+                app.setNickname(nickname);
+                app.setAvatar(avatar);
+                app.setUcoin(UB);
+                if (!avatar.equals("null")) {
+                    app.setAvatar(DataHolder.base_URL + avatar);
+                }
 
-
+                app.setGender(Gender.MALE);
+                if (sex.equals("女")) {
+                    app.setGender(Gender.FEMALE);
+                }
+                saveUserLoginInfo();
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
-
-                intent.putExtra("username", myUsername);
-                intent.putExtra("password", myPassword);
                 startActivity(intent);
+                System.out.println("Login success");
                 finish();
             } catch (Exception e) {
                 Message msg = new Message();

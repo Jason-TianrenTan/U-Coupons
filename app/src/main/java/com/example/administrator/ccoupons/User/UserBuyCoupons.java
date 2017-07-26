@@ -8,12 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserBuyCoupons extends SlideBackActivity {
     private UserCouponInfoAdapter adapter;
@@ -55,8 +62,37 @@ public class UserBuyCoupons extends SlideBackActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    private void parseMessgae(String str) {
+        try {
+
+            System.out.println("Response = " + str);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void initData() {
-        //TODO:获取卖出优惠券列表
+        HashMap<String, String> map = new HashMap<>();
+        MyApp app = (MyApp)getApplicationContext();
+        map.put("userID", app.getUserId());
+        String url = DataHolder.base_URL + DataHolder.requestBoughtList_URL;
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                parseMessgae(response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {

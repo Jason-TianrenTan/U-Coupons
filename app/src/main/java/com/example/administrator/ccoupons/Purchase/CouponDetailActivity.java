@@ -126,7 +126,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         evalpriceText.setText("¥" + evalprice + "");
 
         //优惠额度
-        double discount = coupon.getDiscount();
+        String discount = coupon.getDiscount();
         discountText.setText("¥" + discount);
 
         //商家名
@@ -142,7 +142,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
         HashMap<String,String> map = new HashMap<>();
         map.put("couponID", coupon.getCouponId() + "");
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.requestDetail_URL, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {

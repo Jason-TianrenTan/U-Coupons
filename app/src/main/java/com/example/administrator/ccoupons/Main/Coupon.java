@@ -24,7 +24,7 @@ public class Coupon implements Serializable {
     private String catId;//类别
     private double listPrice;//用户列出来的价格
     private double evaluatePrice;//估值价格 =>value
-    private double discount;//打折多少 20表示20元
+    private String discount;//打折多少 20表示20元
     private int stat;//状态 详见下
     private String imgURL;//url
     private String expireDate;//过期时间
@@ -44,7 +44,7 @@ public class Coupon implements Serializable {
 
     }
 
-    public Coupon(String name, String couponId, String brand, String catId, double listPrice, double evaluatePrice, double discount, int stat, String imgURL, String expireDate) {
+    public Coupon(String name, String couponId, String brand, String catId, double listPrice, double evaluatePrice, String discount, int stat, String imgURL, String expireDate) {
         this.name = name;
         this.couponId = couponId;
         this.brandName = brand;
@@ -141,7 +141,7 @@ public class Coupon implements Serializable {
         return this.couponId;
     }
 
-    public double getDiscount() {
+    public String getDiscount() {
         return this.discount;
     }
 
@@ -177,11 +177,10 @@ public class Coupon implements Serializable {
             coupon.listPrice = Double.parseDouble(jsonObject.getString("listprice"));
             coupon.evaluatePrice = Double.parseDouble(jsonObject.getString("value"));
             coupon.name = jsonObject.getString("product");
-            coupon.discount = Double.parseDouble(jsonObject.getString("discount"));
+            coupon.discount = jsonObject.getString("discount");
             coupon.expireDate = jsonObject.getString("expiredtime");
             coupon.imgURL = jsonObject.getString("pic");
-
-
+            System.out.println("Image of coupon = " + coupon.imgURL);
         } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();
