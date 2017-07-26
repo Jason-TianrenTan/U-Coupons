@@ -59,13 +59,6 @@
 
         <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout">
-
-            <TextView
-                android:id="@+id/user_age"
-                style="@style/user_text" />
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout style="@style/user_wrap_layout">

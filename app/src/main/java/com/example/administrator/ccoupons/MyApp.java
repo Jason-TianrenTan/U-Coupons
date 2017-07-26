@@ -13,7 +13,6 @@ public class MyApp extends MobApplication {
     private int Ucoin;
     private String nickname;
     private String avatar;
-    private int age;
     private int gender;
 
     private static MyApp instance = null;
@@ -28,7 +27,6 @@ public class MyApp extends MobApplication {
         Ucoin = 0;
         nickname = "秒切后排的大菜刀";
         avatar = "";
-        age = 0;
         gender = Gender.MALE;
         instance = this;
     }
@@ -62,14 +60,6 @@ public class MyApp extends MobApplication {
     }
     public String getAvatar() {
         return this.avatar;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public int getGender() {

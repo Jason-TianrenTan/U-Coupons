@@ -181,7 +181,6 @@ public class Coupon implements Serializable {
             coupon.expireDate = jsonObject.getString("expiredtime");
             coupon.imgURL = jsonObject.getString("pic");
 
-
         } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();

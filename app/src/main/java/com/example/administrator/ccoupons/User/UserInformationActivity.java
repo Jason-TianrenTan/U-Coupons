@@ -35,7 +35,6 @@ import static com.mob.MobSDK.getContext;
 public class UserInformationActivity extends SlideBackActivity {
     private TextView name;
     private TextView sex;
-    private TextView age;
     private XCRoundImageView portrait;
     private TakePhotoUtil takePhotoUtil;
     private Toolbar toolbar;
@@ -60,7 +59,6 @@ public class UserInformationActivity extends SlideBackActivity {
     private void initView() {
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
-        age = (TextView) findViewById(R.id.user_age);
         portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
         toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
@@ -76,7 +74,6 @@ public class UserInformationActivity extends SlideBackActivity {
             }
         });
         name.setText(app.getNickname());
-        age.setText(Integer.toString(app.getAge()));
         if (app.getGender() == Gender.MALE)
             sex.setText("男");
         else

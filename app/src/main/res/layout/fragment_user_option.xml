@@ -32,9 +32,10 @@
                         android:layout_marginRight="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="sfsdfsfsfsdfsf"
+                        android:text="钓鱼王"
                         android:textColor="@android:color/white"
-                        android:textSize="24dp"
+                        android:layout_marginLeft="30dp"
+                        android:textSize="28dp"
                         android:maxLines="1" />
 
             </FrameLayout>
