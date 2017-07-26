@@ -83,13 +83,8 @@ public class MainPageActivity extends AppCompatActivity {
     private void initFragments() {
         categoryFragment = new CategoryFragment();
         userOptionFragment = new UserOptionFragment();
-        Intent intent = getIntent();
-        String nickname = intent.getStringExtra("nickname"),
-                avatar_url = intent.getStringExtra("avatar"),
-                ucoin = getIntent().getStringExtra("ucoin");
         fragments[0] = categoryFragment;
         fragments[1] = userOptionFragment;
-        userOptionFragment.setData(nickname, avatar_url, ucoin);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment_frame, categoryFragment);

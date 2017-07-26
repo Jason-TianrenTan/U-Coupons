@@ -93,6 +93,9 @@ public class LoginActivity extends AppCompatActivity {
                 String nickname = jsonObject.getString("nickname");
                 String avatar_URL = jsonObject.getString("avatar");
                 String ucoin = jsonObject.getString("Ucoin");
+                app.setNickname(nickname);
+                app.setUcoin(Integer.parseInt(ucoin));
+                app.setAvatar(avatar_URL);
                 //TODO:缓存头像
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
                         "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
@@ -101,11 +104,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+
                 intent.putExtra("username", myUsername);
                 intent.putExtra("password", myPassword);
-                intent.putExtra("nickname", nickname);
-                intent.putExtra("avatar", avatar_URL);
-                intent.putExtra("ucoin", ucoin);
                 startActivity(intent);
                 finish();
             } catch (Exception e) {
