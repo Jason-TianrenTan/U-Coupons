@@ -36,7 +36,7 @@ import com.example.administrator.ccoupons.User.UserWalletActivity;
  */
 
 public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
-    private LoginInformationManager informationManager;
+    private UserInfoManager userInfoManager;
     private ImageView portrait;
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.6f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
@@ -50,8 +50,9 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     private AppBarLayout mAppBarLayout;
     private Toolbar toolbar;
 
-    private int Ucoin = 0;
-    private String nickname, avatar_url;
+    private int Ucoin;
+    private String nickname;
+    private String avatar_url;
     private LinearLayout toUserMyCoupons, toUserWal, toSetting, toUserSell, toUserBuy, toUserFollow, logoff;
     private TextView userUcoin, userNickname;
     private CollapsingToolbarLayout toUserInfo;
@@ -79,7 +80,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         mAppBarLayout = (AppBarLayout) view.findViewById(R.id.main_appbar);
         toolbar = (Toolbar) view.findViewById(R.id.user_main_toolbar);
 
-        informationManager = new LoginInformationManager(getActivity());
+        userInfoManager = new UserInfoManager(getActivity());
         mAppBarLayout.addOnOffsetChangedListener(this);
     }
 
@@ -159,6 +160,8 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     }
 
     private void initData() {
+        Ucoin = userInfoManager.getUB();
+        nickname = userInfoManager.getNickname();
         userUcoin.setText(Ucoin + "");
         userNickname.setText(nickname);
     }

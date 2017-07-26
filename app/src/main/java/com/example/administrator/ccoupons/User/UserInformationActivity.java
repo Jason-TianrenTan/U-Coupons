@@ -38,7 +38,7 @@ public class UserInformationActivity extends SlideBackActivity {
     private TakePhotoUtil takePhotoUtil;
     private Toolbar toolbar;
     private LinearLayout changeportrait;
-    private LoginInformationManager informationManager;
+    private UserInfoManager userInfoManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class UserInformationActivity extends SlideBackActivity {
         portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
         toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
-        informationManager = new LoginInformationManager(this);
+        userInfoManager = new UserInfoManager(this);
         takePhotoUtil = new TakePhotoUtil(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -73,9 +73,9 @@ public class UserInformationActivity extends SlideBackActivity {
                 finish();
             }
         });
-        name.setText(DataHolder.User.username);
-        age.setText(Integer.toString(DataHolder.User.age));
-        if (DataHolder.User.sex)
+        name.setText(userInfoManager.getNickname());
+        age.setText(Integer.toString(userInfoManager.getAge()));
+        if (userInfoManager.getSex())
             sex.setText("男");
         else
             sex.setText("女");
