@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
@@ -76,7 +77,7 @@ public class UserInformationActivity extends SlideBackActivity {
         });
         name.setText(app.getNickname());
         age.setText(Integer.toString(app.getAge()));
-        if (app.getSex())
+        if (app.getGender() == Gender.MALE)
             sex.setText("男");
         else
             sex.setText("女");

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Connections.LoginThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
+import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
@@ -57,17 +58,23 @@ public class WelcomeActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String userId = jsonObject.getString("userid");
+                String nickname = jsonObject.getString("nickname");
+                String avatar = jsonObject.getString("avatar");
+                String sex = jsonObject.getString("gender");
+                int UB = jsonObject.getInt("Ucoin");
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
                 System.out.println("Response = " + response);
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
                         "\n密码:" + password, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("password", password);
-                intent.putExtra("nickname", "nickname");
-                intent.putExtra("avatar", "/static/images/pic/3.png");
-                intent.putExtra("ucoin", "20");
+                app.setNickname(nickname);
+                if (!avatar.equals("null")) {
+                    app.setAvatar(DataHolder.base_URL + avatar);
+                }
+                if (sex.equals("女")) {
+                    app.setGender(Gender.FEMALE);
+                }
                 startActivity(intent);
                 System.out.println("Login success");
                 finish();
@@ -81,7 +88,6 @@ public class WelcomeActivity extends AppCompatActivity {
             startButtonAnimation();
         }
     }
-
 
 
     @Override
@@ -119,7 +125,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     //登录
@@ -135,8 +140,6 @@ public class WelcomeActivity extends AppCompatActivity {
         login.startAnimation(animation);
         register.startAnimation(animation);
     }
-
-
 
 
 }

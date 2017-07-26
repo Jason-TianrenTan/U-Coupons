@@ -14,7 +14,7 @@ public class MyApp extends MobApplication {
     private String nickname;
     private String avatar;
     private int age;
-    private boolean sex;
+    private int gender;
 
     private static MyApp instance = null;
 
@@ -29,7 +29,7 @@ public class MyApp extends MobApplication {
         nickname = "秒切后排的大菜刀";
         avatar = "";
         age = 0;
-        sex = true;
+        gender = Gender.MALE;
         instance = this;
     }
 
@@ -72,11 +72,11 @@ public class MyApp extends MobApplication {
         this.age = age;
     }
 
-    public boolean getSex() {
-        return sex;
+    public int getGender() {
+        return gender;
     }
 
-    public void setSex(boolean sex) {
-        this.sex = sex;
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 }
