@@ -55,36 +55,4 @@ public class UserInfoManager {
         }
         editor.putString("search_history", historyData).commit();
     }
-
-    public String getPortraitUrl() {
-        return preferences.getString("portrait_path", "");
-    }
-
-    public void setPortraitUrl(String str) {
-        editor.putString("portrait_path", str).commit();
-    }
-
-    public void setUserInfo(String nickname, boolean sex, int age, int UB) {
-        editor.putString("nickname", nickname);
-        editor.putBoolean("sex", sex);
-        editor.putInt("age", age);
-        editor.putInt("UB", UB);
-        editor.commit();
-    }
-
-    public String getNickname() {
-        return preferences.getString("nickname", "");
-    }
-
-    public boolean getSex() {
-        return preferences.getBoolean("sex", true);
-    }
-
-    public int getAge() {
-        return preferences.getInt("age", 0);
-    }
-
-    public int getUB() {
-        return preferences.getInt("UB", 0);
-    }
 }

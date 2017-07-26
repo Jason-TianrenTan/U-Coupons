@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
@@ -27,7 +28,6 @@ import static com.mob.MobSDK.getContext;
 
 public class UserPortraitActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
-    private UserInfoManager userInfo;
     private ImageView portrait;
     private LinearLayout bg;
 
@@ -106,7 +106,6 @@ public class UserPortraitActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        userInfo = new UserInfoManager(this);
         portrait = (ImageView) findViewById(R.id.user_portrait_view);
         //portrait.setImageResource(DataHolder.User.portraitId);
         bg = (LinearLayout) findViewById(R.id.portrait_bg);
@@ -150,7 +149,8 @@ public class UserPortraitActivity extends AppCompatActivity {
     }
 
     public void initPortrait() {
-        String url = (new UserInfoManager(UserPortraitActivity.this)).getPortraitUrl();
+        MyApp app = (MyApp) this.getApplicationContext();
+        String url = app.getAvatar();
         if (url != "") {
             ImageManager.GlideImage(url, portrait, getContext());
         } else portrait.setImageResource(R.drawable.testportrait);

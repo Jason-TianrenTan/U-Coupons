@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
@@ -56,12 +57,6 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     private LinearLayout toUserMyCoupons, toUserWal, toSetting, toUserSell, toUserBuy, toUserFollow, logoff;
     private TextView userUcoin, userNickname;
     private CollapsingToolbarLayout toUserInfo;
-
-    public void setData(String nickname, String avatar, String ucoin) {
-        this.nickname = nickname;
-        this.avatar_url = avatar;
-        this.Ucoin = Integer.parseInt(ucoin);
-    }
 
     public void bindViews(View view) {
         portrait = (ImageView) view.findViewById(R.id.user_portrait);
@@ -160,8 +155,10 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     }
 
     private void initData() {
-        Ucoin = userInfoManager.getUB();
-        nickname = userInfoManager.getNickname();
+        MyApp app = (MyApp) getActivity().getApplicationContext();
+        this.nickname = app.getNickname();
+        this.avatar_url = app.getAvatar();
+        this.Ucoin = app.getUcoin();
         userUcoin.setText(Ucoin + "");
         userNickname.setText(nickname);
     }
@@ -192,7 +189,8 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     }
 
     public void initPortrait() {
-        String url = (new UserInfoManager(getActivity())).getPortraitUrl();
+        MyApp app = (MyApp) getActivity().getApplicationContext();
+        String url = app.getAvatar();
         if (url != "") {
             ImageManager.GlideImage(url, portrait, getActivity().getApplicationContext());
         } else portrait.setImageResource(R.drawable.testportrait);

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
@@ -38,7 +39,7 @@ public class UserInformationActivity extends SlideBackActivity {
     private TakePhotoUtil takePhotoUtil;
     private Toolbar toolbar;
     private LinearLayout changeportrait;
-    private UserInfoManager userInfoManager;
+    private MyApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class UserInformationActivity extends SlideBackActivity {
         portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
         toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
-        userInfoManager = new UserInfoManager(this);
+        app = (MyApp) this.getApplicationContext();
         takePhotoUtil = new TakePhotoUtil(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -73,9 +74,9 @@ public class UserInformationActivity extends SlideBackActivity {
                 finish();
             }
         });
-        name.setText(userInfoManager.getNickname());
-        age.setText(Integer.toString(userInfoManager.getAge()));
-        if (userInfoManager.getSex())
+        name.setText(app.getNickname());
+        age.setText(Integer.toString(app.getAge()));
+        if (app.getSex())
             sex.setText("男");
         else
             sex.setText("女");
@@ -180,7 +181,7 @@ public class UserInformationActivity extends SlideBackActivity {
     }
 
     public void initPortrait() {
-        String url = (new UserInfoManager(UserInformationActivity.this)).getPortraitUrl();
+        String url = app.getAvatar();
         if (url != "") {
             ImageManager.GlideImage(url, portrait, getContext());
         } else portrait.setImageResource(R.drawable.testportrait);
