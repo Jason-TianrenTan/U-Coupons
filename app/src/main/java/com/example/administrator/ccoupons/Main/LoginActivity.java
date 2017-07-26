@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         loginInformationManager.setAutoLogin(true).setUsername(myUsername).setPassword(myPassword);
     }
 
+    //{"result": "success", "userid": "1500711726locc", "nickname": "qu2", "avatar": "/static/images/pic/3.png", "Ucoin": 1}
     //处理返回回来的json
     private void parseMessage(String response) {
         if (response.indexOf("result") != -1) {
@@ -88,14 +89,23 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("Response = " + response);
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
+
+                String nickname = jsonObject.getString("nickname");
+                String avatar_URL = jsonObject.getString("avatar");
+                String ucoin = jsonObject.getString("Ucoin");
+                //TODO:缓存头像
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
                         "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
                 saveUserLoginInfo();//缓存密码
 
 
+
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
                 intent.putExtra("username", myUsername);
                 intent.putExtra("password", myPassword);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("avatar", avatar_URL);
+                intent.putExtra("ucoin", ucoin);
                 startActivity(intent);
                 finish();
             } catch (Exception e) {

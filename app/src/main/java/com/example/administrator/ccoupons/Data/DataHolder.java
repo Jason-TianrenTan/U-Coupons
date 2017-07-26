@@ -17,6 +17,8 @@ public class DataHolder {
     public static final String requestMsg_URL = "/post_sendMessage";
     public static final String requestSearch_URL = "/post_searchForAndroid";
     public static final String requestDetail_URL = "/post_returnInformation";
+    public static final String purchase_URL = "/post_buyCoupon";
+    public static final String resetPass_URL = "/post_updatePassword";
 
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");

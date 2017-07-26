@@ -65,6 +65,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("password", password);
+                intent.putExtra("nickname", "nickname");
+                intent.putExtra("avatar", "/static/images/pic/3.png");
+                intent.putExtra("ucoin", "20");
                 startActivity(intent);
                 System.out.println("Login success");
                 finish();
@@ -92,14 +95,12 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-                finish();
             }
         });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
-                finish();
             }
         });
         loginInformationManager = new LoginInformationManager(this);

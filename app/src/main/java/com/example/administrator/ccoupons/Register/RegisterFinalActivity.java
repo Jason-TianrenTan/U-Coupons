@@ -85,6 +85,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
                 Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
                 intent.putExtra("username", phoneString).putExtra("password", password);
                 startActivity(intent);
+                finish();
             }
         }catch (Exception e) {
             e.printStackTrace();
