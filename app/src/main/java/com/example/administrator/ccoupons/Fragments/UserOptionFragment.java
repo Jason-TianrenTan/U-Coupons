@@ -3,14 +3,10 @@ package com.example.administrator.ccoupons.Fragments;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +22,12 @@ import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.User.UserBuyCoupons;
 import com.example.administrator.ccoupons.User.UserFollowCoupon;
 import com.example.administrator.ccoupons.User.UserSellCoupons;
 import com.example.administrator.ccoupons.User.UserMyCouponActivity;
-import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 import com.example.administrator.ccoupons.User.UserWalletActivity;
@@ -41,7 +37,7 @@ import com.example.administrator.ccoupons.User.UserWalletActivity;
  */
 
 public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
-    private LoginInformationManager informationManager;
+    private UserInfoManager userInfoManager;
     private ImageView portrait;
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.6f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
@@ -55,9 +51,10 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     private AppBarLayout mAppBarLayout;
     private Toolbar toolbar;
 
-    private int Ucoin = 0;
-    private String nickname, avatar_url;
-    private LinearLayout toUserMyCoupons, toUserWal, toSetting, toUserSell,toUserBuy,toUserFollow, logoff;
+    private int Ucoin;
+    private String nickname;
+    private String avatar_url;
+    private LinearLayout toUserMyCoupons, toUserWal, toSetting, toUserSell, toUserBuy, toUserFollow, logoff;
     private TextView userUcoin, userNickname;
     private CollapsingToolbarLayout toUserInfo;
 
@@ -78,7 +75,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         mAppBarLayout = (AppBarLayout) view.findViewById(R.id.main_appbar);
         toolbar = (Toolbar) view.findViewById(R.id.user_main_toolbar);
 
-        informationManager = new LoginInformationManager(getActivity());
+        userInfoManager = new UserInfoManager(getActivity());
         mAppBarLayout.addOnOffsetChangedListener(this);
     }
 
@@ -162,7 +159,6 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         this.nickname = app.getNickname();
         this.avatar_url = app.getAvatar();
         this.Ucoin = app.getUcoin();
-
         userUcoin.setText(Ucoin + "");
         userNickname.setText(nickname);
     }
@@ -193,7 +189,12 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     }
 
     public void initPortrait() {
-        ImageManager.GlideImage(DataHolder.base_URL + avatar_url, portrait, getActivity().getApplicationContext());
+        MyApp app = (MyApp) getActivity().getApplicationContext();
+        String url = app.getAvatar();
+        System.out.println("avatar = " + url);
+        if (url != "") {
+            ImageManager.GlideImage(url, portrait, getActivity().getApplicationContext());
+        } else portrait.setImageResource(R.drawable.testportrait);
     }
 
     @Override

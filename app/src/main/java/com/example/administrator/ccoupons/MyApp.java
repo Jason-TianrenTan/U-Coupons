@@ -19,7 +19,10 @@ public class MyApp extends MobApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Ucoin = 0;
+        nickname = "秒切后排的大菜刀";
+        avatar = "";
+        gender = Gender.MALE;
         instance = this;
     }
 

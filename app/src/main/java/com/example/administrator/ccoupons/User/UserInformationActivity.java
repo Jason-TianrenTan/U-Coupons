@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -13,9 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
@@ -24,16 +28,17 @@ import com.jph.takephoto.model.TResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.mob.MobSDK.getContext;
+
 
 public class UserInformationActivity extends SlideBackActivity {
     private TextView name;
     private TextView sex;
-    private TextView age;
     private XCRoundImageView portrait;
     private TakePhotoUtil takePhotoUtil;
     private Toolbar toolbar;
     private LinearLayout changeportrait;
-    private LoginInformationManager informationManager;
+    private MyApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +55,13 @@ public class UserInformationActivity extends SlideBackActivity {
         setOnClickListeners();
     }
 
-    private void initView(){
+    private void initView() {
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
-        age = (TextView) findViewById(R.id.user_age);
         portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
         toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
-        informationManager = new LoginInformationManager(this);
+        app = (MyApp) this.getApplicationContext();
         takePhotoUtil = new TakePhotoUtil(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -68,15 +72,11 @@ public class UserInformationActivity extends SlideBackActivity {
                 finish();
             }
         });
-        name.setText(DataHolder.User.username);
-        age.setText(Integer.toString(DataHolder.User.age));
-        if (DataHolder.User.sex)
-            sex.setText("男");
-        else
-            sex.setText("女");
+        name.setText(app.getNickname());
+        sex.setText("无性别");
     }
 
-    private void setOnClickListeners(){
+    private void setOnClickListeners() {
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,12 +170,14 @@ public class UserInformationActivity extends SlideBackActivity {
         Matcher mat = pat.matcher(path);
         boolean rs = mat.find();
         Long millis = Long.parseLong(mat.group(2));
-        informationManager.setPortraitPath(path);
-        //Todo:上传Millis和图片到服务器
+        //Todo:上传图片到服务器 并返回图片对应的url
+        //Todo:更新头像  更新本地储存的url
     }
 
     public void initPortrait() {
-    //    String s = informationManager.getPortraitPath();
-        portrait.setImageResource(R.drawable.testportrait);
+        String url = app.getAvatar();
+        if (url != "") {
+            ImageManager.GlideImage(url, portrait, getContext());
+        } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

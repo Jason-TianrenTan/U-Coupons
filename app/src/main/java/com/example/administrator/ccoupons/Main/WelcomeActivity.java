@@ -88,9 +88,6 @@ public class WelcomeActivity extends AppCompatActivity {
         auto_login = loginInformationManager.getAutoLogin();
         System.out.println("auto login = " + auto_login);
         if (auto_login == false) {
-            /*
-            login.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);*/
             startButtonAnimation();
         }
         if (auto_login == true) {

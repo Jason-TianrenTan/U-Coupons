@@ -26,13 +26,12 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
     private String url;
     private Bitmap bitmap;
     ImageDiskCache diskCache = null;
-    ImageLruCache lruCache = null;
+    ImageLruCache lruCache = ImageLruCache.getInstance();
 
-    public ImageFetchr(String reqURL, ImageView parentView, ImageDiskCache diskCache, ImageLruCache lruCache) {
+    public ImageFetchr(String reqURL, ImageView parentView, ImageDiskCache diskCache) {
         this.imgView = parentView;
         this.url = reqURL;
         this.diskCache = diskCache;
-        this.lruCache = lruCache;
     }
 
     public ImageFetchr(String reqURL, ImageView parentView) {
@@ -75,11 +74,12 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
         imgView.setImageDrawable(drawable);
         imgView.invalidate();
 
-        //Cache
-        if (this.lruCache != null)
+        //Todo:test
+        if (diskCache == null) {
             lruCache.addToMemoryCache(url, bitmap);
-        if (this.diskCache != null)
-            diskCache.writeImageToDiskCache(url, bitmap);
+        } else {
+            diskCache.writeToDiskCache(url, bitmap);
+        }
         System.out.println("Cache url  = " + url);
     }
 
@@ -95,5 +95,4 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
         }
         return in;
     }
-
 }

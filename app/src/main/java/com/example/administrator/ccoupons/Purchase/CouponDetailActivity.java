@@ -77,7 +77,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
             public void onClick(View view) {
                 String id = coupon.getCouponId();
                 Intent intent = new Intent(CouponDetailActivity.this, CouponPurchaseActivity.class);
-                intent.putExtra("coupon",coupon);
+                intent.putExtra("coupon", coupon);
                 startActivity(intent);
             }
         });
@@ -111,7 +111,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
         //url
         String url = DataHolder.base_URL + coupon.getImgURL();
-        ImageManager.GlideImage(url, mImageView, getApplicationContext());
+        ImageManager.GlideImage(url, mImageView);
 
         //name
         String name = coupon.getName();
