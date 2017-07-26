@@ -72,6 +72,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                     inputLayout.setErrorEnabled(true);
                     inputLayout.setError("验证码错误!");
                     System.out.println("Error!!!!!!!!!!!!!!!!!");
+                    verify_cord = false;
                     break;
                 case SMS_SUCCESS:
                     Intent intent = new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class);
