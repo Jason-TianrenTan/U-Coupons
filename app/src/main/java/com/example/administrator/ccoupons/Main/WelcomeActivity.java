@@ -1,29 +1,26 @@
 package com.example.administrator.ccoupons.Main;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.LoginThread;
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.MessageType;
-import com.mob.MobApplication;
-import com.mob.MobSDK;
+import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class WelcomeActivity extends AppCompatActivity {
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
@@ -31,23 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private boolean auto_login;
     private String username;
     private String password;
-    private LoginThread thread;
-    private Handler handler = new Handler() {
 
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MessageType.CONNECTION_ERROR:
-                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_TIMEOUT:
-                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_SUCCESS:
-                    parseMessage(thread.getResponse());
-                    break;
-            }
-        }
-    };
     Button login;
     Button register;
 
@@ -124,8 +105,33 @@ public class WelcomeActivity extends AppCompatActivity {
 
     //登录
     private boolean requestLogin(String url, String username, String password) {
-        thread = new LoginThread(url, username, password, handler, getApplicationContext());
-        thread.start();
+        String md5pass = null;
+        HashMap<String,String> map = new HashMap<String,String>();
+        map.put("username", username);
+        try {
+            md5pass = new PasswordEncoder().EncodeByMd5(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        map.put("password", md5pass);
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                parseMessage(response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+            }
+        });
+        connectionManager.connect();
         //TODO 播放动画
         return false;
     }

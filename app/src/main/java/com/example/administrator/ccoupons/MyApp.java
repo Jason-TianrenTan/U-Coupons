@@ -27,6 +27,14 @@ public class MyApp extends MobApplication {
     private int Ucoin;
     private String nickname;
     private String avatar;
+    private String phoneNumber;
+    private int gender;
+    public int getGender() {
+        return this.gender;
+    }
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
 
     public String getUserId() {
         return userId;
@@ -54,6 +62,12 @@ public class MyApp extends MobApplication {
 
     public void setAvatar(String url) {
         this.avatar = url;
+    }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+    public String getPhoneNumber() {
+        return this.phoneNumber;
     }
     public String getAvatar() {
         return this.avatar;

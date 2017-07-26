@@ -15,17 +15,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.ResetPasswordThread;
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.CustomEditText.PasswordToggleEditText;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
-import com.example.administrator.ccoupons.Register.RegisterPasswordActivity;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.EditTextTools;
-import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
+
+import java.util.HashMap;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -46,27 +45,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
     PasswordToggleEditText passText, confirmText;
     TextInputLayout phoneInputLayout, cordInputLayout, passInputLayout, confirmInputLayout;
     private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,密码强度太弱".split(",");
-
-    ResetPasswordThread thread;
-    private Handler handler = new Handler() {
-
-        public void handleMessage(Message msg) {
-
-            switch (msg.what) {
-                case MessageType.CONNECTION_ERROR:
-                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_TIMEOUT:
-                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_SUCCESS:
-                    Toast.makeText(getApplicationContext(), "修改密码成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ResetPasswordActivity.this, MainPageActivity.class);
-                    startActivity(intent);
-                    break;
-            }
-        }
-    };
     
     private void bindViews() {
         requestCordButton = (TextView) findViewById(R.id.request_cord_button);
@@ -274,8 +252,29 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     verify_cord = false;
                     phoneString = phoneText.getText().toString();
                     password = passText.getText().toString();
-                    thread = new ResetPasswordThread(DataHolder.base_URL + DataHolder.resetPass_URL, phoneString, password, handler, getApplicationContext());
-                    thread.start();
+                    String url = DataHolder.base_URL + DataHolder.resetPass_URL;
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("phoneNum", phoneString);
+                    map.put("password", password);
+                    ConnectionManager connectionManager = new ConnectionManager(url, map);
+                    connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+                        @Override
+                        public void onConnectionSuccess(String response) {
+                            Toast.makeText(getApplicationContext(), "修改密码成功", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(ResetPasswordActivity.this, MainPageActivity.class);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onConnectionTimeOut() {
+                            Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onConnectionFailed() {
+                            Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                        }
+                    });
                     break;
 
             }

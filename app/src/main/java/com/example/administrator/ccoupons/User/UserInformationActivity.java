@@ -175,10 +175,7 @@ public class UserInformationActivity extends SlideBackActivity {
     }
 
     public void initPortrait() {
-        String s = informationManager.getPortraitPath();
-        if (s != "") {
-            Bitmap bitmap = BitmapFactory.decodeFile(s);
-            portrait.setImageBitmap(bitmap);
-        } else portrait.setImageResource(R.drawable.testportrait);
+    //    String s = informationManager.getPortraitPath();
+        portrait.setImageResource(R.drawable.testportrait);
     }
 }
