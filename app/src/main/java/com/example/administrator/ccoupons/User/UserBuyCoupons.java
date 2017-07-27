@@ -22,113 +22,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UserBuyCoupons extends SlideBackActivity {
-    private UserCouponInfoAdapter adapter;
-    private Coupon coupon = new Coupon();
-    ArrayList<Coupon> arrayList = new ArrayList<Coupon>();
-    private RecyclerView recyclerView;
-    LinearLayout linearLayout;
-    private Toolbar toolbar;
+public class UserBuyCoupons extends CouponCommonActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_buy_coupons);
-        initView();
-        setToolBar();
-        setRecyclerView();
-        setOnClickListeners();
-        isEmpty();
+        setContentView(R.layout.common_coupon_layout);
+        setToolbarTitle("我购买的");
+        initData(DataHolder.base_URL + DataHolder.requestBoughtList_URL);
     }
 
-    private void setOnClickListeners(){
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
 
-    private void initView(){
-        linearLayout = (LinearLayout)findViewById(R.id.ubuy_bg);
-        recyclerView = (RecyclerView) findViewById(R.id.ubuy_recyclerview);
-    }
-
-    private void setToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.ubuy_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void parseMessgae(String str) {
-        try {
-
-            System.out.println("Response = " + str);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private void initData() {
-        HashMap<String, String> map = new HashMap<>();
-        MyApp app = (MyApp)getApplicationContext();
-        map.put("userID", app.getUserId());
-        String url = DataHolder.base_URL + DataHolder.requestBoughtList_URL;
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseMessgae(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-                Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onConnectionFailed() {
-                Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int space;
-
-        public SpacesItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            outRect.left = space;
-            outRect.right = space;
-            outRect.bottom = space;
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) == 0) {
-                outRect.top = space;
-            } else {
-                outRect.top = 20;
-            }
-        }
-    }
-
-    public void setRecyclerView() {
-        arrayList.add(coupon);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new UserCouponInfoAdapter(arrayList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new UserBuyCoupons.SpacesItemDecoration(3));
-    }
-
-    public void isEmpty(){
-        if (arrayList.size() == 0){
-            linearLayout.setVisibility(View.VISIBLE);
-        }
-    }
 }

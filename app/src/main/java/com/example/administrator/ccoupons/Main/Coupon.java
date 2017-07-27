@@ -57,23 +57,29 @@ public class Coupon implements Serializable {
         this.expireDate = expireDate;
     }
 
+    //名称
     public void setName(String str) {
         this.name = str;
     }
 
+    public String getName() {
+        return this.name;
+    }
 
+    //地址
     public void setAddress(String str) {
         this.address = str;
     }
 
-    public void setDetail(String str) {
-        this.expireDate = str;
+    public String getAddress() {
+        return this.address;
     }
 
     //商家信息
     public void setBrandName(String str) {
         this.brandName = str;
     }
+
     public String getBrandName() {
         return this.brandName;
     }
@@ -82,12 +88,15 @@ public class Coupon implements Serializable {
     public void setSellerName(String str) {
         this.sellerNickname = str;
     }
+
     public String getSellerNickname() {
         return this.sellerNickname;
     }
+
     public void setSellerAvatarURL(String url) {
         this.sellerAvatarURL = url;
     }
+
     public String getSellerAvatarURL() {
         return this.sellerAvatarURL;
     }
@@ -115,14 +124,9 @@ public class Coupon implements Serializable {
         this.evaluatePrice = price;
     }
 
-    public String getAddress() {
-        return this.address;
-    }
 
 
-    public String getName() {
-        return this.name;
-    }
+
 
     public double getListPrice() {
         return this.listPrice;
@@ -137,10 +141,17 @@ public class Coupon implements Serializable {
     }
 
 
+    public void setCouponId(String id) {
+        this.couponId = id;
+    }
+
     public String getCouponId() {
         return this.couponId;
     }
 
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
     public String getDiscount() {
         return this.discount;
     }
@@ -153,6 +164,9 @@ public class Coupon implements Serializable {
         return this.imgURL;
     }
 
+    public void setExpireDate(String date) {
+        this.expireDate = date;
+    }
     public String getExpireDate() {
         return this.expireDate;
     }

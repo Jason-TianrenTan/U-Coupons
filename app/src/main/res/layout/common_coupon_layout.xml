@@ -5,32 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.administrator.ccoupons.User.UserFollowCoupon">
+    tools:context="com.example.administrator.ccoupons.User.UserMyCouponActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/ubuy_toolbar"
+        android:id="@+id/common_coupons_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:theme="@style/MainToolBarStyle"
         app:layout_scrollFlags="scroll|enterAlways|snap">
 
         <TextView
-            style="@style/user_title_text"
+            android:id="@+id/common_text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="我关注的" />
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+
+
     </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whitesmoke"
+        android:orientation="horizontal">
+
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/frame">
+        android:id="@+id/common_frame">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/ubuy_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:id="@+id/common_recyclerview">
 
         </android.support.v7.widget.RecyclerView>
 
