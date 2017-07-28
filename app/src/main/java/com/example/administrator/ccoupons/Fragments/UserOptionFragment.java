@@ -156,10 +156,20 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
 
     private void initData() {
         MyApp app = (MyApp) getActivity().getApplicationContext();
-        this.nickname = app.getNickname();
         this.avatar_url = app.getAvatar();
+        this.nickname = app.getNickname();
         this.Ucoin = app.getUcoin();
         userUcoin.setText(Ucoin + "");
+        setNickname();
+    }
+
+    private void setNickname() {
+        if (nickname.length() < 5) {
+            userNickname.setTextSize(28);
+        } else if (nickname.length() < 9) {
+            userNickname.setTextSize(25);
+        } else
+            userNickname.setTextSize(22);
         userNickname.setText(nickname);
     }
 

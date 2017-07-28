@@ -26,7 +26,6 @@ public class PurchaseThread extends Thread{
         this.handler = handler;
         this.mContext = mContext;
         this.couponId = couponId;
-
         MyApp app = (MyApp)mContext.getApplicationContext();
         userId = app.getUserId();
     }

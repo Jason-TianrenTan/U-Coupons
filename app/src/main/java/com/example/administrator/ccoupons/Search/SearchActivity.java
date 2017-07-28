@@ -38,6 +38,7 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryAdapter;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.SystemBarTintManager;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -55,6 +56,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private HistoryAdapter adapter;
     private ArrayList<String> mHistoryList;
+    private UserInfoManager userInfoManager;
 
 
     private EditText searchText;
@@ -65,6 +67,8 @@ public class SearchActivity extends AppCompatActivity {
 
         searchText = (EditText) findViewById(R.id.input_search);
         searchText.requestFocus();
+
+        userInfoManager = new UserInfoManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
@@ -116,10 +120,11 @@ public class SearchActivity extends AppCompatActivity {
 
     //history
     private void initHistoryData() {
-        mHistoryList = new ArrayList<>();
-        requestHistoryData();
+        mHistoryList = userInfoManager.getHistoryList();
+        //mHistoryList = new ArrayList<>();
+        //requestHistoryData();
     }
-
+/*
     private void requestHistoryData() {
         String result = null;
         int pos = 0;
@@ -131,6 +136,7 @@ public class SearchActivity extends AppCompatActivity {
         }
         mHistoryList.add(getResources().getString(R.string.HISTORY_EOF));
     }
+    */
 
     //设置RecyclerView
     private void setRecyclerView() {
@@ -187,8 +193,9 @@ public class SearchActivity extends AppCompatActivity {
     private void search(String requestStr) {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
-        mHistoryList.remove(mHistoryList.size() - 2);
-        mHistoryList.add(0, requestStr);
+        //mHistoryList.remove(mHistoryList.size() - 2);
+        //mHistoryList.add(0, requestStr);
+        userInfoManager.addHistory(requestStr);
         //还需要更新缓存，添加内容
         adapter.notifyDataSetChanged();
         startActivity(intent);

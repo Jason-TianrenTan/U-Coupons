@@ -188,6 +188,9 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
                     takePhoto.onPickFromCapture(imageUri);
                 }
                 break;
+            case PICK_BY_SELECT_NOT_CROP:
+                takePhoto.onPickFromGallery();
+                break;
             default:
                 break;
         }
@@ -332,6 +335,6 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
      * 照片获取方式, 从相册获取或拍照处理
      */
     public enum Select_type {
-        PICK_BY_SELECT, PICK_BY_TAKE
+        PICK_BY_SELECT, PICK_BY_TAKE, PICK_BY_SELECT_NOT_CROP
     }
 }
