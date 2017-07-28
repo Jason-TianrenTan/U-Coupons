@@ -4,6 +4,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/history_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -13,7 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_gravity="center"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:src="@drawable/search_icon_big"/>
 
         <TextView
             android:id="@+id/history_text"
@@ -27,12 +29,13 @@
 
 
     <ImageView
+        android:id="@+id/history_delete"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:adjustViewBounds="true"
         android:padding="5dp"
-        android:src="@drawable/clear_history_icon" />
+        />
 
 </RelativeLayout>

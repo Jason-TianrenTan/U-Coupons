@@ -27,12 +27,16 @@ public class UserInfoManager {
         username = (new LoginInformationManager(activity)).getUsername();
         preferences = activity.getSharedPreferences(username, MODE_PRIVATE);
         editor = preferences.edit();
-        history = new ArrayList(Arrays.asList(
-                preferences.getString("search_history", "")
-                        .split(";")));
+        String historyData = preferences.getString("search_history", "");
+        System.out.println("Record: " + historyData);
+        history = new ArrayList(Arrays.asList(historyData.split(";")));
+        if (history.get(0).equals("")){
+            history.remove(0);
+        }
     }
 
     public ArrayList<String> getHistoryList() {
+        System.out.println("NUM:"+history.size());
         for (String h : history) {
             System.out.println(h);
         }
@@ -40,7 +44,7 @@ public class UserInfoManager {
     }
 
     public void addHistory(String str) {
-        if (history.size() == MAX_SIZE)
+        while (history.size() == MAX_SIZE)
             deleteHistory(MAX_SIZE);
         history.add(0, str);
         changeHistoryData();
@@ -52,6 +56,7 @@ public class UserInfoManager {
     }
 
     public void clearHistory() {
+        history.clear();
         editor.clear().commit();
     }
 
@@ -60,6 +65,7 @@ public class UserInfoManager {
         for (String str : history) {
             historyData = historyData + str + ";";
         }
+        System.out.println("Save: " + historyData);
         editor.putString("search_history", historyData).commit();
     }
 }
