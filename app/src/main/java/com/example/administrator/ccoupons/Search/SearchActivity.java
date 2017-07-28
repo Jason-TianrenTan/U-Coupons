@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,6 +32,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -46,13 +49,9 @@ import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private static final int VERTICAL_ITEM_SPACE = 48;
 
     private static final int HISTORY_MAX_RESULT = 10;//最大历史结果数
 
-
-    private boolean firstTime = true;
-    private boolean shouldHide = false;
     private RecyclerView mRecyclerView;
     private HistoryAdapter adapter;
     private ArrayList<String> mHistoryList;
@@ -145,17 +144,9 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                layoutManager.getOrientation());
+        mRecyclerView.setNestedScrollingEnabled(false);
 
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        searchText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shouldHide = false;
-            }
-        });
+        NestedScrollView scrollView = (NestedScrollView)findViewById(R.id.search_nestedscrollview);
         searchText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
@@ -168,25 +159,11 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (shouldHide) {
-                    if (firstTime)
-                        firstTime = false;
-                    else
-                        hideSoftKeyBoard();
-                }
-                if (!shouldHide)
-                    shouldHide = true;
-            }
-        });
+        scrollView.setSmoothScrollingEnabled(true);
+
+
+
 
     }
 
@@ -325,6 +302,38 @@ public class SearchActivity extends AppCompatActivity {
         }
         win.setAttributes(winParams);
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                hideSoftKeyBoard();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            } else {
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+        return false;
+    }
+
 
 
 }

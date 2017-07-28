@@ -151,7 +151,7 @@ public class LocationSelectActivity extends AppCompatActivity {
 
 
     private void startCountDown() {
-        customLoader = new CustomLoader(5, handler, this);
+        customLoader = new CustomLoader(5, this);
         customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
             @Override
             public void onTimeChanged() {

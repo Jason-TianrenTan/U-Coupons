@@ -201,6 +201,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     public void initPortrait() {
         MyApp app = (MyApp) getActivity().getApplicationContext();
         String url = app.getAvatar();
+        System.out.println("avatar = " + url);
         if (url != "") {
             ImageManager.GlideImage(url, portrait, getActivity().getApplicationContext());
         } else portrait.setImageResource(R.drawable.testportrait);

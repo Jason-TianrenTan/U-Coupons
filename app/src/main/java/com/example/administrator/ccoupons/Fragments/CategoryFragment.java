@@ -147,7 +147,7 @@ public class CategoryFragment extends Fragment {
         for (int i = 0; i < 10; i++) {
             Coupon coupon = new Coupon();
 
-            coupon.setDetail("2017-7-23");
+            coupon.setExpireDate("2017-7-23");
             coupon.setListPrice(198.0);
             int index = random.nextInt(urls.length);
             coupon.setName("SS招募券 - " + coupon_names[index]);
@@ -213,7 +213,7 @@ public class CategoryFragment extends Fragment {
     public void initLocation() {
         locationFetchr = new LocationGet(getActivity(), handler);
         locationFetchr.requestLocation();
-        customLoader = new CustomLoader(5, handler, getActivity());
+        customLoader = new CustomLoader(5, getActivity());
         customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
             @Override
             public void onTimeChanged() {

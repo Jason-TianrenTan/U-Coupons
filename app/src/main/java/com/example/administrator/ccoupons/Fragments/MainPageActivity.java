@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.Fragments;
 *首页布局
  */
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -24,11 +25,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +118,7 @@ public class MainPageActivity extends AppCompatActivity {
 
     //初始化底部导航栏
     private void initNavigationBar() {
+
         LinearLayout navigationBar = (LinearLayout) findViewById(R.id.bottom_nav_container);
         LinearLayout nav_item_main = (LinearLayout) navigationBar.findViewById(R.id.id_left1),
                 nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1);
@@ -118,6 +126,13 @@ public class MainPageActivity extends AppCompatActivity {
         titleView_main.setText("首页");
         TextView titleView_aboutme = (TextView) nav_item_aboutme.findViewById(R.id.navigation_icon_text);
         titleView_aboutme.setText("我的");
+        ImageView sellButton = (ImageView) findViewById(R.id.mainpage_button_sell);
+        sellButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDialog();
+            }
+        });
         nav_item_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,5 +192,50 @@ public class MainPageActivity extends AppCompatActivity {
     public void onDestroy() {
         unregisterReceiver(receiver);
         super.onDestroy();
+    }
+
+    private void setDialog() {
+        final Dialog mCameraDialog = new Dialog(this, R.style.BottomDialog);
+        RelativeLayout root = (RelativeLayout) LayoutInflater.from(this).inflate(
+                R.layout.bottom_sheet, null);
+
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        root.measure(0, 0);
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        lp.width = displayMetrics.widthPixels;
+        lp.height = displayMetrics.heightPixels;
+
+        lp.alpha = 1f; // 透明度
+
+        //设置监听器
+        ImageView closeButton = (ImageView) mCameraDialog.findViewById(R.id.close_btn_bottom_sheet);
+        ImageView QRScanButton = (ImageView) mCameraDialog.findViewById(R.id.sell_btn_scanqr),
+                FillFormButton = (ImageView) mCameraDialog.findViewById(R.id.sell_btn_fillform);
+        QRScanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        FillFormButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCameraDialog.dismiss();
+            }
+        });
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
     }
 }

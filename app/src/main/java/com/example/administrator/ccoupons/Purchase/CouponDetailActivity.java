@@ -1,36 +1,24 @@
 package com.example.administrator.ccoupons.Purchase;
 
-import android.app.DownloadManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
-import android.os.Message;
-import android.renderscript.Double2;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.view.menu.ExpandedMenuView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.ImageFetchr;
-import com.example.administrator.ccoupons.Connections.RequestCouponDetailThread;
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.ImageManager;
-import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -38,7 +26,10 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
 
-import org.w3c.dom.Text;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.concurrent.Exchanger;
 
 public class CouponDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
@@ -50,37 +41,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     private int mParallaxImageHeight;
     private TextView nameText, listpriceText, evalpriceText,
             discountText, brandNameText, expireText, constaintsText, sellerNameText;
-    private RequestCouponDetailThread detailThread;
-
-    private Handler handler = new Handler() {
-
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MessageType.CONNECTION_ERROR:
-                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_TIMEOUT:
-                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_SUCCESS:
-                    coupon.getDetails(detailThread.getResponse());
-                    System.out.println("Response = " + detailThread.getResponse());
-                    //卖家
-                    sellerNameText.setText(coupon.getSellerNickname());
-                    //商家 品牌
-                    brandNameText.setText(coupon.getBrandName());
-
-                    //使用限制
-                    String[] constraints = coupon.getConstraints();
-                    StringBuilder sb = new StringBuilder();
-                    int index = 1;
-                    for (String str : constraints)
-                        sb.append(index + ". " + str + '\n');
-                    constaintsText.setText(sb.toString());
-                    break;
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +71,44 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
             }
         });
 
+
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "关注成功", Toast.LENGTH_SHORT).show();
+                //关注
+                HashMap<String,String> map = new HashMap<String, String>();
+                MyApp app = (MyApp)getApplicationContext();
+                map.put("couponID", coupon.getCouponId());
+                map.put("userID", app.getUserId());
+                ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.postFollow_URL, map);
+                connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+                    @Override
+                    public void onConnectionSuccess(String response) {
+                        System.out.println("Response = " + response);
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            String alreadyLike = obj.getString("result");
+                            if (alreadyLike.equals("already like"))
+                                Toast.makeText(getApplicationContext(), "已经关注过啦", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(getApplicationContext(), "关注成功", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onConnectionTimeOut() {
+                        Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onConnectionFailed() {
+                        Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                connectionManager.connect();
             }
         });
 
@@ -172,7 +166,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         evalpriceText.setText("¥" + evalprice + "");
 
         //优惠额度
-        double discount = coupon.getDiscount();
+        String discount = coupon.getDiscount();
         discountText.setText("¥" + discount);
 
         //商家名
@@ -186,9 +180,44 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         String constraints = "后台居然懒到没加这个=.=";
         constaintsText.setText(constraints);
 
-        System.out.println("Coupon id  = " + coupon.getCouponId());
-        detailThread = new RequestCouponDetailThread(DataHolder.base_URL + DataHolder.requestDetail_URL, coupon.getCouponId(), handler, this);
-        detailThread.start();
+        HashMap<String,String> map = new HashMap<>();
+        map.put("couponID", coupon.getCouponId() + "");
+        map.put("userID", ((MyApp)getApplicationContext()).getUserId());
+        ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.requestDetail_URL, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                coupon.getDetails(response);
+                System.out.println("Response = " + response);
+                //卖家
+                sellerNameText.setText(coupon.getSellerNickname());
+                //商家 品牌
+                brandNameText.setText(coupon.getBrandName());
+
+                //使用限制
+                String[] constraints = coupon.getConstraints();
+                StringBuilder sb = new StringBuilder();
+                int index = 1;
+                for (String str : constraints)
+                    sb.append(index + ". " + str + '\n');
+                constaintsText.setText(sb.toString());
+
+                //关注
+                if (coupon.isLiked())
+                    followButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.follow_pressed));
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+            }
+        });
+        connectionManager.connect();
     }
 
     @Override

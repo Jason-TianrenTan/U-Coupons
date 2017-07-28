@@ -9,12 +9,6 @@ import android.app.Application;
 import com.mob.MobApplication;
 
 public class MyApp extends MobApplication {
-    private String userId;
-    private int Ucoin;
-    private String nickname;
-    private String avatar;
-    private int gender;
-
     private static MyApp instance = null;
 
     public static MyApp getInstance() {
@@ -29,6 +23,21 @@ public class MyApp extends MobApplication {
         avatar = "";
         gender = Gender.MALE;
         instance = this;
+    }
+
+    private String userId;
+    private int Ucoin;
+    private String nickname;
+    private String avatar;
+    private String phoneNumber;
+    private int gender;
+
+    public int getGender() {
+        return this.gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
     public String getUserId() {
@@ -58,15 +67,16 @@ public class MyApp extends MobApplication {
     public void setAvatar(String url) {
         this.avatar = url;
     }
+
     public String getAvatar() {
         return this.avatar;
     }
 
-    public int getGender() {
-        return gender;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void setGender(int gender) {
-        this.gender = gender;
+    public String getPhoneNumber() {
+        return this.phoneNumber;
     }
 }

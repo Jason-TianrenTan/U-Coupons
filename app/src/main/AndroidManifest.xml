@@ -108,6 +108,7 @@
         <activity android:name=".Purchase.CouponDetailActivity" />
         <activity android:name=".Purchase.CouponPurchaseActivity" />
         <activity android:name=".Tools.QRcodeActivity"></activity>
+        <activity android:name=".AddCoupon.AddCouponActivity"></activity>
     </application>
 
 </manifest>
