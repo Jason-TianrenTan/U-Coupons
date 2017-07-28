@@ -1,9 +1,6 @@
 package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.*;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -15,31 +12,21 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
-import com.example.administrator.ccoupons.UI.CustomDialog;
 import com.example.administrator.ccoupons.UI.CustomLoader;
 import com.example.administrator.ccoupons.UI.QuickIndexBar;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class LocationSelectActivity extends AppCompatActivity {
 

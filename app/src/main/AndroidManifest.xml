@@ -94,7 +94,7 @@
         <activity
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
@@ -105,7 +105,7 @@
         <activity android:name=".User.UserFollowCoupon" />
         <activity android:name=".Purchase.CouponDetailActivity" />
         <activity android:name=".Purchase.CouponPurchaseActivity" />
-        <activity android:name=".AddCoupon.AddCouponActivity"></activity>
+        <activity android:name=".AddCoupon.AddCouponActivity" />
     </application>
 
 </manifest>

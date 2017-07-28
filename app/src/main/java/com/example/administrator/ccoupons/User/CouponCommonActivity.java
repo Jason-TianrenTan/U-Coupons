@@ -1,34 +1,18 @@
 package com.example.administrator.ccoupons.User;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.LocationSelectActivity;
-import com.example.administrator.ccoupons.Fragments.MyMessageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Search.SearchActivity;
-import com.example.administrator.ccoupons.User.UserCouponFragments.EmptyFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

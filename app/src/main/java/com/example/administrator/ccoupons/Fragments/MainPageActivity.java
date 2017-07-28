@@ -8,45 +8,25 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.graphics.Color;
-import android.os.IBinder;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
 import com.example.administrator.ccoupons.Connections.MessageGetService;
-import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.CategoryFragment;
-import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
 import com.example.administrator.ccoupons.R;
 
 import java.util.Timer;
@@ -71,7 +51,6 @@ public class MainPageActivity extends AppCompatActivity {
         initNavigationBar();
 
         initService();
-
     }
 
     private void initService() {
@@ -226,7 +205,7 @@ public class MainPageActivity extends AppCompatActivity {
         FillFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(MainPageActivity.this, AddCouponActivity.class));
             }
         });
         closeButton.setOnClickListener(new View.OnClickListener() {
