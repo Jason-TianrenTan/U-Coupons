@@ -275,6 +275,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
                         }
                     });
+                    connectionManager.connect();
                     break;
 
             }

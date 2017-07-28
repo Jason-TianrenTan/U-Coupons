@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;

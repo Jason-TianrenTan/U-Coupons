@@ -13,16 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.UploadTask;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.mob.MobSDK.getContext;
 
@@ -139,11 +135,14 @@ public class UserPortraitActivity extends AppCompatActivity {
         return true;
     }
 
-    public void updatePortrait(String path) {
-        Pattern pat = Pattern.compile("(portrait_)([0-9]+)(.jpg)");
-        Matcher mat = pat.matcher(path);
-        boolean rs = mat.find();
-        Long millis = Long.parseLong(mat.group(2));
+    public void updatePortrait(final String path) {
+        try {
+            MyApp app = (MyApp) getApplicationContext();
+            String userId = app.getUserId();
+            new UploadTask(userId, path).execute();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         //Todo:上传图片到服务器 并返回图片对应的url
         //Todo:更新头像 更新本地储存的url
     }

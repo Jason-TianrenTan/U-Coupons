@@ -73,6 +73,7 @@
                     android:textSize="24dp" />
 
                 <TextView
+                    android:id="@+id/usercoupon_discount_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -92,6 +93,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/usercoupon_expire_text"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

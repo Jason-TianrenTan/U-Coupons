@@ -30,7 +30,7 @@ public class UserWalletActivity extends SlideBackActivity {
 
         ub = (TextView) findViewById(R.id.uwal_ub);
         MyApp app = (MyApp) getApplicationContext();
-        ub.setText(app.getUcoin());
+        ub.setText(app.getUcoin() + "");
     }
 
     private void setOnClickListeners(){

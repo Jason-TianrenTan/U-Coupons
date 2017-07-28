@@ -15,8 +15,10 @@ public class Coupon implements Serializable {
     private static final int STAT_EXPIRED = 2;
     private static final int STAT_USED = 3;
     private static final int STAT_STORE = 4;
+    private static final int LIKED = 1;
+    private static final int UNLIKED = 0;
 
-
+    private boolean liked = false;
     private String address;//地址
     private String name;//=>product 优惠券名字
     private String couponId;
@@ -101,6 +103,13 @@ public class Coupon implements Serializable {
         return this.sellerAvatarURL;
     }
 
+    //是否关注
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+    public boolean isLiked() {
+        return this.liked;
+    }
 
     //使用限制
     public void setConstraints(String[] arr) {
@@ -228,6 +237,14 @@ public class Coupon implements Serializable {
             JSONObject sellerObj = mainObj.getJSONArray("seller").getJSONObject(0);
             this.sellerNickname = sellerObj.getString("nickname");
             this.sellerAvatarURL = sellerObj.getString("avatar");
+
+            //关注
+            String likeStr = mainObj.getString("isLike");
+            this.liked = false;
+            if (likeStr.equals("1")) {
+                System.out.println(this.name + " is liked");
+                this.liked = true;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

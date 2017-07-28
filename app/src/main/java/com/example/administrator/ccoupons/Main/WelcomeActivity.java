@@ -50,10 +50,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 String sex = jsonObject.getString("gender");
                 int UB = jsonObject.getInt("Ucoin");
                 app.setNickname(nickname);
-                app.setAvatar(avatar);
                 app.setUcoin(UB);
                 if (!avatar.equals("null")) {
-                    app.setAvatar(DataHolder.base_URL + avatar);
+                    app.setAvatar(DataHolder.base_URL + "/static/" + avatar);
                 }
 
                 app.setGender(Gender.MALE);

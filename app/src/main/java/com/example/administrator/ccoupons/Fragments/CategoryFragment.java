@@ -213,7 +213,7 @@ public class CategoryFragment extends Fragment {
     public void initLocation() {
         locationFetchr = new LocationGet(getActivity(), handler);
         locationFetchr.requestLocation();
-        customLoader = new CustomLoader(5, handler, getActivity());
+        customLoader = new CustomLoader(5, getActivity());
         customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
             @Override
             public void onTimeChanged() {

@@ -50,5 +50,6 @@
         android:layout_above="@id/bottom_nav_container"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:id="@+id/mainpage_button_sell"
         android:src="@drawable/plus"/>
 </RelativeLayout>

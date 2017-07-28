@@ -119,7 +119,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         for (String str : constraints)
             sb.append(index + ". " + str + '\n');
         couponConstraintsText.setText(sb.toString());
-        couponDiscountText.setText("¥" + coupon.getDiscount());
+        couponDiscountText.setText(coupon.getDiscount());
     }
 
 

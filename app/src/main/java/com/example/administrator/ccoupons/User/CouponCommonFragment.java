@@ -3,11 +3,13 @@ package com.example.administrator.ccoupons.User;
 import android.app.Fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.administrator.ccoupons.Fragments.MessageFragment;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 
@@ -20,18 +22,23 @@ import java.util.ArrayList;
 
 public class CouponCommonFragment extends Fragment {
 
-    private ArrayList<Coupon> cList;
     private RecyclerView recyclerView;
-    public void setData(ArrayList<Coupon> coupon) {
-        UserCouponInfoAdapter adapter = new UserCouponInfoAdapter(cList);
-        recyclerView.setAdapter(adapter);
-    }
+    ArrayList<Coupon> couponList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.common_fragment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.common_recyclerview);
         recyclerView.addItemDecoration(new SpacesItemDecoration(20));
+        System.out.println("On create super fragment");
+
+        couponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
+        if (couponList != null) {
+            UserCouponInfoAdapter adapter = new UserCouponInfoAdapter(couponList);
+            recyclerView.setAdapter(adapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(layoutManager);
+        }
         return view;
     }
 

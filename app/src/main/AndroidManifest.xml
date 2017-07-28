@@ -85,20 +85,16 @@
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
         <activity android:name=".Main.WelcomeActivity">
-
-        </activity>
-        <activity
-            android:name=".Fragments.MainPageActivity"
-            android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustPan">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity
+            android:name=".Fragments.MainPageActivity"
+            android:fitsSystemWindows="true"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
@@ -109,7 +105,7 @@
         <activity android:name=".User.UserFollowCoupon" />
         <activity android:name=".Purchase.CouponDetailActivity" />
         <activity android:name=".Purchase.CouponPurchaseActivity" />
-        <activity android:name=".User.CouponCommonActivity"></activity>
+        <activity android:name=".AddCoupon.AddCouponActivity"></activity>
     </application>
 
 </manifest>

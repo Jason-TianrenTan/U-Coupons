@@ -39,13 +39,13 @@ import java.util.HashMap;
 public abstract class CouponCommonActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
     private FrameLayout frameView;
     private UserCouponInfoAdapter adapter;
 
     private CouponCommonFragment commonFragment;
     private CommonEmptyFragment emptyFragment;
     private ArrayList<Coupon> couponList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +58,7 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        commonFragment = new CouponCommonFragment();
-        emptyFragment = new CommonEmptyFragment();
+
         toolbar = (Toolbar) findViewById(R.id.common_coupons_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -73,9 +72,6 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
                 finish();
             }
         });
-        recyclerView = (RecyclerView) findViewById(R.id.common_recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
     }
 
     public void setToolbarTitle(String title) {
@@ -84,7 +80,7 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
 
     public void initData(String url) {
         HashMap<String, String> map = new HashMap<>();
-        MyApp app = (MyApp)getApplicationContext();
+        MyApp app = (MyApp) getApplicationContext();
         map.put("userID", app.getUserId());
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -105,62 +101,58 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
         });
         connectionManager.connect();
     }
+
     //{"broughtStoreList": [], "broughtUsedList": []} 买到的
 /*
     {"likeList": [{"couponid": "001", "product": "\u542e\u6307\u539f\u5473\u9e21wh", "listprice": "1", "value": "1",
     "expiredtime": "2017-01-01", "discount": "20"}
      */
     private void parseMessgae(String str) {
+        commonFragment = new CouponCommonFragment();
+        emptyFragment = new CommonEmptyFragment();
         couponList = new ArrayList<>();
         try {
             System.out.println("Response = " + str);
-            if (str.indexOf("broughtStoreList") != -1) {
-                //买过的
-                parseBoughtMessage(str);
+            JSONObject jsonObject = new JSONObject(str);
+            JSONArray jsonArray = null;
+            if (str.indexOf("boughtList") != -1) {
+
+                jsonArray = jsonObject.getJSONArray("boughtList");
             }
             if (str.indexOf("soldList") != -1) {
-                parseSoldMessage(str);
+                jsonArray = jsonObject.getJSONArray("soldList");
             }
             if (str.indexOf("likeList") != -1) {
-                parseFollowMessage(str);
+                jsonArray = jsonObject.getJSONArray("likeList");
             }
 
+            parseJSONMessage(jsonArray);
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.common_frame, commonFragment);
             fragmentTransaction.add(R.id.common_frame, emptyFragment);
             if (couponList.size() > 0) {
-                commonFragment.setData(couponList);
                 fragmentTransaction.hide(emptyFragment);
                 fragmentTransaction.show(commonFragment);
-            }
-            else {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("coupons", couponList);
+                commonFragment.setArguments(bundle);
+                //    commonFragment.setData(couponList);
+            } else {
                 fragmentTransaction.show(emptyFragment);
                 fragmentTransaction.hide(commonFragment);
             }
             fragmentTransaction.commit();
+            System.out.println("commit()");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //买过的
-    private void parseBoughtMessage(String str) {
 
-    }
-
-
-    /* 卖出的
-    {"soldList": [{"couponid": "001", "product": "\u542e\u6307\u539f\u5473\u9e21wh", "listprice": "1",
-    "value": "1", "expiredtime": "2017-01-01", "discount": "20"},
-    */
-
-    //卖出的
-    private void parseSoldMessage(String str) {
+    private void parseJSONMessage(JSONArray jsonArray) {
         try {
-            JSONObject jsonObject = new JSONObject(str);
-            JSONArray jsonArray = jsonObject.getJSONArray("soldList");
-            for (int i=0;i<jsonArray.length();i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
                 Coupon coupon = new Coupon();
                 coupon.setCouponId(obj.getString("couponid"));
@@ -170,16 +162,11 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
                 coupon.setExpireDate(obj.getString("expiredtime"));
                 coupon.setDiscount(obj.getString("discount"));
                 couponList.add(coupon);
+                System.out.println("parsing " + obj.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    //关注的
-    private void parseFollowMessage(String str) {
-
     }
 
 

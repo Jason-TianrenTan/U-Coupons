@@ -1,8 +1,10 @@
 package com.example.administrator.ccoupons.Purchase;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.ExpandedMenuView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -23,7 +26,10 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
+import java.util.concurrent.Exchanger;
 
 public class CouponDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
@@ -65,10 +71,44 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
             }
         });
 
+
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "关注成功", Toast.LENGTH_SHORT).show();
+                //关注
+                HashMap<String,String> map = new HashMap<String, String>();
+                MyApp app = (MyApp)getApplicationContext();
+                map.put("couponID", coupon.getCouponId());
+                map.put("userID", app.getUserId());
+                ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.postFollow_URL, map);
+                connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+                    @Override
+                    public void onConnectionSuccess(String response) {
+                        System.out.println("Response = " + response);
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            String alreadyLike = obj.getString("result");
+                            if (alreadyLike.equals("already like"))
+                                Toast.makeText(getApplicationContext(), "已经关注过啦", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(getApplicationContext(), "关注成功", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onConnectionTimeOut() {
+                        Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onConnectionFailed() {
+                        Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                connectionManager.connect();
             }
         });
 
@@ -142,6 +182,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
         HashMap<String,String> map = new HashMap<>();
         map.put("couponID", coupon.getCouponId() + "");
+        map.put("userID", ((MyApp)getApplicationContext()).getUserId());
         ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.requestDetail_URL, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
@@ -160,6 +201,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                 for (String str : constraints)
                     sb.append(index + ". " + str + '\n');
                 constaintsText.setText(sb.toString());
+
+                //关注
+                if (coupon.isLiked())
+                    followButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.follow_pressed));
             }
 
             @Override
