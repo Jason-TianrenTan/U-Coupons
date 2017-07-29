@@ -215,7 +215,6 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String historyString = mHistoryList.get(position);
-            System.out.println("String = " + historyString + ", pos = " + position);
             if (position != (mHistoryList.size() - 1)) {
                 HistoryViewHolder viewHolder = (HistoryViewHolder) holder;
                 viewHolder.textView.setText(historyString);
