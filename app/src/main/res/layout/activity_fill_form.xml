@@ -22,7 +22,8 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/form_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -54,6 +55,7 @@
                         style="@style/MainEditTextStyle"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
+                        android:textSize="16dp"
                         android:maxLength="16" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -79,6 +81,7 @@
                     <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
                         android:id="@+id/form_brand_edittext"
                         style="@style/MainEditTextStyle"
+                        android:textSize="16dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:maxLength="16" />
@@ -107,6 +110,7 @@
                         android:id="@+id/form_discount_edittext"
                         style="@style/MainEditTextStyle"
                         android:layout_marginLeft="5dp"
+                        android:textSize="16dp"
                         android:layout_marginRight="5dp"
                         android:maxLength="16" />
                 </android.support.design.widget.TextInputLayout>
@@ -140,7 +144,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical">
@@ -154,13 +158,12 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:padding="5dp"
                     android:layout_marginTop="5dp"
                     android:nestedScrollingEnabled="false"
                     android:id="@+id/form_constraints_recyclerview"/>
-
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

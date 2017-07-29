@@ -1,9 +1,14 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,13 +16,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FillFormActivity extends AppCompatActivity {
 
@@ -27,26 +41,29 @@ public class FillFormActivity extends AppCompatActivity {
                             discountText;
     private RecyclerView recyclerView;
     private ConstraintsAdapter adapter;
+    private NestedScrollView scrollView;
     private void bindViews() {
         categoryEditText = (EditText) findViewById(R.id.form_category_edittext);
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.arrow);
         drawable.setBounds(0, 0, 40, 40);
         categoryEditText.setCompoundDrawables(null, null, drawable, null);
-
+        scrollView = (NestedScrollView) findViewById(R.id.form_scrollview);
         productNameText = (ClearableEditText) findViewById(R.id.form_product_edittext);
         brandNameText = (ClearableEditText) findViewById(R.id.form_brand_edittext);
         discountText = (ClearableEditText) findViewById(R.id.form_discount_edittext);
         recyclerView = (RecyclerView) findViewById(R.id.form_constraints_recyclerview);
-        ArrayList<String> strList = new ArrayList<>();
+        final ArrayList<String> strList = new ArrayList<>();
         strList.add("");
         strList.add("");
         strList.add("");
         strList.add("EOF");
         //TODO: adapter
+
         adapter = new ConstraintsAdapter(strList);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
     }
 
     @Override
@@ -128,6 +145,13 @@ public class FillFormActivity extends AppCompatActivity {
                         int size = constraintList.size();
                         constraintList.add(size - 1, "");
                         adapter.notifyDataSetChanged();
+                        Handler handler = new Handler();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
+                            }
+                        });
                     }
                 });
             }
