@@ -74,12 +74,9 @@ public class UserInformationActivity extends SlideBackActivity {
             }
         });
         name.setText(app.getNickname());
-/*
         if (app.getGender() == Gender.MALE)
             sex.setText("男");
-        else
-*/
-        sex.setText("无性别");
+        else sex.setText("女");
     }
 
     private void setOnClickListeners() {

@@ -48,6 +48,7 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.UserOptionFragment;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.QRcodeActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -220,7 +221,8 @@ public class MainPageActivity extends AppCompatActivity {
         QRScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(MainPageActivity.this, QRcodeActivity.class));
+                mCameraDialog.dismiss();
             }
         });
         FillFormButton.setOnClickListener(new View.OnClickListener() {

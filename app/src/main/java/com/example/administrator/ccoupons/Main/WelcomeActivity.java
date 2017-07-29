@@ -79,7 +79,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         //for test
-        //startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
+        startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
 
         login = (Button) findViewById(R.id.welcome_login_button);
         register = (Button) findViewById(R.id.welcome_register_button);
