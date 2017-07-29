@@ -1,17 +1,12 @@
 package com.example.administrator.ccoupons.Register;
 
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,17 +16,12 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
-import com.mob.MobSDK;
-
-import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-
-import static com.mob.tools.utils.ResHelper.getStringRes;
 
 //注册界面 验证码界面
 public class RegisterIdentifyActivity extends AppCompatActivity {

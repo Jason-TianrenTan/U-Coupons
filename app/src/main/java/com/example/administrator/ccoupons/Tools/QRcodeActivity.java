@@ -24,6 +24,7 @@ import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
+import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
 import com.example.administrator.ccoupons.R;
 import com.jph.takephoto.model.TResult;
 import com.liji.takephoto.MainActivity;
@@ -84,9 +85,10 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
         Log.i(TAG, "result:" + result);
         vibrate();
         //返回结果
-        Intent intent = new Intent();
+        Intent intent = new Intent(QRcodeActivity.this, AddCouponActivity.class);
         intent.putExtra("result", result);
-        setResult(RESULT_OK, intent);
+        intent.putExtra("from", "QR");
+        startActivity(intent);
         finish();
     }
 
@@ -191,9 +193,10 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
             if (TextUtils.isEmpty(result)) {
                 Toast.makeText(activity, "未发现二维码", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent();
+                Intent intent = new Intent(activity, AddCouponActivity.class);
                 intent.putExtra("result", result);
-                activity.setResult(RESULT_OK, intent);
+                intent.putExtra("from", "QR");
+                activity.startActivity(intent);
                 activity.finish();
             }
         }

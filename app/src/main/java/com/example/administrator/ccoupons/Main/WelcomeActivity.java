@@ -1,8 +1,8 @@
 package com.example.administrator.ccoupons.Main;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -79,7 +79,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         //for test
-        startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
+        //startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
 
         login = (Button) findViewById(R.id.welcome_login_button);
         register = (Button) findViewById(R.id.welcome_register_button);
@@ -106,7 +106,6 @@ public class WelcomeActivity extends AppCompatActivity {
             password = loginInformationManager.getPassword();
             requestLogin(url, username, password);
         }
-
 
     }
 

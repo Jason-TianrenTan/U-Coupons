@@ -2,8 +2,8 @@ package com.example.administrator.ccoupons.Search;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;
@@ -30,12 +29,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Exchanger;
 
 public class SearchResultActivity extends AppCompatActivity {
 
     private String resultString;
     private static final String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
-    private static final int SEARCH_MAX_RESULT = 5;//最大获取结果数
+    private static final int SEARCH_MAX_RESULT = 3;//最大获取结果数
     private ArrayList<Coupon> couponResults;
     private ResultAdapter adapter;
     private CustomDialog customDialog;

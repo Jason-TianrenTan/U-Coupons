@@ -193,6 +193,7 @@ public class Coupon implements Serializable {
             coupon_stat = STAT_STORE;
     }
 
+    //Todo:改一改
     public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
