@@ -135,6 +135,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
                 getActivity().startActivity(new Intent(getActivity(), UserFollowCoupon.class));
             }
         });
+
         logoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

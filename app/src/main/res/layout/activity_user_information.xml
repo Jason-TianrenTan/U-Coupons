@@ -76,7 +76,8 @@
 
         <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout">
+        <LinearLayout style="@style/user_option_layout"
+            android:id="@+id/uinf_to_resetpw">
 
             <TextView
                 style="@style/user_text"

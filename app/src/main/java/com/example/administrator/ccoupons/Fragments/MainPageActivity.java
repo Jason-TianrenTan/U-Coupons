@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.Fragments;
 *首页布局
  */
 
+import android.app.Application;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -58,7 +59,7 @@ public class MainPageActivity extends AppCompatActivity {
 
         receiver = new AlarmReceiver();
         IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.MESSAGE_BROADCAST");
-        registerReceiver(receiver,filter);
+        registerReceiver(receiver, filter);
 
         Intent intent = MessageGetService.newIntent(this);
         startService(intent);
@@ -132,7 +133,7 @@ public class MainPageActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!categoryFragment.isHidden()) {
             if (exit) {
-                super.onBackPressed();
+                this.finish();
             } else {
                 exit = true;
                 Toast.makeText(this,

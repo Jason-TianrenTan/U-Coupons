@@ -17,12 +17,13 @@ public class AddCouponActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_coupon);
+
+        getCouponFromQR();
     }
 
     private Coupon getCouponFromQR() {
         Intent intent = getIntent();
         String result = intent.getStringExtra("result");
-        Toast.makeText(AddCouponActivity.this, result, Toast.LENGTH_SHORT);
         Coupon coupon = new Coupon();
         try {
             JSONObject mainObj = new JSONObject(result);
@@ -30,6 +31,7 @@ public class AddCouponActivity extends AppCompatActivity {
             coupon.getDetails(result);
         } catch (JSONException e) {
             e.printStackTrace();
+            Toast.makeText(AddCouponActivity.this, "这不是优惠券的二维码，滚吧你", Toast.LENGTH_SHORT).show();
         }
         return coupon;
     }

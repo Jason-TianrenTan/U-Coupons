@@ -5,9 +5,10 @@
 
     <LinearLayout
         android:id="@+id/history_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/user_row_selector">
 
         <ImageView
             android:id="@+id/history_icon"

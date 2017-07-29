@@ -46,6 +46,9 @@ public class UserInfoManager {
     public void addHistory(String str) {
         while (history.size() == MAX_SIZE)
             deleteHistory(MAX_SIZE);
+        if (history.contains(str)){
+            history.remove(str);
+        }
         history.add(0, str);
         changeHistoryData();
     }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Gender;
+import com.example.administrator.ccoupons.Main.ResetPasswordActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
@@ -39,6 +40,7 @@ public class UserInformationActivity extends SlideBackActivity {
     private TakePhotoUtil takePhotoUtil;
     private Toolbar toolbar;
     private LinearLayout changeportrait;
+    private LinearLayout toResetPassword;
     private MyApp app;
 
     @Override
@@ -77,6 +79,7 @@ public class UserInformationActivity extends SlideBackActivity {
         if (app.getGender() == Gender.MALE)
             sex.setText("男");
         else sex.setText("女");
+        toResetPassword = (LinearLayout) findViewById(R.id.uinf_to_resetpw);
     }
 
     private void setOnClickListeners() {
@@ -132,6 +135,15 @@ public class UserInformationActivity extends SlideBackActivity {
                         mBottomSheetDialog.dismiss();
                     }
                 });
+            }
+        });
+
+        toResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserInformationActivity.this, ResetPasswordActivity.class);
+                intent.putExtra("fromIM", true);
+                startActivity(intent);
             }
         });
     }

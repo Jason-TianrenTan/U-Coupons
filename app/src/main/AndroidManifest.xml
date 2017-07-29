@@ -96,7 +96,8 @@
         <activity
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />

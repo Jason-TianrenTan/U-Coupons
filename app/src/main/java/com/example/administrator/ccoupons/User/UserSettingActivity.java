@@ -63,7 +63,7 @@ public class UserSettingActivity extends SlideBackActivity {
     private void showClearDialog() {
         final AlertDialog.Builder clearDialog =
                 new AlertDialog.Builder(UserSettingActivity.this);
-        clearDialog.setMessage("确定要清空所有应用缓存（图片、优惠券信息、用户信息等）?");
+        clearDialog.setMessage("确定要清空搜索历史记录?");
         clearDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @Override

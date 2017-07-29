@@ -1,5 +1,7 @@
 package com.example.administrator.ccoupons.Main;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -256,4 +258,10 @@ public class Coupon implements Serializable {
      {"content": "\u6bcf\u4e2a\u5ba2\u6237\u4f7f\u7528\u4e00\u4e00\u5f20"},
      {"content": "\u6ee140\u5143\u53ef\u4f7f\u7528"}], "seller": [{"nickname": "\u5988\u5356\u6279\u54e6", "avatar": null}]}
       */
+
+    public String generateJSON() {
+        String couponJSON = new Gson().toJson(this);
+        System.out.println(couponJSON);
+        return couponJSON;
+    }
 }

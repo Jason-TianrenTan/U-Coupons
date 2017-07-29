@@ -2,9 +2,11 @@ package com.example.administrator.ccoupons.Search;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.User.UserSettingActivity;
+
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
@@ -176,18 +181,41 @@ public class SearchActivity extends AppCompatActivity {
 
         public ClearHistoryViewHolder(View view) {
             super(view);
-            view.setOnClickListener(new View.OnClickListener() {
+            LinearLayout clear = (LinearLayout) view.findViewById(R.id.clear_view);
+            clear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //TODO:clear history
                     //清除历史记录
-                    adapter.notifyItemRangeRemoved(0, mHistoryList.size());
-                    userInfoManager.clearHistory();
-                    adapter.notifyItemRangeChanged(0, mHistoryList.size());
-                    Toast.makeText(SearchActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                    showClearDialog();
                 }
             });
         }
+    }
+
+    //确定清空记录对话框
+    private void showClearDialog() {
+        final AlertDialog.Builder clearDialog =
+                new AlertDialog.Builder(SearchActivity.this);
+        clearDialog.setMessage("确定要清空所有搜索历史?");
+        clearDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //清空登录信息
+                        adapter.notifyItemRangeRemoved(0, mHistoryList.size());
+                        userInfoManager.clearHistory();
+                        adapter.notifyItemRangeChanged(0, mHistoryList.size());
+                        Toast.makeText(getApplicationContext(), "历史记录已清除", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        clearDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        clearDialog.show();
     }
 
 

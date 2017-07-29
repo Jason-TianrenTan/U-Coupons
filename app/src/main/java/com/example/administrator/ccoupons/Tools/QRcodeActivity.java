@@ -147,30 +147,6 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
         });
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if (useTakePhoto()) {
-            takePhotoUtil.onSaveInstanceState(outState);
-        }
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (useTakePhoto()) {
-            takePhotoUtil.onActivityResult(requestCode, resultCode, data);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (useTakePhoto()) {
-            takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
     static class MyAsyncTask extends AsyncTask<Void, Void, String> {
 
         private WeakReference<Context> weakReference;
@@ -200,6 +176,31 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
                 activity.finish();
             }
         }
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onSaveInstanceState(outState);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onActivityResult(requestCode, resultCode, data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /*
@@ -234,3 +235,4 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
         return true;
     }
 }
+
