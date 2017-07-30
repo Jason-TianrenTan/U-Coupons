@@ -155,7 +155,7 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
         }
         cropOptions.configCompress();   //压缩配置
         cropOptions.configTakePhoto();  //拍照配置
-        File file = new File(Environment.getExternalStorageDirectory(), "/takephoto/portrait_" + System.currentTimeMillis() + ".jpg");
+        File file = new File(Environment.getExternalStorageDirectory(), "/takephoto/" + System.currentTimeMillis() + ".jpg");
         if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
         Uri imageUri = Uri.fromFile(file);
         switch (select_type) {
@@ -190,6 +190,9 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
                 break;
             case PICK_BY_SELECT_NOT_CROP:
                 takePhoto.onPickFromGallery();
+                break;
+            case PICK_BY_TAKE_NOT_CROP:
+                takePhoto.onPickFromCapture(imageUri);
                 break;
             default:
                 break;
@@ -335,6 +338,6 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
      * 照片获取方式, 从相册获取或拍照处理
      */
     public enum Select_type {
-        PICK_BY_SELECT, PICK_BY_TAKE, PICK_BY_SELECT_NOT_CROP
+        PICK_BY_SELECT, PICK_BY_TAKE, PICK_BY_SELECT_NOT_CROP, PICK_BY_TAKE_NOT_CROP
     }
 }
