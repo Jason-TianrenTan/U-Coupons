@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.TextInputLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/constraint_inputlayout"
+    android:id="@+id/constraint_rootview"
     android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginBottom="10dp"
     android:layout_height="wrap_content">
 
-    <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
+    <EditText
         android:id="@+id/form_constraint_edittext"
-        android:hint="使用限制"
         style="@style/MainEditTextStyle"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginRight="5dp"
         android:maxLength="16" />
-</android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/delete_constraint_button"
+        android:src="@drawable/item_delete"/>
+</LinearLayout>
