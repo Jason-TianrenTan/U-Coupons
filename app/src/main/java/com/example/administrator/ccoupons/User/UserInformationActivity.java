@@ -41,24 +41,33 @@ public class UserInformationActivity extends SlideBackActivity {
     private Toolbar toolbar;
     private LinearLayout changeportrait;
     private LinearLayout toResetPassword;
+    private LinearLayout toUpdateNickname;
+    private LinearLayout toUpdateGender;
     private MyApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
-        initView();
+        bindViews();
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);
         }
 
+        initinfo();
         initPortrait();
         //portrait.setImageResource(DataHolder.User.portraitId);
 
         setOnClickListeners();
     }
 
-    private void initView() {
+    @Override
+    protected void onStart(){
+        initinfo();
+        super.onStart();
+    }
+
+    private void bindViews() {
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
         portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
@@ -69,20 +78,25 @@ public class UserInformationActivity extends SlideBackActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toResetPassword = (LinearLayout) findViewById(R.id.uinf_to_resetpw);
+        toUpdateNickname = (LinearLayout) findViewById(R.id.to_update_nickname);
+        toUpdateGender = (LinearLayout) findViewById(R.id.to_update_gender);
+    }
+
+    private void initinfo() {
+        name.setText(app.getNickname());
+        if (app.getGender() == Gender.MALE)
+            sex.setText("男");
+        else sex.setText("女");
+    }
+
+    private void setOnClickListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        name.setText(app.getNickname());
-        if (app.getGender() == Gender.MALE)
-            sex.setText("男");
-        else sex.setText("女");
-        toResetPassword = (LinearLayout) findViewById(R.id.uinf_to_resetpw);
-    }
-
-    private void setOnClickListeners() {
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +158,20 @@ public class UserInformationActivity extends SlideBackActivity {
                 Intent intent = new Intent(UserInformationActivity.this, ResetPasswordActivity.class);
                 intent.putExtra("fromIM", true);
                 startActivity(intent);
+            }
+        });
+
+        toUpdateNickname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserInformationActivity.this, UserUpdateNicknameActivity.class));
+            }
+        });
+
+        toUpdateGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserInformationActivity.this, UserUpdateGenderActivity.class));
             }
         });
     }

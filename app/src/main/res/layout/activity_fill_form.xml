@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.ccoupons.AddCoupon.FillFormActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/MainToolBarStyle">
+
+        <TextView
+            style="@style/MainToolbarTitleStyle"
+            android:text="添加优惠券" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/coupon_form_label"
+                    android:text="商品名" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/form_product_inputlayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="3">
+
+                    <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
+                        android:id="@+id/form_product_edittext"
+                        style="@style/MainEditTextStyle"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:maxLength="16" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/coupon_form_label"
+                    android:text="商家名" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/form_brand_inputlayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="3">
+
+                    <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
+                        android:id="@+id/form_brand_edittext"
+                        style="@style/MainEditTextStyle"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:maxLength="16" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/coupon_form_label"
+                    android:text="优惠额度" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/form_discount_inputlayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="3">
+
+                    <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
+                        android:id="@+id/form_discount_edittext"
+                        style="@style/MainEditTextStyle"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:maxLength="16" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/coupon_form_label"
+                    android:text="品种" />
+
+                <EditText
+                    android:id="@+id/form_category_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="3"
+                    android:editable="false"
+                    android:maxLength="16"
+                    android:text="点击选择品种"
+                    android:textColor="@color/lightgray"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="使用门槛"
+                    android:textColor="@color/black"
+                    android:textSize="22dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginTop="5dp"
+                    android:nestedScrollingEnabled="false"
+                    android:id="@+id/form_constraints_recyclerview"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

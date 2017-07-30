@@ -210,8 +210,9 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
 
     @Override
     public void onStart() {
-        super.onStart();
         initPortrait();
+        initData();
+        super.onStart();
     }
 
     @Override

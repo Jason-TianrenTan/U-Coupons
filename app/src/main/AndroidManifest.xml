@@ -96,8 +96,8 @@
         <activity
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
@@ -108,8 +108,11 @@
         <activity android:name=".User.UserFollowCoupon" />
         <activity android:name=".Purchase.CouponDetailActivity" />
         <activity android:name=".Purchase.CouponPurchaseActivity" />
-        <activity android:name=".Tools.QRcodeActivity"></activity>
-        <activity android:name=".AddCoupon.AddCouponActivity"></activity>
+        <activity android:name=".Tools.QRcodeActivity" />
+        <activity android:name=".AddCoupon.AddCouponActivity" />
+        <activity android:name=".AddCoupon.FillFormActivity" />
+        <activity android:name=".User.UserUpdateNicknameActivity" />
+        <activity android:name=".User.UserUpdateGenderActivity"></activity>
     </application>
 
 </manifest>

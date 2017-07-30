@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
+import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
 import com.example.administrator.ccoupons.Connections.MessageGetService;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.QRcodeActivity;
@@ -208,7 +209,7 @@ public class MainPageActivity extends AppCompatActivity {
         FillFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainPageActivity.this, AddCouponActivity.class));
+                startActivity(new Intent(MainPageActivity.this, FillFormActivity.class));
             }
         });
         closeButton.setOnClickListener(new View.OnClickListener() {

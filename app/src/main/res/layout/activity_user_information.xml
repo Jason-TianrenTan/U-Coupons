@@ -40,17 +40,18 @@
         <ImageView
             style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout">
+        <LinearLayout style="@style/user_option_layout"
+            android:id="@+id/to_update_nickname">
 
             <TextView
                 android:id="@+id/user_name"
-                style="@style/user_text"
-                android:textColor="@color/lightgray" />
+                style="@style/user_text" />
         </LinearLayout>
 
         <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout">
+        <LinearLayout style="@style/user_option_layout"
+            android:id="@+id/to_update_gender">
 
             <TextView
                 android:id="@+id/user_sex"

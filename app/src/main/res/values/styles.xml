@@ -310,39 +310,15 @@
         <item name="android:windowExitAnimation">@anim/sellmenu_out</item>
     </style>
 
-    <style name="AppTheme.Transparent">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
+    <style name="coupon_form_label">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <!-- 适用于欢迎界面避免第一次进来白屏或黑屏 -->
-    <style name="AppTheme.Transparent.Splash">
-        <item name="android:windowDisablePreview">true</item>
-    </style>
-
-    <style name="MatchWrapTv" parent="MatchWrap">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/selector_btn_orange</item>
-        <item name="android:layout_margin">10dp</item>
-        <item name="android:onClick">onClick</item>
-        <item name="android:padding">8dp</item>
-    </style>
-
-    <style name="AutoWrapTv" parent="AutoWrap">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/selector_btn_orange</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:onClick">onClick</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingRight">4dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-    </style>
-
-
+>>>>>>> ttr
 
 </resources>
