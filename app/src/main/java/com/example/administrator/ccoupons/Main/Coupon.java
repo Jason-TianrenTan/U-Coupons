@@ -147,6 +147,9 @@ public class Coupon implements Serializable {
         return this.evaluatePrice;
     }
 
+    public void setCategory(String cat) {
+        this.catId = cat;
+    }
     public String getCategory() {
         return this.catId;
     }
@@ -284,12 +287,13 @@ public class Coupon implements Serializable {
         return json;
     }
 
-    public Coupon (String jsonString) {
+    public static Coupon decodeFromQRJSON (String jsonString) {
+        Coupon coupon = new Coupon();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            this.name = jsonObject.getString("product");
-            this.brandName = jsonObject.getString("brand");
-            this.catId = jsonObject.getString("category");
+            coupon.name = jsonObject.getString("product");
+            coupon.brandName = jsonObject.getString("brand");
+            coupon.catId = jsonObject.getString("category");
             JSONArray limitArray = new JSONArray(jsonObject.getJSONArray("limit"));
             String[] constraintList = new String[limitArray.length()];
             for (int i = 0; i < limitArray.length(); i++) {
@@ -297,12 +301,13 @@ public class Coupon implements Serializable {
                 String content = contentObj.getString("content");
                 constraintList[i] = content;
             }
-            this.constraints = constraintList;
-            this.discount = jsonObject.getString("discount");
-            this.expireDate = jsonObject.getString("expiredTime");
+            coupon.constraints = constraintList;
+            coupon.discount = jsonObject.getString("discount");
+            coupon.expireDate = jsonObject.getString("expiredTime");
         } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();
         }
+        return coupon;
     }
 }

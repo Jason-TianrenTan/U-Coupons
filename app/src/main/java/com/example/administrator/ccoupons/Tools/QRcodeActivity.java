@@ -83,12 +83,11 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Log.i(TAG, "result:" + result);
+        System.out.println("result:" + result);
         vibrate();
         //返回结果
         Intent intent = new Intent(QRcodeActivity.this, AddCouponActivity.class);
-        intent.putExtra("coupon", new Coupon(result));
-        intent.putExtra("from", "QR");
+        //TEST:intent.putExtra("coupon", new Coupon(result));
         startActivity(intent);
         finish();
     }
@@ -170,9 +169,9 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
             if (TextUtils.isEmpty(result)) {
                 Toast.makeText(activity, "未发现二维码", Toast.LENGTH_SHORT).show();
             } else {
+                System.out.println("result:" + result);
                 Intent intent = new Intent(activity, AddCouponActivity.class);
-                intent.putExtra("coupon", new Coupon(result));
-                intent.putExtra("from", "QR");
+                //TEST:intent.putExtra("coupon", new Coupon(result));
                 activity.startActivity(intent);
                 activity.finish();
             }
