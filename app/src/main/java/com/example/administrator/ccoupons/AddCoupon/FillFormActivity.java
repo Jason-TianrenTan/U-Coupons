@@ -173,6 +173,7 @@ public class FillFormActivity extends AppCompatActivity {
                                 path = result.getImage().getCompressPath();
                                 System.out.println("success:" + path);
                                 imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
+                                System.out.println("success");
                                 updatePic();
                             }
                         });

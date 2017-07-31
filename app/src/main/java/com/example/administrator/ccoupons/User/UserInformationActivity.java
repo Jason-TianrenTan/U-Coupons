@@ -18,6 +18,7 @@ import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Main.ResetPasswordActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
@@ -43,6 +44,7 @@ public class UserInformationActivity extends SlideBackActivity {
     private LinearLayout toResetPassword;
     private LinearLayout toUpdateNickname;
     private LinearLayout toUpdateGender;
+    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(this);
     private MyApp app;
 
     @Override
@@ -128,6 +130,7 @@ public class UserInformationActivity extends SlideBackActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
+                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
@@ -143,6 +146,7 @@ public class UserInformationActivity extends SlideBackActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
+                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
