@@ -27,7 +27,6 @@ import java.util.ArrayList;
 public class ChooseCategoryActivity extends AppCompatActivity {
 
 
-    public static int REQUEST_CATEGORY = 1;
     private ArrayList<Category> mCList;
     private ChooseAdapter adapter;
     private RecyclerView recyclerView;
