@@ -145,6 +145,9 @@ public class Coupon implements Serializable {
         return this.evaluatePrice;
     }
 
+    public void setCategory(String cat) {
+        this.catId = cat;
+    }
     public String getCategory() {
         return this.catId;
     }

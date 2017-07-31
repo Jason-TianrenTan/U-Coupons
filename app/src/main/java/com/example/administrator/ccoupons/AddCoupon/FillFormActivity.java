@@ -37,6 +37,8 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
+import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.ImageManager;
@@ -56,8 +58,8 @@ public class FillFormActivity extends AppCompatActivity {
     private EditText categoryEditText;
     private ClearableEditText productNameText,
             brandNameText,
-            discountText;
-    private TextView nextButton;
+            discountText,
+            expireText;
     private RecyclerView recyclerView;
     private ConstraintsAdapter adapter;
     private NestedScrollView scrollView;
@@ -67,6 +69,11 @@ public class FillFormActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
     private String path;
     private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(getContext());
+    private TextView nextButton;
+
+    private TextInputLayout productInputLayout, brandInputLayout, discountInputLayout, expireInputLayout, addressInputLayout;
+
+    private boolean valid = true;
 
     private void bindViews() {
         categoryEditText = (EditText) findViewById(R.id.form_category_edittext);
@@ -74,6 +81,7 @@ public class FillFormActivity extends AppCompatActivity {
         drawable.setBounds(0, 0, 40, 40);
         categoryEditText.setCompoundDrawables(null, null, drawable, null);
 
+        nextButton = (TextView) findViewById(R.id.form_next_button);
         scrollView = (NestedScrollView) findViewById(R.id.form_scrollview);
         nextButton = (TextView) findViewById(R.id.form_next_button);
         productNameText = (ClearableEditText) findViewById(R.id.form_product_edittext);
@@ -82,18 +90,24 @@ public class FillFormActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.form_constraints_recyclerview);
         addpicture = (LinearLayout) findViewById(R.id.coupon_add_picture);
         couponPicture = (ImageView) findViewById(R.id.coupon_picture);
+        expireText = (ClearableEditText) findViewById(R.id.form_expire_edittext);
+        expireInputLayout = (TextInputLayout) findViewById(R.id.form_expire_inputlayout);
+
+        productInputLayout = (TextInputLayout) findViewById(R.id.form_product_inputlayout);
+        brandInputLayout = (TextInputLayout) findViewById(R.id.form_brand_inputlayout);
+        discountInputLayout = (TextInputLayout) findViewById(R.id.form_discount_inputlayout);
         constraintList = new ArrayList<>();
         constraintList.add("first");
         constraintList.add("second");
         constraintList.add("third");
         //TODO: adapter
 
-        adapter = new ConstraintsAdapter(constraintList);
+        adapter = new ConstraintsAdapter();
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ImageView addButton = (ImageView) findViewById(R.id.add_constraint_button);
+        final ImageView addButton = (ImageView) findViewById(R.id.add_constraint_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,6 +153,61 @@ public class FillFormActivity extends AppCompatActivity {
                 Intent intent = new Intent(FillFormActivity.this, ChooseCategoryActivity.class);
                 //TODO: intialize intent
                 startActivityForResult(intent, REQUEST_CATEGORY);
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                valid = true;
+                Intent intent = new Intent(FillFormActivity.this, AddCouponActivity.class);
+                Coupon coupon = new Coupon();
+                String productName = productNameText.getText().toString(),
+                        brandName = brandNameText.getText().toString(),
+                        discount = discountText.getText().toString(),
+                        category = categoryEditText.getText().toString(),
+                        expireDate = expireText.getText().toString();
+
+                if (productName.length() == 0) {
+                    valid = false;
+                    productInputLayout.setError("请输入商品名");
+                }
+                if (brandName.length() == 0) {
+                    valid = false;
+                    brandInputLayout.setError("请输入品牌名");
+                }
+                if (discount.length() == 0) {
+                    valid = false;
+                    discountInputLayout.setError("请输入优惠详情");
+                }
+                if (category.length() == 0) {
+                    valid = false;
+                    Toast.makeText(getApplicationContext(), "请选择种类", Toast.LENGTH_SHORT).show();
+                }
+                if (expireDate.length() == 0) {
+                    valid = false;
+                    expireInputLayout.setError("请输入过期时间");
+                }
+
+                if (valid) {
+                    coupon.setName(productName);
+                    coupon.setImgURL(path);
+                    coupon.setExpireDate(expireDate);
+                    coupon.setBrandName(brandName);
+                    coupon.setDiscount(discount);
+                    coupon.setCategory(category);
+                    ArrayList<String> nCList = new ArrayList<String>();
+                    for (String str : constraintList)
+                        if (str.length() > 0)
+                            nCList.add(str);
+                    String[] arrStr = new String[nCList.size()];
+                    for (int i = 0; i < arrStr.length; i++)
+                        arrStr[i] = nCList.get(i);
+                    coupon.setConstraints(arrStr);
+                    intent.putExtra("coupon", coupon);
+                    startActivity(intent);
+                }
+
             }
         });
     }
@@ -213,10 +282,9 @@ public class FillFormActivity extends AppCompatActivity {
     public class ConstraintsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private Context mContext;
-        private ArrayList<String> constraintList;
 
-        public ConstraintsAdapter(ArrayList<String> cList) {
-            this.constraintList = cList;
+        public ConstraintsAdapter() {
+
         }
 
         @Override
@@ -298,6 +366,7 @@ public class FillFormActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CATEGORY) {
             System.out.println("选择了类别" + resultCode);
+            categoryEditText.setText(DataHolder.Categories.nameList[resultCode]);
         } else {
             takePhotoUtil.onActivityResult(requestCode, resultCode, data);
         }

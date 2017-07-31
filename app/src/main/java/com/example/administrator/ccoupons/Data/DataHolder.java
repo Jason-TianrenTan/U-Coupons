@@ -33,6 +33,9 @@ public class DataHolder {
 
     public static final String postChangeCouponState_URL = "/post_changeCouponStat";//换优惠券状态
 
+    public static final String postGetEvaluation_URL = "/post_getValue";//获取估值
+    public static final String postAddCoupon_URL = "/post_addCoupon";//添加优惠券
+
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
         public static String[] detailList = "Title1,Title2,Title3,Title4,Title5,Title6,Title7".split(",");
