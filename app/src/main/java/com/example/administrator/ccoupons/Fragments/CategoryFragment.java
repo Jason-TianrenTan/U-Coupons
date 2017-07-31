@@ -32,6 +32,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.administrator.ccoupons.Banner.BannerPicture;
 import com.example.administrator.ccoupons.Banner.LocalImageHolderView;
 import com.example.administrator.ccoupons.Category;
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
@@ -42,6 +43,7 @@ import com.example.administrator.ccoupons.UI.CustomDialog;
 import com.example.administrator.ccoupons.UI.CustomLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class CategoryFragment extends Fragment {
@@ -141,6 +143,7 @@ public class CategoryFragment extends Fragment {
     String[] coupon_names = "云之国剑士,无名的剑士,大力小萝莉,力魔圣骑士,黑袍术士,夜魇暗潮,诡术猎手".split(",");
 
     private void initRecommends() {
+
         RCouponList = new ArrayList<>();
         //TODO:测试
         Random random = new Random();
@@ -154,6 +157,28 @@ public class CategoryFragment extends Fragment {
             coupon.setImgURL(urls[index]);
             RCouponList.add(coupon);
         }
+
+        String url = DataHolder.base_URL + DataHolder.postRecommend_URL;
+        HashMap<String, String> map = new HashMap<>();
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                System.out.println("RESPONSE = " + response);
+                //TODO:图片
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+
+            }
+
+            @Override
+            public void onConnectionFailed() {
+
+            }
+        });
+        connectionManager.connect();
     }
 
     private void initRecyclerViews(View view) {
@@ -176,6 +201,29 @@ public class CategoryFragment extends Fragment {
 
     //初始化展示板
     private void initBanner() {
+        //post
+        String url = DataHolder.base_URL + DataHolder.postBanner_URL;
+        HashMap<String, String> map = new HashMap<>();
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                System.out.println("RESPONSE = " + response);
+                //TODO:图片
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+
+            }
+
+            @Override
+            public void onConnectionFailed() {
+
+            }
+        });
+        connectionManager.connect();
+
         localImages = new ArrayList<>();
         for (int i = 0; i < DataHolder.Banners.covers.length; i++)
             localImages.add(DataHolder.Banners.covers[i]);

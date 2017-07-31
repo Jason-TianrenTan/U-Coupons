@@ -106,7 +106,8 @@
         <activity android:name=".Purchase.CouponDetailActivity" />
         <activity android:name=".Purchase.CouponPurchaseActivity" />
         <activity android:name=".AddCoupon.AddCouponActivity" />
-        <activity android:name=".AddCoupon.FillFormActivity"></activity>
+        <activity android:name=".AddCoupon.FillFormActivity" />
+        <activity android:name=".AddCoupon.ChooseCategoryActivity"></activity>
     </application>
 
 </manifest>

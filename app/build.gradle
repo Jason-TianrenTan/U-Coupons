@@ -34,13 +34,13 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.baoyz.swipemenulistview:library:1.3.0'
     compile files('libs/AMap_Location_V3.4.1_20170629.jar')
     compile files('libs/MobCommons-2017.0607.1736.jar')
     compile files('libs/MobTools-2017.0607.1736.jar')
     compile name: "SMSSDK-3.0.0", ext: 'aar'
     compile 'com.jakewharton:disklrucache:2.0.2'
     testCompile 'junit:junit:4.12'
+    compile 'com.baoyz.swipemenulistview:library:1.3.0'
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
     compile 'com.android.support:appcompat-v7:26.+'
