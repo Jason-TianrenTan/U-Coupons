@@ -12,7 +12,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -42,6 +44,8 @@ public class MainPageActivity extends AppCompatActivity {
     private CategoryFragment categoryFragment;
     private UserOptionFragment userOptionFragment;
 
+    private TextView titleView_main, titleView_aboutme;
+    private ImageView imgView_main, imgView_me;
 
     private Fragment[] fragments = new Fragment[2];
 
@@ -49,9 +53,8 @@ public class MainPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-
-        initFragments();
         initNavigationBar();
+        initFragments();
 
         initService();
     }
@@ -80,6 +83,7 @@ public class MainPageActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
         fragmentTransaction.commit();
         showFragment(1);
+        imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage_pressed));
     }
 
 
@@ -88,6 +92,18 @@ public class MainPageActivity extends AppCompatActivity {
         hideAllFragments(ft);
         ft.show(fragments[index - 1]);
         ft.commitAllowingStateLoss();
+        imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage));
+        imgView_me.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_me));
+        titleView_main.setTextColor(Color.WHITE);
+        titleView_aboutme.setTextColor(Color.WHITE);
+        if (index == 1) {
+            imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage_pressed));
+            titleView_main.setTextColor(ContextCompat.getColor(this, R.color.black));
+        }
+        else {
+            imgView_me.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_me_pressed));
+            titleView_aboutme.setTextColor(ContextCompat.getColor(this, R.color.black));
+        }
     }
 
     private void hideAllFragments(FragmentTransaction ft) {
@@ -104,10 +120,16 @@ public class MainPageActivity extends AppCompatActivity {
         LinearLayout navigationBar = (LinearLayout) findViewById(R.id.bottom_nav_container);
         LinearLayout nav_item_main = (LinearLayout) navigationBar.findViewById(R.id.id_left1),
                 nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1);
-        TextView titleView_main = (TextView) nav_item_main.findViewById(R.id.navigation_icon_text);
+        titleView_main = (TextView) nav_item_main.findViewById(R.id.navigation_icon_text);
         titleView_main.setText("首页");
-        TextView titleView_aboutme = (TextView) nav_item_aboutme.findViewById(R.id.navigation_icon_text);
+
+        imgView_main = (ImageView) nav_item_main.findViewById(R.id.navigation_icon);
+        imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage));
+        titleView_aboutme = (TextView) nav_item_aboutme.findViewById(R.id.navigation_icon_text);
         titleView_aboutme.setText("我的");
+
+        imgView_me = (ImageView) nav_item_aboutme.findViewById(R.id.navigation_icon);
+        imgView_me.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_me));
         ImageView sellButton = (ImageView) findViewById(R.id.mainpage_button_sell);
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override

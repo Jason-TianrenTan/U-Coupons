@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (sex.equals("女")) {
                     app.setGender(Gender.FEMALE);
                 }
+                app.setPhoneNumber(myUsername);
                 saveUserLoginInfo();
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
                 startActivity(intent);
@@ -191,8 +192,11 @@ public class LoginActivity extends AppCompatActivity {
         text_forget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
-                finish();
+                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                String phoneString = signup_phone.getText().toString();
+                if (phoneString.length() == 11)
+                    intent.putExtra("phoneString", phoneString);
+                startActivity(intent);
             }
         });
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);

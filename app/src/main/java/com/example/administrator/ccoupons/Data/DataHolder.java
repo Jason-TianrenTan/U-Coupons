@@ -27,6 +27,12 @@ public class DataHolder {
     public static final String postFollow_URL = "/post_likeCoupon";//关注
     public static final String postAvatar_URL = "/post_updateAvatar";//上传头像
 
+    public static final String postBanner_URL = "/post_getBanner";//获取轮播图
+    public static final String postRecommend_URL = "/post_homepageCoupon";//主页推荐
+    public static final String requestCatSearch_URL = "/post_searchByCategory";//按分类搜索
+
+    public static final String postChangeCouponState_URL = "/post_changeCouponStat";//换优惠券状态
+
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
         public static String[] detailList = "Title1,Title2,Title3,Title4,Title5,Title6,Title7".split(",");

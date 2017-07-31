@@ -58,6 +58,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 if (sex.equals("女")) {
                     app.setGender(Gender.FEMALE);
                 }
+                app.setPhoneNumber(username);
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
                 startActivity(intent);
                 System.out.println("Login success");

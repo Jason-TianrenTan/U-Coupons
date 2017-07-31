@@ -113,6 +113,7 @@
         <activity android:name=".AddCoupon.FillFormActivity" />
         <activity android:name=".User.UserUpdateNicknameActivity" />
         <activity android:name=".User.UserUpdateGenderActivity"></activity>
+        <activity android:name=".AddCoupon.ChooseCategoryActivity"></activity>
     </application>
 
 </manifest>

@@ -52,6 +52,7 @@ import static com.mob.MobSDK.getContext;
 
 public class FillFormActivity extends AppCompatActivity {
 
+    public static int REQUEST_CATEGORY = 6;
     private EditText categoryEditText;
     private ClearableEditText productNameText,
             brandNameText,
@@ -72,6 +73,7 @@ public class FillFormActivity extends AppCompatActivity {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.arrow);
         drawable.setBounds(0, 0, 40, 40);
         categoryEditText.setCompoundDrawables(null, null, drawable, null);
+
         scrollView = (NestedScrollView) findViewById(R.id.form_scrollview);
         nextButton = (TextView) findViewById(R.id.form_next_button);
         productNameText = (ClearableEditText) findViewById(R.id.form_product_edittext);
@@ -118,6 +120,25 @@ public class FillFormActivity extends AppCompatActivity {
                         NConstraintList.add(str);
                 }
                 //   Intent intent = new Intent(FillFormActivity.this, AddCouponActivity.class);
+            }
+        });
+
+        categoryEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    Intent intent = new Intent(FillFormActivity.this, ChooseCategoryActivity.class);
+                    //TODO: intialize intent
+                    startActivityForResult(intent, REQUEST_CATEGORY);
+                }
+            }
+        });
+        categoryEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FillFormActivity.this, ChooseCategoryActivity.class);
+                //TODO: intialize intent
+                startActivityForResult(intent, REQUEST_CATEGORY);
             }
         });
     }
@@ -267,14 +288,18 @@ public class FillFormActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        takePhotoUtil.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CATEGORY) {
+            System.out.println("选择了类别" + resultCode);
+        } else {
+            takePhotoUtil.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.UploadTask;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Main.ResetPasswordActivity;
@@ -64,7 +65,7 @@ public class UserInformationActivity extends SlideBackActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         initinfo();
         super.onStart();
     }
@@ -160,7 +161,7 @@ public class UserInformationActivity extends SlideBackActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserInformationActivity.this, ResetPasswordActivity.class);
-                intent.putExtra("fromIM", true);
+                intent.putExtra("phoneString", ((MyApp) getApplicationContext()).getPhoneNumber());
                 startActivity(intent);
             }
         });
@@ -209,10 +210,17 @@ public class UserInformationActivity extends SlideBackActivity {
     }
 
     public void updatePortrait(String path) {
+        try {
+            MyApp app = (MyApp) getApplicationContext();
+            String userId = app.getUserId();
+            new UploadTask(userId, path).execute();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         //Todo:上传图片到服务器 并返回图片对应的url
-        //Todo:更新头像  更新本地储存的url
+        //Todo:更新头像 更新本地储存的url
 
-        //ImageManager.GlideImage(url, portrait, getContext());
+        ImageManager.GlideImage(path, portrait, getContext());
     }
 
     public void initPortrait() {

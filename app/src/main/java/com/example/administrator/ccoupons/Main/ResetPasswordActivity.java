@@ -20,33 +20,44 @@ import com.example.administrator.ccoupons.CustomEditText.PasswordToggleEditText;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.EditTextTools;
+import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
-    private RegisterCheck checker = new RegisterCheck();
+
+    public static final int COUNTDOWN_TIME = 30;
     public static final int SMS_FAILED = 1;//验证失败
     public static final int SMS_SUCCESS = 2;//验证通过
-    Toolbar toolbar;
-    boolean verify_cord = false, valid = false;
-    String phoneString;
-    String password;
+    private Toolbar toolbar;
+    private boolean verify_cord = false, valid = false;
+    private String phoneString;
+    private String password;
 
-    TextView requestCordButton;
-    Button button_next;
-    EditText phoneText, cordText;
-    PasswordToggleEditText passText, confirmText;
-    TextInputLayout phoneInputLayout, cordInputLayout, passInputLayout, confirmInputLayout;
+    private TextView requestCordButton;
+    private Button button_next;
+    private EditText phoneText, cordText;
+    private PasswordToggleEditText passText, confirmText;
+    private TextInputLayout phoneInputLayout, cordInputLayout, passInputLayout, confirmInputLayout;
+
+    //reset timer
+    private int current = COUNTDOWN_TIME;
+    private boolean reget_permission = false;
+
+
     private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,密码强度太弱".split(",");
-
+    private RegisterCheck checker = new RegisterCheck();
     private void bindViews() {
         requestCordButton = (TextView) findViewById(R.id.request_cord_button);
         button_next = (Button) findViewById(R.id.reset_button_ok);
@@ -58,7 +69,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
         passInputLayout = (TextInputLayout) findViewById(R.id.reset_newpass_inputlayout);
         confirmText = (PasswordToggleEditText) findViewById(R.id.reset_confirmpass_edittext);
         confirmInputLayout = (TextInputLayout) findViewById(R.id.reset_confirmpass_inputlayout);
-        initPhoneNum();
     }
 
     @Override
@@ -85,8 +95,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 phoneString = phoneText.getText().toString();
                 if (phoneString.length() < 11) {
                     phoneInputLayout.setError("长度必须为11位");
-                } else
+                } else {
                     sendSMS();
+                    requestCordButton.setEnabled(false);
+                    startCountDown();
+                }
             }
         });
 
@@ -117,7 +130,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 String cord = cordText.getText().toString();
                 if (cord.length() < 4)
                     cordInputLayout.setError("验证码必须为4位");
-                else {
+                if (valid) {
                     String iCord = cordText.getText().toString().trim();
                     SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
                     verify_cord = true;
@@ -234,6 +247,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         };
         SMSSDK.registerEventHandler(eh);
 
+        String intentString = getIntent().getStringExtra("phoneString");
+        if (intentString != null)
+            phoneText.setText(intentString);
     }
 
 
@@ -259,9 +275,17 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     phoneString = phoneText.getText().toString();
                     password = passText.getText().toString();
                     String url = DataHolder.base_URL + DataHolder.resetPass_URL;
+                    String passwordString;//new password
+                    try {
+                        passwordString = new PasswordEncoder().EncodeByMd5(password);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "遇到未知错误(MD5), 请稍后重试", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                     HashMap<String, String> map = new HashMap<>();
                     map.put("phoneNum", phoneString);
-                    map.put("password", password);
+                    map.put("password", passwordString);
                     ConnectionManager connectionManager = new ConnectionManager(url, map);
                     connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
                         @Override
@@ -326,12 +350,42 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
     };
 
-    private void initPhoneNum() {
-        Intent intent = getIntent();
-        if (intent.getBooleanExtra("fromIM", false)) {
-            phoneText.setText(new LoginInformationManager(ResetPasswordActivity.this).getUsername());
-            phoneString = phoneText.getText().toString();
-            sendSMS();
+    private Handler TimerHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    updateTimer();
+                    break;
+            }
+        }
+    };
+
+    private void startCountDown() {
+        current = COUNTDOWN_TIME;
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new CountDownTask(), 0, 1000);
+    }
+
+    private void updateTimer() {
+        if (!reget_permission) {
+            current--;
+            requestCordButton.setText(current + "s");
+            if (current == 0) {
+                requestCordButton.setText("重新获取");
+                reget_permission = true;
+                requestCordButton.setEnabled(true);
+            }
+        }
+    }
+
+    private class CountDownTask extends TimerTask {// public abstract class TimerTask implements Runnable{}
+
+        @Override
+        public void run() {
+            Message msg = new Message();
+            msg.what = 1;
+            TimerHandler.sendMessage(msg);
         }
     }
 }
