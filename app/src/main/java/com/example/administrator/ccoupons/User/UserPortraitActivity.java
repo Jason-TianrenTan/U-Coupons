@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.Connections.UploadTask;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
@@ -26,6 +27,7 @@ public class UserPortraitActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
     private ImageView portrait;
     private LinearLayout bg;
+    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,7 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                Bitmap bitmap = BitmapFactory.decodeFile(s);
-                                portrait.setImageBitmap(bitmap);
+                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
@@ -88,8 +89,7 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                Bitmap bitmap = BitmapFactory.decodeFile(s);
-                                portrait.setImageBitmap(bitmap);
+                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
@@ -145,6 +145,8 @@ public class UserPortraitActivity extends AppCompatActivity {
         }
         //Todo:上传图片到服务器 并返回图片对应的url
         //Todo:更新头像 更新本地储存的url
+
+        //ImageManager.GlideImage(url, portrait, getContext());
     }
 
     public void initPortrait() {

@@ -83,16 +83,15 @@ public class LoginActivity extends AppCompatActivity {
                 String sex = jsonObject.getString("gender");
                 int UB = jsonObject.getInt("Ucoin");
                 app.setNickname(nickname);
-                app.setAvatar(avatar);
-                app.setUcoin(UB);
                 if (!avatar.equals("null")) {
-                    app.setAvatar(DataHolder.base_URL + avatar);
+                    app.setAvatar(DataHolder.base_URL + "/static/" + avatar);
                 }
-
+                app.setUcoin(UB);
                 app.setGender(Gender.MALE);
                 if (sex.equals("女")) {
                     app.setGender(Gender.FEMALE);
                 }
+                app.setPhoneNumber(myUsername);
                 saveUserLoginInfo();
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
                 startActivity(intent);

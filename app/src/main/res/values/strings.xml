@@ -90,4 +90,9 @@
 
     <string name="coupon_info">优惠券详情</string>
 
+    <!-- 修改信息界面 -->
+    <string name="user_update_nickname">修改昵称</string>
+    <string name="user_update_gender">修改性别</string>
+    <string name="user_update">修改</string>
+
 </resources>

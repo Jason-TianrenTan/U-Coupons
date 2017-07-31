@@ -29,12 +29,11 @@
                     <TextView
                         android:id="@+id/user_nickname_text"
                         android:layout_marginTop="?attr/actionBarSize"
-                        android:layout_marginRight="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="sfsdfsfsfsdfsf"
+                        android:text="钓鱼王"
                         android:textColor="@android:color/white"
-                        android:textSize="24dp"
+                        android:layout_marginLeft="10dp"
                         android:maxLines="1" />
 
             </FrameLayout>

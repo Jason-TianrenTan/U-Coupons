@@ -1,7 +1,10 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -16,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,21 +29,30 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
+import com.example.administrator.ccoupons.User.UserPortraitActivity;
+import com.jph.takephoto.model.TResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mob.MobSDK.getContext;
+
 public class FillFormActivity extends AppCompatActivity {
 
-    public static int REQUEST_CATEGORY = 1;
+    public static int REQUEST_CATEGORY = 6;
     private EditText categoryEditText;
     private ClearableEditText productNameText,
             brandNameText,
@@ -49,6 +62,12 @@ public class FillFormActivity extends AppCompatActivity {
     private ConstraintsAdapter adapter;
     private NestedScrollView scrollView;
     private ArrayList<String> constraintList;
+    private LinearLayout addpicture;
+    private ImageView couponPicture;
+    private TakePhotoUtil takePhotoUtil;
+    private String path;
+    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(getContext());
+
     private void bindViews() {
         categoryEditText = (EditText) findViewById(R.id.form_category_edittext);
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.arrow);
@@ -61,6 +80,8 @@ public class FillFormActivity extends AppCompatActivity {
         brandNameText = (ClearableEditText) findViewById(R.id.form_brand_edittext);
         discountText = (ClearableEditText) findViewById(R.id.form_discount_edittext);
         recyclerView = (RecyclerView) findViewById(R.id.form_constraints_recyclerview);
+        addpicture = (LinearLayout) findViewById(R.id.coupon_add_picture);
+        couponPicture = (ImageView) findViewById(R.id.coupon_picture);
         constraintList = new ArrayList<>();
         constraintList.add("first");
         constraintList.add("second");
@@ -94,11 +115,11 @@ public class FillFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ArrayList<String> NConstraintList = new ArrayList<String>();
-                for (String str:constraintList) {
+                for (String str : constraintList) {
                     if (str.length() > 0)
                         NConstraintList.add(str);
                 }
-             //   Intent intent = new Intent(FillFormActivity.this, AddCouponActivity.class);
+                //   Intent intent = new Intent(FillFormActivity.this, AddCouponActivity.class);
             }
         });
 
@@ -128,6 +149,64 @@ public class FillFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fill_form);
 
         bindViews();
+        takePhotoUtil = new TakePhotoUtil(this);
+        takePhotoUtil.onCreate(savedInstanceState);
+        setAddpicture();
+    }
+
+    private void setAddpicture() {
+        addpicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = getLayoutInflater().inflate(R.layout.portrait_bottom_dialog, null);
+                TextView tv_account = (TextView) view.findViewById(R.id.tv_take_photo);
+                TextView tv_compare = (TextView) view.findViewById(R.id.tv_from_album);
+                final Dialog mBottomSheetDialog = new Dialog(FillFormActivity.this, R.style.MaterialDialogSheet);
+                mBottomSheetDialog.setContentView(view);
+                mBottomSheetDialog.setCancelable(true);
+                mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+                mBottomSheetDialog.show();
+                tv_account.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(FillFormActivity.this, "拍照", Toast.LENGTH_SHORT).show();
+                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_TAKE_NOT_CROP, new TakePhotoUtil.SimpleTakePhotoListener() {
+                            @Override
+                            public void takeSuccess(TResult result) {
+                                path = result.getImage().getCompressPath();
+                                System.out.println("success:" + path);
+                                imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
+                                System.out.println("success");
+                                updatePic();
+                            }
+                        });
+                        mBottomSheetDialog.dismiss();
+                    }
+                });
+                tv_compare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(FillFormActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
+                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_SELECT_NOT_CROP, new TakePhotoUtil.SimpleTakePhotoListener() {
+                            @Override
+                            public void takeSuccess(TResult result) {
+                                path = result.getImage().getCompressPath();
+                                System.out.println("success:" + path);
+                                imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
+                                System.out.println("success");
+                                updatePic();
+                            }
+                        });
+                        mBottomSheetDialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
+
+    private void updatePic() {
+        ImageManager.GlideImage(path, couponPicture, getContext());
     }
 
 
@@ -153,7 +232,7 @@ public class FillFormActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             final String constraint = constraintList.get(position);
-            final ConstraintsViewHolder viewHolder = (ConstraintsViewHolder)holder;
+            final ConstraintsViewHolder viewHolder = (ConstraintsViewHolder) holder;
             viewHolder.editText.setText(constraintList.get(position));
             viewHolder.editText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -192,6 +271,7 @@ public class FillFormActivity extends AppCompatActivity {
             LinearLayout rootView;
             EditText editText;
             ImageView deleteButton;
+
             public ConstraintsViewHolder(View view) {
                 super(view);
                 rootView = (LinearLayout) view;
@@ -202,8 +282,24 @@ public class FillFormActivity extends AppCompatActivity {
     }
 
     @Override
-    protected  void onActivityResult(int requestCode, int resultCode, Intent data)  {
-        super.onActivityResult(requestCode, resultCode,  data);
-        System.out.println("选择了类别" + resultCode);
+    protected void onSaveInstanceState(Bundle outState) {
+        takePhotoUtil.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CATEGORY) {
+            System.out.println("选择了类别" + resultCode);
+        } else {
+            takePhotoUtil.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

@@ -39,16 +39,15 @@ public class WelcomeActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String userId = jsonObject.getString("userid");
+                String nickname = jsonObject.getString("nickname");
+                String avatar = jsonObject.getString("avatar");
+                String sex = jsonObject.getString("gender");
+                int UB = jsonObject.getInt("Ucoin");
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
                 System.out.println("Response = " + response);
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
                         "\n密码:" + password, Toast.LENGTH_SHORT).show();
-
-                String nickname = jsonObject.getString("nickname");
-                String avatar = jsonObject.getString("avatar");
-                String sex = jsonObject.getString("gender");
-                int UB = jsonObject.getInt("Ucoin");
                 app.setNickname(nickname);
                 app.setUcoin(UB);
                 if (!avatar.equals("null")) {
@@ -59,6 +58,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 if (sex.equals("女")) {
                     app.setGender(Gender.FEMALE);
                 }
+                app.setPhoneNumber(username);
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
                 startActivity(intent);
                 System.out.println("Login success");
@@ -75,11 +75,12 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        //for test
+        //startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
 
         login = (Button) findViewById(R.id.welcome_login_button);
         register = (Button) findViewById(R.id.welcome_register_button);
@@ -112,7 +113,7 @@ public class WelcomeActivity extends AppCompatActivity {
     //登录
     private boolean requestLogin(String url, String username, String password) {
         String md5pass = null;
-        HashMap<String,String> map = new HashMap<String,String>();
+        HashMap<String, String> map = new HashMap<String, String>();
         map.put("username", username);
         try {
             md5pass = new PasswordEncoder().EncodeByMd5(password);
@@ -147,9 +148,5 @@ public class WelcomeActivity extends AppCompatActivity {
         login.startAnimation(animation);
         register.startAnimation(animation);
     }
-
-
-
-
 }
 

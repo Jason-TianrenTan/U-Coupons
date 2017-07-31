@@ -1,5 +1,7 @@
 package com.example.administrator.ccoupons.Main;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -107,6 +109,7 @@ public class Coupon implements Serializable {
     public void setLiked(boolean liked) {
         this.liked = liked;
     }
+
     public boolean isLiked() {
         return this.liked;
     }
@@ -134,9 +137,6 @@ public class Coupon implements Serializable {
     }
 
 
-
-
-
     public double getListPrice() {
         return this.listPrice;
     }
@@ -161,6 +161,7 @@ public class Coupon implements Serializable {
     public void setDiscount(String discount) {
         this.discount = discount;
     }
+
     public String getDiscount() {
         return this.discount;
     }
@@ -176,6 +177,7 @@ public class Coupon implements Serializable {
     public void setExpireDate(String date) {
         this.expireDate = date;
     }
+
     public String getExpireDate() {
         return this.expireDate;
     }
@@ -193,6 +195,7 @@ public class Coupon implements Serializable {
             coupon_stat = STAT_STORE;
     }
 
+    //Todo:改一改
     public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
@@ -203,7 +206,6 @@ public class Coupon implements Serializable {
             coupon.discount = jsonObject.getString("discount");
             coupon.expireDate = jsonObject.getString("expiredtime");
             coupon.imgURL = jsonObject.getString("pic");
-            System.out.println("Image of coupon = " + coupon.imgURL);
         } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();
@@ -256,4 +258,10 @@ public class Coupon implements Serializable {
      {"content": "\u6bcf\u4e2a\u5ba2\u6237\u4f7f\u7528\u4e00\u4e00\u5f20"},
      {"content": "\u6ee140\u5143\u53ef\u4f7f\u7528"}], "seller": [{"nickname": "\u5988\u5356\u6279\u54e6", "avatar": null}]}
       */
+
+    public String generateJSON() {
+        String couponJSON = new Gson().toJson(this);
+        System.out.println(couponJSON);
+        return couponJSON;
+    }
 }

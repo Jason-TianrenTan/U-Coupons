@@ -22,6 +22,7 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
 import com.example.administrator.ccoupons.Tools.AlertType;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.EditTextTools;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
@@ -59,15 +60,15 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private RegisterCheck checker = new RegisterCheck();
     private void bindViews() {
         requestCordButton = (TextView) findViewById(R.id.request_cord_button);
-        button_next = (Button)findViewById(R.id.reset_button_ok);
-        phoneText = (EditText)findViewById(R.id.reset_phone_edittext);
-        cordText = (EditText)findViewById(R.id.reset_cord_edittext);
-        phoneInputLayout = (TextInputLayout)findViewById(R.id.reset_phone_inputlayout);
+        button_next = (Button) findViewById(R.id.reset_button_ok);
+        phoneText = (EditText) findViewById(R.id.reset_phone_edittext);
+        cordText = (EditText) findViewById(R.id.reset_cord_edittext);
+        phoneInputLayout = (TextInputLayout) findViewById(R.id.reset_phone_inputlayout);
         cordInputLayout = (TextInputLayout) findViewById(R.id.reset_cord_inputlayout);
-        passText = (PasswordToggleEditText)findViewById(R.id.reset_newpass_edittext);
-        passInputLayout = (TextInputLayout)findViewById(R.id.reset_newpass_inputlayout);
-        confirmText = (PasswordToggleEditText)findViewById(R.id.reset_confirmpass_edittext);
-        confirmInputLayout = (TextInputLayout)findViewById(R.id.reset_confirmpass_inputlayout);
+        passText = (PasswordToggleEditText) findViewById(R.id.reset_newpass_edittext);
+        passInputLayout = (TextInputLayout) findViewById(R.id.reset_newpass_inputlayout);
+        confirmText = (PasswordToggleEditText) findViewById(R.id.reset_confirmpass_edittext);
+        confirmInputLayout = (TextInputLayout) findViewById(R.id.reset_confirmpass_inputlayout);
     }
 
     @Override
@@ -76,10 +77,16 @@ public class ResetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reset_password);
 
         bindViews();
-        toolbar = (Toolbar)findViewById(R.id.reset_pass_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.reset_pass_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         requestCordButton.setOnClickListener(new View.OnClickListener() {
@@ -88,8 +95,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 phoneString = phoneText.getText().toString();
                 if (phoneString.length() < 11) {
                     phoneInputLayout.setError("长度必须为11位");
-                }
-                else {
+                } else {
                     sendSMS();
                     requestCordButton.setEnabled(false);
                     startCountDown();
@@ -142,7 +148,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String str = cordText.getText().toString();
-                if (str.length() ==4) {
+                if (str.length() == 4) {
                     cordInputLayout.setError("");
                     cordInputLayout.setErrorEnabled(false);
                 }
@@ -169,7 +175,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 password = passText.getText().toString();
                 int err_type = checker.alertPassword(password);
-                if (err_type != AlertType.NO_ERROR && err_type!=  AlertType.TOO_SIMPLE) {
+                if (err_type != AlertType.NO_ERROR && err_type != AlertType.TOO_SIMPLE) {
                     EditTextTools.setCursorColor(passText, getResources().getColor(R.color.red));
                     passInputLayout.setErrorEnabled(true);
                     passInputLayout.setError(errorStrings[err_type - 1]);
@@ -181,8 +187,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         passInputLayout.setError("");
                         passInputLayout.setErrorEnabled(false);
                         valid = true;
-                    }
-                    else {
+                    } else {
                         //强度不够
                         EditTextTools.setCursorColor(passText, getResources().getColor(R.color.skyblue));
                         passInputLayout.setErrorEnabled(true);
@@ -207,7 +212,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 password = confirmText.getText().toString();
                 int err_type = checker.alertPassword(password);
-                if (err_type != AlertType.NO_ERROR && err_type!=  AlertType.TOO_SIMPLE) {
+                if (err_type != AlertType.NO_ERROR && err_type != AlertType.TOO_SIMPLE) {
                     EditTextTools.setCursorColor(confirmText, getResources().getColor(R.color.red));
                     confirmInputLayout.setError(errorStrings[err_type - 1]);
                     valid = false;
@@ -224,7 +229,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }
             }
         });
-        
+
         EventHandler eh = new EventHandler() {
 
 
@@ -248,12 +253,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
 
-
     private void sendSMS() {
         //发送验证码
         System.out.println("Sent SMS code to +86" + phoneString.trim());
         SMSSDK.getVerificationCode("86", phoneString.trim());//请求获取短信验证码
     }
+
     private Handler SMSVerifyHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -342,8 +347,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }
 
             }
-
-
         }
     };
 

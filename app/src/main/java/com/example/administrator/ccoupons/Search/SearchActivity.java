@@ -2,9 +2,11 @@ package com.example.administrator.ccoupons.Search;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +21,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.User.UserSettingActivity;
 
 import java.util.ArrayList;
 
@@ -33,7 +38,11 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private HistoryAdapter adapter;
     private ArrayList<String> mHistoryList;
+    private UserInfoManager userInfoManager;
+
+
     private EditText searchText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +50,8 @@ public class SearchActivity extends AppCompatActivity {
 
         searchText = (EditText) findViewById(R.id.input_search);
         searchText.requestFocus();
+
+        userInfoManager = new UserInfoManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
@@ -67,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        TextView searchButton = (TextView)findViewById(R.id.search_button);
+        TextView searchButton = (TextView) findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,10 +103,11 @@ public class SearchActivity extends AppCompatActivity {
 
     //history
     private void initHistoryData() {
-        mHistoryList = new ArrayList<>();
-        requestHistoryData();
+        mHistoryList = userInfoManager.getHistoryList();
+        //mHistoryList = new ArrayList<>();
+        //requestHistoryData();
     }
-
+/*
     private void requestHistoryData() {
         String result = null;
         int pos = 0;
@@ -107,6 +119,7 @@ public class SearchActivity extends AppCompatActivity {
         }
         mHistoryList.add(getResources().getString(R.string.HISTORY_EOF));
     }
+    */
 
     //设置RecyclerView
     private void setRecyclerView() {
@@ -117,7 +130,7 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
 
-        NestedScrollView scrollView = (NestedScrollView)findViewById(R.id.search_nestedscrollview);
+        NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.search_nestedscrollview);
         searchText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
@@ -134,15 +147,14 @@ public class SearchActivity extends AppCompatActivity {
         scrollView.setSmoothScrollingEnabled(true);
 
 
-
-
     }
 
     private void search(String requestStr) {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
-        mHistoryList.remove(mHistoryList.size() - 2);
-        mHistoryList.add(0, requestStr);
+        //mHistoryList.remove(mHistoryList.size() - 2);
+        //mHistoryList.add(0, requestStr);
+        userInfoManager.addHistory(requestStr);
         //还需要更新缓存，添加内容
         adapter.notifyDataSetChanged();
         startActivity(intent);
@@ -152,12 +164,15 @@ public class SearchActivity extends AppCompatActivity {
     //历史记录ViewHolder
     private class HistoryViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
+        //public ImageView imageView;
+        public LinearLayout historyView;
         public ImageView imageView;
 
         public HistoryViewHolder(View view) {
             super(view);
             textView = (TextView) view.findViewById(R.id.history_text);
-            imageView = (ImageView) view.findViewById(R.id.history_icon);
+            historyView = (LinearLayout) view.findViewById(R.id.history_view);
+            imageView = (ImageView) view.findViewById(R.id.history_delete);
         }
     }
 
@@ -166,14 +181,41 @@ public class SearchActivity extends AppCompatActivity {
 
         public ClearHistoryViewHolder(View view) {
             super(view);
-            view.setOnClickListener(new View.OnClickListener() {
+            LinearLayout clear = (LinearLayout) view.findViewById(R.id.clear_view);
+            clear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //TODO:clear history
                     //清除历史记录
+                    showClearDialog();
                 }
             });
         }
+    }
+
+    //确定清空记录对话框
+    private void showClearDialog() {
+        final AlertDialog.Builder clearDialog =
+                new AlertDialog.Builder(SearchActivity.this);
+        clearDialog.setMessage("确定要清空所有搜索历史?");
+        clearDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //清空登录信息
+                        adapter.notifyItemRangeRemoved(0, mHistoryList.size());
+                        userInfoManager.clearHistory();
+                        adapter.notifyItemRangeChanged(0, mHistoryList.size());
+                        Toast.makeText(getApplicationContext(), "历史记录已清除", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        clearDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        clearDialog.show();
     }
 
 
@@ -187,7 +229,7 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == (mHistoryList.size() - 1))
+            if (position == (mHistoryList.size()))
                 return CLEAR_TYPE;
             return HISTORY_TYPE;
         }
@@ -205,7 +247,6 @@ public class SearchActivity extends AppCompatActivity {
                 view = LayoutInflater.from(mContext).inflate(R.layout.clear_history_view, parent, false);
                 return new ClearHistoryViewHolder(view);
             }
-
         }
 
         public HistoryAdapter(ArrayList<String> hList) {
@@ -213,19 +254,34 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            String historyString = mHistoryList.get(position);
-            if (position != (mHistoryList.size() - 1)) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+            if (position != (mHistoryList.size())) {
+                final String historyString = mHistoryList.get(position);
+                System.out.println("String = " + historyString + ", pos = " + position);
                 HistoryViewHolder viewHolder = (HistoryViewHolder) holder;
                 viewHolder.textView.setText(historyString);
                 //   holder.imageView.
-                viewHolder.imageView.setImageResource(R.drawable.search_icon_big);
+                viewHolder.imageView.setImageResource(R.drawable.clear_history_icon);
+                viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adapter.notifyItemRemoved(position);
+                        userInfoManager.deleteHistory(position + 1);
+                        adapter.notifyItemRangeChanged(0, mHistoryList.size());
+                    }
+                });
+                viewHolder.historyView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        searchText.setText(historyString);
+                    }
+                });
             }
         }
 
         @Override
         public int getItemCount() {
-            return mHistoryList.size();
+            return mHistoryList.size() + 1;
         }
 
     }
@@ -263,7 +319,6 @@ public class SearchActivity extends AppCompatActivity {
         // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
         return false;
     }
-
 
 
 }

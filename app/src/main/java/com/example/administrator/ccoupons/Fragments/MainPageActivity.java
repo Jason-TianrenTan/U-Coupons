@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.Fragments;
 *首页布局
  */
 
+import android.app.Application;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -31,6 +32,7 @@ import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
 import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
 import com.example.administrator.ccoupons.Connections.MessageGetService;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.QRcodeActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,7 +63,7 @@ public class MainPageActivity extends AppCompatActivity {
 
         receiver = new AlarmReceiver();
         IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.MESSAGE_BROADCAST");
-        registerReceiver(receiver,filter);
+        registerReceiver(receiver, filter);
 
         Intent intent = MessageGetService.newIntent(this);
         startService(intent);
@@ -154,7 +156,7 @@ public class MainPageActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!categoryFragment.isHidden()) {
             if (exit) {
-                super.onBackPressed();
+                this.finish();
             } else {
                 exit = true;
                 Toast.makeText(this,
@@ -222,7 +224,8 @@ public class MainPageActivity extends AppCompatActivity {
         QRScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(MainPageActivity.this, QRcodeActivity.class));
+                mCameraDialog.dismiss();
             }
         });
         FillFormButton.setOnClickListener(new View.OnClickListener() {
