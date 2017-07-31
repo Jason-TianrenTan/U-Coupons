@@ -90,12 +90,6 @@ public class UserMyCouponActivity extends AppCompatActivity {
         notonsaleList = new ArrayList<Coupon>();
 
         //TODO:init coupons
-        for (int i = 0; i < 10; i++) {
-            Coupon coupon = new Coupon();
-            unusedList.add(coupon);
-            onsaleList.add(coupon);
-            notonsaleList.add(coupon);
-        }
         if (unusedList.size() > 0) {
             UnusedFragment.setData(unusedList);
             fr1 = UnusedFragment;
