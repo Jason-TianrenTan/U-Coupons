@@ -22,7 +22,6 @@ import java.util.Random;
 
 public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
-    String[] names = "远古传奇 远古洪荒 太古传奇 一张SS 一打SS 一酒馆SS 污津史诗招募券".split(" ");
 
     private Context mContext;
     private ArrayList<Coupon> mUserCouponInfoList;
@@ -32,17 +31,17 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         TextView couponListText,
                 couponEvalText,
                 couponNameText,
-                couponDetailText,
+                couponDiscountText,
                 couponExpireText;
 
         public UserCouponInfoViewHolder(View view) {
             super(view);
-            rootView = (FrameLayout)view;
-            couponListText = (TextView)view.findViewById(R.id.coupon_listprice_text);
-            couponEvalText = (TextView)view.findViewById(R.id.coupon_evalprice_text);
-            couponNameText = (TextView)view.findViewById(R.id.usercoupon_name_text);
-            couponDetailText = (TextView)view.findViewById(R.id.coupon_detail_text);
-            couponExpireText = (TextView)view.findViewById(R.id.coupon_detail_expire_date);
+            rootView = (FrameLayout) view;
+            couponListText = (TextView) view.findViewById(R.id.coupon_listprice_text);
+            couponEvalText = (TextView) view.findViewById(R.id.coupon_evalprice_text);
+            couponNameText = (TextView) view.findViewById(R.id.usercoupon_name_text);
+            couponExpireText = (TextView) view.findViewById(R.id.usercoupon_expire_text);
+            couponDiscountText = (TextView) view.findViewById(R.id.usercoupon_discount_text);
         }
     }
 
@@ -73,10 +72,13 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
 
     @Override
     public void onBindViewHolder(UserCouponInfoAdapter.UserCouponInfoViewHolder holder, int position) {
-        //   Coupon coupon = mUserCouponInfoList.get(position);
-        Random random = new Random();
-        int index = random.nextInt(names.length);
-        holder.couponNameText.setText(names[index]);
+        Coupon coupon = mUserCouponInfoList.get(position);
+        holder.couponNameText.setText(coupon.getName());
+        holder.couponDiscountText.setText(coupon.getDiscount());
+        holder.couponExpireText.setText(coupon.getExpireDate());
+        holder.couponEvalText.setText("¥" + coupon.getEvaluatePrice());
+        holder.couponListText.setText("¥" + coupon.getListPrice());
+        System.out.println("bind view holder");
         //TODO:有待完善
     }
 

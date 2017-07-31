@@ -20,9 +20,10 @@ public class UserWalletActivity extends SlideBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_wallet);
         initView();
+        setOnClickListeners();
     }
 
-    private void initView(){
+    private void initView() {
         toolbar = (Toolbar) findViewById(R.id.uwal_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -30,10 +31,10 @@ public class UserWalletActivity extends SlideBackActivity {
 
         ub = (TextView) findViewById(R.id.uwal_ub);
         MyApp app = (MyApp) getApplicationContext();
-        ub.setText(app.getUcoin());
+        ub.setText(app.getUcoin() + "");
     }
 
-    private void setOnClickListeners(){
+    private void setOnClickListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

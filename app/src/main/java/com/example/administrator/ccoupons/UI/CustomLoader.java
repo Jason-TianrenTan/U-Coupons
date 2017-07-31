@@ -19,12 +19,10 @@ public class CustomLoader {
     private CustomDialog customDialog;
     private int total;
     private int current;
-    private Handler handler;
     private CustomLoaderListener listener;
     private Context mContext;
-    public CustomLoader(int time, Handler handler, Context context) {
+    public CustomLoader(int time, Context context) {
         this.total = time;
-        this.handler = handler;
         this.mContext = context;
     }
     public void setLoaderListener(CustomLoaderListener listener) {

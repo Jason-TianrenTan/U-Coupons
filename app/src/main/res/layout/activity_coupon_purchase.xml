@@ -71,6 +71,8 @@
                 style="@style/coupon_detail_text"
                 android:gravity="right"
                 android:id="@+id/purchase_discount_text"
+                android:paddingRight="20dp"
+                android:layout_gravity="center"
                 android:text="屠龙宝刀点击就送" />
 
         </LinearLayout>

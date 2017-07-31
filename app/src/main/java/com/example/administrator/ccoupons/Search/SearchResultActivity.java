@@ -2,11 +2,8 @@ package com.example.administrator.ccoupons.Search;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,67 +13,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.administrator.ccoupons.Category;
-import com.example.administrator.ccoupons.Connections.ImageFetchr;
-import com.example.administrator.ccoupons.Connections.SearchThread;
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.CategoryAdapter;
-import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Main.LoginActivity;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;
-import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Exchanger;
 
 public class SearchResultActivity extends AppCompatActivity {
 
     private String resultString;
     private static final String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
-    private static final int SEARCH_MAX_RESULT = 5;//最大获取结果数
+    private static final int SEARCH_MAX_RESULT = 3;//最大获取结果数
     private ArrayList<Coupon> couponResults;
     private ResultAdapter adapter;
-    private SearchThread thread;
     private CustomDialog customDialog;
-    private Handler handler = new Handler() {
-
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MessageType.CONNECTION_ERROR:
-                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    customDialog.dismiss();
-                    break;
-                case MessageType.CONNECTION_TIMEOUT:
-                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    customDialog.dismiss();
-                    break;
-                case MessageType.CONNECTION_SUCCESS:
-                    parseMessage(thread.getResponse());
-                    customDialog.dismiss();
-                    break;
-            }
-        }
-    };
-
-    /*
-    [
-
-    {"model": "UHuiWebApp.coupon", "pk": "002", "fields": {"brandid": 2, "catid": 1, "listprice": "1", "value": "1", "product": "\u542e\u6307\u539f\u5473\u9e21", "discount": "30", "stat": "onSale", "pic": null, "expiredtime": null}},
-    {"model": "UHuiWebApp.coupon", "pk": "03", "fields": {"brandid": 3, "catid": 1, "listprice": "1", "value": "1", "product": "\u9ea6\u8fa3\u9e21\u7fc5", "discount": "10", "stat": "onSale", "pic": null, "expiredtime": null}}]
-     */
 
     //处理返回回来的json
     private void parseMessage(String response) {
@@ -119,8 +81,29 @@ public class SearchResultActivity extends AppCompatActivity {
         couponResults = new ArrayList<>();
         setUpAdapter();
 
-        thread = new SearchThread(url, requestString, handler, getApplicationContext());
-        thread.start();
+        HashMap<String,String> map = new HashMap<>();
+        map.put("keyWord", requestString);
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                parseMessage(response);
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+
+            @Override
+            public void onConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                customDialog.dismiss();
+            }
+        });
+        connectionManager.connect();
         customDialog = new CustomDialog(this, R.style.CustomDialog);
         customDialog.show();
 

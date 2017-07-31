@@ -135,6 +135,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
                 getActivity().startActivity(new Intent(getActivity(), UserFollowCoupon.class));
             }
         });
+
         logoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,10 +157,20 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
 
     private void initData() {
         MyApp app = (MyApp) getActivity().getApplicationContext();
-        this.nickname = app.getNickname();
         this.avatar_url = app.getAvatar();
+        this.nickname = app.getNickname();
         this.Ucoin = app.getUcoin();
         userUcoin.setText(Ucoin + "");
+        setNickname();
+    }
+
+    private void setNickname() {
+        if (nickname.length() < 5) {
+            userNickname.setTextSize(28);
+        } else if (nickname.length() < 9) {
+            userNickname.setTextSize(25);
+        } else
+            userNickname.setTextSize(22);
         userNickname.setText(nickname);
     }
 
@@ -191,6 +202,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     public void initPortrait() {
         MyApp app = (MyApp) getActivity().getApplicationContext();
         String url = app.getAvatar();
+        System.out.println("avatar = " + url);
         if (url != "") {
             ImageManager.GlideImage(url, portrait, getActivity().getApplicationContext());
         } else portrait.setImageResource(R.drawable.testportrait);
@@ -198,8 +210,9 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
 
     @Override
     public void onStart() {
-        super.onStart();
         initPortrait();
+        initData();
+        super.onStart();
     }
 
     @Override

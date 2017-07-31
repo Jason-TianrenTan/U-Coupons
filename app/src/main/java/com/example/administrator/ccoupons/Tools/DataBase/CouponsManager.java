@@ -83,7 +83,7 @@ public class CouponsManager {
         String catId = cursor.getString(cursor.getColumnIndex("catId"));
         double listPrice = cursor.getDouble(cursor.getColumnIndex("listPrice"));
         double evaluatePrice = cursor.getDouble(cursor.getColumnIndex("evaluatePrice"));
-        double discount = cursor.getDouble(cursor.getColumnIndex("discount"));
+        String discount = cursor.getString(cursor.getColumnIndex("discount"));
         int stat = cursor.getInt(cursor.getColumnIndex("stat"));
         String imgURL = cursor.getString(cursor.getColumnIndex("imgURL"));
         String expireDate = cursor.getString(cursor.getColumnIndex("expireDate"));

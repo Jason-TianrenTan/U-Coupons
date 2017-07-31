@@ -4,8 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,16 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.UploadTask;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.mob.MobSDK.getContext;
 
@@ -30,6 +27,7 @@ public class UserPortraitActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
     private ImageView portrait;
     private LinearLayout bg;
+    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +73,7 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                Bitmap bitmap = BitmapFactory.decodeFile(s);
-                                portrait.setImageBitmap(bitmap);
+                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
@@ -92,8 +89,7 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                Bitmap bitmap = BitmapFactory.decodeFile(s);
-                                portrait.setImageBitmap(bitmap);
+                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
@@ -139,13 +135,18 @@ public class UserPortraitActivity extends AppCompatActivity {
         return true;
     }
 
-    public void updatePortrait(String path) {
-        Pattern pat = Pattern.compile("(portrait_)([0-9]+)(.jpg)");
-        Matcher mat = pat.matcher(path);
-        boolean rs = mat.find();
-        Long millis = Long.parseLong(mat.group(2));
+    public void updatePortrait(final String path) {
+        try {
+            MyApp app = (MyApp) getApplicationContext();
+            String userId = app.getUserId();
+            new UploadTask(userId, path).execute();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         //Todo:上传图片到服务器 并返回图片对应的url
         //Todo:更新头像 更新本地储存的url
+
+        //ImageManager.GlideImage(url, portrait, getContext());
     }
 
     public void initPortrait() {

@@ -1,12 +1,7 @@
 package com.example.administrator.ccoupons.Purchase;
 
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.ContactsContract;
-import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -14,17 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.PurchaseThread;
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;
-import com.example.administrator.ccoupons.Tools.MessageType;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class CouponPurchaseActivity extends AppCompatActivity {
 
@@ -33,24 +27,6 @@ public class CouponPurchaseActivity extends AppCompatActivity {
     private ImageView couponImg;
     private TextView couponNameText, couponPriceText,couponConstraintsText, couponDiscountText;
     private Button purchaseButton;
-    private PurchaseThread thread;
-    private Handler handler = new Handler() {
-
-        public void handleMessage(Message msg) {
-
-            switch (msg.what) {
-                case MessageType.CONNECTION_ERROR:
-                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_TIMEOUT:
-                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-                    break;
-                case MessageType.CONNECTION_SUCCESS:
-                    parseMessage(thread.getResponse());
-                    break;
-            }
-        }
-    };
     //处理返回回来的json
     private void parseMessage(String response) {
         if (response.indexOf("errno") >= 0) {
@@ -104,8 +80,29 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         purchaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                thread = new PurchaseThread(DataHolder.base_URL + DataHolder.purchase_URL, coupon.getCouponId(), getApplicationContext(), handler);
-                thread.start();
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("couponID", coupon.getCouponId());
+                MyApp app = (MyApp)getApplicationContext();
+                String userId = app.getUserId();
+                map.put("userID", userId);
+                ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.purchase_URL, map);
+                connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+                    @Override
+                    public void onConnectionSuccess(String response) {
+                        parseMessage(response);
+                    }
+
+                    @Override
+                    public void onConnectionTimeOut() {
+                        Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onConnectionFailed() {
+                        Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                connectionManager.connect();
             }
         });
     }
@@ -122,7 +119,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         for (String str : constraints)
             sb.append(index + ". " + str + '\n');
         couponConstraintsText.setText(sb.toString());
-        couponDiscountText.setText("¥" + coupon.getDiscount());
+        couponDiscountText.setText(coupon.getDiscount());
     }
 
 

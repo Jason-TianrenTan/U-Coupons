@@ -2,8 +2,8 @@ package com.example.administrator.ccoupons.Register;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -73,6 +73,9 @@ public class RegisterPasswordActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                confirmPass.setText("");
+                confirmLayout.setError("");
+                confirmLayout.setErrorEnabled(false);
                 String pass = inputPass.getText().toString();
                 int err_type = checker.alertPassword(pass);
                 if (err_type != AlertType.NO_ERROR && err_type!=  AlertType.TOO_SIMPLE) {
@@ -91,6 +94,7 @@ public class RegisterPasswordActivity extends AppCompatActivity {
                     else {
                         //强度不够
                         EditTextTools.setCursorColor(inputPass, getResources().getColor(R.color.skyblue));
+
                         firstlayout.setErrorEnabled(true);
                         firstlayout.setError(errorStrings[err_type - 1]);
                     }

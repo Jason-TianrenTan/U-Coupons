@@ -35,6 +35,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <service android:name=".Connections.MessageGetService" />
 
@@ -69,7 +71,6 @@
         <activity
             android:name=".Main.LoginActivity"
             android:fitsSystemWindows="true" />
-
         <activity
             android:name=".Search.SearchActivity"
             android:fitsSystemWindows="true"
@@ -95,21 +96,24 @@
         <activity
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
-
-        <activity android:name=".Fragments.MyMessageActivity"></activity>
-
+        <activity android:name=".Fragments.MyMessageActivity" />
         <activity android:name=".User.UserSellCoupons" />
         <activity android:name=".User.UserBuyCoupons" />
-        <activity android:name=".User.UserFollowCoupon"></activity>
+        <activity android:name=".User.UserFollowCoupon" />
         <activity android:name=".Purchase.CouponDetailActivity" />
-        <activity android:name=".Purchase.CouponPurchaseActivity"></activity>
+        <activity android:name=".Purchase.CouponPurchaseActivity" />
+        <activity android:name=".Tools.QRcodeActivity" />
+        <activity android:name=".AddCoupon.AddCouponActivity" />
+        <activity android:name=".AddCoupon.FillFormActivity" />
+        <activity android:name=".User.UserUpdateNicknameActivity" />
+        <activity android:name=".User.UserUpdateGenderActivity"></activity>
+        <activity android:name=".AddCoupon.ChooseCategoryActivity"></activity>
     </application>
 
 </manifest>

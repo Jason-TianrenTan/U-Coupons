@@ -8,7 +8,7 @@ import com.example.administrator.ccoupons.R;
 
 public class DataHolder {
 
-    static final String dormBase = "http://172.29.35.1:8000";
+    static final String dormBase = "http://10.132.55.96:8000";
     static final String localBase = "http://192.168.207.221:8000";
     static final String teamBase = "http://192.168.204.83:1080";
     public static final String base_URL = teamBase;
@@ -19,6 +19,19 @@ public class DataHolder {
     public static final String requestDetail_URL = "/post_returnInformation";
     public static final String purchase_URL = "/post_buyCoupon";
     public static final String resetPass_URL = "/post_updatePassword";
+    public static final String requestBoughtList_URL = "/post_getBoughtList"; //已购买
+    public static final String requestFollowList_URL = "/post_getLikeList";//已关注
+    public static final String requestSoldList_URL = "/post_getSoldList";//已卖出
+    public static final String updateUserInformation_URL = "/post_updateUserInformation";//修改个人资料
+
+    public static final String postFollow_URL = "/post_likeCoupon";//关注
+    public static final String postAvatar_URL = "/post_updateAvatar";//上传头像
+
+    public static final String postBanner_URL = "/post_getBanner";//获取轮播图
+    public static final String postRecommend_URL = "/post_homepageCoupon";//主页推荐
+    public static final String requestCatSearch_URL = "/post_searchByCategory";//按分类搜索
+
+    public static final String postChangeCouponState_URL = "/post_changeCouponStat";//换优惠券状态
 
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
