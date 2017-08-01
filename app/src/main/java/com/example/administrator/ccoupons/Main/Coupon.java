@@ -274,7 +274,7 @@ public class Coupon implements Serializable {
             json.put("listPrice", listPrice);
             json.put("product", name);
             json.put("discount", discount);
-            json.put("stat", stat);
+            //json.put("stat", stat);
             JSONArray jsonArray = new JSONArray();
             for (String str : constraints){
                 jsonArray.put(new JSONObject().put("content", str));
@@ -294,7 +294,7 @@ public class Coupon implements Serializable {
             coupon.name = jsonObject.getString("product");
             coupon.brandName = jsonObject.getString("brand");
             coupon.catId = jsonObject.getString("category");
-            JSONArray limitArray = new JSONArray(jsonObject.getJSONArray("limit"));
+            JSONArray limitArray = jsonObject.getJSONArray("limit");
             String[] constraintList = new String[limitArray.length()];
             for (int i = 0; i < limitArray.length(); i++) {
                 JSONObject contentObj = limitArray.getJSONObject(i);

@@ -25,7 +25,7 @@ public class AddCouponActivity extends AppCompatActivity {
             couponConstraintsText;
     private EditText couponListPriceText;
     private ImageView couponImg;
-    //for test
+    /*
     Coupon tcoupon = new Coupon();
     String result;
 
@@ -35,10 +35,16 @@ public class AddCouponActivity extends AppCompatActivity {
         tcoupon.setName("JI");
         tcoupon.setCategory(DataHolder.Categories.nameList[0]);
         tcoupon.setDiscount("30");
+        tcoupon.setExpireDate("2017/7/20");
         tcoupon.setConstraints(new String[] {"fasfhkjas","dsjfhaosidig"});
-        result = tcoupon.generateJSON("12345").toString();
-        System.out.println(result);
+        result = "{\"brand\":\"KFC\",\"category\":\"生活\",\"expiredTime\":\"2017-7\",\"listPrice\":80,\"product\":\"JI\",\"discount\":\"30\",\"limit\":[{\"content\":\"f\"},{\"content\":\"d\"}]}";
+        tcoupon = Coupon.decodeFromQRJSON(result);
+        for (String s :tcoupon.getConstraints()){
+            System.out.println(s);
+        }
+        //System.out.println(result);
     }
+    */
 
 
     @Override
@@ -67,11 +73,12 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
     private void getCouponInfo() {
-        //coupon = (Coupon) getIntent().getSerializableExtra("coupon");
+        coupon = (Coupon) getIntent().getSerializableExtra("coupon");
+        /*
         setCoupon();
-        //coupon = Coupon.decodeFromQRJSON(result);
         coupon = Coupon.decodeFromQRJSON(result);
-        //coupon = new Coupon();
+        coupon = new Coupon();
+        */
     }
 
     private void bindViews() {

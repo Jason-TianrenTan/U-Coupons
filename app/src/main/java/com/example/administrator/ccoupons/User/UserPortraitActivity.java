@@ -140,6 +140,7 @@ public class UserPortraitActivity extends AppCompatActivity {
             MyApp app = (MyApp) getApplicationContext();
             String userId = app.getUserId();
             new UploadTask(userId, path).execute();
+            app.setAvatar(path);
         }catch (Exception e) {
             e.printStackTrace();
         }
