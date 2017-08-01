@@ -16,7 +16,10 @@ public class DataHolder {
     public static final String login_URL = "/post_loginForAndroid";
     public static final String register_URL = "/post_signUpForAndroid";
     public static final String requestMsg_URL = "/post_sendMessage";
+
     public static final String requestSearch_URL = "/post_searchForAndroid";
+    public static final String requestPreSearch_URL = "/post_preSearch";//预搜索
+
     public static final String requestDetail_URL = "/post_returnInformation";
     public static final String purchase_URL = "/post_buyCoupon";
     public static final String resetPass_URL = "/post_updatePassword";
@@ -36,6 +39,9 @@ public class DataHolder {
 
     public static final String postGetEvaluation_URL = "/post_getValue";//获取估值
     public static final String postAddCoupon_URL = "/post_addCoupon";//添加优惠券
+
+    public static final String getOwnList_URL = "/post_getOwnList";//获取我的优惠券
+
 
     public static class Banners {
         public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");

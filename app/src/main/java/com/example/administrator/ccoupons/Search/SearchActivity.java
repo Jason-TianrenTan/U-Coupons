@@ -1,6 +1,9 @@
 package com.example.administrator.ccoupons.Search;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,40 +23,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SearchActivity extends AppCompatActivity {
 
 
     private static final int HISTORY_MAX_RESULT = 10;//最大历史结果数
-
-    private RecyclerView mRecyclerView;
-    private HistoryAdapter adapter;
-    private ArrayList<String> mHistoryList;
-    private UserInfoManager userInfoManager;
-
-
     private EditText searchText;
+    private SearchHistoryFragment historyFragment;
+    private PreSearchFragment preSearchFragment;
+    private UserInfoManager userInfoManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        userInfoManager = new UserInfoManager(this);
         searchText = (EditText) findViewById(R.id.input_search);
         searchText.requestFocus();
 
-        userInfoManager = new UserInfoManager(this);
+        historyFragment = new SearchHistoryFragment();
+        preSearchFragment = new PreSearchFragment();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
@@ -64,8 +71,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        initHistoryData();
-        setRecyclerView();
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.search_activity_rootview);
         rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,48 +94,25 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    }
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    public void hideSoftKeyBoard() {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) this.getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                this.getCurrentFocus().getWindowToken(), 0);
-    }
+            }
 
-    //history
-    private void initHistoryData() {
-        mHistoryList = userInfoManager.getHistoryList();
-        //mHistoryList = new ArrayList<>();
-        //requestHistoryData();
-    }
-/*
-    private void requestHistoryData() {
-        String result = null;
-        int pos = 0;
-        while (!(result = DataHolder.History.requestData(pos)).equals("EOF")) {
-            mHistoryList.add(result);
-            pos++;
-            if (pos == HISTORY_MAX_RESULT)
-                break;
-        }
-        mHistoryList.add(getResources().getString(R.string.HISTORY_EOF));
-    }
-    */
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = searchText.getText().toString();
+                preSearch(text);
+                showFragment(preSearchFragment);
+            }
+        });
 
-    //设置RecyclerView
-    private void setRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.history_recyclerview);
-        adapter = new HistoryAdapter(mHistoryList);
-        mRecyclerView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setNestedScrollingEnabled(false);
-
-        NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.search_nestedscrollview);
         searchText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
@@ -144,149 +126,63 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        scrollView.setSmoothScrollingEnabled(true);
-
-
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.search_framelayout, historyFragment);
+        fragmentTransaction.add(R.id.search_framelayout, preSearchFragment);
+        fragmentTransaction.commit();
+        showFragment(historyFragment);
     }
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.hide(historyFragment);
+        fragmentTransaction.hide(preSearchFragment);
+        fragmentTransaction.show(fragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    private void preSearch(String text) {
+        String url = DataHolder.base_URL + DataHolder.requestPreSearch_URL;
+        HashMap<String,String> map = new HashMap<String,String>();
+        map.put("keyword", text);
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                System.out.println("Response = " + response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+
+            }
+
+            @Override
+            public void onConnectionFailed() {
+
+            }
+        });
+        connectionManager.connect();
+    }
+
+    public void hideSoftKeyBoard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) this.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                this.getCurrentFocus().getWindowToken(), 0);
+    }
+
+
 
     private void search(String requestStr) {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
-        //mHistoryList.remove(mHistoryList.size() - 2);
-        //mHistoryList.add(0, requestStr);
         userInfoManager.addHistory(requestStr);
         //还需要更新缓存，添加内容
-        adapter.notifyDataSetChanged();
+     //   historyFragment.addHistory(requestStr);
         startActivity(intent);
     }
-
-
-    //历史记录ViewHolder
-    private class HistoryViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
-        //public ImageView imageView;
-        public LinearLayout historyView;
-        public ImageView imageView;
-
-        public HistoryViewHolder(View view) {
-            super(view);
-            textView = (TextView) view.findViewById(R.id.history_text);
-            historyView = (LinearLayout) view.findViewById(R.id.history_view);
-            imageView = (ImageView) view.findViewById(R.id.history_delete);
-        }
-    }
-
-    //底部清除历史记录ViewHolder
-    private class ClearHistoryViewHolder extends RecyclerView.ViewHolder {
-
-        public ClearHistoryViewHolder(View view) {
-            super(view);
-            LinearLayout clear = (LinearLayout) view.findViewById(R.id.clear_view);
-            clear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO:clear history
-                    //清除历史记录
-                    showClearDialog();
-                }
-            });
-        }
-    }
-
-    //确定清空记录对话框
-    private void showClearDialog() {
-        final AlertDialog.Builder clearDialog =
-                new AlertDialog.Builder(SearchActivity.this);
-        clearDialog.setMessage("确定要清空所有搜索历史?");
-        clearDialog.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //清空登录信息
-                        adapter.notifyItemRangeRemoved(0, mHistoryList.size());
-                        userInfoManager.clearHistory();
-                        adapter.notifyItemRangeChanged(0, mHistoryList.size());
-                        Toast.makeText(getApplicationContext(), "历史记录已清除", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        clearDialog.setNegativeButton("取消",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-        clearDialog.show();
-    }
-
-
-    private class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-        private static final int HISTORY_TYPE = 1;
-        private static final int CLEAR_TYPE = 0;
-
-        private Context mContext;
-        private ArrayList<String> mHistoryList;
-
-        @Override
-        public int getItemViewType(int position) {
-            if (position == (mHistoryList.size()))
-                return CLEAR_TYPE;
-            return HISTORY_TYPE;
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (mContext == null) {
-                mContext = parent.getContext();
-            }
-            View view;
-            if (viewType == HISTORY_TYPE) {
-                view = LayoutInflater.from(mContext).inflate(R.layout.history_item, parent, false);
-                return new HistoryViewHolder(view);
-            } else {
-                view = LayoutInflater.from(mContext).inflate(R.layout.clear_history_view, parent, false);
-                return new ClearHistoryViewHolder(view);
-            }
-        }
-
-        public HistoryAdapter(ArrayList<String> hList) {
-            this.mHistoryList = hList;
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            if (position != (mHistoryList.size())) {
-                final String historyString = mHistoryList.get(position);
-                System.out.println("String = " + historyString + ", pos = " + position);
-                HistoryViewHolder viewHolder = (HistoryViewHolder) holder;
-                viewHolder.textView.setText(historyString);
-                //   holder.imageView.
-                viewHolder.imageView.setImageResource(R.drawable.clear_history_icon);
-                viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        adapter.notifyItemRemoved(position);
-                        userInfoManager.deleteHistory(position + 1);
-                        adapter.notifyItemRangeChanged(0, mHistoryList.size());
-                    }
-                });
-                viewHolder.historyView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        searchText.setText(historyString);
-                    }
-                });
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return mHistoryList.size() + 1;
-        }
-
-    }
-
-
 
 
     @Override
