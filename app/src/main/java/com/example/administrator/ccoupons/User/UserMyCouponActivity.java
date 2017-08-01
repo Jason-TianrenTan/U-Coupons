@@ -13,26 +13,33 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.User.UserCouponFragments.EmptyFragment;
 import com.example.administrator.ccoupons.User.UserCouponFragments.NotOnSaleCouponFragment;
 import com.example.administrator.ccoupons.User.UserCouponFragments.OnSaleCouponFragment;
-import com.example.administrator.ccoupons.User.UserCouponFragments.UnusedCouponFragment;
+import com.example.administrator.ccoupons.User.UserCouponFragments.UsedCouponFragment;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class UserMyCouponActivity extends AppCompatActivity {
 
 
-    ArrayList<Coupon> unusedList, onsaleList, notonsaleList;
-    UnusedCouponFragment UnusedFragment;
+    ArrayList<Coupon> usedList, onsaleList, notonsaleList;
+    UsedCouponFragment usedFragment;
     OnSaleCouponFragment OnSaleFragment;
     NotOnSaleCouponFragment NotOnSaleFragment;
     Fragment fr1, fr2, fr3;
-    TextView title_unused, title_onsale, title_nonsale;
+    TextView title_used, title_onsale, title_nonsale;
     int screen_width;
     LinearLayout scrollBar;
 
@@ -52,15 +59,18 @@ public class UserMyCouponActivity extends AppCompatActivity {
                 finish();
             }
         });
-        title_unused = (TextView) findViewById(R.id.unused_title_text);
+        title_used = (TextView) findViewById(R.id.used_title_text);
         title_onsale = (TextView) findViewById(R.id.onsale_title_text);
         title_nonsale = (TextView) findViewById(R.id.nonsale_title_text);
 
-        UnusedFragment = new UnusedCouponFragment();
-        OnSaleFragment = new OnSaleCouponFragment();
-        NotOnSaleFragment = new NotOnSaleCouponFragment();
-        initData();
-        initTabs();
+        fr1 = new EmptyFragment();
+        fr2 = new EmptyFragment();
+        fr3 = new EmptyFragment();
+        notonsaleList = new ArrayList<>();
+        usedList = new ArrayList<>();
+        onsaleList = new ArrayList<>();
+        requestCoupons();
+
         initSlidingBar();
 
         slideTo(0);
@@ -82,36 +92,42 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        fr1 = new EmptyFragment();
-        fr2 = new EmptyFragment();
-        fr3 = new EmptyFragment();
-        unusedList = new ArrayList<Coupon>();
-        onsaleList = new ArrayList<Coupon>();
-        notonsaleList = new ArrayList<Coupon>();
-
+        usedFragment = new UsedCouponFragment();
+        OnSaleFragment = new OnSaleCouponFragment();
+        NotOnSaleFragment = new NotOnSaleCouponFragment();
+        System.out.println(usedList.size() + "," + onsaleList.size() + "," + notonsaleList.size());
         //TODO:init coupons
-        if (unusedList.size() > 0) {
-            UnusedFragment.setData(unusedList);
-            fr1 = UnusedFragment;
+        if (usedList.size() > 0) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("coupons", usedList);
+            usedFragment.setArguments(bundle);
+            fr1 = usedFragment;
         }
         if (onsaleList.size() > 0) {
-            OnSaleFragment.setData(onsaleList);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("coupons", onsaleList);
+            OnSaleFragment.setArguments(bundle);
             fr2 = OnSaleFragment;
         }
         if (notonsaleList.size() > 0) {
-            NotOnSaleFragment.setData(notonsaleList);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("coupons", notonsaleList);
+            NotOnSaleFragment.setArguments(bundle);
             fr3 = NotOnSaleFragment;
         }
+
+        initTabs();
+
     }
 
     private void selectPage(int position) {
         slideTo(position);
-        title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+        title_used.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
         title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
         title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
         switch (position) {
             case 0:
-                title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                title_used.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 break;
             case 1:
                 title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
@@ -133,7 +149,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
         viewPager.setAdapter(frAdapter);
         viewPager.setCurrentItem(0);
 
-        title_unused.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        title_used.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -151,7 +167,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
             }
         });
 
-        title_unused.setOnClickListener(new View.OnClickListener() {
+        title_used.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectPage(0);
@@ -178,5 +194,75 @@ public class UserMyCouponActivity extends AppCompatActivity {
 
     }
 
+    //请求获取优惠券
+    private void requestCoupons() {
+        String url = DataHolder.base_URL + DataHolder.requestOwnList_URL;
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("userID", ((MyApp)getApplicationContext()).getUserId());
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                parseMessage(response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+
+            }
+
+            @Override
+            public void onConnectionFailed() {
+
+            }
+        });
+        connectionManager.connect();
+    }
+
+    /*
+     {"onSaleList": [{"couponid": "003", "product": "\u9ea6\u8fa3\u9e21\u7fc5wh", "listprice": "1", "value": "1", "expiredtime": "2017-01-01", "discount": "\u6ee150\u51cf20"},
+     {"couponid": "004", "product": "\u9e21\u8089\u5377wh", "listprice": "1", "value": "1", "expiredtime": "2017-01-01", "discount": "\u6ee120\u51cf5"},
+     {"couponid": "005", "product": "\u677f\u70e7\u9e21\u817f\u5821wh", "listprice": "1", "value": "1", "expiredtime": "2017-01-01", "discount": "\u6ee110\u51cf10"}],
+
+     "storeList": [{"couponid": "001", "product": "\u542e\u6307\u539f\u5473\u9e21wh", "listprice": "1", "value": "1", "expiredtime": "2017-01-01", "discount": "20"}],
+
+     "usedList": []}
+     */
+    private void parseMessage(String response) {
+        try {
+            JSONObject mainObj = new JSONObject(response);
+            JSONArray onSaleArray = mainObj.getJSONArray("onSaleList"),
+                    storeArray = mainObj.getJSONArray("storeList"),
+                    usedArrray = mainObj.getJSONArray("usedList");
+            for (int i = 0; i < onSaleArray.length(); i++) {
+                JSONObject obj = onSaleArray.getJSONObject(i);
+                Coupon coupon = Coupon.decodeFromJSON(obj);
+
+                onsaleList.add(coupon);
+            }
+            for (int i = 0; i < storeArray.length(); i++) {
+                JSONObject obj = storeArray.getJSONObject(i);
+                Coupon coupon = Coupon.decodeFromJSON(obj);
+                notonsaleList.add(coupon);
+            }
+            for (int i = 0; i < usedArrray.length(); i++) {
+                JSONObject obj = usedArrray.getJSONObject(i);
+                Coupon coupon = Coupon.decodeFromJSON(obj);
+                usedList.add(coupon);
+            }
+            initData();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initArray(JSONArray arr, ArrayList<Coupon> target) {
+        try {
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

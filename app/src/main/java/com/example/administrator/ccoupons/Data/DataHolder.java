@@ -11,7 +11,8 @@ public class DataHolder {
     static final String dormBase = "http://10.132.55.96:8000";
     static final String localBase = "http://192.168.207.221:8000";
     static final String teamBase = "http://192.168.204.83:1080";
-    public static final String base_URL = teamBase;
+    static final String serverBase = "http://10.132.4.183:8000";
+    public static final String base_URL = serverBase;
     public static final String login_URL = "/post_loginForAndroid";
     public static final String register_URL = "/post_signUpForAndroid";
     public static final String requestMsg_URL = "/post_sendMessage";
@@ -39,7 +40,7 @@ public class DataHolder {
     public static final String postGetEvaluation_URL = "/post_getValue";//获取估值
     public static final String postAddCoupon_URL = "/post_addCoupon";//添加优惠券
 
-    public static final String getOwnList_URL = "/post_getOwnList";//获取我的优惠券
+    public static final String requestOwnList_URL = "/post_getOwnList";//获取我的优惠券
 
 
     public static class Banners {

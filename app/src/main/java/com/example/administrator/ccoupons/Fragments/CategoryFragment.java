@@ -31,6 +31,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.administrator.ccoupons.Banner.BannerPicture;
 import com.example.administrator.ccoupons.Banner.LocalImageHolderView;
+import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
 import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
@@ -41,6 +42,14 @@ import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 import com.example.administrator.ccoupons.UI.CustomLoader;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +64,7 @@ public class CategoryFragment extends Fragment {
     private CategoryAdapter adapter;
     private TextView location_text;
     private ArrayList<Integer> localImages;
+    private ArrayList<String> networkImages;
     private ConvenientBanner convenientBanner;
     private String location = null;
     private LocationGet locationFetchr;
@@ -199,8 +209,32 @@ public class CategoryFragment extends Fragment {
         recommendView.setNestedScrollingEnabled(false);
     }
 
+    private void parseBannerMessage(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String url = jsonArray.getString(i);
+                String nurl = DataHolder.base_URL + "/static/" + url;
+                networkImages.add(nurl);
+                System.out.println("new url = " + nurl);
+            }
+            initImageLoader();
+            convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
+                @Override
+                public NetworkImageHolderView createHolder() {
+                    return new NetworkImageHolderView();
+                }
+            },networkImages).setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //{"result": ["images/banner/banner_1.jpg", "images/banner/banner_2.jpg", "images/banner/banner_3.jpg", "images/banner/banner_4.jpg", "images/banner/banner_5.jpg"]}
     //初始化展示板
     private void initBanner() {
+        networkImages = new ArrayList<String>();
         //post
         String url = DataHolder.base_URL + DataHolder.postBanner_URL;
         HashMap<String, String> map = new HashMap<>();
@@ -208,8 +242,7 @@ public class CategoryFragment extends Fragment {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
-                System.out.println("RESPONSE = " + response);
-                //TODO:图片
+                parseBannerMessage(response);
             }
 
             @Override
@@ -223,31 +256,26 @@ public class CategoryFragment extends Fragment {
             }
         });
         connectionManager.connect();
-
-        localImages = new ArrayList<>();
-        for (int i = 0; i < DataHolder.Banners.covers.length; i++)
-            localImages.add(DataHolder.Banners.covers[i]);
-
-        //本地图片例子
-
-        convenientBanner.setPages(
-                new CBViewHolderCreator<LocalImageHolderView>() {
-                    @Override
-                    public LocalImageHolderView createHolder() {
-                        return new LocalImageHolderView();
-                    }
-                }, localImages)
-                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});
-        //设置指示器的方向
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-//                .setOnPageChangeListener(this)//监听翻页事件
-
         convenientBanner.setScrollDuration(1200);
         convenientBanner.startTurning(2000);
 
     }
 
-    //初始化标题栏
+    //初始化网络图片缓存库
+    private void initImageLoader(){
+        //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
+                showImageForEmptyUri(R.drawable.mascot_nothing)
+                .cacheInMemory(true).cacheOnDisk(true).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                getActivity().getApplicationContext()).defaultDisplayImageOptions(defaultOptions)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                .tasksProcessingOrder(QueueProcessingType.LIFO).build();
+        ImageLoader.getInstance().init(config);
+    }
 
     //初始化数据
     private void initCategory() {

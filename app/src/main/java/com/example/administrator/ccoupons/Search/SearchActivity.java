@@ -36,6 +36,9 @@ import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -108,11 +111,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String text = searchText.getText().toString();
-                preSearch(text);
-                showFragment(preSearchFragment);
+                if (text.length() > 0) {
+                    preSearch(text);
+                    showFragment(preSearchFragment);
+                }
+                else
+                    showFragment(historyFragment);
             }
         });
 
+        //键盘上的搜索键
         searchText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
@@ -141,6 +149,23 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    private void parseMessage(String response) {
+        try {
+            JSONObject obj = new JSONObject(response);
+            JSONArray arr = obj.getJSONArray("result");
+            ArrayList<String> preList = new ArrayList<>();
+            for (int i=0;i<arr.length();i++) {
+                JSONObject jsonObject = arr.getJSONObject(i);
+                String result = jsonObject.getString("product");
+                preList.add(result);
+            }
+            preSearchFragment.upDate(preList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //{"result": [{"product": "what"}, {"product": "where"}, {"product": "why"}]}
     private void preSearch(String text) {
         String url = DataHolder.base_URL + DataHolder.requestPreSearch_URL;
         HashMap<String,String> map = new HashMap<String,String>();
@@ -149,7 +174,7 @@ public class SearchActivity extends AppCompatActivity {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
-                System.out.println("Response = " + response);
+                parseMessage(response);
             }
 
             @Override
