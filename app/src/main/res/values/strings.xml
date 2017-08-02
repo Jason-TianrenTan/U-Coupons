@@ -94,5 +94,6 @@
     <string name="user_update_nickname">修改昵称</string>
     <string name="user_update_gender">修改性别</string>
     <string name="user_update">修改</string>
+    <string name="user_update_phone">修改手机号</string>
 
 </resources>

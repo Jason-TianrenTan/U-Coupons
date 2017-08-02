@@ -40,172 +40,6 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                style="@style/user_wrap_layout"
-                android:layout_marginTop="20dp">
-
-                <LinearLayout
-                    android:id="@+id/user_to_mycoupons"
-                    style="@style/user_option_layout">
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:src="@mipmap/pos" />
-
-                    <TextView
-                        style="@style/user_text"
-                        android:text="@string/uopt_mycoupon" />
-
-                    <ImageView style="@style/user_img_arrow" />
-                </LinearLayout>
-
-                <ImageView style="@style/user_divider" />
-
-                <LinearLayout
-                    android:id="@+id/user_to_wal"
-                    style="@style/user_option_layout">
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:src="@mipmap/pos" />
-
-                    <TextView
-                        style="@style/user_text"
-                        android:text="@string/uopt_mywallet" />
-
-                    <TextView
-                        android:id="@+id/user_ub"
-                        style="@style/user_text"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="0"
-                        android:textColor="@color/gray" />
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="0dp"
-                        android:src="@drawable/plus" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout style="@style/user_wrap_layout">
-
-                <ImageView style="@style/user_edgeline" />
-
-                <LinearLayout style="@style/user_option_layout"
-                    android:id="@+id/user_sell">
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:src="@mipmap/pos" />
-
-                    <TextView
-                        style="@style/user_text"
-                        android:text="@string/uopt_sell" />
-
-                    <ImageView style="@style/user_img_arrow" />
-                </LinearLayout>
-
-                <ImageView style="@style/user_divider" />
-
-                <LinearLayout style="@style/user_option_layout"
-                    android:id="@+id/user_buy">
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:src="@mipmap/pos" />
-
-                    <TextView
-                        style="@style/user_text"
-                        android:text="@string/uopt_buy" />
-
-                    <ImageView style="@style/user_img_arrow" />
-                </LinearLayout>
-
-                <ImageView style="@style/user_divider" />
-
-                <LinearLayout style="@style/user_option_layout"
-                    android:id="@+id/user_follow">
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:src="@mipmap/pos" />
-
-                    <TextView
-                        style="@style/user_text"
-                        android:text="@string/uopt_collect" />
-
-                    <ImageView style="@style/user_img_arrow" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout style="@style/user_wrap_layout">
-
-                <ImageView style="@style/user_edgeline" />
-
-                <LinearLayout
-                    android:id="@+id/user_to_set"
-                    style="@style/user_option_layout">
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:src="@mipmap/pos" />
-
-                    <TextView
-                        style="@style/user_text"
-                        android:text="@string/uopt_settings" />
-
-                    <ImageView style="@style/user_img_arrow" />
-                </LinearLayout>
-
-                <ImageView style="@style/user_divider" />
-
-                <LinearLayout style="@style/user_option_layout">
-
-                    <ImageView
-                        style="@style/user_icon_layout"
-                        android:src="@mipmap/pos" />
-
-                    <TextView
-                        style="@style/user_text"
-                        android:text="@string/uopt_help" />
-
-                    <ImageView style="@style/user_img_arrow" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout style="@style/user_wrap_layout">
-
-                <ImageView style="@style/user_edgeline" />
-
-                <LinearLayout
-                    android:id="@+id/user_logoff"
-                    style="@style/user_option_layout">
-
-                    <TextView
-                        style="@style/user_text"
-                        android:gravity="center"
-                        android:text="@string/uopt_logoff"
-                        android:textColor="@color/red" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/user.main.toolbar"
         android:layout_width="match_parent"
@@ -268,5 +102,174 @@
         app:finalToolbarHeight="?attr/actionBarSize"
         app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior"
         />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/user_wrap_layout"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:id="@+id/user_to_mycoupons"
+                    style="@style/user_option_layout">
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:src="@drawable/mycoupon_icon" />
+
+                    <TextView
+                        style="@style/user_text"
+                        android:text="@string/uopt_mycoupon" />
+
+                    <ImageView style="@style/user_img_arrow" />
+                </LinearLayout>
+
+                <ImageView style="@style/user_divider" />
+
+                <LinearLayout
+                    android:id="@+id/user_to_wal"
+                    style="@style/user_option_layout">
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:src="@drawable/wallet_icon" />
+
+                    <TextView
+                        style="@style/user_text"
+                        android:text="@string/uopt_mywallet" />
+
+                    <TextView
+                        android:id="@+id/user_ub"
+                        style="@style/user_text"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="0"
+                        android:textColor="@color/gray" />
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="0dp"
+                        android:src="@drawable/plus" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/user_wrap_layout">
+
+                <ImageView style="@style/user_edgeline" />
+
+                <LinearLayout
+                    android:id="@+id/user_sell"
+                    style="@style/user_option_layout">
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:src="@drawable/sell_icon" />
+
+                    <TextView
+                        style="@style/user_text"
+                        android:text="@string/uopt_sell" />
+
+                    <ImageView style="@style/user_img_arrow" />
+                </LinearLayout>
+
+                <ImageView style="@style/user_divider" />
+
+                <LinearLayout
+                    android:id="@+id/user_buy"
+                    style="@style/user_option_layout">
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:src="@drawable/mybuy_icon" />
+
+                    <TextView
+                        style="@style/user_text"
+                        android:text="@string/uopt_buy" />
+
+                    <ImageView style="@style/user_img_arrow" />
+                </LinearLayout>
+
+                <ImageView style="@style/user_divider" />
+
+                <LinearLayout
+                    android:id="@+id/user_follow"
+                    style="@style/user_option_layout">
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:src="@drawable/collect_icon" />
+
+                    <TextView
+                        style="@style/user_text"
+                        android:text="@string/uopt_collect" />
+
+                    <ImageView style="@style/user_img_arrow" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/user_wrap_layout">
+
+                <ImageView style="@style/user_edgeline" />
+
+                <LinearLayout
+                    android:id="@+id/user_to_set"
+                    style="@style/user_option_layout">
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:src="@drawable/setting_icon" />
+
+                    <TextView
+                        style="@style/user_text"
+                        android:text="@string/uopt_settings" />
+
+                    <ImageView style="@style/user_img_arrow" />
+                </LinearLayout>
+
+                <ImageView style="@style/user_divider" />
+
+                <LinearLayout style="@style/user_option_layout">
+
+                    <ImageView
+                        style="@style/user_icon_layout"
+                        android:src="@drawable/help_icon" />
+
+                    <TextView
+                        style="@style/user_text"
+                        android:text="@string/uopt_help" />
+
+                    <ImageView style="@style/user_img_arrow" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/user_wrap_layout">
+
+                <ImageView style="@style/user_edgeline" />
+
+                <LinearLayout
+                    android:id="@+id/user_logoff"
+                    style="@style/user_option_layout">
+
+                    <TextView
+                        style="@style/user_text"
+                        android:gravity="center"
+                        android:text="@string/uopt_logoff"
+                        android:textColor="@color/red" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

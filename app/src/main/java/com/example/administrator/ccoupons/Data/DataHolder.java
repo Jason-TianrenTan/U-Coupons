@@ -27,6 +27,7 @@ public class DataHolder {
     public static final String requestFollowList_URL = "/post_getLikeList";//已关注
     public static final String requestSoldList_URL = "/post_getSoldList";//已卖出
     public static final String updateUserInformation_URL = "/post_updateUserInformation";//修改个人资料
+    public static final String updatePhoneNumber_URL = "/post_updatePhonenumOrEmail";
 
     public static final String postFollow_URL = "/post_likeCoupon";//关注
     public static final String postAvatar_URL = "/post_updateAvatar";//上传头像

@@ -45,6 +45,7 @@ public class UserInformationActivity extends SlideBackActivity {
     private LinearLayout toResetPassword;
     private LinearLayout toUpdateNickname;
     private LinearLayout toUpdateGender;
+    private LinearLayout toUpdatePhone;
     private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(this);
     private MyApp app;
 
@@ -84,6 +85,7 @@ public class UserInformationActivity extends SlideBackActivity {
         toResetPassword = (LinearLayout) findViewById(R.id.uinf_to_resetpw);
         toUpdateNickname = (LinearLayout) findViewById(R.id.to_update_nickname);
         toUpdateGender = (LinearLayout) findViewById(R.id.to_update_gender);
+        toUpdatePhone = (LinearLayout) findViewById(R.id.to_update_phone);
     }
 
     private void initinfo() {
@@ -177,6 +179,13 @@ public class UserInformationActivity extends SlideBackActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserInformationActivity.this, UserUpdateGenderActivity.class));
+            }
+        });
+
+        toUpdatePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserInformationActivity.this, ResetPhoneNumberActivity.class));
             }
         });
     }

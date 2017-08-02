@@ -25,6 +25,7 @@ public class AddCouponActivity extends AppCompatActivity {
             couponConstraintsText;
     private EditText couponListPriceText;
     private ImageView couponImg;
+
     /*
     Coupon tcoupon = new Coupon();
     String result;
@@ -45,8 +46,6 @@ public class AddCouponActivity extends AppCompatActivity {
         //System.out.println(result);
     }
     */
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +55,7 @@ public class AddCouponActivity extends AppCompatActivity {
         if (coupon != null) {
             couponEvalText.setText(coupon.getEvaluatePrice() + "");
             //TODO:如果一定要添加图片的话 请修改
-            if (coupon.getImgURL()!= null && !coupon.getImgURL().equals("")) {
+            if (coupon.getImgURL() != null && !coupon.getImgURL().equals("")) {
                 ImageManager.GlideImage(coupon.getImgURL(), couponImg, getApplicationContext());
             }
             couponNameText.setText(coupon.getName());

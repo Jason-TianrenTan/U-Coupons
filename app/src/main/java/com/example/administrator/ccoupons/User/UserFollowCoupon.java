@@ -22,7 +22,7 @@ public class UserFollowCoupon extends CouponCommonActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_coupon_layout);
-        setToolbarTitle("我关注的");
+        setToolbarTitle("collect_icon");
         initData(DataHolder.base_URL + DataHolder.requestFollowList_URL);
     }
 }
