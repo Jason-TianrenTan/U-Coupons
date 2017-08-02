@@ -25,6 +25,7 @@ public class MyApp extends MobApplication {
         instance = this;
     }
 
+    private String location;
     private String userId;
     private int Ucoin;
     private String nickname;
@@ -78,5 +79,12 @@ public class MyApp extends MobApplication {
 
     public String getPhoneNumber() {
         return this.phoneNumber;
+    }
+
+    public void setLocation(String loc) {
+        this.location = loc;
+    }
+    public String getLocation() {
+        return this.location;
     }
 }

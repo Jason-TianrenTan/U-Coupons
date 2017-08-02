@@ -1,25 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:background="@drawable/bottom_nav_bg"
         android:id="@+id/bottom_nav_container"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_nav_bg"
         android:orientation="horizontal">
 
-
         <LinearLayout
-            android:paddingTop="15dp"
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_height="wrap_content">
-            <include layout="@layout/navigation_item"
-                android:id="@+id/id_left1"/>
+            android:layout_weight="3"
+            android:paddingTop="15dp">
+
+            <include
+                android:id="@+id/id_left1"
+                layout="@layout/navigation_item" />
 
         </LinearLayout>
 
@@ -28,17 +30,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center">
-        </LinearLayout>
+            android:gravity="center"></LinearLayout>
 
         <LinearLayout
-            android:paddingTop="15dp"
-            android:layout_gravity="center"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="3"
-            android:layout_height="wrap_content">
-            <include layout="@layout/navigation_item"
-                android:id="@+id/id_right1"/>
+            android:paddingTop="15dp">
+
+            <include
+                android:id="@+id/id_right1"
+                layout="@layout/navigation_item" />
 
         </LinearLayout>
     </LinearLayout>
@@ -47,16 +50,17 @@
         android:id="@+id/fragment_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F0F3F6"
         android:layout_marginBottom="45dp"
-        />
+        android:background="#F0F3F6" />
+
     <ImageView
+        android:id="@+id/mainpage_button_sell"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="5dp"
         android:layout_above="@id/bottom_nav_container"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/mainpage_button_sell"
-        android:src="@drawable/plus"/>
+        android:layout_marginBottom="5dp"
+        android:elevation="10dp"
+        android:src="@drawable/plus" />
 </RelativeLayout>

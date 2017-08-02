@@ -5,7 +5,7 @@
     android:id="@+id/search_activity_rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#F0F3F6"
     android:orientation="vertical"
     tools:context="com.example.administrator.ccoupons.Search.SearchActivity">
 
@@ -13,7 +13,7 @@
         android:id="@+id/search_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         app:layout_scrollFlags="scroll|enterAlways|snap"
         app:theme="@style/SearchToolBarStyle">
 
@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/gray_rounded_edittext"
+                    android:background="@drawable/searchtext_bg"
                     android:drawableLeft="@drawable/search_icon"
                     android:drawablePadding="3dp"
                     android:imeOptions="actionSearch"
@@ -51,12 +51,15 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="@color/colorPrimary"
                 android:text="搜索"
                 android:textSize="18dp" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
+        android:background="@color/white"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/search_framelayout"/>

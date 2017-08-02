@@ -112,8 +112,11 @@
         <activity android:name=".AddCoupon.AddCouponActivity" />
         <activity android:name=".AddCoupon.FillFormActivity" />
         <activity android:name=".User.UserUpdateNicknameActivity" />
-        <activity android:name=".User.UserUpdateGenderActivity"></activity>
-        <activity android:name=".AddCoupon.ChooseCategoryActivity"></activity>
+        <activity android:name=".User.UserUpdateGenderActivity" />
+        <activity android:name=".AddCoupon.ChooseCategoryActivity" />
+        <activity android:name=".Fragments.CategorySearchActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
     </application>
 
 </manifest>

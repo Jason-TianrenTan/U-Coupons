@@ -50,11 +50,14 @@ public class SearchActivity extends AppCompatActivity {
     private SearchHistoryFragment historyFragment;
     private PreSearchFragment preSearchFragment;
     private UserInfoManager userInfoManager;
+    private String catId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        catId = getIntent().getStringExtra("type");
 
         userInfoManager = new UserInfoManager(this);
         searchText = (EditText) findViewById(R.id.input_search);
@@ -167,9 +170,11 @@ public class SearchActivity extends AppCompatActivity {
 
     //{"result": [{"product": "what"}, {"product": "where"}, {"product": "why"}]}
     private void preSearch(String text) {
-        String url = DataHolder.base_URL + DataHolder.requestPreSearch_URL;
+        String url = null;
         HashMap<String,String> map = new HashMap<String,String>();
         map.put("keyword", text);
+        url = DataHolder.base_URL + DataHolder.requestPreSearch_URL;
+
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
@@ -203,9 +208,9 @@ public class SearchActivity extends AppCompatActivity {
     private void search(String requestStr) {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
+        intent.putExtra("categoryId", catId);
         userInfoManager.addHistory(requestStr);
-        //还需要更新缓存，添加内容
-     //   historyFragment.addHistory(requestStr);
+        historyFragment.addHistory(requestStr);
         startActivity(intent);
     }
 

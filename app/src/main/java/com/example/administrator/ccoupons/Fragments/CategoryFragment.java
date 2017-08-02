@@ -36,6 +36,7 @@ import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
@@ -55,16 +56,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import me.crosswall.lib.coverflow.core.PageItemClickListener;
+
 public class CategoryFragment extends Fragment {
 
 
+    private RecyclerView recommendView;
     private CustomLoader customLoader;
     private ArrayList<Category> categoryList;
-    private ArrayList<Coupon> RCouponList;
     private CategoryAdapter adapter;
     private TextView location_text;
-    private ArrayList<Integer> localImages;
     private ArrayList<String> networkImages;
+    private ArrayList<Coupon> recommendList;
     private ConvenientBanner convenientBanner;
     private String location = null;
     private LocationGet locationFetchr;
@@ -76,6 +79,8 @@ public class CategoryFragment extends Fragment {
                 case MessageType.LOCATION_GET:
                     location = locationFetchr.getCity();
                     location_text.setText(location);
+                    MyApp app = (MyApp) getActivity().getApplicationContext();
+                    app.setLocation(location);
                     customLoader.finish();
                     break;
                 case MessageType.LOCATION_FAILED:
@@ -132,50 +137,44 @@ public class CategoryFragment extends Fragment {
         //   SearchView searchView = (SearchView)view.findViewById(R.id.search_view);
         initCategory();
 
+        initRecyclerViews(view);
+
         initRecommends();
 
         initBanner();
 
         initLocation();
 
-        initRecyclerViews(view);
+
 
         return view;
     }
 
-    String[] urls = ("http://dxcb2.leiting.com/static/pc/images/occupation/zs/4.png?v=201706025," +
-            "http://dxcb2.leiting.com/static/pc/images/occupation/zs/3.png?v=201706025," +
-            "http://dxcb2.leiting.com/static/pc/images/occupation/sz/4.png?v=201706025," +
-            "http://dxcb2.leiting.com/static/pc/images/occupation/sz/5.png?v=201706025," +
-            "http://dxcb2.leiting.com/static/pc/images/occupation/fs/4.png?v=201706025," +
-            "http://dxcb2.leiting.com/static/pc/images/occupation/qxz/4.png?v=201706025," +
-            "http://dxcb2.leiting.com/static/pc/images/occupation/qxz/5.png?v=201706025").split(",");
-    String[] coupon_names = "云之国剑士,无名的剑士,大力小萝莉,力魔圣骑士,黑袍术士,夜魇暗潮,诡术猎手".split(",");
+
+    private void parseRecommendMessage(String response) {
+        try {
+            JSONObject mainObj = new JSONObject(response);
+            JSONArray jsonArray = mainObj.getJSONArray("result");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                Coupon coupon = Coupon.decodeFromJSON(obj);
+                recommendList.add(coupon);
+            }
+            MainPageCouponAdapter adapter = new MainPageCouponAdapter(recommendList);
+            recommendView.setAdapter(adapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void initRecommends() {
-
-        RCouponList = new ArrayList<>();
-        //TODO:测试
-        Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            Coupon coupon = new Coupon();
-
-            coupon.setExpireDate("2017-7-23");
-            coupon.setListPrice(198.0);
-            int index = random.nextInt(urls.length);
-            coupon.setName("SS招募券 - " + coupon_names[index]);
-            coupon.setImgURL(urls[index]);
-            RCouponList.add(coupon);
-        }
-
         String url = DataHolder.base_URL + DataHolder.postRecommend_URL;
         HashMap<String, String> map = new HashMap<>();
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
-                System.out.println("RESPONSE = " + response);
-                //TODO:图片
+                parseRecommendMessage(response);
             }
 
             @Override
@@ -200,11 +199,11 @@ public class CategoryFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-        //推荐
-        RecyclerView recommendView = (RecyclerView) view.findViewById(R.id.recommend_recyclerview);
+        recommendList = new ArrayList<>();
+        recommendView = (RecyclerView) view.findViewById(R.id.recommend_recyclerview);
         LinearLayoutManager recLayoutManager = new LinearLayoutManager(getActivity());
         recommendView.setLayoutManager(recLayoutManager);
-        MainPageCouponAdapter rec_adapter = new MainPageCouponAdapter(RCouponList);
+        MainPageCouponAdapter rec_adapter = new MainPageCouponAdapter(recommendList);
         recommendView.setAdapter(rec_adapter);
         recommendView.setNestedScrollingEnabled(false);
     }
@@ -217,7 +216,6 @@ public class CategoryFragment extends Fragment {
                 String url = jsonArray.getString(i);
                 String nurl = DataHolder.base_URL + "/static/" + url;
                 networkImages.add(nurl);
-                System.out.println("new url = " + nurl);
             }
             initImageLoader();
             convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
@@ -225,7 +223,8 @@ public class CategoryFragment extends Fragment {
                 public NetworkImageHolderView createHolder() {
                     return new NetworkImageHolderView();
                 }
-            },networkImages).setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});;
+            }, networkImages).setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});
+            ;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -262,7 +261,7 @@ public class CategoryFragment extends Fragment {
     }
 
     //初始化网络图片缓存库
-    private void initImageLoader(){
+    private void initImageLoader() {
         //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.mascot_nothing)
