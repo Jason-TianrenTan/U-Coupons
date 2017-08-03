@@ -11,8 +11,8 @@ public class DataHolder {
     static final String dormBase = "http://10.132.55.96:8000";
     static final String localBase = "http://192.168.207.221:8000";
     static final String teamBase = "http://192.168.204.83:8000";
-    static final String serverBase = "http://10.132.4.183:8000";
-    public static final String base_URL = teamBase;
+    static final String serverBase = "http://139.199.200.106";
+    public static final String base_URL = serverBase;
     public static final String login_URL = "/post_loginForAndroid";
     public static final String register_URL = "/post_signUpForAndroid";
     public static final String requestMsg_URL = "/post_sendMessage";
@@ -27,6 +27,7 @@ public class DataHolder {
     public static final String requestFollowList_URL = "/post_getLikeList";//已关注
     public static final String requestSoldList_URL = "/post_getSoldList";//已卖出
     public static final String updateUserInformation_URL = "/post_updateUserInformation";//修改个人资料
+    public static final String updatePhoneNumber_URL = "/post_updatePhonenumOrEmail";
 
     public static final String postFollow_URL = "/post_likeCoupon";//关注
     public static final String postAvatar_URL = "/post_updateAvatar";//上传头像

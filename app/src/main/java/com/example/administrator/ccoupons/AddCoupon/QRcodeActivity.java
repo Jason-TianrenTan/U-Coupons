@@ -1,33 +1,27 @@
-package com.example.administrator.ccoupons.Tools;
+package com.example.administrator.ccoupons.AddCoupon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
-import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
+import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
-import com.liji.takephoto.MainActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -82,12 +76,11 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Log.i(TAG, "result:" + result);
+        System.out.println("result:" + result);
         vibrate();
         //返回结果
         Intent intent = new Intent(QRcodeActivity.this, AddCouponActivity.class);
-        intent.putExtra("result", result);
-        intent.putExtra("from", "QR");
+        intent.putExtra("coupon", Coupon.decodeFromQRJSON(result));
         startActivity(intent);
         finish();
     }
@@ -169,9 +162,9 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
             if (TextUtils.isEmpty(result)) {
                 Toast.makeText(activity, "未发现二维码", Toast.LENGTH_SHORT).show();
             } else {
+                System.out.println("result:" + result);
                 Intent intent = new Intent(activity, AddCouponActivity.class);
-                intent.putExtra("result", result);
-                intent.putExtra("from", "QR");
+                intent.putExtra("coupon", Coupon.decodeFromQRJSON(result));
                 activity.startActivity(intent);
                 activity.finish();
             }

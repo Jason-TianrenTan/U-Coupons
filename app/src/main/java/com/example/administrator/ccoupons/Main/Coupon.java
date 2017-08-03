@@ -1,8 +1,10 @@
 package com.example.administrator.ccoupons.Main;
 
+import com.example.administrator.ccoupons.MyApp;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -268,9 +270,50 @@ public class Coupon implements Serializable {
      {"content": "\u6ee140\u5143\u53ef\u4f7f\u7528"}], "seller": [{"nickname": "\u5988\u5356\u6279\u54e6", "avatar": null}]}
       */
 
-    public String generateJSON() {
-        String couponJSON = new Gson().toJson(this);
-        System.out.println(couponJSON);
-        return couponJSON;
+    public JSONObject generateJSON(String userID) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("userID", userID);
+            json.put("brand", brandName);
+            json.put("category", catId);
+            json.put("expiredTime", expireDate);
+            json.put("listPrice", listPrice);
+            json.put("product", name);
+            json.put("discount", discount);
+            //json.put("stat", stat);
+            JSONArray jsonArray = new JSONArray();
+            for (String str : constraints){
+                jsonArray.put(new JSONObject().put("content", str));
+            }
+            json.put("limit", jsonArray);
+            //Todo:图片
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    public static Coupon decodeFromQRJSON (String jsonString) {
+        Coupon coupon = new Coupon();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            coupon.name = jsonObject.getString("product");
+            coupon.brandName = jsonObject.getString("brand");
+            coupon.catId = jsonObject.getString("category");
+            JSONArray limitArray = jsonObject.getJSONArray("limit");
+            String[] constraintList = new String[limitArray.length()];
+            for (int i = 0; i < limitArray.length(); i++) {
+                JSONObject contentObj = limitArray.getJSONObject(i);
+                String content = contentObj.getString("content");
+                constraintList[i] = content;
+            }
+            coupon.constraints = constraintList;
+            coupon.discount = jsonObject.getString("discount");
+            coupon.expireDate = jsonObject.getString("expiredTime");
+        } catch (Exception e) {
+            System.out.println("Error when decoding coupon json");
+            e.printStackTrace();
+        }
+        return coupon;
     }
 }

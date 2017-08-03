@@ -61,6 +61,10 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
             @Override
             public void onClick(View view){
                 //TODO:处理点击事件
+                Intent intent = new Intent(mContext, CouponDetailActivity.class);
+                intent.putExtra("Coupon", coupon);
+                intent.putExtra("type", "purchase");
+                mContext.startActivity(intent);
             }
         });
     }

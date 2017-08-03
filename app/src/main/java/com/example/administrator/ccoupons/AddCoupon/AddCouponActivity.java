@@ -45,16 +45,38 @@ public class AddCouponActivity extends AppCompatActivity {
     private ImageView couponImg;
     private TextView nextButton;
 
+    /*
+    Coupon tcoupon = new Coupon();
+    String result;
+
+    private void setCoupon() {
+        tcoupon.setEvaluatePrice(2314);
+        tcoupon.setBrandName("KFC");
+        tcoupon.setName("JI");
+        tcoupon.setCategory(DataHolder.Categories.nameList[0]);
+        tcoupon.setDiscount("30");
+        tcoupon.setExpireDate("2017/7/20");
+        tcoupon.setConstraints(new String[] {"fasfhkjas","dsjfhaosidig"});
+        result = "{\"brand\":\"KFC\",\"category\":\"生活\",\"expiredTime\":\"2017-7\",\"listPrice\":80,\"product\":\"JI\",\"discount\":\"30\",\"limit\":[{\"content\":\"f\"},{\"content\":\"d\"}]}";
+        tcoupon = Coupon.decodeFromQRJSON(result);
+        for (String s :tcoupon.getConstraints()){
+            System.out.println(s);
+        }
+        //System.out.println(result);
+    }
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_coupon);
-
         bindViews();
         getCouponInfo();
         if (coupon != null) {
             couponEvalText.setText(coupon.getEvaluatePrice() + "");
-            ImageManager.GlideImage(coupon.getImgURL(), couponImg, getApplicationContext());
+            //TODO:如果一定要添加图片的话 请修改
+            if (coupon.getImgURL() != null && !coupon.getImgURL().equals("")) {
+                ImageManager.GlideImage(coupon.getImgURL(), couponImg, getApplicationContext());
+            }
             couponNameText.setText(coupon.getName());
             couponBrandText.setText(coupon.getBrandName());
             couponDiscountText.setText(coupon.getDiscount());
@@ -70,6 +92,11 @@ public class AddCouponActivity extends AppCompatActivity {
 
     private void getCouponInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
+        /*
+        setCoupon();
+        coupon = Coupon.decodeFromQRJSON(result);
+        coupon = new Coupon();
+        */
     }
 
 

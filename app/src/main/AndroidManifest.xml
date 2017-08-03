@@ -109,18 +109,20 @@
         <activity android:name=".User.UserFollowCoupon" />
         <activity android:name=".Purchase.CouponDetailActivity" />
         <activity android:name=".Purchase.CouponPurchaseActivity" />
-        <activity android:name=".Tools.QRcodeActivity" />
+        <activity android:name=".AddCoupon.QRcodeActivity" />
         <activity android:name=".AddCoupon.AddCouponActivity" />
         <activity android:name=".AddCoupon.FillFormActivity" />
         <activity android:name=".User.UserUpdateNicknameActivity" />
         <activity android:name=".User.UserUpdateGenderActivity" />
         <activity android:name=".AddCoupon.ChooseCategoryActivity" />
+
         <activity
             android:name=".Fragments.CategorySearchActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".Fragments.MessageDetailActivity" />
         <activity android:name=".Purchase.SellerDetailActivity" />
         <activity android:name=".User.MyCouponDetailActivity"></activity>
+        <activity android:name=".User.ResetPhoneNumberActivity" />
     </application>
 
 </manifest>

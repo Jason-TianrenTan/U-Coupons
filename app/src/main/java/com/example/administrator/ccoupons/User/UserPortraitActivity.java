@@ -140,13 +140,14 @@ public class UserPortraitActivity extends AppCompatActivity {
             MyApp app = (MyApp) getApplicationContext();
             String userId = app.getUserId();
             new UploadTask(userId, path).execute();
+            app.setAvatar(path);
         }catch (Exception e) {
             e.printStackTrace();
         }
         //Todo:上传图片到服务器 并返回图片对应的url
         //Todo:更新头像 更新本地储存的url
 
-        //ImageManager.GlideImage(url, portrait, getContext());
+        ImageManager.GlideImage(path, portrait, getContext());
     }
 
     public void initPortrait() {

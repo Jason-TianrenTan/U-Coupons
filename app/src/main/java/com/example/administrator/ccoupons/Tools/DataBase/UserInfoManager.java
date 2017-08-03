@@ -30,13 +30,13 @@ public class UserInfoManager {
         String historyData = preferences.getString("search_history", "");
         System.out.println("Record: " + historyData);
         history = new ArrayList(Arrays.asList(historyData.split(";")));
-        if (history.get(0).equals("")){
+        if (history.get(0).equals("")) {
             history.remove(0);
         }
     }
 
     public ArrayList<String> getHistoryList() {
-        System.out.println("NUM:"+history.size());
+        System.out.println("NUM:" + history.size());
         for (String h : history) {
             System.out.println(h);
         }
@@ -46,7 +46,7 @@ public class UserInfoManager {
     public void addHistory(String str) {
         while (history.size() == MAX_SIZE)
             deleteHistory(MAX_SIZE);
-        if (history.contains(str)){
+        if (history.contains(str)) {
             history.remove(str);
         }
         history.add(0, str);
@@ -70,5 +70,10 @@ public class UserInfoManager {
         }
         System.out.println("Save: " + historyData);
         editor.putString("search_history", historyData).commit();
+    }
+
+    public void setHistory(ArrayList<String> history) {
+        this.history = history;
+        changeHistoryData();
     }
 }

@@ -3,7 +3,6 @@ package com.example.administrator.ccoupons.Fragments;
 *首页布局
  */
 
-import android.app.Application;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -34,12 +33,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
 import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
 import com.example.administrator.ccoupons.Connections.MessageGetService;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.QRcodeActivity;
+import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

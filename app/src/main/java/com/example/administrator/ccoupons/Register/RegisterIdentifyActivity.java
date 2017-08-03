@@ -218,7 +218,7 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
 
         };
         SMSSDK.registerEventHandler(eh);
-    //    sendSMS();
+    //  sendSMS();
         startCountDown();
     }
 

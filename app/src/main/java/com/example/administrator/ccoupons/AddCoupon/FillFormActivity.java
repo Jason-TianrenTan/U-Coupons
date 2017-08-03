@@ -71,7 +71,7 @@ public class FillFormActivity extends AppCompatActivity {
     private LinearLayout addpicture;
     private ImageView couponPicture;
     private TakePhotoUtil takePhotoUtil;
-    private String path;
+    private String path = "";
     private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(getContext());
     private TextView nextButton;
 
