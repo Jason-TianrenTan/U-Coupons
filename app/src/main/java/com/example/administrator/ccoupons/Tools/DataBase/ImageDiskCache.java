@@ -22,7 +22,6 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class ImageDiskCache {
-    private static int MAX_SIZE = 100 * 1024 * 1024;//最大缓存大小
     private static ImageDiskCache imageDiskCache;
     DiskLruCache mDiskLruCache = null;
 
@@ -33,7 +32,7 @@ public class ImageDiskCache {
             if (!cacheDir.exists()) {
                 cacheDir.mkdirs();
             }
-            mDiskLruCache = DiskLruCache.open(cacheDir, getAppVersion(context), 1, MAX_SIZE);
+            mDiskLruCache = DiskLruCache.open(cacheDir, getAppVersion(context), 1, 10 * 1024 * 1024);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,7 +101,7 @@ public class ImageDiskCache {
     }
 
     //传入url作为缓存文件的文件名
-    public void writeToDiskCache(String imageUrl, Bitmap bitmap){
+    public void writeImageToDiskCache(String imageUrl, Bitmap bitmap){
         try {
             String key = hashKeyForDisk(imageUrl);
             DiskLruCache.Editor editor = mDiskLruCache.edit(key);

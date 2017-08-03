@@ -48,10 +48,9 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
     private void init() {
         mToggleDrawable = getCompoundDrawables()[2];
         if (mToggleDrawable == null) {
-            mToggleDrawable = ContextCompat.getDrawable(getContext(), R.drawable.item_delete);
+            mToggleDrawable = ContextCompat.getDrawable(getContext(), R.drawable.clear_icon);
         }
-     //   mToggleDrawable.setBounds(0, 0, mToggleDrawable.getIntrinsicWidth(), mToggleDrawable.getIntrinsicHeight());
-        mToggleDrawable.setBounds(0, 0, 60, 60);
+        mToggleDrawable.setBounds(0, 0, mToggleDrawable.getIntrinsicWidth(), mToggleDrawable.getIntrinsicHeight());
         setToggleIconVisible(false);
         setOnFocusChangeListener(this);
         addTextChangedListener(this);

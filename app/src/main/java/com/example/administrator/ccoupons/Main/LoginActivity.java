@@ -5,9 +5,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -21,26 +22,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Connections.LoginThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
-import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
-import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 
 public class LoginActivity extends AppCompatActivity {
 
 
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
+    private LoginThread thread;
     private Button login;
     private Toolbar toolbar;
     private EditText signup_phone, signup_pass;
@@ -49,7 +48,22 @@ public class LoginActivity extends AppCompatActivity {
 
         public void handleMessage(Message msg) {
 
-            login.setEnabled(true);
+            switch (msg.what) {
+                case MessageType.CONNECTION_ERROR:
+                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    login.setEnabled(true);
+                    break;
+                case MessageType.CONNECTION_TIMEOUT:
+                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    login.setEnabled(true);
+                    break;
+                case MessageType.CONNECTION_SUCCESS:
+                    parseMessage(thread.getResponse());
+                    break;
+                case MessageType.REENABLE_LOGIN:
+                    login.setEnabled(true);
+                    break;
+            }
         }
     };
 
@@ -64,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
         loginInformationManager.setAutoLogin(true).setUsername(myUsername).setPassword(myPassword);
     }
 
-    //{"result": "success", "userid": "1500711726locc", "nickname": "qu2", "avatar": "/static/images/pic/3.png", "Ucoin": 1}
     //处理返回回来的json
     private void parseMessage(String response) {
         if (response.indexOf("result") != -1) {
@@ -72,29 +85,18 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String userId = jsonObject.getString("userid");
+                System.out.println("Response = " + response);
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
-                System.out.println("Response = " + response);
-                System.out.println("登录成功\n账号:" + myUsername + "\n密码:" + myPassword);
+                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
+                        "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
+                saveUserLoginInfo();//缓存密码
 
-                String nickname = jsonObject.getString("nickname");
-                String avatar = jsonObject.getString("avatar");
-                String sex = jsonObject.getString("gender");
-                int UB = jsonObject.getInt("Ucoin");
-                app.setNickname(nickname);
-                if (!avatar.equals("null")) {
-                    app.setAvatar(DataHolder.base_URL + "/static/" + avatar);
-                }
-                app.setUcoin(UB);
-                app.setGender(Gender.MALE);
-                if (sex.equals("女")) {
-                    app.setGender(Gender.FEMALE);
-                }
-                app.setPhoneNumber(myUsername);
-                saveUserLoginInfo();
+
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+                intent.putExtra("username", myUsername);
+                intent.putExtra("password", myPassword);
                 startActivity(intent);
-                System.out.println("Login success");
                 finish();
             } catch (Exception e) {
                 Message msg = new Message();
@@ -103,14 +105,16 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-        } else {
+        }
+        else {
             if (response.indexOf("error") != -1) {
                 System.out.println("Login failed");
                 Message msg = new Message();
                 msg.what = MessageType.REENABLE_LOGIN;
                 handler.sendMessage(msg);
                 Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else {
                 Message msg = new Message();
                 msg.what = MessageType.CONNECTION_ERROR;
                 handler.sendMessage(msg);
@@ -189,11 +193,7 @@ public class LoginActivity extends AppCompatActivity {
         text_forget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
-                String phoneString = signup_phone.getText().toString();
-                if (phoneString.length() == 11)
-                    intent.putExtra("phoneString", phoneString);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
@@ -222,35 +222,8 @@ public class LoginActivity extends AppCompatActivity {
     private void requestLogin(String url, String username, String password) {
         myUsername = username;
         myPassword = password;
-        String md5pass = null;
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("username", username);
-        try {
-            md5pass = new PasswordEncoder().EncodeByMd5(password);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        map.put("password", md5pass);
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseMessage(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-                handler.sendMessage(new Message());
-            }
-
-            @Override
-            public void onConnectionFailed() {
-                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-                handler.sendMessage(new Message());
-            }
-        });
-        connectionManager.connect();
+        thread = new LoginThread(url, username, password, handler, getApplicationContext());
+        thread.start();
         //TODO 播放动画
     }
 

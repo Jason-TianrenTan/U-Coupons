@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="SpaceNavigationView-1.6.0">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/b05dc687a5e0f6765f133833be87c2ffe3236aba/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/b05dc687a5e0f6765f133833be87c2ffe3236aba/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/7eb03b8d42d84217d83f717b22587e1ac60c0129/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/7eb03b8d42d84217d83f717b22587e1ac60c0129/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

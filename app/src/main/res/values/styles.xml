@@ -26,9 +26,9 @@
 
     <!-- Search ToolBar -->
     <style name="SearchToolBarStyle" parent="Theme.AppCompat">
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
-        <item name="android:textColorSecondary">@color/colorPrimary</item>
-        <item name="actionMenuTextColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/whitesmoke</item>
+        <item name="android:textColorSecondary">@color/whitesmoke</item>
+        <item name="actionMenuTextColor">@color/whitesmoke</item>
     </style>
 
     <!--登录注册界面按钮样式-->
@@ -43,7 +43,6 @@
 
     <!--登录注册界面文本框样式-->
     <style name="MainEditTextStyle" parent="Theme.AppCompat">
-        <item name="android:maxLines">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:saveEnabled">false</item>
@@ -129,7 +128,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginBottom">30dp</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/lightgray</item>
         <item name="android:elevation">2dp</item>
     </style>
 
@@ -166,9 +165,9 @@
     <style name="user_divider">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">@color/lightgray</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:background">@color/gray</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
     </style>
 
     <!-- 顶端线底端线样式 -->
@@ -194,8 +193,8 @@
     <!-- 欢迎界面logo样式 -->
     <style name="welcome_logo">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">200dp</item>
-        <item name="android:src">@drawable/welcome_logo_new</item>
+        <item name="android:layout_height">250dp</item>
+        <item name="android:src">@drawable/plus</item>
     </style>
 
     <!--欢迎界面button样式 -->
@@ -275,59 +274,6 @@
         <item name="android:elevation">2dp</item>
     </style>
 
-    <!-- 搜索界面推荐 -->
-    <style name="search_rec_text">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">16dp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">5dp</item>
-    </style>
 
-    <style name="BottomDialog" parent="@android:style/Theme.Dialog">
-
-        <!-- 背景透明 -->
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <!-- 浮于Activity之上 -->
-        <item name="android:windowIsFloating">true</item>
-        <!-- 边框 -->
-        <item name="android:windowFrame">@null</item>
-        <!-- Dialog以外的区域模糊效果 -->
-        <item name="android:backgroundDimEnabled">true</item>
-        <!-- 无标题 -->
-        <item name="android:windowNoTitle">true</item>
-        <!-- 半透明 -->
-        <item name="android:windowIsTranslucent">true</item>
-        <!-- Dialog进入及退出动画 -->
-        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
-    </style>
-    <!-- ActionSheet进出动画 -->
-    <style name="DialogAnimation" parent="@android:style/Animation.Dialog">
-        <item name="android:windowEnterAnimation">@anim/sellmenu_in</item>
-        <item name="android:windowExitAnimation">@anim/sellmenu_out</item>
-    </style>
-
-    <style name="coupon_form_label">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="SearchResultSortText">
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:padding">5dp</item>
-    </style>
 
 </resources>

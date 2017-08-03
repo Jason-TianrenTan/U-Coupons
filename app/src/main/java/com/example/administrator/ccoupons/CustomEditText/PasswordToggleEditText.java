@@ -77,7 +77,6 @@ public class PasswordToggleEditText extends AppCompatEditText implements OnFocus
                         hidden = false;
                     }
                     else {
-                        hidden = true;
                         setTransformationMethod(PasswordTransformationMethod.getInstance());
                         postInvalidate();
                     }
@@ -100,7 +99,6 @@ public class PasswordToggleEditText extends AppCompatEditText implements OnFocus
             setToggleIconVisible(false);
         //    setShakeAnimation();
             setTransformationMethod(PasswordTransformationMethod.getInstance());
-            hidden = true;
             postInvalidate();
             setSelection(getText().length());
         }

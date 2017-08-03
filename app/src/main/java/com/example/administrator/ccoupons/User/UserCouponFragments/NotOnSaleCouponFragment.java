@@ -21,38 +21,23 @@ import java.util.ArrayList;
 //未上架的优惠券
 public class NotOnSaleCouponFragment extends Fragment{
 
-    RecyclerView recyclerView;
+
     private UserCouponInfoAdapter adapter;
     private ArrayList<Coupon> mCouponList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_user_notonsalecoupon, container, false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.notonsale_recyclerview);
+        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.notonsale_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        mCouponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
         adapter = new UserCouponInfoAdapter(mCouponList);
-        adapter.setIndex(2);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
-    public void clear() {
-        int size = mCouponList.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                mCouponList.remove(0);
-            }
-
-            adapter.notifyItemRangeRemoved(0, size);
-            adapter.notifyDataSetChanged();
-        }
-
+    public void setData(ArrayList<Coupon> cList) {
+        this.mCouponList = cList;
     }
-
-
-
 
 }

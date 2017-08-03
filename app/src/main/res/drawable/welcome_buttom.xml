@@ -6,11 +6,4 @@
         android:bottomLeftRadius="10dp"
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp" />
-
-    <gradient
-        android:gradientRadius="350"
-        android:type="radial"
-        android:endColor="@color/white"
-        android:startColor="#FF5A45"
-        />
 </shape>

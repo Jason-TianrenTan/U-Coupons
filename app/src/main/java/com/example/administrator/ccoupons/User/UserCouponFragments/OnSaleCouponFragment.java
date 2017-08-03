@@ -15,7 +15,6 @@ import com.example.administrator.ccoupons.User.UserCouponInfoAdapter;
 
 import org.w3c.dom.Text;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -27,42 +26,20 @@ public class OnSaleCouponFragment extends Fragment{
 
     private UserCouponInfoAdapter adapter;
     private ArrayList<Coupon> mCouponList;
-    private RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(
                 R.layout.fragment_user_onsalecoupon, container, false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.onsale_recyclerview);
+        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.onsale_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        mCouponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
         adapter = new UserCouponInfoAdapter(mCouponList);
-        adapter.setIndex(1);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
-
-    public void clear() {
-        int size = mCouponList.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                mCouponList.remove(0);
-            }
-
-            adapter.notifyItemRangeRemoved(0, size);
-            adapter.notifyDataSetChanged();
-        }
-
-    }
-
-    public void update(ArrayList<Coupon> newList) {
-        mCouponList = newList;
-        adapter = new UserCouponInfoAdapter(mCouponList);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    public void setData(ArrayList<Coupon> cList) {
+        this.mCouponList = cList;
     }
 
 }

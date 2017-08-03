@@ -10,7 +10,7 @@
 
     <item android:left="25dp">
         <shape android:shape="rectangle">
-            <size android:height="0.6dp" />
+            <size android:height="1dp" />
             <solid android:color="@color/gainsboro" />
         </shape>
     </item>

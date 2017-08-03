@@ -25,11 +25,9 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -37,6 +35,7 @@ import java.util.ArrayList;
  */
 
 public class MessageFragment extends Fragment {
+
 
 
     public class MessageClassAdapter extends RecyclerView.Adapter<MessageClassAdapter.MessageViewHolder> {
@@ -48,10 +47,9 @@ public class MessageFragment extends Fragment {
             ImageView imageView;
             TextView titleView, subTitleView, timeTextView;
             CardView cardView;
-
             public MessageViewHolder(View view) {
                 super(view);
-                cardView = (CardView) view;
+                cardView = (CardView)view;
                 imageView = (ImageView) view.findViewById(R.id.message_item_imageview);
                 titleView = (TextView) view.findViewById(R.id.message_item_title);
                 subTitleView = (TextView) view.findViewById(R.id.message_item_subtitle);
@@ -76,24 +74,12 @@ public class MessageFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final MessageViewHolder holder, int position) {
-            final MessageClass msgClass = mMessageClassList.get(position);
+        public void onBindViewHolder(MessageViewHolder holder, int position) {
+            MessageClass msgClass = mMessageClassList.get(position);
             holder.titleView.setText(msgClass.getClassName());
             holder.subTitleView.setText(msgClass.getSubtitle());
             holder.timeTextView.setText(msgClass.getTime());
             Glide.with(mContext).load(msgClass.getResId()).into(holder.imageView);
-
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext.getApplicationContext(), MessageDetailActivity.class);
-                    intent.putExtra("index", holder.getAdapterPosition());
-                    Bundle bundle=  new Bundle();
-                    bundle.putSerializable("list", (Serializable)msgClass.getMessages());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
         }
 
         @Override
@@ -127,7 +113,6 @@ public class MessageFragment extends Fragment {
             }
         }
     }
-
     ArrayList<MessageClass> messageClasses;
     MessageClassAdapter adapter;
 
@@ -137,7 +122,7 @@ public class MessageFragment extends Fragment {
                 R.layout.fragment_message, container, false);
         initData();
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.messageclass_recyclerview);
+        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.messageclass_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageClassAdapter(messageClasses);
@@ -149,18 +134,11 @@ public class MessageFragment extends Fragment {
 
     private void initData() {
         messageClasses = new ArrayList<MessageClass>();
-
         for (int i = 0; i < DataHolder.MessageClasses.strings.length; i++) {
-            MessageClass msgClass = new MessageClass(getResources().getString(DataHolder.MessageClasses.strings[i]));
-            messageClasses.add(msgClass);
-        }
 
-        ArrayList<Message> messageList = ((MyApp) getActivity().getApplicationContext()).getMessageList();
-        if (messageList != null) {
-            for (Message msg : messageList) {
-                int catId = msg.getMessageCat();
-                messageClasses.get(catId).add(msg);
-            }
+            ArrayList<Message> msgList = new ArrayList<>();
+            MessageClass msgClass = new MessageClass(getResources().getString(DataHolder.MessageClasses.strings[i]), msgList);
+            messageClasses.add(msgClass);
         }
     }
 

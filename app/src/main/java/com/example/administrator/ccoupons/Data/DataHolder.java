@@ -8,53 +8,36 @@ import com.example.administrator.ccoupons.R;
 
 public class DataHolder {
 
-    static final String dormBase = "http://10.132.55.96:8000";
+    static final String dormBase = "http://172.29.35.1:8000";
     static final String localBase = "http://192.168.207.221:8000";
-    static final String teamBase = "http://192.168.204.83:8000";
-    static final String serverBase = "http://139.199.200.106";
-    public static final String base_URL = serverBase;
+    static final String teamBase = "http://192.168.204.83:1080";
+    public static final String base_URL = teamBase;
     public static final String login_URL = "/post_loginForAndroid";
     public static final String register_URL = "/post_signUpForAndroid";
     public static final String requestMsg_URL = "/post_sendMessage";
-
     public static final String requestSearch_URL = "/post_searchForAndroid";
-    public static final String requestPreSearch_URL = "/post_preSearch";//预搜索
-
     public static final String requestDetail_URL = "/post_returnInformation";
-    public static final String purchase_URL = "/post_buyCoupon";
-    public static final String resetPass_URL = "/post_updatePassword";
-    public static final String requestBoughtList_URL = "/post_getBoughtList"; //已购买
-    public static final String requestFollowList_URL = "/post_getLikeList";//已关注
-    public static final String requestSoldList_URL = "/post_getSoldList";//已卖出
-    public static final String updateUserInformation_URL = "/post_updateUserInformation";//修改个人资料
-    public static final String updatePhoneNumber_URL = "/post_updatePhonenumOrEmail";
 
-    public static final String postFollow_URL = "/post_likeCoupon";//关注
-    public static final String postAvatar_URL = "/post_updateAvatar";//上传头像
-
-    public static final String postBanner_URL = "/post_getBanner";//获取轮播图
-    public static final String postRecommend_URL = "/post_homepageCoupon";//主页推荐
-
-
-    public static final String postChangeCouponState_URL = "/post_changeCouponState";//换优惠券状态
-
-    public static final String postGetEvaluation_URL = "/post_getValue";//获取估值
-
-    public static final String postAddCoupon_URL = "/post_addCoupon";//添加优惠券
-
-    public static final String requestOwnList_URL = "/post_getOwnList";//获取我的优惠券
-
-    public static final String requestCatRecommend_URL = "/post_searchByCategory";//分类推荐
-    public static final String requestCatSearch_URL = "/post_searchInCertainCategory";//按分类搜索
-    public static final String requestCatPreSearch_URL = "/post_preSearchInCategory";//分类下预搜索
-
-    public static final String requestSellerInfo_URL = "/post_sellerInformation";//获取卖家信息
+    public static class Banners {
+        public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
+        public static String[] detailList = "Title1,Title2,Title3,Title4,Title5,Title6,Title7".split(",");
+        public static int[] covers = {R.mipmap.ic_cover_1, R.mipmap.ic_cover_2, R.mipmap.ic_cover_3, R.mipmap.ic_cover_4,
+                R.mipmap.ic_cover_5, R.mipmap.ic_cover_6, R.mipmap.ic_cover_7};
+    }
 
 
     public static class Categories {
         public static String[] nameList = "生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
         public static int[] covers = {R.drawable.category_daily, R.drawable.category_decorate, R.drawable.category_sports, R.drawable.category_furnitures,
                 R.drawable.category_electronics, R.drawable.category_cloths, R.drawable.category_travel, R.drawable.category_food};
+    }
+
+    public static class History {
+        public static String requestData(int index) {
+            return historyList[index];
+        }
+
+        public static String[] historyList = ("history1,h2,str3,a4,c5,v6,k7,s8,o9,i10,g234").split(",");
     }
 
     //用户信息

@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Category;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 
 import java.lang.reflect.Array;
@@ -59,11 +57,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 Category category = mCategoryList.get(position);
-                Intent intent = new Intent(mContext, CategorySearchActivity.class);
-                intent.putExtra("categoryId", (position + 1) + "");
-                System.out.println("categoryId = " + (position + 1));
-                mContext.startActivity(intent);
-
+                Toast.makeText(mContext, "Category = " + category.getName(), Toast.LENGTH_SHORT).show();
             }
         });
         return holder;

@@ -49,15 +49,13 @@
                     android:id="@+id/coupon_detail_text"/>
 
                 <TextView
-                    android:id="@+id/coupon_special_word"
                     android:padding="5dp"
                     android:background="@color/red"
                     android:textColor="@color/whitesmoke"
                     android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="限时优惠"/>
+                    android:text="只要998 SS抱回家"/>
 
             </LinearLayout>
 

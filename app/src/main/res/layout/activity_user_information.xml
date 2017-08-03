@@ -24,7 +24,6 @@
 
             <com.example.administrator.ccoupons.Tools.XCRoundImageView
                 android:id="@+id/uinf_portrait"
-                android:src="@drawable/mascot_nothing"
                 style="@style/user_portrait_layout"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -41,18 +40,17 @@
         <ImageView
             style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/to_update_nickname">
+        <LinearLayout style="@style/user_option_layout">
 
             <TextView
                 android:id="@+id/user_name"
-                style="@style/user_text" />
+                style="@style/user_text"
+                android:textColor="@color/lightgray" />
         </LinearLayout>
 
         <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/to_update_gender">
+        <LinearLayout style="@style/user_option_layout">
 
             <TextView
                 android:id="@+id/user_sex"
@@ -61,14 +59,20 @@
 
         <ImageView style="@style/user_divider" />
 
+        <LinearLayout style="@style/user_option_layout">
+
+            <TextView
+                android:id="@+id/user_age"
+                style="@style/user_text" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout style="@style/user_wrap_layout">
 
         <ImageView style="@style/user_edgeline" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/to_update_phone">
+        <LinearLayout style="@style/user_option_layout">
 
             <TextView
                 style="@style/user_text"
@@ -79,8 +83,7 @@
 
         <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/uinf_to_resetpw">
+        <LinearLayout style="@style/user_option_layout">
 
             <TextView
                 style="@style/user_text"

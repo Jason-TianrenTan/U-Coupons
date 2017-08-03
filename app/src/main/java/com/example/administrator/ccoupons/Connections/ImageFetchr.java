@@ -12,7 +12,6 @@ import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -27,12 +26,13 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
     private String url;
     private Bitmap bitmap;
     ImageDiskCache diskCache = null;
-    ImageLruCache lruCache = ImageLruCache.getInstance();
+    ImageLruCache lruCache = null;
 
-    public ImageFetchr(String reqURL, ImageView parentView, ImageDiskCache diskCache) {
+    public ImageFetchr(String reqURL, ImageView parentView, ImageDiskCache diskCache, ImageLruCache lruCache) {
         this.imgView = parentView;
         this.url = reqURL;
         this.diskCache = diskCache;
+        this.lruCache = lruCache;
     }
 
     public ImageFetchr(String reqURL, ImageView parentView) {
@@ -48,7 +48,6 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... params) {
-        if(isCancelled()) return null;
         System.out.println("Doing in background...");
         InputStream in = getInputStream(url);
         BufferedInputStream bis = new BufferedInputStream(in);
@@ -66,7 +65,7 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        if(isCancelled()) return;
+
     }
 
     @Override
@@ -76,12 +75,11 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
         imgView.setImageDrawable(drawable);
         imgView.invalidate();
 
-        //Todo:test
-        if (diskCache == null) {
+        //Cache
+        if (this.lruCache != null)
             lruCache.addToMemoryCache(url, bitmap);
-        } else {
-            diskCache.writeToDiskCache(url, bitmap);
-        }
+        if (this.diskCache != null)
+            diskCache.writeImageToDiskCache(url, bitmap);
         System.out.println("Cache url  = " + url);
     }
 
@@ -94,15 +92,8 @@ public class ImageFetchr extends AsyncTask<String, Integer, Bitmap> {
             in = connection.getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
-            if (e instanceof FileNotFoundException) {
-                System.out.println("Url Error: FileNotFoundException");
-                this.cancel(true);
-            }
-            if (e instanceof NullPointerException){
-                System.out.println("File Error: NullPointerException");
-                this.cancel(true);
-            }
         }
         return in;
     }
+
 }

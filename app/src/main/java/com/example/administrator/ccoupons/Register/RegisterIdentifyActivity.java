@@ -1,12 +1,17 @@
 package com.example.administrator.ccoupons.Register;
 
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,12 +21,17 @@ import android.widget.Toast;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
+import com.mob.MobSDK;
+
+import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+
+import static com.mob.tools.utils.ResHelper.getStringRes;
 
 //注册界面 验证码界面
 public class RegisterIdentifyActivity extends AppCompatActivity {
@@ -62,7 +72,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                     inputLayout.setErrorEnabled(true);
                     inputLayout.setError("验证码错误!");
                     System.out.println("Error!!!!!!!!!!!!!!!!!");
-                    verify_cord = false;
                     break;
                 case SMS_SUCCESS:
                     Intent intent = new Intent(RegisterIdentifyActivity.this, RegisterPasswordActivity.class);
@@ -143,13 +152,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_identify);
-        //DEBUG
-        Message sms_msg = new Message();
-        sms_msg.what = SMS_SUCCESS;
-        SMSVerifyHandler.sendMessage(sms_msg);
-        finish();
-
-
         checker = new RegisterCheck();
         Toolbar toolbar = (Toolbar) findViewById(R.id.register_identify_toolbar);
         setSupportActionBar(toolbar);

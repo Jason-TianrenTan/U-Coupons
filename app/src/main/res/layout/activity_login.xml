@@ -42,7 +42,7 @@
                     >
                     <ImageView
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/welcome_logo_new"
+                        android:background="@mipmap/ic_launcher"
                         android:layout_width="150dp"
                         android:layout_height="150dp" />
                 </LinearLayout>

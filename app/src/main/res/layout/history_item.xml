@@ -1,42 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:id="@+id/history_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/user_row_selector">
-
-        <ImageView
-            android:id="@+id/history_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:src="@drawable/search_icon_big"/>
-
-        <TextView
-            android:id="@+id/history_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textSize="18dp" />
-    </LinearLayout>
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
 
     <ImageView
-        android:id="@+id/history_delete"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_centerVertical="true"
+        android:layout_height="25dp"
+        android:id="@+id/history_icon"
         android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/history_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textSize="20dp"
+        android:textColor="@color/black"
         android:padding="5dp"
         />
 
-</RelativeLayout>
+</LinearLayout>

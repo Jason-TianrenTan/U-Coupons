@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -13,17 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.UploadTask;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Gender;
-import com.example.administrator.ccoupons.Main.ResetPasswordActivity;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
@@ -32,77 +24,59 @@ import com.jph.takephoto.model.TResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.mob.MobSDK.getContext;
-
 
 public class UserInformationActivity extends SlideBackActivity {
     private TextView name;
     private TextView sex;
+    private TextView age;
     private XCRoundImageView portrait;
     private TakePhotoUtil takePhotoUtil;
     private Toolbar toolbar;
     private LinearLayout changeportrait;
-    private LinearLayout toResetPassword;
-    private LinearLayout toUpdateNickname;
-    private LinearLayout toUpdateGender;
-    private LinearLayout toUpdatePhone;
-    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(this);
-    private MyApp app;
+    private LoginInformationManager informationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
-        bindViews();
+        initView();
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);
         }
 
-        initinfo();
         initPortrait();
         //portrait.setImageResource(DataHolder.User.portraitId);
 
         setOnClickListeners();
     }
 
-    @Override
-    protected void onStart() {
-        initinfo();
-        initPortrait();
-        super.onStart();
-    }
-
-    private void bindViews() {
+    private void initView(){
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
+        age = (TextView) findViewById(R.id.user_age);
         portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
         toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
-        app = (MyApp) this.getApplicationContext();
+        informationManager = new LoginInformationManager(this);
         takePhotoUtil = new TakePhotoUtil(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toResetPassword = (LinearLayout) findViewById(R.id.uinf_to_resetpw);
-        toUpdateNickname = (LinearLayout) findViewById(R.id.to_update_nickname);
-        toUpdateGender = (LinearLayout) findViewById(R.id.to_update_gender);
-        toUpdatePhone = (LinearLayout) findViewById(R.id.to_update_phone);
-    }
-
-    private void initinfo() {
-        name.setText(app.getNickname());
-        if (app.getGender() == Gender.MALE)
-            sex.setText("男");
-        else sex.setText("女");
-    }
-
-    private void setOnClickListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        name.setText(DataHolder.User.username);
+        age.setText(Integer.toString(DataHolder.User.age));
+        if (DataHolder.User.sex)
+            sex.setText("男");
+        else
+            sex.setText("女");
+    }
+
+    private void setOnClickListeners(){
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
         portrait.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +108,8 @@ public class UserInformationActivity extends SlideBackActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
+                                Bitmap bitmap = BitmapFactory.decodeFile(s);
+                                portrait.setImageBitmap(bitmap);
                                 updatePortrait(s);
                             }
                         });
@@ -150,43 +125,14 @@ public class UserInformationActivity extends SlideBackActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
+                                Bitmap bitmap = BitmapFactory.decodeFile(s);
+                                portrait.setImageBitmap(bitmap);
                                 updatePortrait(s);
                             }
                         });
                         mBottomSheetDialog.dismiss();
                     }
                 });
-            }
-        });
-
-        toResetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserInformationActivity.this, ResetPasswordActivity.class);
-                intent.putExtra("phoneString", ((MyApp) getApplicationContext()).getPhoneNumber());
-                startActivity(intent);
-            }
-        });
-
-        toUpdateNickname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserInformationActivity.this, UserUpdateNicknameActivity.class));
-            }
-        });
-
-        toUpdateGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserInformationActivity.this, UserUpdateGenderActivity.class));
-            }
-        });
-
-        toUpdatePhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserInformationActivity.this, ResetPhoneNumberActivity.class));
             }
         });
     }
@@ -220,24 +166,19 @@ public class UserInformationActivity extends SlideBackActivity {
     }
 
     public void updatePortrait(String path) {
-        try {
-            MyApp app = (MyApp) getApplicationContext();
-            String userId = app.getUserId();
-            new UploadTask(userId, path).execute();
-            app.setAvatar(path);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        //Todo:上传图片到服务器 并返回图片对应的url
-        //Todo:更新头像 更新本地储存的url
-
-        ImageManager.GlideImage(path, portrait, getContext());
+        Pattern pat = Pattern.compile("(portrait_)([0-9]+)(.jpg)");
+        Matcher mat = pat.matcher(path);
+        boolean rs = mat.find();
+        Long millis = Long.parseLong(mat.group(2));
+        informationManager.setPortraitPath(path);
+        //Todo:上传Millis和图片到服务器
     }
 
     public void initPortrait() {
-        String url = app.getAvatar();
-        if (url != "") {
-            ImageManager.GlideImage(url, portrait, getContext());
+        String s = informationManager.getPortraitPath();
+        if (s != "") {
+            Bitmap bitmap = BitmapFactory.decodeFile(s);
+            portrait.setImageBitmap(bitmap);
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

@@ -1,27 +1,29 @@
 package com.example.administrator.ccoupons.Main;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Connections.LoginThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
-import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.PasswordEncoder;
+import com.example.administrator.ccoupons.Tools.MessageType;
+import com.mob.MobApplication;
+import com.mob.MobSDK;
 
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 public class WelcomeActivity extends AppCompatActivity {
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
@@ -29,7 +31,23 @@ public class WelcomeActivity extends AppCompatActivity {
     private boolean auto_login;
     private String username;
     private String password;
+    private LoginThread thread;
+    private Handler handler = new Handler() {
 
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MessageType.CONNECTION_ERROR:
+                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_TIMEOUT:
+                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    break;
+                case MessageType.CONNECTION_SUCCESS:
+                    parseMessage(thread.getResponse());
+                    break;
+            }
+        }
+    };
     Button login;
     Button register;
 
@@ -39,26 +57,14 @@ public class WelcomeActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 String userId = jsonObject.getString("userid");
-                String nickname = jsonObject.getString("nickname");
-                String avatar = jsonObject.getString("avatar");
-                String sex = jsonObject.getString("gender");
-                int UB = jsonObject.getInt("Ucoin");
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
                 System.out.println("Response = " + response);
-                System.out.println("登录成功\n账号:" + username + "\n密码:" + password);
-                app.setNickname(nickname);
-                app.setUcoin(UB);
-                if (!avatar.equals("null")) {
-                    app.setAvatar(DataHolder.base_URL + "/static/" + avatar);
-                }
-
-                app.setGender(Gender.MALE);
-                if (sex.equals("女")) {
-                    app.setGender(Gender.FEMALE);
-                }
-                app.setPhoneNumber(username);
+                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
+                        "\n密码:" + password, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("password", password);
                 startActivity(intent);
                 System.out.println("Login success");
                 finish();
@@ -74,12 +80,11 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        //for test
-        //startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));
 
         login = (Button) findViewById(R.id.welcome_login_button);
         register = (Button) findViewById(R.id.welcome_register_button);
@@ -87,18 +92,23 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                finish();
             }
         });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
+                finish();
             }
         });
         loginInformationManager = new LoginInformationManager(this);
         auto_login = loginInformationManager.getAutoLogin();
         System.out.println("auto login = " + auto_login);
         if (auto_login == false) {
+            /*
+            login.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);*/
             startButtonAnimation();
         }
         if (auto_login == true) {
@@ -107,37 +117,14 @@ public class WelcomeActivity extends AppCompatActivity {
             requestLogin(url, username, password);
         }
 
+
+
     }
 
     //登录
     private boolean requestLogin(String url, String username, String password) {
-        String md5pass = null;
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("username", username);
-        try {
-            md5pass = new PasswordEncoder().EncodeByMd5(password);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        map.put("password", md5pass);
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseMessage(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onConnectionFailed() {
-                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-            }
-        });
-        connectionManager.connect();
+        thread = new LoginThread(url, username, password, handler, getApplicationContext());
+        thread.start();
         //TODO 播放动画
         return false;
     }
@@ -147,4 +134,9 @@ public class WelcomeActivity extends AppCompatActivity {
         login.startAnimation(animation);
         register.startAnimation(animation);
     }
+
+
+
+
 }
+

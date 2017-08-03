@@ -11,8 +11,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class LoginInformationManager {
 
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     public LoginInformationManager(Activity activity) {
         preferences = activity.getSharedPreferences("UserInfomation", MODE_PRIVATE);
@@ -31,6 +31,10 @@ public class LoginInformationManager {
         return preferences.getString("password", "");
     }
 
+    public String getPortraitPath() {
+        return preferences.getString("portrait_path", "");
+    }
+
     public LoginInformationManager setAutoLogin(boolean b) {
         editor.putBoolean("auto_login", b).commit();
         return this;
@@ -38,11 +42,17 @@ public class LoginInformationManager {
 
     public LoginInformationManager setUsername(String str) {
         editor.putString("username", str).commit();
+
         return this;
     }
 
     public LoginInformationManager setPassword(String str) {
         editor.putString("password", str).commit();
+        return this;
+    }
+
+    public LoginInformationManager setPortraitPath(String str) {
+        editor.putString("portrait_path", str).commit();
         return this;
     }
 
@@ -52,6 +62,7 @@ public class LoginInformationManager {
     }
 
     public LoginInformationManager removeUsername(){
+
         editor.remove("username").commit();
         return this;
     }

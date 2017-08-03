@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
@@ -20,21 +19,19 @@ public class UserWalletActivity extends SlideBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_wallet);
         initView();
-        setOnClickListeners();
     }
 
-    private void initView() {
+    private void initView(){
         toolbar = (Toolbar) findViewById(R.id.uwal_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ub = (TextView) findViewById(R.id.uwal_ub);
-        MyApp app = (MyApp) getApplicationContext();
-        ub.setText(app.getUcoin() + "");
+        ub.setText(Integer.toString(DataHolder.User.UB));
     }
 
-    private void setOnClickListeners() {
+    private void setOnClickListeners(){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

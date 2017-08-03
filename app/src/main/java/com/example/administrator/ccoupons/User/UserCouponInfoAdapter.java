@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
@@ -25,10 +22,8 @@ import java.util.Random;
 
 public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
+    String[] names = "远古传奇 远古洪荒 太古传奇 一张SS 一打SS 一酒馆SS 污津史诗招募券".split(" ");
 
-    boolean stub = false;
-    boolean hook = false;
-    int index = 0;
     private Context mContext;
     private ArrayList<Coupon> mUserCouponInfoList;
 
@@ -37,33 +32,20 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         TextView couponListText,
                 couponEvalText,
                 couponNameText,
-                couponDiscountText,
+                couponDetailText,
                 couponExpireText;
 
         public UserCouponInfoViewHolder(View view) {
             super(view);
-            rootView = (FrameLayout) view;
-            couponListText = (TextView) view.findViewById(R.id.coupon_listprice_text);
-            couponEvalText = (TextView) view.findViewById(R.id.coupon_evalprice_text);
-            couponNameText = (TextView) view.findViewById(R.id.usercoupon_name_text);
-            couponExpireText = (TextView) view.findViewById(R.id.usercoupon_expire_text);
-            couponDiscountText = (TextView) view.findViewById(R.id.usercoupon_discount_text);
+            rootView = (FrameLayout)view;
+            couponListText = (TextView)view.findViewById(R.id.coupon_listprice_text);
+            couponEvalText = (TextView)view.findViewById(R.id.coupon_evalprice_text);
+            couponNameText = (TextView)view.findViewById(R.id.usercoupon_name_text);
+            couponDetailText = (TextView)view.findViewById(R.id.coupon_detail_text);
+            couponExpireText = (TextView)view.findViewById(R.id.coupon_detail_expire_date);
         }
     }
 
-
-    public void setIndex(int i) {
-        this.index = i;
-        System.out.println("At set index = " + i);
-    }
-
-    public void hook() {
-        hook = true;
-    }
-
-    public void stub() {
-        stub = true;
-    }
 
     public UserCouponInfoAdapter(ArrayList<Coupon> cList) {
         this.mUserCouponInfoList = cList;
@@ -76,49 +58,25 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.usercouponinfo_item, parent, false);
         final UserCouponInfoAdapter.UserCouponInfoViewHolder holder = new UserCouponInfoAdapter.UserCouponInfoViewHolder(view);
-        if (index > 0 || hook || stub) {
-            holder.rootView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = holder.getAdapterPosition();
-                    Coupon coupon = mUserCouponInfoList.get(position);
-                    Intent intent;
-                    if (hook) {
-                        //关注
-                        intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
-                        intent.putExtra("type", "purchase");
-                    } else {
-                        if (stub && index == 0) {
-                            //卖家购买列表
-                            intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
-                            intent.putExtra("type", "seller");
-                        } else {
-                            intent = new Intent(mContext.getApplicationContext(), MyCouponDetailActivity.class);
-                            intent.putExtra("type", "show");
-                        }
-                    }
-                    intent.putExtra("Coupon", coupon);
-
-                    intent.putExtra("index", index + "");
-                    mContext.startActivity(intent);
-                    Intent broadcastIntent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");
-                    mContext.sendBroadcast(broadcastIntent);
-                    //Todo:获得当前Coupon编号，跳转到Coupon页面
-                }
-            });
-        }
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {/*
+                int position = holder.getAdapterPosition();
+                Coupon coupon = mUserCouponInfoList.get(position);
+                Toast.makeText(mContext, "UserCouponInfo = " + coupon.getName(), Toast.LENGTH_SHORT).show();
+                Coupon coupon = mUserCouponInfoList.get(position);*/
+                //Todo:获得当前Coupon编号，跳转到Coupon页面
+            }
+        });
         return holder;
     }
 
     @Override
     public void onBindViewHolder(UserCouponInfoAdapter.UserCouponInfoViewHolder holder, int position) {
-        Coupon coupon = mUserCouponInfoList.get(position);
-        holder.couponNameText.setText(coupon.getName());
-        holder.couponDiscountText.setText(coupon.getDiscount());
-        holder.couponExpireText.setText(coupon.getExpireDate());
-        holder.couponEvalText.setText("¥" + coupon.getEvaluatePrice());
-        holder.couponListText.setText("¥" + coupon.getListPrice());
-        System.out.println("bind view holder");
+        //   Coupon coupon = mUserCouponInfoList.get(position);
+        Random random = new Random();
+        int index = random.nextInt(names.length);
+        holder.couponNameText.setText(names[index]);
         //TODO:有待完善
     }
 
@@ -126,6 +84,4 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
     public int getItemCount() {
         return mUserCouponInfoList.size();
     }
-
-
 }

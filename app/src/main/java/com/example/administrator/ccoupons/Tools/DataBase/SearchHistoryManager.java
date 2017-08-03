@@ -22,7 +22,7 @@ public class SearchHistoryManager {
 
     public void addHistory(String str) {
         List<String> stringList = Arrays.asList(getHistoryList());
-        if (stringList.size() == 10) {
+        if (stringList.size() == 20) {
             stringList.remove(0);
         }
         stringList.add(str);
@@ -37,5 +37,17 @@ public class SearchHistoryManager {
         String history = preferences.getString("search_history", "");
         String[] list = history.split(";");
         return list;
+    }
+
+    public ArrayList<String> findHistory(String str) {
+        ArrayList<String> result = new ArrayList<String>();
+        String[] all = getHistoryList();
+        for (int i = 0; i < all.length; i++) {
+            if (all[i].matches(str)) {
+                result.add(all[i]);
+            }
+        }
+        Collections.reverse(result);
+        return result;
     }
 }

@@ -35,8 +35,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <service android:name=".Connections.MessageGetService" />
 
     <application
         android:name=".MyApp"
@@ -69,6 +69,7 @@
         <activity
             android:name=".Main.LoginActivity"
             android:fitsSystemWindows="true" />
+
         <activity
             android:name=".Search.SearchActivity"
             android:fitsSystemWindows="true"
@@ -85,43 +86,31 @@
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
         <activity android:name=".Main.WelcomeActivity">
+
+        </activity>
+        <activity
+            android:name=".Fragments.MainPageActivity"
+            android:fitsSystemWindows="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-
-        <service android:name=".Connections.MessageGetService" />
-
-        <activity
-            android:name=".Fragments.MainPageActivity"
-            android:fitsSystemWindows="true"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
-        <activity android:name=".Fragments.MyMessageActivity" />
+
+        <activity android:name=".Fragments.MyMessageActivity"></activity>
+
         <activity android:name=".User.UserSellCoupons" />
         <activity android:name=".User.UserBuyCoupons" />
-        <activity android:name=".User.UserFollowCoupon" />
+        <activity android:name=".User.UserFollowCoupon"></activity>
         <activity android:name=".Purchase.CouponDetailActivity" />
-        <activity android:name=".Purchase.CouponPurchaseActivity" />
-        <activity android:name=".AddCoupon.QRcodeActivity" />
-        <activity android:name=".AddCoupon.AddCouponActivity" />
-        <activity android:name=".AddCoupon.FillFormActivity" />
-        <activity android:name=".User.UserUpdateNicknameActivity" />
-        <activity android:name=".User.UserUpdateGenderActivity" />
-        <activity android:name=".AddCoupon.ChooseCategoryActivity" />
-        <activity android:name=".User.ResetPhoneNumberActivity" />
-        <activity
-            android:name=".Fragments.CategorySearchActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".Fragments.MessageDetailActivity" />
-        <activity android:name=".Purchase.SellerDetailActivity" />
-        <activity android:name=".User.MyCouponDetailActivity"></activity>
+        <activity android:name=".Purchase.CouponPurchaseActivity"></activity>
     </application>
 
 </manifest>

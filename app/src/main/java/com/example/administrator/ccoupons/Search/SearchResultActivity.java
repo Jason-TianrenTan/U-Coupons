@@ -2,10 +2,11 @@ package com.example.administrator.ccoupons.Search;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,52 +20,78 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.bumptech.glide.Glide;
+import com.example.administrator.ccoupons.Category;
+import com.example.administrator.ccoupons.Connections.ImageFetchr;
+import com.example.administrator.ccoupons.Connections.SearchThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Fragments.CategoryAdapter;
+import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.Main.LoginActivity;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;
+import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.Exchanger;
 
 public class SearchResultActivity extends AppCompatActivity {
 
-
-    private String catId;
-    private RecyclerView recyclerView;
-    private String requestString;
     private String resultString;
-    private static final int SEARCH_MAX_RESULT = 10;//最大获取结果数
+    private static final String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
+    private static final int SEARCH_MAX_RESULT = 5;//最大获取结果数
     private ArrayList<Coupon> couponResults;
     private ResultAdapter adapter;
+    private SearchThread thread;
     private CustomDialog customDialog;
-    private EditText editText;
-    private TextView sortByDateButton, price_sortText, eval_sortText, specialText;
-    private ImageView price_img, eval_img;
-    private LinearLayout sortByPriceButton, sortByEvalButton;
+    private Handler handler = new Handler() {
 
-    private boolean pricePressed = false, evalPressed = false;
-    private int priceStat = 0, evalStat = 0; // 0 ascend 1 descend
-    private int[] resId = {R.drawable.sort_ascend, R.drawable.sort_descend};
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MessageType.CONNECTION_ERROR:
+                    Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    customDialog.dismiss();
+                    break;
+                case MessageType.CONNECTION_TIMEOUT:
+                    Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                    customDialog.dismiss();
+                    break;
+                case MessageType.CONNECTION_SUCCESS:
+                    parseMessage(thread.getResponse());
+                    customDialog.dismiss();
+                    break;
+            }
+        }
+    };
+
+    /*
+    [
+
+    {"model": "UHuiWebApp.coupon", "pk": "002", "fields": {"brandid": 2, "catid": 1, "listprice": "1", "value": "1", "product": "\u542e\u6307\u539f\u5473\u9e21", "discount": "30", "stat": "onSale", "pic": null, "expiredtime": null}},
+    {"model": "UHuiWebApp.coupon", "pk": "03", "fields": {"brandid": 3, "catid": 1, "listprice": "1", "value": "1", "product": "\u9ea6\u8fa3\u9e21\u7fc5", "discount": "10", "stat": "onSale", "pic": null, "expiredtime": null}}]
+     */
 
     //处理返回回来的json
     private void parseMessage(String response) {
         resultString = response;
-        clear();
         requestResults(0);
-        resetAdapter();
         customDialog.dismiss();
+        //TODO:
+
     }
 
-    private void bindViews() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_result);
+
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_result_toolbar);
         setSupportActionBar(toolbar);
@@ -78,7 +105,7 @@ public class SearchResultActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //edittext
-        editText = (EditText) findViewById(R.id.input_search_result);
+        EditText editText = (EditText) findViewById(R.id.input_search_result);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,153 +113,29 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
 
-        price_img = (ImageView) findViewById(R.id.imageview_sort_price);
-        eval_img = (ImageView) findViewById(R.id.imageview_sort_eval);
-        price_sortText = (TextView) findViewById(R.id.textview_sort_price);
-        eval_sortText = (TextView) findViewById(R.id.textview_sort_eval);
-
-        sortByDateButton = (TextView) findViewById(R.id.sort_date_button);
-        sortByEvalButton = (LinearLayout) findViewById(R.id.sort_eval_button);
-        sortByPriceButton = (LinearLayout) findViewById(R.id.sort_listprice_button);
-        sortByDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pricePressed = false;
-                evalPressed = false;
-                priceStat = 0;
-                clearStats();
-                requestSort("expiredtime");
-                sortByDateButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-            }
-        });
-        sortByEvalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String type = null;
-                pricePressed = false;
-                clearStats();
-                eval_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                if (evalPressed) {
-                    evalStat = 1 - evalStat;
-                    int id = resId[evalStat];
-                    eval_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), id));
-
-                    if (evalStat == 0)
-                        requestSort("value");
-                    else
-                        requestSort("-value");
-                } else {
-                    evalPressed = true;
-                    eval_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort_ascend));
-                    requestSort("value");
-                }
-            }
-        });
-
-        sortByPriceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                evalPressed = false;
-                clearStats();
-                price_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                if (pricePressed) {
-                    priceStat = 1 - priceStat;
-                    int id = resId[priceStat];
-                    price_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), id));
-
-                    if (priceStat == 0)
-                        requestSort("listprice");
-                    else
-                        requestSort("-listprice");
-                } else {
-                    pricePressed = true;
-                    price_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort_ascend));
-                    requestSort("listprice");
-                }
-            }
-        });
-    }
-
-    private void requestSort(String type) {
-        String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
-        HashMap<String, String> map = new HashMap<>();
-        map.put("keyWord", requestString);
-        map.put("order", type);
-        if (catId != null && catId.length() > 0) {
-            url = DataHolder.base_URL + DataHolder.requestCatSearch_URL;
-            map.put("category", catId);
-        }
-
-
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                System.out.println("Response = " + response);
-                parseMessage(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-
-            }
-
-            @Override
-            public void onConnectionFailed() {
-
-            }
-        });
-        connectionManager.connect();
-    }
-
-    private void clearStats() {
-        sortByDateButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
-        eval_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
-        price_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
-        price_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort));
-        eval_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_result);
-
-        catId = getIntent().getStringExtra("categoryId");
-        bindViews();
+        String requestString = getIntent().getStringExtra("search_string");
+        editText.setText(requestString);
 
         couponResults = new ArrayList<>();
         setUpAdapter();
 
-        requestString = getIntent().getStringExtra("search_string");
-        editText.setText(requestString);
-
-        requestSort("");
+        thread = new SearchThread(url, requestString, handler, getApplicationContext());
+        thread.start();
         customDialog = new CustomDialog(this, R.style.CustomDialog);
         customDialog.show();
 
     }
 
-    private void clear() {
-        int size = couponResults.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                couponResults.remove(0);
-            }
 
-            adapter.notifyItemRangeRemoved(0, size);
-            adapter.notifyDataSetChanged();
-        }
-
-    }
-
-    private void resetAdapter() {
-
+    private void setUpAdapter() {
         adapter = new ResultAdapter(couponResults);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.search_result_recyclerview);
         recyclerView.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         //endless listener
-        recyclerView.addOnScrollListener(new EndlessOnScrollListener((LinearLayoutManager)recyclerView.getLayoutManager()) {
+        recyclerView.addOnScrollListener(new EndlessOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
                 System.out.println("CurrentPage = " + currentPage);
@@ -241,16 +144,9 @@ public class SearchResultActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpAdapter() {
-        recyclerView = (RecyclerView) findViewById(R.id.search_result_recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        resetAdapter();
-    }
-
 
     private void requestResults(int start) {
-        System.out.println("request results at index = " + start);
+
         int count = 0;
         try {
             JSONObject jsObj = new JSONObject(resultString);
@@ -260,10 +156,9 @@ public class SearchResultActivity extends AppCompatActivity {
                     break;
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Coupon coupon = Coupon.decodeFromJSON(jsonObject);
-                System.out.println("Decoding coupon id = " + coupon.getCouponId());
-                couponResults.add(coupon);
+                adapter.addCoupon(coupon);
+                adapter.notifyDataSetChanged();
             }
-            adapter.notifyDataSetChanged();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -286,7 +181,7 @@ public class SearchResultActivity extends AppCompatActivity {
             //Card Item
             CardView cardView;
             ImageView imageView;
-            TextView nameText, priceText, detailText, specialText;
+            TextView nameText, priceText, detailText;
 
             public ResultViewHolder(View view) {
                 super(view);
@@ -295,7 +190,6 @@ public class SearchResultActivity extends AppCompatActivity {
                 nameText = view.findViewById(R.id.coupon_name_text);
                 priceText = view.findViewById(R.id.coupon_price_text);
                 detailText = view.findViewById(R.id.coupon_detail_text);
-                specialText = view.findViewById(R.id.coupon_special_word);
             }
 
         }
@@ -311,20 +205,18 @@ public class SearchResultActivity extends AppCompatActivity {
             holder.nameText.setText(coupon.getName());
             holder.detailText.setText(coupon.getExpireDate());
             holder.priceText.setText(coupon.getListPrice() + "");
-            holder.specialText.setText(coupon.getWord());
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(SearchResultActivity.this, CouponDetailActivity.class);
                     intent.putExtra("Coupon", coupon);
-                    intent.putExtra("type", "purchase");
                     startActivity(intent);
                 }
             });
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
+            String url = DataHolder.base_URL + coupon.getImgURL();
             ImageManager.GlideImage(url, holder.imageView);
         }
 
