@@ -22,6 +22,8 @@ import java.util.HashMap;
 
 public abstract class CouponCommonActivity extends AppCompatActivity {
 
+
+    private boolean hook = false;
     private Toolbar toolbar;
     private FrameLayout frameView;
     private UserCouponInfoAdapter adapter;
@@ -107,6 +109,7 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
                 jsonArray = jsonObject.getJSONArray("soldList");
             }
             if (str.indexOf("likeList") != -1) {
+                hook = true;
                 jsonArray = jsonObject.getJSONArray("likeList");
             }
 
@@ -115,12 +118,18 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.common_frame, commonFragment);
             fragmentTransaction.add(R.id.common_frame, emptyFragment);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("coupons", couponList);
+            if (hook)
+                bundle.putSerializable("hook", "hook");
+            commonFragment.setArguments(bundle);
             if (couponList.size() > 0) {
                 fragmentTransaction.hide(emptyFragment);
                 fragmentTransaction.show(commonFragment);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("coupons", couponList);
-                commonFragment.setArguments(bundle);
+
+                System.out.println("couponlist = " + couponList.size());
+
                 //    commonFragment.setData(couponList);
             } else {
                 fragmentTransaction.show(emptyFragment);
@@ -145,6 +154,7 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
                 coupon.setEvaluatePrice(Double.parseDouble(obj.getString("value")));
                 coupon.setExpireDate(obj.getString("expiredtime"));
                 coupon.setDiscount(obj.getString("discount"));
+                coupon.setImgURL(obj.getString("pic"));
                 couponList.add(coupon);
                 System.out.println("parsing " + obj.toString());
             }

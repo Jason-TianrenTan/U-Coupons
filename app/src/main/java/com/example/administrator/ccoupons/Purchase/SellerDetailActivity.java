@@ -2,6 +2,7 @@ package com.example.administrator.ccoupons.Purchase;
 
 import android.media.Image;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,8 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.ImageManager;
 
+import org.w3c.dom.Text;
 public class SellerDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener{
 
 
@@ -31,6 +36,11 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
 
     private TextView sellerNameText;
     private ImageView sellerAvatar;
+    private TextView onsaleText, soldText;
+
+    private LinearLayout scrollBar;
+    private Fragment fr1, fr2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +48,22 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
         setContentView(R.layout.activity_seller_detail);
 
         bindViews();
+        initViews();
+
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
+
+    }
+
+
+    private void initViews() {
+
+        String url = DataHolder.base_URL + "/static/" + getIntent().getStringExtra("avatar");
+        System.out.println("url = " + url);
+        String name = getIntent().getStringExtra("nickname");
+        sellerNameText.setText(name);
+        sellerAvatar.setImageResource(R.drawable.testportrait);
+        ImageManager.GlideImage(((MyApp)getApplicationContext()).getAvatar(), sellerAvatar, getApplicationContext());
     }
 
 
@@ -50,7 +74,7 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
         mAppBarLayout   = (AppBarLayout) findViewById(R.id.main_appbar);
 
         sellerNameText  = (TextView) findViewById(R.id.seller_name_text);
-        sellerAvatar = (ImageView) findViewById(R.id.seller_avatar_img);
+        sellerAvatar = (ImageView) findViewById(R.id.seller_avatar_imageview);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,6 +86,14 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
             }
         });
 
+        scrollBar = (LinearLayout) findViewById(R.id.seller_coupon_scrollbar);
+        onsaleText = (TextView) findViewById(R.id.seller_onsale_text);
+        soldText = (TextView) findViewById(R.id.seller_sold_text);
+    }
+
+
+    //获取卖家信息
+    private void requestData() {
 
     }
 

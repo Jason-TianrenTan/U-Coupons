@@ -62,7 +62,48 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whitesmoke"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/ViewPageHeaderStyle"
+                    android:id="@+id/seller_onsale_text"
+                    android:text="正在出售的优惠券"
+                    android:paddingBottom="12dp"
+                    />
+                <TextView
+                    style="@style/ViewPageHeaderStyle"
+                    android:id="@+id/seller_sold_text"
+                    android:text="已出售的优惠券"
+                    android:paddingBottom="12dp"
+                    />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/whitesmoke"/>
+
+                <LinearLayout
+                    android:id="@+id/seller_coupon_scrollbar"
+                    android:background="@color/colorPrimary"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp" />
+            </FrameLayout>
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/seller_coupon_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -104,19 +145,31 @@
     </android.support.v7.widget.Toolbar>
 
     <com.example.administrator.ccoupons.Tools.XCRoundImageView
-        android:id="@+id/seller_avatar_img"
+        android:id="@+id/seller_avatar_imageview"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="16dp"
         android:src="@mipmap/android"
-        app:border_color="@android:color/white"
-        app:border_width="2dp"
         app:finalHeight="32dp"
         app:finalXPosition="12dp"
         app:finalYPosition="12dp"
         app:finalToolbarHeight="?attr/actionBarSize"
-        app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior"
-        />
+        app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior" />
+
+    <!--
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="top|center_horizontal">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/testportrait"/>
+
+
+
+    </FrameLayout> -->
 
 </android.support.design.widget.CoordinatorLayout>

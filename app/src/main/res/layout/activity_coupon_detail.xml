@@ -131,15 +131,28 @@
                                 android:layout_marginBottom="15dp"
                                 android:text="出售者：" />
 
-                            <TextView
-                                android:id="@+id/coupon_detail_seller_name"
-                                style="@style/coupon_detail_text"
-                                android:text="陈乌金" />
+                            <LinearLayout
+                                android:id="@+id/to_seller_button"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="5"
+                                android:orientation="horizontal">
 
-                            <com.example.administrator.ccoupons.Tools.XCRoundImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:id="@+id/seller_avatar_img"/>
+                                <TextView
+                                    android:id="@+id/coupon_detail_seller_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="陈乌金"
+                                    android:textColor="@color/darkgray"
+                                    android:textSize="20dp" />
+
+                                <com.example.administrator.ccoupons.Tools.XCRoundImageView
+                                    android:id="@+id/seller_avatar_img"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_gravity="center"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp" />
+                            </LinearLayout>
                         </LinearLayout>
 
 
@@ -187,9 +200,9 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/page_anchor"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:id="@+id/page_anchor"/>
+                        android:layout_height="45dp" />
                 </LinearLayout>
 
 

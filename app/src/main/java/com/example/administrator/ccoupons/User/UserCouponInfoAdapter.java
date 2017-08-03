@@ -26,6 +26,7 @@ import java.util.Random;
 public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
 
+    boolean hook = false;
     int index = 0;
     private Context mContext;
     private ArrayList<Coupon> mUserCouponInfoList;
@@ -55,6 +56,10 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         System.out.println("At set index = " + i);
     }
 
+    public void hook() {
+        hook = true;
+    }
+
     public UserCouponInfoAdapter(ArrayList<Coupon> cList) {
         this.mUserCouponInfoList = cList;
     }
@@ -66,15 +71,22 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.usercouponinfo_item, parent, false);
         final UserCouponInfoAdapter.UserCouponInfoViewHolder holder = new UserCouponInfoAdapter.UserCouponInfoViewHolder(view);
-        if (index > 0) {
+        if (index > 0 || hook) {
             holder.rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = holder.getAdapterPosition();
                     Coupon coupon = mUserCouponInfoList.get(position);
-                    Intent intent = new Intent(mContext.getApplicationContext(), MyCouponDetailActivity.class);
+                    Intent intent;
+                    if (hook) {
+                        intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
+                        intent.putExtra("type", "purchase");
+                    } else {
+                        intent = new Intent(mContext.getApplicationContext(), MyCouponDetailActivity.class);
+                        intent.putExtra("type", "show");
+                    }
                     intent.putExtra("Coupon", coupon);
-                    intent.putExtra("type", "show");
+
                     intent.putExtra("index", index + "");
                     mContext.startActivity(intent);
                     Intent broadcastIntent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");

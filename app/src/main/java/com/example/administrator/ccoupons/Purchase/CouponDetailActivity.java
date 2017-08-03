@@ -45,6 +45,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     private Coupon coupon;
     private ImageView mImageView;
     private ImageView mainButton, followButton, purchaseButton;
+    private LinearLayout toSellerButton;
 
     private ObservableScrollView mScrollView;
     private Toolbar mToolbarView;
@@ -281,7 +282,19 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         constaintsText = (TextView) findViewById(R.id.coupon_detail_constraints_text);
         sellerNameText = (TextView) findViewById(R.id.coupon_detail_seller_name);
         sellerAvatar = (ImageView) findViewById(R.id.seller_avatar_img);
+        toSellerButton = (LinearLayout) findViewById(R.id.to_seller_button);
 
+
+        //进入到商家信息界面
+        toSellerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CouponDetailActivity.this, SellerDetailActivity.class);
+                intent.putExtra("nickname", coupon.getSellerNickname());
+                intent.putExtra("avatar", coupon.getSellerAvatarURL());
+                startActivity(intent);
+            }
+        });
     }
 
 
