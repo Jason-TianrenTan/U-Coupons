@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <TextView
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="这是一条与预搜索结果"
-            android:textSize="17dp"/>
+            android:textSize="16dp"/>
 
     </LinearLayout>
 

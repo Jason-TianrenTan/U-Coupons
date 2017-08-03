@@ -37,7 +37,7 @@
 
         <TextView
             style="@style/ViewPageHeaderStyle"
-            android:id="@+id/unused_title_text"
+            android:id="@+id/used_title_text"
             android:text="未使用"
             android:paddingBottom="12dp"
             />

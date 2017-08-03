@@ -3,8 +3,8 @@ package com.example.administrator.ccoupons.Search;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.*;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +39,19 @@ public class PreSearchFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+
+        android.support.v7.widget.DividerItemDecoration dividerItemDecoration = new android.support.v7.widget.DividerItemDecoration(getActivity(), layoutManager.getOrientation());
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.category_divider));
+        recyclerView.addItemDecoration(dividerItemDecoration);
         return view;
     }
 
-    public void initData() {
+    public void upDate(ArrayList<String> arrayList) {
+        this.preList = arrayList;
+        adapter = new PreSearchAdapter(preList);
+        recyclerView.setAdapter(adapter);
+    }
+    private void initData() {
         preList = new ArrayList<>();
     }
 

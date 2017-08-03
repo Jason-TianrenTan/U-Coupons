@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         
@@ -14,8 +16,8 @@
 
             <ImageView
                 android:layout_margin="5dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:src="@drawable/search_icon_big"/>
 
@@ -32,11 +34,15 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v4.widget.NestedScrollView
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/presearch_recyclerview"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:nestedScrollingEnabled="false"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

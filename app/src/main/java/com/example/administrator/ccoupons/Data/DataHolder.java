@@ -34,36 +34,23 @@ public class DataHolder {
 
     public static final String postBanner_URL = "/post_getBanner";//获取轮播图
     public static final String postRecommend_URL = "/post_homepageCoupon";//主页推荐
-    public static final String requestCatSearch_URL = "/post_searchByCategory";//按分类搜索
+
 
     public static final String postChangeCouponState_URL = "/post_changeCouponStat";//换优惠券状态
 
     public static final String postGetEvaluation_URL = "/post_getValue";//获取估值
     public static final String postAddCoupon_URL = "/post_addCoupon";//添加优惠券
 
-    public static final String getOwnList_URL = "/post_getOwnList";//获取我的优惠券
+    public static final String requestOwnList_URL = "/post_getOwnList";//获取我的优惠券
 
-
-    public static class Banners {
-        public static String[] nameList = "Coupon1,Coupon2,Coupon3,Coupon4,Coupon5,Coupon6,Coupon7".split(",");
-        public static String[] detailList = "Title1,Title2,Title3,Title4,Title5,Title6,Title7".split(",");
-        public static int[] covers = {R.mipmap.ic_cover_1, R.mipmap.ic_cover_2, R.mipmap.ic_cover_3, R.mipmap.ic_cover_4,
-                R.mipmap.ic_cover_5, R.mipmap.ic_cover_6, R.mipmap.ic_cover_7};
-    }
+    public static final String requestCatRecommend_URL = "/post_searchByCategory";//分类推荐
+    public static final String requestCatSearch_URL = "/post_searchInCertainCategory";//按分类搜索
 
 
     public static class Categories {
         public static String[] nameList = "生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
         public static int[] covers = {R.drawable.category_daily, R.drawable.category_decorate, R.drawable.category_sports, R.drawable.category_furnitures,
                 R.drawable.category_electronics, R.drawable.category_cloths, R.drawable.category_travel, R.drawable.category_food};
-    }
-
-    public static class History {
-        public static String requestData(int index) {
-            return historyList[index];
-        }
-
-        public static String[] historyList = ("history1,h2,str3,a4,c5,v6,k7,s8,o9,i10,g234").split(",");
     }
 
     //用户信息

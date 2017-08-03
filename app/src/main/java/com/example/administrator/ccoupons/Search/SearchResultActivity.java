@@ -3,6 +3,8 @@ package com.example.administrator.ccoupons.Search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,27 +37,35 @@ import java.util.concurrent.Exchanger;
 
 public class SearchResultActivity extends AppCompatActivity {
 
+
+    private String catId;
+    private RecyclerView recyclerView;
+    private String requestString;
     private String resultString;
     private static final String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
-    private static final int SEARCH_MAX_RESULT = 3;//最大获取结果数
+    private static final int SEARCH_MAX_RESULT = 10;//最大获取结果数
     private ArrayList<Coupon> couponResults;
     private ResultAdapter adapter;
     private CustomDialog customDialog;
+    private EditText editText;
+    private TextView sortByDateButton, price_sortText, eval_sortText;
+    private ImageView price_img, eval_img;
+    private LinearLayout sortByPriceButton, sortByEvalButton;
+
+    private boolean pricePressed = false, evalPressed = false;
+    private int priceStat = 0, evalStat = 0; // 0 ascend 1 descend
+    private int[] resId = {R.drawable.sort_ascend, R.drawable.sort_descend};
 
     //处理返回回来的json
     private void parseMessage(String response) {
         resultString = response;
+        clear();
         requestResults(0);
+        resetAdapter();
         customDialog.dismiss();
-        //TODO:
-
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_result);
-
+    private void bindViews() {
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_result_toolbar);
         setSupportActionBar(toolbar);
@@ -67,7 +79,7 @@ public class SearchResultActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //edittext
-        EditText editText = (EditText) findViewById(R.id.input_search_result);
+        editText = (EditText) findViewById(R.id.input_search_result);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,13 +87,127 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
 
-        String requestString = getIntent().getStringExtra("search_string");
-        editText.setText(requestString);
+        price_img = (ImageView) findViewById(R.id.imageview_sort_price);
+        eval_img = (ImageView) findViewById(R.id.imageview_sort_eval);
+        price_sortText = (TextView) findViewById(R.id.textview_sort_price);
+        eval_sortText = (TextView) findViewById(R.id.textview_sort_eval);
+
+        sortByDateButton = (TextView) findViewById(R.id.sort_date_button);
+        sortByEvalButton = (LinearLayout) findViewById(R.id.sort_eval_button);
+        sortByPriceButton = (LinearLayout) findViewById(R.id.sort_listprice_button);
+        sortByDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pricePressed = false;
+                evalPressed = false;
+                priceStat = 0;
+                clearStats();
+                sortByDateButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            }
+        });
+        sortByEvalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String type = null;
+                pricePressed = false;
+                clearStats();
+                eval_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                if (evalPressed) {
+                    evalStat = 1 - evalStat;
+                    int id = resId[evalStat];
+                    eval_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), id));
+
+                    if (evalStat == 0)
+                        requestSort("value");
+                    else
+                        requestSort("-value");
+                } else {
+                    evalPressed = true;
+                    eval_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort_ascend));
+                    requestSort("value");
+                }
+            }
+        });
+
+        sortByPriceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                evalPressed = false;
+                clearStats();
+                price_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                if (pricePressed) {
+                    priceStat = 1 - priceStat;
+                    int id = resId[priceStat];
+                    price_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), id));
+
+                    if (priceStat == 0)
+                        requestSort("listprice");
+                    else
+                        requestSort("-listprice");
+                } else {
+                    pricePressed = true;
+                    price_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort_ascend));
+                    requestSort("listprice");
+                }
+            }
+        });
+    }
+
+    private void requestSort(String type) {
+        String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
+        HashMap<String, String> map = new HashMap<>();
+        map.put("keyWord", requestString);
+        map.put("order", type);
+        if (catId != null && catId.length() > 0) {
+            url = DataHolder.base_URL + DataHolder.requestCatSearch_URL;
+            map.put("category", catId);
+        }
+
+
+        ConnectionManager connectionManager = new ConnectionManager(url, map);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                System.out.println("Response = " + response);
+                parseMessage(response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+
+            }
+
+            @Override
+            public void onConnectionFailed() {
+
+            }
+        });
+        connectionManager.connect();
+    }
+
+    private void clearStats() {
+        sortByDateButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        eval_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        price_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        price_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort));
+        eval_img.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sort));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_result);
+
+        catId = getIntent().getStringExtra("categoryId");
+        bindViews();
 
         couponResults = new ArrayList<>();
         setUpAdapter();
 
-        HashMap<String,String> map = new HashMap<>();
+        requestString = getIntent().getStringExtra("search_string");
+        editText.setText(requestString);
+
+        HashMap<String, String> map = new HashMap<>();
         map.put("keyWord", requestString);
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -109,16 +235,26 @@ public class SearchResultActivity extends AppCompatActivity {
 
     }
 
+    private void clear() {
+        int size = couponResults.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                couponResults.remove(0);
+            }
 
-    private void setUpAdapter() {
+            adapter.notifyItemRangeRemoved(0, size);
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void resetAdapter() {
+
         adapter = new ResultAdapter(couponResults);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.search_result_recyclerview);
         recyclerView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
 
         //endless listener
-        recyclerView.addOnScrollListener(new EndlessOnScrollListener(layoutManager) {
+        recyclerView.addOnScrollListener(new EndlessOnScrollListener((LinearLayoutManager)recyclerView.getLayoutManager()) {
             @Override
             public void onLoadMore(int currentPage) {
                 System.out.println("CurrentPage = " + currentPage);
@@ -127,9 +263,16 @@ public class SearchResultActivity extends AppCompatActivity {
         });
     }
 
+    private void setUpAdapter() {
+        recyclerView = (RecyclerView) findViewById(R.id.search_result_recyclerview);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        resetAdapter();
+    }
+
 
     private void requestResults(int start) {
-
+        System.out.println("request results at index = " + start);
         int count = 0;
         try {
             JSONObject jsObj = new JSONObject(resultString);
@@ -139,9 +282,10 @@ public class SearchResultActivity extends AppCompatActivity {
                     break;
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Coupon coupon = Coupon.decodeFromJSON(jsonObject);
-                adapter.addCoupon(coupon);
-                adapter.notifyDataSetChanged();
+                System.out.println("Decoding coupon id = " + coupon.getCouponId());
+                couponResults.add(coupon);
             }
+            adapter.notifyDataSetChanged();
 
         } catch (Exception e) {
             e.printStackTrace();

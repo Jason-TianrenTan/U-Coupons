@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.Search;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
@@ -145,6 +146,10 @@ public class SearchHistoryFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //TODO: 启动，用historyString
+                        Intent intent = new Intent(getActivity(), SearchResultActivity.class);
+                        intent.putExtra("search_string", historyString);
+                        startActivity(intent);
+                        addHistory(historyString);
                     }
                 });
             }

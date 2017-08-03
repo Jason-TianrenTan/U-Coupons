@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 
-public class UnusedCouponFragment extends Fragment {
+public class UsedCouponFragment extends Fragment {
 
 
     private UserCouponInfoAdapter adapter;
@@ -35,19 +35,13 @@ public class UnusedCouponFragment extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.unused_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+
+        mCouponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
         adapter = new UserCouponInfoAdapter(mCouponList);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
-    public void setData(ArrayList<Coupon> cList) {
 
-        this.mCouponList = cList;
-
-    }
-
-    public UnusedCouponFragment() {
-
-    }
 
 }
