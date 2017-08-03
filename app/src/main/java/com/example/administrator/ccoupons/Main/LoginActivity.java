@@ -244,11 +244,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onConnectionTimeOut() {
                 Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+                handler.sendMessage(new Message());
             }
 
             @Override
             public void onConnectionFailed() {
                 Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+                handler.sendMessage(new Message());
             }
         });
         connectionManager.connect();

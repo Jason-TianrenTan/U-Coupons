@@ -1,20 +1,36 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.util.HashMap;
 
 public class AddCouponActivity extends AppCompatActivity {
 
@@ -23,6 +39,7 @@ public class AddCouponActivity extends AppCompatActivity {
             couponConstraintsText;
     private EditText couponListPriceText;
     private ImageView couponImg;
+    private TextView nextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +58,7 @@ public class AddCouponActivity extends AppCompatActivity {
             StringBuilder sb = new StringBuilder("");
             String[] constraints = coupon.getConstraints();
             for (int i = 0; i < constraints.length; i++) {
-                sb.append((i+1) + ". " + constraints[i] + "\n");
+                sb.append((i + 1) + ". " + constraints[i] + "\n");
             }
             couponConstraintsText.setText(sb.toString());
         }
@@ -51,7 +68,36 @@ public class AddCouponActivity extends AppCompatActivity {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
     }
 
+
+    private void requestAddCoupon() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userID", ((MyApp) getApplicationContext()).getUserId());
+        map.put("brand", coupon.getBrandName());
+        map.put("category", coupon.getCategory());
+        map.put("expiredTime", coupon.getExpireDate());
+        map.put("listPrice", couponListPriceText.getText().toString());
+        map.put("product", coupon.getName());
+        map.put("discount", coupon.getDiscount());
+        //    map.put("pic", coupon.getImgURL());
+        new UpLoadCoupon(map, coupon.getConstraints(), coupon.getImgURL()).execute();
+    }
+
+
     private void bindViews() {
+
+        nextButton = (TextView) findViewById(R.id.form_preview_next);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (couponListPriceText.getText().toString().length() == 0) {
+                    Toast.makeText(getApplicationContext(), "请输入价格!", Toast.LENGTH_SHORT).show();
+                } else {
+                    //请求添加优惠券
+                    requestAddCoupon();
+                }
+            }
+        });
+
         couponEvalText = (TextView) findViewById(R.id.textview_coupon_eval);
         couponListPriceText = (EditText) findViewById(R.id.edittext_coupon_listprice);
         couponImg = (ImageView) findViewById(R.id.purchase_coupon_img);
@@ -60,5 +106,67 @@ public class AddCouponActivity extends AppCompatActivity {
         couponBrandText = (TextView) findViewById(R.id.coupon_brand_textview);
         couponCatText = (TextView) findViewById(R.id.coupon_cat_textview);
         couponConstraintsText = (TextView) findViewById(R.id.purchase_constraints_text);
+    }
+
+
+    public class UpLoadCoupon extends AsyncTask<Void, Integer, String> {
+
+        private HashMap<String, String> map;
+        private String[] list;
+        private String filepath;
+        String url = DataHolder.base_URL + DataHolder.postAddCoupon_URL;
+
+        public UpLoadCoupon(HashMap<String, String> map, String[] constraintList, String url) {
+            this.map = map;
+            this.list = constraintList;
+            this.filepath = url;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            uploadFile(filepath);
+            return null;
+        }
+
+        protected void onPostExecute(String result) {
+
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        // upload photos
+        public void uploadFile(String uploadFile) {
+            try {
+                System.out.println("On upload...");
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(url);
+                MultipartEntity mpEntity = new MultipartEntity();
+                File file = new File(uploadFile);
+                ContentBody cbFile = new FileBody(file);
+
+                for (HashMap.Entry<String, String> entry : map.entrySet()) {
+                    String key = entry.getKey(),
+                            value = entry.getValue();
+                    mpEntity.addPart(key, new StringBody(value));
+                }
+                for (int i = 0; i < list.length; i++) {
+                    mpEntity.addPart("limit[]", new StringBody(list[i]));
+                }
+                mpEntity.addPart("imgFile", cbFile);
+
+                httppost.setEntity(mpEntity);
+                HttpResponse response = httpclient.execute(httppost);
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (200 == statusCode) {
+                    String result = EntityUtils.toString(response.getEntity());
+                    System.out.println(result);
+                }
+                httpclient.getConnectionManager().shutdown();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

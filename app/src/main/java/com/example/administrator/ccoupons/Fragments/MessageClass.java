@@ -29,6 +29,21 @@ public class MessageClass {
         this.messageList = msg;
         this.resId = R.drawable.message_icon;
     }
+
+    public MessageClass(String clsName) {
+        this.ClassName = clsName;
+        this.resId = R.drawable.message_icon;
+        this.messageList = new ArrayList<>();
+    }
+
+    public void add(Message msg) {
+        this.messageList.add(msg);
+    }
+
+    public void setMessageList(ArrayList<Message> list) {
+        this.messageList = list;
+    }
+
     public String getClassName() {
         return this.ClassName;
     }
@@ -36,7 +51,7 @@ public class MessageClass {
         return this.messageList;
     }
     public String getSubtitle() {
-        String ret = "反正你嫖不到的哟~";
+        String ret = "无消息哟";
         for (Message msg:messageList) {
             ret = msg.getCouponName();
         }
@@ -44,7 +59,7 @@ public class MessageClass {
     }
 
     public String getTime() {
-        String ret = "嫖不到了还在嫖";
+        String ret = " ";
         for (Message msg:messageList) {
             ret = msg.getTime();
         }

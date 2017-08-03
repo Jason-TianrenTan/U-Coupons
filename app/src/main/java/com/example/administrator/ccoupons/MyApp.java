@@ -6,7 +6,10 @@ package com.example.administrator.ccoupons;
 
 import android.app.Application;
 
+import com.example.administrator.ccoupons.Fragments.Message;
 import com.mob.MobApplication;
+
+import java.util.ArrayList;
 
 public class MyApp extends MobApplication {
     private static MyApp instance = null;
@@ -25,6 +28,9 @@ public class MyApp extends MobApplication {
         instance = this;
     }
 
+
+    private ArrayList<Message> messageList;
+
     private String location;
     private String userId;
     private int Ucoin;
@@ -32,6 +38,14 @@ public class MyApp extends MobApplication {
     private String avatar;
     private String phoneNumber;
     private int gender;
+
+    public ArrayList<Message> getMessageList() {
+        return this.messageList;
+    }
+
+    public void setMessageList(ArrayList<Message> messageList) {
+        this.messageList = messageList;
+    }
 
     public int getGender() {
         return this.gender;

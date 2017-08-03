@@ -18,6 +18,7 @@ public class RequestMessageThread extends Thread {
     private static String Request_URL = DataHolder.base_URL + DataHolder.requestMsg_URL;//TODO:请求url
     private String userId;
     public RequestMessageThread(Handler handler, Context context) {
+        System.out.println("Initialize request thread...");
         connection = new UHuiConnection(Request_URL, handler);
         MyApp app = (MyApp)context;
         userId = app.getUserId();

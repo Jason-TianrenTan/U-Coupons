@@ -23,68 +23,73 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        app:cardElevation="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-            <TextView
-                android:id="@+id/category_location_textview"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:paddingRight="5dp"
-                android:text="定位"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18dp" />
+                android:layout_gravity="center">
 
-            <ImageView
-                android:id="@+id/pos_img"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/category_location_textview"
-                android:src="@drawable/location_cat" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/category_location_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:paddingRight="5dp"
+                    android:text="定位"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18dp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="4"
-            android:padding="3dp">
+                <ImageView
+                    android:id="@+id/pos_img"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/category_location_textview"
+                    android:src="@drawable/location_cat" />
+            </RelativeLayout>
 
-            <EditText
-                android:id="@+id/cat_input_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/searchtext_bg"
-                android:drawableLeft="@drawable/search_icon"
-                android:drawablePadding="3dp"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:editable="false"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="4"
+                android:padding="3dp">
 
-                android:maxLines="1"
-                android:padding="5dp"
-                android:saveEnabled="false"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/cat_input_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/searchtext_bg"
+                    android:drawableLeft="@drawable/search_icon"
+                    android:drawablePadding="3dp"
+                    android:editable="false"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
 
-    </LinearLayout>
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:saveEnabled="false"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">

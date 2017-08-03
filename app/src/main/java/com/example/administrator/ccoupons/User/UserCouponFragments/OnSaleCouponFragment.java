@@ -39,9 +39,30 @@ public class OnSaleCouponFragment extends Fragment{
 
         mCouponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
         adapter = new UserCouponInfoAdapter(mCouponList);
+        adapter.setIndex(1);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
+
+    public void clear() {
+        int size = mCouponList.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                mCouponList.remove(0);
+            }
+
+            adapter.notifyItemRangeRemoved(0, size);
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public void update(ArrayList<Coupon> newList) {
+        mCouponList = newList;
+        adapter = new UserCouponInfoAdapter(mCouponList);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 
 }

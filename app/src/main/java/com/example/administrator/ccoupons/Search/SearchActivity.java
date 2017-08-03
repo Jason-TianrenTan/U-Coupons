@@ -174,7 +174,10 @@ public class SearchActivity extends AppCompatActivity {
         HashMap<String,String> map = new HashMap<String,String>();
         map.put("keyword", text);
         url = DataHolder.base_URL + DataHolder.requestPreSearch_URL;
-
+        if (catId != null && catId.length() > 0) {
+            url = DataHolder.base_URL + DataHolder.requestCatPreSearch_URL;
+            map.put("category", catId);
+        }
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override

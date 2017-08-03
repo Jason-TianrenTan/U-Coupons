@@ -38,8 +38,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
-    <service android:name=".Connections.MessageGetService" />
-
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -93,6 +91,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".Connections.MessageGetService" />
+
         <activity
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
@@ -114,9 +115,10 @@
         <activity android:name=".User.UserUpdateNicknameActivity" />
         <activity android:name=".User.UserUpdateGenderActivity" />
         <activity android:name=".AddCoupon.ChooseCategoryActivity" />
-        <activity android:name=".Fragments.CategorySearchActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-
+        <activity
+            android:name=".Fragments.CategorySearchActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".Fragments.MessageDetailActivity"></activity>
     </application>
 
 </manifest>
