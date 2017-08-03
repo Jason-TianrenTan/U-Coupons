@@ -47,6 +47,8 @@ public class DataHolder {
     public static final String requestCatSearch_URL = "/post_searchInCertainCategory";//按分类搜索
     public static final String requestCatPreSearch_URL = "/post_preSearchInCategory";//分类下预搜索
 
+    public static final String requestSellerInfo_URL = "/post_sellerInformation";//获取卖家信息
+
 
     public static class Categories {
         public static String[] nameList = "生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");

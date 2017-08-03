@@ -41,6 +41,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
     private String msgId = null;
     private boolean statType = false;
+    private boolean sigmaType = false;
     private int index = 0;
     private Coupon coupon;
     private ImageView mImageView;
@@ -80,6 +81,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
             else
                 inflateBottomStatView();
         }
+        if (type.equals("seller")) {
+            sigmaType = true;
+            inflateBottomPurchaseView();
+        }
         bindViews();
 
         setSupportActionBar(mToolbarView);
@@ -112,8 +117,14 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
             Intent intent = new Intent(CouponDetailActivity.this, UserMyCouponActivity.class);
             intent.putExtra("index", index + "");
             startActivity(intent);
-            finish();
-        } else finish();
+        }
+        if (sigmaType) {
+            Intent intent = new Intent(CouponDetailActivity.this, SellerDetailActivity.class);
+            intent.putExtra("index", index + "");
+            startActivity(intent);
+        }
+
+        finish();
     }
 
     private void inflateBottomPurchaseView() {
@@ -156,10 +167,13 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                         try {
                             JSONObject obj = new JSONObject(response);
                             String alreadyLike = obj.getString("result");
-                            if (alreadyLike.equals("already like"))
-                                Toast.makeText(getApplicationContext(), "已经关注过啦", Toast.LENGTH_SHORT).show();
-                            else
+                            if (alreadyLike.equals("dislike")) {
+                                Toast.makeText(getApplicationContext(), "取消关注", Toast.LENGTH_SHORT).show();
+                                followButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.follow));
+                            } else {
                                 Toast.makeText(getApplicationContext(), "关注成功", Toast.LENGTH_SHORT).show();
+                                followButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.follow_pressed));
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -292,6 +306,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                 Intent intent = new Intent(CouponDetailActivity.this, SellerDetailActivity.class);
                 intent.putExtra("nickname", coupon.getSellerNickname());
                 intent.putExtra("avatar", coupon.getSellerAvatarURL());
+                intent.putExtra("id", coupon.getSellerId());
                 startActivity(intent);
             }
         });
@@ -360,7 +375,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                 System.out.println("Response = " + response);
                 //卖家
                 sellerNameText.setText(coupon.getSellerNickname());
-            //    ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
+                //    ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
                 //商家 品牌
                 brandNameText.setText(coupon.getBrandName());
 

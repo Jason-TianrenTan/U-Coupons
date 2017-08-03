@@ -26,6 +26,7 @@ import java.util.Random;
 public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
 
+    boolean stub = false;
     boolean hook = false;
     int index = 0;
     private Context mContext;
@@ -60,6 +61,10 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         hook = true;
     }
 
+    public void stub() {
+        stub = true;
+    }
+
     public UserCouponInfoAdapter(ArrayList<Coupon> cList) {
         this.mUserCouponInfoList = cList;
     }
@@ -71,7 +76,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.usercouponinfo_item, parent, false);
         final UserCouponInfoAdapter.UserCouponInfoViewHolder holder = new UserCouponInfoAdapter.UserCouponInfoViewHolder(view);
-        if (index > 0 || hook) {
+        if (index > 0 || hook || stub) {
             holder.rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -79,11 +84,18 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
                     Coupon coupon = mUserCouponInfoList.get(position);
                     Intent intent;
                     if (hook) {
+                        //关注
                         intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
                         intent.putExtra("type", "purchase");
                     } else {
-                        intent = new Intent(mContext.getApplicationContext(), MyCouponDetailActivity.class);
-                        intent.putExtra("type", "show");
+                        if (stub && index == 0) {
+                            //卖家购买列表
+                            intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
+                            intent.putExtra("type", "seller");
+                        } else {
+                            intent = new Intent(mContext.getApplicationContext(), MyCouponDetailActivity.class);
+                            intent.putExtra("type", "show");
+                        }
                     }
                     intent.putExtra("Coupon", coupon);
 
