@@ -69,30 +69,8 @@
                 android:text="已出售的优惠券" />
 
         </LinearLayout>
- <!--
-    <com.example.administrator.ccoupons.Tools.XCRoundImageView
-        android:id="@+id/seller_avatar_imageview"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/mascot_nothing"
-        app:finalHeight="32dp"
-        app:finalXPosition="12dp"
-        app:finalYPosition="12dp"
-        app:finalToolbarHeight="?attr/actionBarSize"
-        app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior" />
--->
-    <!--
-    <FrameLayout
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="top|center_horizontal">
 
-        <ImageView
-=======
         <FrameLayout
->>>>>>> ttr
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -117,4 +95,3 @@
 
     </LinearLayout>
 </LinearLayout>
-        -->

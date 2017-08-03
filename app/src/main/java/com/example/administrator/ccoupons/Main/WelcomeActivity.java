@@ -46,8 +46,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
                 System.out.println("Response = " + response);
-                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
-                        "\n密码:" + password, Toast.LENGTH_SHORT).show();
+                System.out.println("登录成功\n账号:" + username + "\n密码:" + password);
                 app.setNickname(nickname);
                 app.setUcoin(UB);
                 if (!avatar.equals("null")) {
@@ -149,4 +148,3 @@ public class WelcomeActivity extends AppCompatActivity {
         register.startAnimation(animation);
     }
 }
-

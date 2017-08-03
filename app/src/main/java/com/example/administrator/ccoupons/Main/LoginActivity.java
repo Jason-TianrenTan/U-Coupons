@@ -75,8 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
                 System.out.println("Response = " + response);
-                Toast.makeText(getApplicationContext(), "登录成功\n账号:" + myUsername +
-                        "\n密码:" + myPassword, Toast.LENGTH_SHORT).show();
+                System.out.println("登录成功\n账号:" + myUsername + "\n密码:" + myPassword);
 
                 String nickname = jsonObject.getString("nickname");
                 String avatar = jsonObject.getString("avatar");
@@ -104,16 +103,14 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-        }
-        else {
+        } else {
             if (response.indexOf("error") != -1) {
                 System.out.println("Login failed");
                 Message msg = new Message();
                 msg.what = MessageType.REENABLE_LOGIN;
                 handler.sendMessage(msg);
                 Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Message msg = new Message();
                 msg.what = MessageType.CONNECTION_ERROR;
                 handler.sendMessage(msg);
@@ -226,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
         myUsername = username;
         myPassword = password;
         String md5pass = null;
-        HashMap<String,String> map = new HashMap<String,String>();
+        HashMap<String, String> map = new HashMap<String, String>();
         map.put("username", username);
         try {
             md5pass = new PasswordEncoder().EncodeByMd5(password);
