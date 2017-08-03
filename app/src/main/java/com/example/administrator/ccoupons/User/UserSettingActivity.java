@@ -26,15 +26,6 @@ public class UserSettingActivity extends SlideBackActivity {
         setContentView(R.layout.activity_user_setting);
         initView();
         setOnClickListeners();
-
-        //test
-        Button button = (Button) findViewById(R.id.test);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserSettingActivity.this, QRcodeActivity.class));
-            }
-        });
     }
 
     private void initView(){

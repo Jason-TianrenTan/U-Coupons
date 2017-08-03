@@ -114,9 +114,10 @@
         <activity android:name=".User.UserUpdateNicknameActivity" />
         <activity android:name=".User.UserUpdateGenderActivity" />
         <activity android:name=".AddCoupon.ChooseCategoryActivity" />
-        <activity android:name=".User.ResetPhoneNumberActivity"></activity>
-        <activity android:name=".Fragments.CategorySearchActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name=".User.ResetPhoneNumberActivity" />
+        <activity
+            android:name=".Fragments.CategorySearchActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>
