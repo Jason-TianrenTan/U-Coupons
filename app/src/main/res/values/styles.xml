@@ -194,8 +194,8 @@
     <!-- 欢迎界面logo样式 -->
     <style name="welcome_logo">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">250dp</item>
-        <item name="android:src">@drawable/plus</item>
+        <item name="android:layout_height">200dp</item>
+        <item name="android:src">@drawable/welcome_logo_new</item>
     </style>
 
     <!--欢迎界面button样式 -->

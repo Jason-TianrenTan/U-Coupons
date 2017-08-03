@@ -8,6 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Random;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by Administrator on 2017/7/11 0011.
@@ -91,7 +94,9 @@ public class Coupon implements Serializable {
         return this.brandName;
     }
 
-    public String getSellerId() { return this.sellerId; }
+    public String getSellerId() {
+        return this.sellerId;
+    }
 
     //卖家昵称
     public void setSellerName(String str) {
@@ -153,6 +158,7 @@ public class Coupon implements Serializable {
     public void setCategory(String cat) {
         this.catId = cat;
     }
+
     public String getCategory() {
         return this.catId;
     }
@@ -282,7 +288,7 @@ public class Coupon implements Serializable {
             json.put("discount", discount);
             //json.put("stat", stat);
             JSONArray jsonArray = new JSONArray();
-            for (String str : constraints){
+            for (String str : constraints) {
                 jsonArray.put(new JSONObject().put("content", str));
             }
             json.put("limit", jsonArray);
@@ -293,7 +299,7 @@ public class Coupon implements Serializable {
         return json;
     }
 
-    public static Coupon decodeFromQRJSON (String jsonString) {
+    public static Coupon decodeFromQRJSON(String jsonString) {
         Coupon coupon = new Coupon();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -315,5 +321,16 @@ public class Coupon implements Serializable {
             e.printStackTrace();
         }
         return coupon;
+    }
+
+    public String getWord() {
+        String[] group1 = {"限时", "超值", "专享", "活动"};
+        String[] group2 = {"优惠", "折扣", "促销", "抢购"};
+        String[] group3 = {"心动不如行动", "大家都在抢", "抓紧机会", "编辑推荐"};
+        int a = (int) (Math.random() * 4);
+        int b = (int) (Math.random() * 4);
+        int c = (int) (Math.random() * 4);
+        String result = group1[a] + group2[b] + "，" + group3[c] + "！";
+        return result;
     }
 }

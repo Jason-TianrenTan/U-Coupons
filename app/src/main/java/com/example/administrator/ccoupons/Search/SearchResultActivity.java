@@ -47,7 +47,7 @@ public class SearchResultActivity extends AppCompatActivity {
     private ResultAdapter adapter;
     private CustomDialog customDialog;
     private EditText editText;
-    private TextView sortByDateButton, price_sortText, eval_sortText;
+    private TextView sortByDateButton, price_sortText, eval_sortText, specialText;
     private ImageView price_img, eval_img;
     private LinearLayout sortByPriceButton, sortByEvalButton;
 
@@ -286,7 +286,7 @@ public class SearchResultActivity extends AppCompatActivity {
             //Card Item
             CardView cardView;
             ImageView imageView;
-            TextView nameText, priceText, detailText;
+            TextView nameText, priceText, detailText, specialText;
 
             public ResultViewHolder(View view) {
                 super(view);
@@ -295,6 +295,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 nameText = view.findViewById(R.id.coupon_name_text);
                 priceText = view.findViewById(R.id.coupon_price_text);
                 detailText = view.findViewById(R.id.coupon_detail_text);
+                specialText = view.findViewById(R.id.coupon_special_word);
             }
 
         }
@@ -310,6 +311,7 @@ public class SearchResultActivity extends AppCompatActivity {
             holder.nameText.setText(coupon.getName());
             holder.detailText.setText(coupon.getExpireDate());
             holder.priceText.setText(coupon.getListPrice() + "");
+            holder.specialText.setText(coupon.getWord());
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

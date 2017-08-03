@@ -31,6 +31,4 @@ public class UserBuyCoupons extends CouponCommonActivity {
         setToolbarTitle("我购买的");
         initData(DataHolder.base_URL + DataHolder.requestBoughtList_URL);
     }
-
-
 }

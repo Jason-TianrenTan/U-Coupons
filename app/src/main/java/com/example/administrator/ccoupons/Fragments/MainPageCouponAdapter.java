@@ -19,21 +19,25 @@ import com.example.administrator.ccoupons.Search.SearchResultActivity;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by Administrator on 2017/7/23 0023.
  */
 
-public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAdapter.CouponViewHolder>{
+public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAdapter.CouponViewHolder> {
 
     private Context mContext;
     private ArrayList<Coupon> mCouponList;
+
     public class CouponViewHolder extends RecyclerView.ViewHolder {
 
         //Card Item
         CardView rootView;
         ImageView imageView;
-        TextView nameText, priceText, detailText;
+        TextView nameText, priceText, detailText, specialText;
 
         public CouponViewHolder(View view) {
             super(view);
@@ -42,6 +46,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
             nameText = view.findViewById(R.id.coupon_name_text);
             priceText = view.findViewById(R.id.coupon_price_text);
             detailText = view.findViewById(R.id.coupon_detail_text);
+            specialText = view.findViewById(R.id.coupon_special_word);
         }
 
     }
@@ -57,9 +62,10 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
         holder.nameText.setText(coupon.getName());
         holder.detailText.setText(coupon.getExpireDate());
         holder.priceText.setText(coupon.getListPrice() + "");
+        holder.specialText.setText(coupon.getWord());
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 //TODO:处理点击事件
                 Intent intent = new Intent(mContext, CouponDetailActivity.class);
                 intent.putExtra("Coupon", coupon);
