@@ -384,7 +384,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                 StringBuilder sb = new StringBuilder();
                 int index = 1;
                 for (String str : constraints)
-                    sb.append(index + ". " + str + '\n');
+                    sb.append(index++ + ". " + str + '\n');
                 constaintsText.setText(sb.toString());
 
                 //关注
