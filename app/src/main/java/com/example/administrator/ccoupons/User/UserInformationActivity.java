@@ -68,6 +68,7 @@ public class UserInformationActivity extends SlideBackActivity {
     @Override
     protected void onStart() {
         initinfo();
+        initPortrait();
         super.onStart();
     }
 
