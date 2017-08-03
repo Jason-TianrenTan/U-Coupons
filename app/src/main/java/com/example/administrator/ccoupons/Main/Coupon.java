@@ -32,6 +32,7 @@ public class Coupon implements Serializable {
     private double evaluatePrice;//估值价格 =>value
     private String discount;//打折多少 20表示20元
     private int stat;//状态 详见下
+    private String sellerId;//卖家id
     private String imgURL;//url
     private String expireDate;//过期时间
     private String[] constraints;//限制
@@ -89,6 +90,8 @@ public class Coupon implements Serializable {
     public String getBrandName() {
         return this.brandName;
     }
+
+    public String getSellerId() { return this.sellerId; }
 
     //卖家昵称
     public void setSellerName(String str) {
@@ -238,6 +241,8 @@ public class Coupon implements Serializable {
                 String content = contentObj.getString("content");
                 constraintList[i] = content;
             }
+
+
             this.constraints = constraintList;
 
             //关注
@@ -252,7 +257,7 @@ public class Coupon implements Serializable {
             JSONObject sellerObj = mainObj.getJSONArray("seller").getJSONObject(0);
             this.sellerNickname = sellerObj.getString("nickname");
             this.sellerAvatarURL = sellerObj.getString("avatar");
-
+            this.sellerId = sellerObj.getString("id");
 
         } catch (Exception e) {
             e.printStackTrace();
