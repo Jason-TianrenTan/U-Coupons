@@ -66,7 +66,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
     }
 
     private void setImage(CouponViewHolder holder, Coupon coupon) {
-        String url = DataHolder.base_URL + coupon.getImgURL();
+        String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
         ImageManager.GlideImage(url, holder.imageView, mContext);
     }
 

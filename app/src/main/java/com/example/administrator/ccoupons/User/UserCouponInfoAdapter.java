@@ -29,6 +29,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
     int index = 0;
     private Context mContext;
     private ArrayList<Coupon> mUserCouponInfoList;
+
     public static class UserCouponInfoViewHolder extends RecyclerView.ViewHolder {
         FrameLayout rootView;
         TextView couponListText,
@@ -53,6 +54,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         this.index = i;
         System.out.println("At set index = " + i);
     }
+
     public UserCouponInfoAdapter(ArrayList<Coupon> cList) {
         this.mUserCouponInfoList = cList;
     }
@@ -64,22 +66,23 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.usercouponinfo_item, parent, false);
         final UserCouponInfoAdapter.UserCouponInfoViewHolder holder = new UserCouponInfoAdapter.UserCouponInfoViewHolder(view);
-        holder.rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int position = holder.getAdapterPosition();
-                Coupon coupon = mUserCouponInfoList.get(position);
-                Intent intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
-                intent.putExtra("Coupon", coupon);
-                intent.putExtra("type", "show");
-                intent.putExtra("index", index + "");
-                System.out.println("Clickeddlksfsdf, index = " + index);
-                mContext.startActivity(intent);
-                Intent broadcastIntent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");
-                mContext.sendBroadcast(broadcastIntent);
-                //Todo:获得当前Coupon编号，跳转到Coupon页面
-            }
-        });
+        if (index > 0) {
+            holder.rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = holder.getAdapterPosition();
+                    Coupon coupon = mUserCouponInfoList.get(position);
+                    Intent intent = new Intent(mContext.getApplicationContext(), MyCouponDetailActivity.class);
+                    intent.putExtra("Coupon", coupon);
+                    intent.putExtra("type", "show");
+                    intent.putExtra("index", index + "");
+                    mContext.startActivity(intent);
+                    Intent broadcastIntent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");
+                    mContext.sendBroadcast(broadcastIntent);
+                    //Todo:获得当前Coupon编号，跳转到Coupon页面
+                }
+            });
+        }
         return holder;
     }
 
@@ -99,8 +102,6 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
     public int getItemCount() {
         return mUserCouponInfoList.size();
     }
-
-
 
 
 }

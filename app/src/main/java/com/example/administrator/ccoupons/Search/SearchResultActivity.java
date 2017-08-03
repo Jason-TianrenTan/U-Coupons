@@ -321,7 +321,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            String url = DataHolder.base_URL + coupon.getImgURL();
+            String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
             ImageManager.GlideImage(url, holder.imageView);
         }
 

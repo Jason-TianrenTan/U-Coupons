@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.Purchase;
+package com.example.administrator.ccoupons.User;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
+import com.example.administrator.ccoupons.Purchase.CouponPurchaseActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class CouponDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
+public class MyCouponDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
 
     private String msgId = null;
@@ -51,12 +52,11 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     private int mParallaxImageHeight;
     private TextView nameText, listpriceText, evalpriceText,
             discountText, brandNameText, expireText, constaintsText, sellerNameText;
-    private ImageView sellerAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coupon_detail);
+        setContentView(R.layout.activity_my_coupon_detail);
 
 
         String iStr = getIntent().getStringExtra("index");
@@ -64,20 +64,9 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
             index = Integer.parseInt(getIntent().getStringExtra("index"));
 
         String type = getIntent().getStringExtra("type");
-        if (type.equals("purchase"))
-            inflateBottomPurchaseView();//初始化底部栏样式
         if (type.equals("show")) {
             statType = true;
             inflateBottomStatView();
-        }
-        if (type.equals("message")) {
-            //TODO:
-            String catStr = getIntent().getStringExtra("msgCat");
-            msgId = getIntent().getStringExtra("msgId");
-            if (catStr.equals("1") || catStr.equals("3"))
-                inflateBottomPurchaseView();
-            else
-                inflateBottomStatView();
         }
         bindViews();
 
@@ -108,89 +97,13 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     private void pullback() {
         System.out.println("statType = " + statType);
         if (statType) {
-            Intent intent = new Intent(CouponDetailActivity.this, UserMyCouponActivity.class);
+            Intent intent = new Intent(MyCouponDetailActivity.this, UserMyCouponActivity.class);
             intent.putExtra("index", index + "");
             startActivity(intent);
             finish();
         } else finish();
     }
 
-    private void inflateBottomPurchaseView() {
-
-        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.detail_rootview);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.purchase_bottom_bar, null);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, PixelUtils.dp2px(this, 45));
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        view.setLayoutParams(params);
-        rootView.addView(view);
-
-
-        mainButton = (ImageView) view.findViewById(R.id.page_button_mainpage);
-        followButton = (ImageView) view.findViewById(R.id.page_button_follow);
-        purchaseButton = (ImageView) view.findViewById(R.id.page_button_purchase);
-
-        mainButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CouponDetailActivity.this, MainPageActivity.class));
-                finish();
-            }
-        });
-
-
-        followButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //关注
-                HashMap<String, String> map = new HashMap<String, String>();
-                MyApp app = (MyApp) getApplicationContext();
-                map.put("couponID", coupon.getCouponId());
-                map.put("userID", app.getUserId());
-                ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.postFollow_URL, map);
-                connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-                    @Override
-                    public void onConnectionSuccess(String response) {
-                        System.out.println("Response = " + response);
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            String alreadyLike = obj.getString("result");
-                            if (alreadyLike.equals("already like"))
-                                Toast.makeText(getApplicationContext(), "已经关注过啦", Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(getApplicationContext(), "关注成功", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onConnectionTimeOut() {
-                        Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onConnectionFailed() {
-                        Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后重试", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                connectionManager.connect();
-            }
-        });
-
-        purchaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = coupon.getCouponId();
-                Intent intent = new Intent(CouponDetailActivity.this, CouponPurchaseActivity.class);
-                intent.putExtra("coupon", coupon);
-                startActivity(intent);
-            }
-        });
-
-    }
 
     private void inflateBottomStatView() {
         ImageView saleButton, storeButton;
@@ -279,9 +192,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         brandNameText = (TextView) findViewById(R.id.coupon_detail_brand_name);//品牌
         expireText = (TextView) findViewById(R.id.coupon_detail_expire_date);
         constaintsText = (TextView) findViewById(R.id.coupon_detail_constraints_text);
-        sellerNameText = (TextView) findViewById(R.id.coupon_detail_seller_name);
-        sellerAvatar = (ImageView) findViewById(R.id.seller_avatar_img);
-
     }
 
 
@@ -345,9 +255,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
             public void onConnectionSuccess(String response) {
                 coupon.getDetails(response);
                 System.out.println("Response = " + response);
-                //卖家
-                sellerNameText.setText(coupon.getSellerNickname());
-            //    ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
+                //    ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
                 //商家 品牌
                 brandNameText.setText(coupon.getBrandName());
 

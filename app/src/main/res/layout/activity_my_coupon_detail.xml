@@ -119,29 +119,6 @@
 
                         <ImageView style="@style/user_divider" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-
-                                style="@style/coupon_label_text"
-                                android:layout_marginBottom="15dp"
-                                android:text="出售者：" />
-
-                            <TextView
-                                android:id="@+id/coupon_detail_seller_name"
-                                style="@style/coupon_detail_text"
-                                android:text="陈乌金" />
-
-                            <com.example.administrator.ccoupons.Tools.XCRoundImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:id="@+id/seller_avatar_img"/>
-                        </LinearLayout>
-
 
                         <ImageView style="@style/user_divider" />
 

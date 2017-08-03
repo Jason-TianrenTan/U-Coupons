@@ -118,7 +118,9 @@
         <activity
             android:name=".Fragments.CategorySearchActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".Fragments.MessageDetailActivity"></activity>
+        <activity android:name=".Fragments.MessageDetailActivity" />
+        <activity android:name=".Purchase.SellerDetailActivity" />
+        <activity android:name=".User.MyCouponDetailActivity"></activity>
     </application>
 
 </manifest>

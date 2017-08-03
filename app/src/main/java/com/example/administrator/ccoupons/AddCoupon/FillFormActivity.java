@@ -205,7 +205,10 @@ public class FillFormActivity extends AppCompatActivity {
                     coupon.setExpireDate(expireDate);
                     coupon.setBrandName(brandName);
                     coupon.setDiscount(discount);
-                    coupon.setCategory(category);
+                    for (int i =0;i<DataHolder.Categories.nameList.length;i++) {
+                        if (category.equals(DataHolder.Categories.nameList[i]))
+                            coupon.setCategory((i + 1) + "");
+                    }
                     ArrayList<String> nCList = new ArrayList<String>();
                     for (String str : constraintList)
                         if (str.length() > 0)

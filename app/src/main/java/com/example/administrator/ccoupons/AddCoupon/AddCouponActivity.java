@@ -19,17 +19,21 @@ import com.example.administrator.ccoupons.Tools.ImageManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 public class AddCouponActivity extends AppCompatActivity {
@@ -139,9 +143,10 @@ public class AddCouponActivity extends AppCompatActivity {
         // upload photos
         public void uploadFile(String uploadFile) {
             try {
-                System.out.println("On upload...");
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost(url);
+                HttpPost httppost = new HttpPost(url);/*
+                httppost.setHeader(HTTP.CONTENT_TYPE,
+                        "application/x-www-form-urlencoded;charset=UTF-8");*/
                 MultipartEntity mpEntity = new MultipartEntity();
                 File file = new File(uploadFile);
                 ContentBody cbFile = new FileBody(file);
@@ -149,19 +154,19 @@ public class AddCouponActivity extends AppCompatActivity {
                 for (HashMap.Entry<String, String> entry : map.entrySet()) {
                     String key = entry.getKey(),
                             value = entry.getValue();
-                    mpEntity.addPart(key, new StringBody(value));
+                    mpEntity.addPart(key, new StringBody(value, Charset.forName("UTF-8")));
                 }
                 for (int i = 0; i < list.length; i++) {
-                    mpEntity.addPart("limit[]", new StringBody(list[i]));
+                    mpEntity.addPart("limit[]", new StringBody(list[i], Charset.forName("UTF-8")));
                 }
-                mpEntity.addPart("imgFile", cbFile);
+                mpEntity.addPart("pic", cbFile);
 
                 httppost.setEntity(mpEntity);
                 HttpResponse response = httpclient.execute(httppost);
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (200 == statusCode) {
                     String result = EntityUtils.toString(response.getEntity());
-                    System.out.println(result);
+                    System.out.println("RRRRRRREEEEEEEEESULT = " + result);
                 }
                 httpclient.getConnectionManager().shutdown();
             } catch (Exception e) {
