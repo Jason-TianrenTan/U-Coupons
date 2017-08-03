@@ -101,6 +101,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 evalPressed = false;
                 priceStat = 0;
                 clearStats();
+                requestSort("expiredtime");
                 sortByDateButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
             }
         });

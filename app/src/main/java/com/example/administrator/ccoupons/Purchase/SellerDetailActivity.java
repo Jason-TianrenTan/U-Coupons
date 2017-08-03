@@ -35,20 +35,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SellerDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+public class SellerDetailActivity extends AppCompatActivity{
 
-
-    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.6f;
-    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
-    private static final int ALPHA_ANIMATIONS_DURATION = 200;
-
-    private boolean mIsTheTitleVisible = false;
-    private boolean mIsTheTitleContainerVisible = true;
-
-    private LinearLayout mTitleContainer;
-    private TextView mTitle;
-    private AppBarLayout mAppBarLayout;
-    private Toolbar mToolbar;
 
     private TextView sellerNameText;
     private XCRoundImageView sellerAvatar;
@@ -61,7 +49,7 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
 
     private int screen_width;
 
-    private int index;
+    private int index = 0;
 
     private UpdateUIReceiver receiver;
 
@@ -82,8 +70,6 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
         if (iStr != null)
             index = Integer.parseInt(iStr);
         requestData();
-        mAppBarLayout.addOnOffsetChangedListener(this);
-        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
     }
 
 
@@ -106,10 +92,6 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
 
 
     private void bindViews() {
-        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mTitle = (TextView) findViewById(R.id.main_textview_title);
-        mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.main_appbar);
 
         sellerNameText  = (TextView) findViewById(R.id.seller_name_text);
         sellerAvatar = (XCRoundImageView) findViewById(R.id.seller_avatar_imageview);
@@ -141,6 +123,7 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
                 soldList.add(coupon);
             }
 
+
             initData();
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,7 +146,7 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
         if (soldList.size() > 0) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("coupons", soldList);
-            bundle.putSerializable("index", 0);
+            bundle.putSerializable("index", 1);
 
             fr2 = new CouponDisplayFragment();
             fr2.setArguments(bundle);
@@ -198,7 +181,7 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
         frList.add(fr1);
         frList.add(fr2);
         MyCouponFragmentAdapter frAdapter = new MyCouponFragmentAdapter(fragmentManager, frList);
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.mycoupon_viewpager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.seller_coupon_viewpager);
         viewPager.setAdapter(frAdapter);
         viewPager.setCurrentItem(index);
 
@@ -246,7 +229,7 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
     }
 
     private void slideTo(int pos) {
-        int preWidth = screen_width / 3;
+        int preWidth = screen_width / 2;
         int margins = PixelUtils.dp2px(this, 12);
         int startX = pos * preWidth + margins;
         FrameLayout.LayoutParams scrollParams = (FrameLayout.LayoutParams) scrollBar.getLayoutParams();
@@ -293,63 +276,5 @@ public class SellerDetailActivity extends AppCompatActivity implements AppBarLay
             }
         });
         connectionManager.connect();
-/*
-{"brand": [{"name": "\u80af\u5fb7\u57fa", "address": "\u7fa4\u5149"}],
-"limit": [{"content": "\u53ea\u9650\u7fa4\u5149\u4f7f\u7528"}, {"content": "\u6bcf\u4e2a\u5ba2\u6237\u4f7f\u7528\u4e00\u4e00\u5f20"},
-{"content": "\u6ee140\u5143\u53ef\u4f7f\u7528"}], "seller": [{"id": "1500627332dhgt",
-"nickname": "\u6d4b\u8bd5\u8d26\u6237", "gender": "\u7537", "avatar": "images/avatar/1501769225141.jpg"}], "isLike": 1}
- */
-    }
-
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-        int maxScroll = appBarLayout.getTotalScrollRange();
-        float percentage = (float) Math.abs(offset) / (float) maxScroll;
-
-        handleAlphaOnTitle(percentage);
-        handleToolbarTitleVisibility(percentage);
-    }
-
-    private void handleToolbarTitleVisibility(float percentage) {
-        if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
-
-            if (!mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
-                mIsTheTitleVisible = true;
-            }
-
-        } else {
-
-            if (mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
-                mIsTheTitleVisible = false;
-            }
-        }
-    }
-
-    private void handleAlphaOnTitle(float percentage) {
-        if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            if (mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
-                mIsTheTitleContainerVisible = false;
-            }
-
-        } else {
-
-            if (!mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
-                mIsTheTitleContainerVisible = true;
-            }
-        }
-    }
-
-    public static void startAlphaAnimation(View v, long duration, int visibility) {
-        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
-                ? new AlphaAnimation(0f, 1f)
-                : new AlphaAnimation(1f, 0f);
-
-        alphaAnimation.setDuration(duration);
-        alphaAnimation.setFillAfter(true);
-        v.startAnimation(alphaAnimation);
     }
 }

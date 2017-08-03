@@ -112,14 +112,8 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
 
     private void pullback() {
-        System.out.println("statType = " + statType);
         if (statType) {
             Intent intent = new Intent(CouponDetailActivity.this, UserMyCouponActivity.class);
-            intent.putExtra("index", index + "");
-            startActivity(intent);
-        }
-        if (sigmaType) {
-            Intent intent = new Intent(CouponDetailActivity.this, SellerDetailActivity.class);
             intent.putExtra("index", index + "");
             startActivity(intent);
         }
@@ -383,8 +377,10 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                 String[] constraints = coupon.getConstraints();
                 StringBuilder sb = new StringBuilder();
                 int index = 1;
-                for (String str : constraints)
-                    sb.append(index++ + ". " + str + '\n');
+                for (String str : constraints) {
+                    sb.append(index + ". " + str + '\n');
+                    index++;
+                }
                 constaintsText.setText(sb.toString());
 
                 //关注

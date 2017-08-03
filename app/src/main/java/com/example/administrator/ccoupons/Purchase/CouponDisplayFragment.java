@@ -34,6 +34,7 @@ public class CouponDisplayFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         mCouponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
+        System.out.println("My coupon list length = " + mCouponList.size());
         int index = (int)getArguments().getSerializable("index");
         adapter = new UserCouponInfoAdapter(mCouponList);
         adapter.setIndex(index);
