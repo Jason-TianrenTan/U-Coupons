@@ -240,11 +240,6 @@ public class Coupon implements Serializable {
             }
             this.constraints = constraintList;
 
-            //seller 卖家
-            JSONObject sellerObj = mainObj.getJSONArray("seller").getJSONObject(0);
-            this.sellerNickname = sellerObj.getString("nickname");
-            this.sellerAvatarURL = sellerObj.getString("avatar");
-
             //关注
             String likeStr = mainObj.getString("isLike");
             this.liked = false;
@@ -252,6 +247,12 @@ public class Coupon implements Serializable {
                 System.out.println(this.name + " is liked");
                 this.liked = true;
             }
+
+            //seller 卖家
+            JSONObject sellerObj = mainObj.getJSONArray("seller").getJSONObject(0);
+            this.sellerNickname = sellerObj.getString("nickname");
+            this.sellerAvatarURL = sellerObj.getString("avatar");
+
 
         } catch (Exception e) {
             e.printStackTrace();

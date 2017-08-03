@@ -23,6 +23,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -54,7 +55,10 @@ import static com.mob.MobSDK.getContext;
 
 public class FillFormActivity extends AppCompatActivity {
 
+
     public static int REQUEST_CATEGORY = 6;
+    private boolean hasImage = false;
+    private boolean requestFocus = false;
     private EditText categoryEditText;
     private ClearableEditText productNameText,
             brandNameText,
@@ -97,9 +101,9 @@ public class FillFormActivity extends AppCompatActivity {
         brandInputLayout = (TextInputLayout) findViewById(R.id.form_brand_inputlayout);
         discountInputLayout = (TextInputLayout) findViewById(R.id.form_discount_inputlayout);
         constraintList = new ArrayList<>();
-        constraintList.add("first");
-        constraintList.add("second");
-        constraintList.add("third");
+        constraintList.add("输入使用限制");
+        constraintList.add("输入使用限制");
+        constraintList.add("输入使用限制");
         //TODO: adapter
 
         adapter = new ConstraintsAdapter();
@@ -112,9 +116,10 @@ public class FillFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int size = constraintList.size();
-                System.out.println("Current size = " + size);
-                constraintList.add("new added");
+                constraintList.add("点击输入限制");
+                requestFocus = true;
                 adapter.notifyItemInserted(size);
+
                 Handler handler = new Handler();
                 handler.post(new Runnable() {
                     @Override
@@ -168,6 +173,11 @@ public class FillFormActivity extends AppCompatActivity {
                         category = categoryEditText.getText().toString(),
                         expireDate = expireText.getText().toString();
 
+                if (!hasImage) {
+                    valid = false;
+                    Toast.makeText(getApplicationContext(), "必须上传一张优惠券的图片!", Toast.LENGTH_SHORT).show();
+                }
+
                 if (productName.length() == 0) {
                     valid = false;
                     productInputLayout.setError("请输入商品名");
@@ -195,7 +205,10 @@ public class FillFormActivity extends AppCompatActivity {
                     coupon.setExpireDate(expireDate);
                     coupon.setBrandName(brandName);
                     coupon.setDiscount(discount);
-                    coupon.setCategory(category);
+                    for (int i =0;i<DataHolder.Categories.nameList.length;i++) {
+                        if (category.equals(DataHolder.Categories.nameList[i]))
+                            coupon.setCategory((i + 1) + "");
+                    }
                     ArrayList<String> nCList = new ArrayList<String>();
                     for (String str : constraintList)
                         if (str.length() > 0)
@@ -221,6 +234,7 @@ public class FillFormActivity extends AppCompatActivity {
         takePhotoUtil = new TakePhotoUtil(this);
         takePhotoUtil.onCreate(savedInstanceState);
         setAddpicture();
+
     }
 
     private void setAddpicture() {
@@ -247,6 +261,7 @@ public class FillFormActivity extends AppCompatActivity {
                                 System.out.println("success:" + path);
                                 imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
                                 System.out.println("success");
+                                hasImage = true;
                                 updatePic();
                             }
                         });
@@ -264,6 +279,7 @@ public class FillFormActivity extends AppCompatActivity {
                                 System.out.println("success:" + path);
                                 imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
                                 System.out.println("success");
+                                hasImage = true;
                                 updatePic();
                             }
                         });
@@ -315,6 +331,8 @@ public class FillFormActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
+                    System.out.println("current change at index = " + holder.getAdapterPosition());
+                    constraintList.set(holder.getAdapterPosition(), viewHolder.editText.getText().toString());
                 }
             });
             viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -324,9 +342,19 @@ public class FillFormActivity extends AppCompatActivity {
                     constraintList.remove(position);
                     adapter.notifyItemRemoved(position);
                     adapter.notifyItemRangeChanged(0, constraintList.size());
-                    System.out.println("Current size = " + constraintList.size());
                 }
             });
+            if (requestFocus && position == constraintList.size() - 1) {
+                ((ConstraintsViewHolder) holder).editText.postDelayed(new Runnable() {
+                    @Override
+
+                    public void run() {
+                        ((ConstraintsViewHolder) holder).editText.requestFocus();
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }, 300);
+            }
         }
 
         @Override

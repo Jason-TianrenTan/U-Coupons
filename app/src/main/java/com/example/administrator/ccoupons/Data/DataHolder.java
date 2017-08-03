@@ -36,15 +36,17 @@ public class DataHolder {
     public static final String postRecommend_URL = "/post_homepageCoupon";//主页推荐
 
 
-    public static final String postChangeCouponState_URL = "/post_changeCouponStat";//换优惠券状态
+    public static final String postChangeCouponState_URL = "/post_changeCouponState";//换优惠券状态
 
     public static final String postGetEvaluation_URL = "/post_getValue";//获取估值
+
     public static final String postAddCoupon_URL = "/post_addCoupon";//添加优惠券
 
     public static final String requestOwnList_URL = "/post_getOwnList";//获取我的优惠券
 
     public static final String requestCatRecommend_URL = "/post_searchByCategory";//分类推荐
     public static final String requestCatSearch_URL = "/post_searchInCertainCategory";//按分类搜索
+    public static final String requestCatPreSearch_URL = "/post_preSearchInCategory";//分类下预搜索
 
 
     public static class Categories {

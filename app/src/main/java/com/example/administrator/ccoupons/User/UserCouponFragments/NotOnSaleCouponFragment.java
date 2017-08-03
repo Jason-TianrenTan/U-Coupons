@@ -34,9 +34,25 @@ public class NotOnSaleCouponFragment extends Fragment{
 
         mCouponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
         adapter = new UserCouponInfoAdapter(mCouponList);
+        adapter.setIndex(2);
         recyclerView.setAdapter(adapter);
         return view;
     }
+
+    public void clear() {
+        int size = mCouponList.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                mCouponList.remove(0);
+            }
+
+            adapter.notifyItemRangeRemoved(0, size);
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+
+
 
 
 }

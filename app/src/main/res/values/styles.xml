@@ -129,7 +129,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginBottom">30dp</item>
-        <item name="android:background">@color/lightgray</item>
+        <item name="android:background">@color/white</item>
         <item name="android:elevation">2dp</item>
     </style>
 
@@ -166,9 +166,9 @@
     <style name="user_divider">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">@color/gray</item>
-        <item name="android:layout_marginLeft">3dp</item>
-        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:background">@color/lightgray</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
     </style>
 
     <!-- 顶端线底端线样式 -->

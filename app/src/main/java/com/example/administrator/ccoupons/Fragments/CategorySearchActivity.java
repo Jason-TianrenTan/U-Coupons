@@ -24,6 +24,9 @@ import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomLoader;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,7 +48,7 @@ public class CategorySearchActivity extends AppCompatActivity {
                 case MessageType.LOCATION_GET:
                     location = locationFetchr.getCity();
                     locationText.setText(location);
-                    ((MyApp)getApplicationContext()).setLocation(location);
+                    ((MyApp) getApplicationContext()).setLocation(location);
                     customLoader.finish();
                     break;
                 case MessageType.LOCATION_FAILED:
@@ -57,7 +60,7 @@ public class CategorySearchActivity extends AppCompatActivity {
 
 
     private void initLocation() {
-        String str = ((MyApp)getApplicationContext()).getLocation();
+        String str = ((MyApp) getApplicationContext()).getLocation();
         if (str != null && str.length() > 0) {
             locationText.setText(str);
         } else {
@@ -72,7 +75,7 @@ public class CategorySearchActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.cat_input_search);
         locationText = (TextView) findViewById(R.id.category_location_textview);
         TextView categoryText = (TextView) findViewById(R.id.category_title);
-        categoryText.setText(DataHolder.Categories.nameList[Integer.parseInt(catId)]);
+        categoryText.setText(DataHolder.Categories.nameList[Integer.parseInt(catId) - 1]);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.cat_main_toolbar);
         setSupportActionBar(toolbar);
@@ -95,10 +98,6 @@ public class CategorySearchActivity extends AppCompatActivity {
         });
     }
 
-
-    private void search(String str) {
-        String url = DataHolder.base_URL + DataHolder.requestCatSearch_URL;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +148,7 @@ public class CategorySearchActivity extends AppCompatActivity {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
-                System.out.println("Result = " + response);
+                parseMessage(response);
             }
 
             @Override
@@ -163,5 +162,23 @@ public class CategorySearchActivity extends AppCompatActivity {
             }
         });
         connectionManager.connect();
+    }
+
+
+    private void parseMessage(String response) {
+        try {
+            JSONObject mainObj = new JSONObject(response);
+            JSONArray jsonArray = mainObj.getJSONArray("result");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                Coupon coupon = Coupon.decodeFromJSON(obj);
+                recommendList.add(coupon);
+            }
+            MainPageCouponAdapter adapter = new MainPageCouponAdapter(recommendList);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setNestedScrollingEnabled(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

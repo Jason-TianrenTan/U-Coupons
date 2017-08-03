@@ -38,6 +38,10 @@ public class CouponCommonFragment extends Fragment {
             recyclerView.setAdapter(adapter);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
+
+            String hook = (String) getArguments().getSerializable("hook");
+            if (hook != null && hook.length() > 0)
+                adapter.hook();
         }
         return view;
     }

@@ -61,6 +61,7 @@ import me.crosswall.lib.coverflow.core.PageItemClickListener;
 public class CategoryFragment extends Fragment {
 
 
+    private TextView messageButton;
     private RecyclerView recommendView;
     private CustomLoader customLoader;
     private ArrayList<Category> categoryList;
@@ -124,7 +125,7 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-        TextView messageButton = (TextView) view.findViewById(R.id.category_message_button);
+        messageButton = (TextView) view.findViewById(R.id.category_message_button);
         messageButton.setOnClickListener(new View.OnClickListener()
 
         {

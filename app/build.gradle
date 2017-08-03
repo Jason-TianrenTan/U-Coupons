@@ -38,10 +38,12 @@ dependencies {
     compile files('libs/MobCommons-2017.0607.1736.jar')
     compile files('libs/MobTools-2017.0607.1736.jar')
     compile name: "SMSSDK-3.0.0", ext: 'aar'
+    compile files('libs/universal-image-loader-1.9.4.jar')
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.baoyz.swipemenulistview:library:1.3.0'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.baoyz.swipemenulistview:library:1.3.0'

@@ -26,12 +26,13 @@
                 android:text="添加优惠券" />
 
             <TextView
+                android:id="@+id/form_preview_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
-                android:text="帮助"
+                android:text="下一步"
                 android:textColor="@color/whitesmoke"
                 android:textSize="18dp" />
         </RelativeLayout>
@@ -111,6 +112,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:inputType="numberDecimal"
                     android:hint="请输入优惠券价格" />
 
                 <TextView

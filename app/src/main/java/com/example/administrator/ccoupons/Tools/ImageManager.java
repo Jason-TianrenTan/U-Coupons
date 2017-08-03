@@ -23,38 +23,38 @@ public class ImageManager {
     public static void GlideImage(String imgUrl, ImageView rootView, Context context) {
         imageDiskCache = ImageDiskCache.getInstance(context);
         Bitmap bitmap = imageLruCache.getFromMemoryCache(imgUrl);
-   //     System.out.println("从内存获取");
+        //     System.out.println("从内存获取");
         if (bitmap == null) {
             bitmap = imageDiskCache.readFromDiskCache(imgUrl);
-        //    System.out.println("从本地获取");
+            //    System.out.println("从本地获取");
         }
         if (bitmap == null) {
             //Todo:从服务器获取图片
             ImageFetchr fetchr = new ImageFetchr(imgUrl, rootView, imageDiskCache);
-         //   System.out.println("从服务器获取");
+            //   System.out.println("从服务器获取");
             fetchr.execute();
+        } else {
+            BitmapDrawable drawable = new BitmapDrawable(bitmap);
+            rootView.setImageDrawable(drawable);
+            rootView.invalidate();
         }
-        BitmapDrawable drawable = new BitmapDrawable(bitmap);
-        rootView.setImageDrawable(drawable);
-        rootView.invalidate();
     }
 
     //二级缓存
     public static void GlideImage(String imgUrl, ImageView rootView) {
         Bitmap bitmap = imageLruCache.getFromMemoryCache(imgUrl);
-  //      System.out.println("从内存获取");
+        //      System.out.println("从内存获取");
         if (bitmap == null) {
             //Todo:从服务器获取图片
-  //          System.out.println("从服务器获取");
+            //          System.out.println("从服务器获取");
             ImageFetchr fetchr = new ImageFetchr(imgUrl, rootView);
             fetchr.execute();
+        } else {
+            BitmapDrawable drawable = new BitmapDrawable(bitmap);
+            rootView.setImageDrawable(drawable);
+            rootView.invalidate();
         }
-        BitmapDrawable drawable = new BitmapDrawable(bitmap);
-        rootView.setImageDrawable(drawable);
-        rootView.invalidate();
     }
-
     //上传图片
-
 }
 

@@ -1,5 +1,9 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +38,8 @@ import java.util.HashMap;
 public class UserMyCouponActivity extends AppCompatActivity {
 
 
+    boolean update = false;
+    int index = 0;
     ArrayList<Coupon> usedList, onsaleList, notonsaleList;
     UsedCouponFragment usedFragment;
     OnSaleCouponFragment OnSaleFragment;
@@ -42,12 +48,16 @@ public class UserMyCouponActivity extends AppCompatActivity {
     TextView title_used, title_onsale, title_nonsale;
     int screen_width;
     LinearLayout scrollBar;
+    UpdateUIReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_my_coupon);
 
+        String iStr = getIntent().getStringExtra("index");
+        if (iStr != null && iStr.length() > 0)
+            index = Integer.parseInt(iStr);
         scrollBar = (LinearLayout) findViewById(R.id.mycoupon_scrollbar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.user_mycoupons_toolbar);
         setSupportActionBar(toolbar);
@@ -73,7 +83,13 @@ public class UserMyCouponActivity extends AppCompatActivity {
 
         initSlidingBar();
 
-        slideTo(0);
+        selectPage(index);
+
+        initReceiver();
+
+        title_used.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+        title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+        title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
     }
 
     private void initSlidingBar() {
@@ -95,24 +111,35 @@ public class UserMyCouponActivity extends AppCompatActivity {
         usedFragment = new UsedCouponFragment();
         OnSaleFragment = new OnSaleCouponFragment();
         NotOnSaleFragment = new NotOnSaleCouponFragment();
-        System.out.println(usedList.size() + "," + onsaleList.size() + "," + notonsaleList.size());
+        System.out.println(usedList.size() + "," + onsaleList.size() + "," + notonsaleList.size() + ", update = " + update);
         //TODO:init coupons
         if (usedList.size() > 0) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("coupons", usedList);
-            usedFragment.setArguments(bundle);
+            if (!update) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("coupons", usedList);
+                usedFragment.setArguments(bundle);
+
+            }
+
             fr1 = usedFragment;
         }
         if (onsaleList.size() > 0) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("coupons", onsaleList);
-            OnSaleFragment.setArguments(bundle);
+            if (!update) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("coupons", onsaleList);
+                OnSaleFragment.setArguments(bundle);
+
+            }
+
             fr2 = OnSaleFragment;
         }
         if (notonsaleList.size() > 0) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("coupons", notonsaleList);
-            NotOnSaleFragment.setArguments(bundle);
+            if (!update){
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("coupons", notonsaleList);
+                NotOnSaleFragment.setArguments(bundle);
+            }
+
             fr3 = NotOnSaleFragment;
         }
 
@@ -121,6 +148,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
     private void selectPage(int position) {
+        System.out.println("page selected = " + position + ", index=  " + index);
         slideTo(position);
         title_used.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
         title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
@@ -147,7 +175,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
         MyCouponFragmentAdapter frAdapter = new MyCouponFragmentAdapter(fragmentManager, frList);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.mycoupon_viewpager);
         viewPager.setAdapter(frAdapter);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(index);
 
         title_used.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -191,6 +219,8 @@ public class UserMyCouponActivity extends AppCompatActivity {
             }
         });
 
+        selectPage(index);
+
 
     }
 
@@ -198,7 +228,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
     private void requestCoupons() {
         String url = DataHolder.base_URL + DataHolder.requestOwnList_URL;
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("userID", ((MyApp)getApplicationContext()).getUserId());
+        map.put("userID", ((MyApp) getApplicationContext()).getUserId());
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
@@ -257,12 +287,25 @@ public class UserMyCouponActivity extends AppCompatActivity {
         }
     }
 
-    private void initArray(JSONArray arr, ArrayList<Coupon> target) {
-        try {
 
-        }catch (Exception e) {
-            e.printStackTrace();
+    public void initReceiver() {
+        IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.UPDATEVIEWS");
+        receiver = new UpdateUIReceiver();
+        registerReceiver(receiver, filter);
+    }
+
+    public class UpdateUIReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
 
 }

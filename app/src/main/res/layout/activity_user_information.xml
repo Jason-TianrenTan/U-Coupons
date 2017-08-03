@@ -24,6 +24,7 @@
 
             <com.example.administrator.ccoupons.Tools.XCRoundImageView
                 android:id="@+id/uinf_portrait"
+                android:src="@drawable/mascot_nothing"
                 style="@style/user_portrait_layout"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

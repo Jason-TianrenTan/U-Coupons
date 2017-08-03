@@ -94,7 +94,7 @@
         android:layout_gravity="top|left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="36dp"
-        android:src="@mipmap/android"
+        android:src="@drawable/mascot_nothing"
         android:id="@+id/user_portrait"
         app:finalHeight="32dp"
         app:finalXPosition="12dp"

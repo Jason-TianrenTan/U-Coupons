@@ -97,16 +97,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
-                        <TextView
-                            style="@style/coupon_form_label"
-                            android:text="商品名" />
 
                         <android.support.design.widget.TextInputLayout
                             android:id="@+id/form_product_inputlayout"
@@ -119,10 +116,11 @@
                             <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
                                 android:id="@+id/form_product_edittext"
                                 style="@style/MainEditTextStyle"
+                                android:hint="商品名"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:maxLength="16"
-                                android:textSize="16dp" />
+                                android:textSize="18dp" />
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
@@ -133,12 +131,10 @@
                         android:layout_marginLeft="15dp"
                         android:orientation="horizontal">
 
-                        <TextView
-                            style="@style/coupon_form_label"
-                            android:text="商家名" />
 
                         <android.support.design.widget.TextInputLayout
                             android:id="@+id/form_brand_inputlayout"
+                            android:hint="商家名"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
@@ -151,7 +147,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:maxLength="16"
-                                android:textSize="16dp" />
+                                android:textSize="18dp" />
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
@@ -163,9 +159,6 @@
                         android:layout_marginLeft="15dp"
                         android:orientation="horizontal">
 
-                        <TextView
-                            style="@style/coupon_form_label"
-                            android:text="品种" />
 
                         <android.support.design.widget.TextInputLayout
                             android:layout_width="0dp"
@@ -176,12 +169,13 @@
                             <EditText
                                 android:id="@+id/form_category_edittext"
                                 style="@style/MainEditTextStyle"
+                                android:hint="点击选择品种"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:editable="false"
                                 android:maxLength="16"
-                                android:textSize="16dp" />
+                                android:textSize="18dp" />
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
@@ -192,10 +186,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/coupon_form_label"
-                            android:text="优惠额度" />
 
                         <android.support.design.widget.TextInputLayout
                             android:id="@+id/form_discount_inputlayout"
@@ -207,11 +197,12 @@
                             <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
                                 android:id="@+id/form_discount_edittext"
                                 style="@style/MainEditTextStyle"
+                                android:hint="优惠额度"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:maxLength="16"
-                                android:textSize="16dp" />
+                                android:textSize="18dp" />
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
@@ -221,10 +212,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/coupon_form_label"
-                            android:text="过期时间" />
 
                         <android.support.design.widget.TextInputLayout
                             android:id="@+id/form_expire_inputlayout"
@@ -236,11 +223,12 @@
                             <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
                                 android:id="@+id/form_expire_edittext"
                                 style="@style/MainEditTextStyle"
+                                android:hint="过期时间"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:maxLength="16"
-                                android:textSize="16dp" />
+                                android:textSize="18dp" />
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
@@ -297,6 +285,7 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_weight="1"
                                 android:hint="添加新的限制"
+                                android:editable="false"
                                 android:maxLength="16"
                                 android:textColorHint="@color/gainsboro" />
 

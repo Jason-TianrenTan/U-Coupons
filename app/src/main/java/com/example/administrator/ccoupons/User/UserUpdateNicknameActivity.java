@@ -115,8 +115,8 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
                 app.setNickname(nickname);
                 Toast.makeText(UserUpdateNicknameActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                 finish();
-            } else {
-                Toast.makeText(UserUpdateNicknameActivity.this, "好像出了点问题哟", Toast.LENGTH_SHORT).show();
+            } else if (result.equals("nickname exist")) {
+                Toast.makeText(UserUpdateNicknameActivity.this, "用户名已存在", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();

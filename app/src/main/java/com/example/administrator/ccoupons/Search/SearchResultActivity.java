@@ -42,7 +42,6 @@ public class SearchResultActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String requestString;
     private String resultString;
-    private static final String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
     private static final int SEARCH_MAX_RESULT = 10;//最大获取结果数
     private ArrayList<Coupon> couponResults;
     private ResultAdapter adapter;
@@ -207,29 +206,7 @@ public class SearchResultActivity extends AppCompatActivity {
         requestString = getIntent().getStringExtra("search_string");
         editText.setText(requestString);
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("keyWord", requestString);
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseMessage(response);
-                customDialog.dismiss();
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
-                customDialog.dismiss();
-            }
-
-            @Override
-            public void onConnectionFailed() {
-                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
-                customDialog.dismiss();
-            }
-        });
-        connectionManager.connect();
+        requestSort("");
         customDialog = new CustomDialog(this, R.style.CustomDialog);
         customDialog.show();
 
@@ -337,13 +314,14 @@ public class SearchResultActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(SearchResultActivity.this, CouponDetailActivity.class);
                     intent.putExtra("Coupon", coupon);
+                    intent.putExtra("type", "purchase");
                     startActivity(intent);
                 }
             });
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            String url = DataHolder.base_URL + coupon.getImgURL();
+            String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
             ImageManager.GlideImage(url, holder.imageView);
         }
 
