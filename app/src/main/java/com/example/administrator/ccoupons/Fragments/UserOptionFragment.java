@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -27,19 +26,76 @@ import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 import com.example.administrator.ccoupons.User.UserBuyCoupons;
 import com.example.administrator.ccoupons.User.UserFollowCoupon;
-import com.example.administrator.ccoupons.User.UserSellCoupons;
-import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
+import com.example.administrator.ccoupons.User.UserMyCouponActivity;
+import com.example.administrator.ccoupons.User.UserSellCoupons;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 import com.example.administrator.ccoupons.User.UserWalletActivity;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by CZJ on 2017/7/13.
  */
 
 public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
+
+
+    @BindView(R.id.user_nickname_text)
+    TextView userNickname;
+    @BindView(R.id.main_linearlayout_title)
+    FrameLayout mTitleContainer;
+    @BindView(R.id.main_appbar)
+    AppBarLayout mAppBarLayout;
+    @BindView(R.id.user_ub)
+    TextView userUcoin;
+    @BindView(R.id.main_textview_title)
+    TextView mTitle;
+    @BindView(R.id.user_main_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.user_portrait)
+    ImageView portrait;
+
+    @OnClick({R.id.user_main_toolbar, R.id.user_nickname_text, R.id.user_to_mycoupons, R.id.user_to_wal, R.id.user_to_inf, R.id.user_sell, R.id.user_buy, R.id.user_follow, R.id.user_to_set, R.id.user_logoff, R.id.user_portrait})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.user_main_toolbar:
+                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
+                break;
+            case R.id.user_to_inf:
+                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
+                break;
+            case R.id.user_to_mycoupons:
+                getActivity().startActivity(new Intent(getActivity(), UserMyCouponActivity.class));
+                break;
+            case R.id.user_to_wal:
+                getActivity().startActivity(new Intent(getActivity(), UserWalletActivity.class));
+                break;
+            case R.id.user_sell:
+                getActivity().startActivity(new Intent(getActivity(), UserSellCoupons.class));
+                break;
+            case R.id.user_buy:
+                getActivity().startActivity(new Intent(getActivity(), UserBuyCoupons.class));
+                break;
+            case R.id.user_follow:
+                getActivity().startActivity(new Intent(getActivity(), UserFollowCoupon.class));
+                break;
+            case R.id.user_to_set:
+                getActivity().startActivity(new Intent(getActivity(), UserSettingActivity.class));
+                break;
+            case R.id.user_logoff:
+                showLogOffDialog();
+                break;
+            case R.id.user_portrait:
+                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
+                break;
+        }
+    }
+    Unbinder unbinder;
     private UserInfoManager userInfoManager;
-    private ImageView portrait;
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.6f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
@@ -47,109 +103,20 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
 
-    private FrameLayout mTitleContainer;
-    private TextView mTitle;
-    private AppBarLayout mAppBarLayout;
-    private Toolbar toolbar;
-
     private int Ucoin;
     private String nickname;
     private String avatar_url;
-    private LinearLayout toUserMyCoupons, toUserWal, toSetting, toUserSell, toUserBuy, toUserFollow, logoff;
-    private TextView userUcoin, userNickname;
-    private CollapsingToolbarLayout toUserInfo;
 
-    public void bindViews(View view) {
-        portrait = (ImageView) view.findViewById(R.id.user_portrait);
-        userUcoin = (TextView) view.findViewById(R.id.user_ub);
-        userNickname = (TextView) view.findViewById(R.id.user_nickname_text);
-        toUserMyCoupons = (LinearLayout) view.findViewById(R.id.user_to_mycoupons);
-        toUserWal = (LinearLayout) view.findViewById(R.id.user_to_wal);
-        toSetting = (LinearLayout) view.findViewById(R.id.user_to_set);
-        logoff = (LinearLayout) view.findViewById(R.id.user_logoff);
-        toUserSell = (LinearLayout) view.findViewById(R.id.user_sell);
-        toUserBuy = (LinearLayout) view.findViewById(R.id.user_buy);
-        toUserFollow = (LinearLayout) view.findViewById(R.id.user_follow);
-        toUserInfo = (CollapsingToolbarLayout) view.findViewById(R.id.user_to_inf);
-        mTitle = (TextView) view.findViewById(R.id.main_textview_title);
-        mTitleContainer = (FrameLayout) view.findViewById(R.id.main_linearlayout_title);
-        mAppBarLayout = (AppBarLayout) view.findViewById(R.id.main_appbar);
-        toolbar = (Toolbar) view.findViewById(R.id.user_main_toolbar);
-
+    public void initViews() {
         userInfoManager = new UserInfoManager(getActivity());
         mAppBarLayout.addOnOffsetChangedListener(this);
-    }
-
-    private void setListeners() {
-        //OnClickListener
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
-            }
-        });
-        portrait.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
-            }
-        });
-        toUserMyCoupons.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().startActivity(new Intent(getActivity(), UserMyCouponActivity.class));
-            }
-        });
-        toUserInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
-            }
-        });
-        toUserWal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserWalletActivity.class));
-            }
-        });
-        toSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserSettingActivity.class));
-            }
-        });
-        toUserSell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserSellCoupons.class));
-            }
-        });
-        toUserBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserBuyCoupons.class));
-            }
-        });
-        toUserFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), UserFollowCoupon.class));
-            }
-        });
-
-        logoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLogOffDialog();
-            }
-        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_option, container, false);
-        bindViews(view);
-        setListeners();
+        unbinder = ButterKnife.bind(this, view);
+        initViews();
         initData();
         initPortrait();
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
@@ -267,4 +234,12 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         alphaAnimation.setFillAfter(true);
         v.startAnimation(alphaAnimation);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+
 }
