@@ -1,6 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
-import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,12 +11,11 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.MainPageActivity;
+import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Register.RegisterActivity;
-import com.example.administrator.ccoupons.Register.RegisterFinalActivity;
-import com.example.administrator.ccoupons.UI.CustomDialog;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.json.JSONObject;
 
@@ -26,7 +25,6 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView updatenick;
     private EditText nicknameEdit;
-    private CustomDialog customDialog = null;
     private String nickname;
     private MyApp app;
     private final static String updateUserInformationURL = DataHolder.base_URL + DataHolder.updateUserInformation_URL;
@@ -71,40 +69,31 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("userID", app.getUserId());
         map.put("nickname", nickname);
-        ConnectionManager connectionManager = new ConnectionManager(url_str, map);
+
+        ZLoadingDialog dialog = new ZLoadingDialog(UserUpdateNicknameActivity.this);
+        dialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)
+                .setLoadingColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setCanceledOnTouchOutside(false)
+                .setHintText("正在修改...")
+                .show();
+        ConnectionManager connectionManager = new ConnectionManager(url_str, map, dialog);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(200);
-                            customDialog.dismiss();//关闭ProgressDialog
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
                 parseMessage(response);
             }
 
             @Override
             public void onConnectionTimeOut() {
                 Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后再试", Toast.LENGTH_SHORT).show();
-                customDialog.dismiss();
             }
 
             @Override
             public void onConnectionFailed() {
                 Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请稍后再试", Toast.LENGTH_SHORT).show();
-                customDialog.dismiss();
             }
         });
         connectionManager.connect();
-        customDialog = new CustomDialog(this, R.style.CustomDialog);
-        customDialog.show();
     }
 
     private void parseMessage(String response) {

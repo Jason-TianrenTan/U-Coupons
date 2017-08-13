@@ -12,6 +12,7 @@ import com.mob.MobApplication;
 import java.util.ArrayList;
 
 public class MyApp extends MobApplication {
+
     private static MyApp instance = null;
 
     public static MyApp getInstance() {
@@ -20,12 +21,12 @@ public class MyApp extends MobApplication {
 
     @Override
     public void onCreate() {
+        instance = this;
         super.onCreate();
         Ucoin = 0;
-        nickname = "秒切后排的大菜刀";
+        nickname = "default_str";
         avatar = "";
         gender = Gender.MALE;
-        instance = this;
     }
 
 

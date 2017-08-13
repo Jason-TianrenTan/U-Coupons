@@ -220,8 +220,8 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
         //其它配置
         private boolean savePic = true;  //选择完之后是否保存图片
         private boolean correctTool = false; //纠正拍照的照片旋转角度
-        private int height = 800;
-        private int width = 800;
+        private int height = 200;
+        private int width = 200;
 
         /**
          * 裁剪相关配置

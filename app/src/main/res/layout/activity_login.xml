@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@drawable/bgi"
     tools:context="com.example.administrator.ccoupons.Main.LoginActivity"
     android:id="@+id/rootLayout">
 
@@ -21,6 +22,7 @@
             android:layout_width="match_parent"
             android:fitsSystemWindows="true"
             android:minHeight="?attr/actionBarSize"
+            style="@style/MainToolBarStyle"
             android:background="@android:color/transparent">
         </android.support.v7.widget.Toolbar>
 
@@ -42,7 +44,7 @@
                     >
                     <ImageView
                         android:layout_marginTop="10dp"
-                        android:background="@mipmap/ic_launcher"
+                        android:background="@drawable/welcome_logo_new"
                         android:layout_width="150dp"
                         android:layout_height="150dp" />
                 </LinearLayout>
@@ -59,28 +61,30 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/signup_phone_holder"
+                    android:id="@+id/Login_usernameHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/signup_phone"
+                        android:id="@+id/Login_usernameEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:saveEnabled="false"
                         android:textSize="20dp"
+                        android:text="13111111111"
                         android:maxLength="11"
                         android:textColor="@color/gray"
                         android:digits="1234567890"
                         android:hint="手机号码"/>
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/signup_password_holder"
+                    android:id="@+id/Login_passwordHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/signup_password"
+                        android:text="1"
+                        android:id="@+id/Login_passwordEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:saveEnabled="false"
@@ -94,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/text_forget"
+                        android:id="@+id/Login_forgetTextView"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
@@ -105,14 +109,14 @@
                 </RelativeLayout>
 
                 <Button style="@style/MainButtonsStyle"
-                    android:id="@+id/button_login"
+                    android:id="@+id/Login_loginButton"
                     android:text="登录"/>
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Demo 1.1"
+                android:text="Demo 1.2"
                 android:textColor="@color/darkgray"
                 android:layout_alignParentBottom="true"
                 />

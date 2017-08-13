@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,64 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+
+public class WelcomeActivity extends Activity {
+
+
+    @BindView(R.id.Welcome_LoginButton)
+    Button Welcome_LoginButton;
+    @BindView(R.id.Welcome_RegisterButton)
+    Button Welcome_RegisterButton;
+
+    @OnClick({R.id.Welcome_LoginButton,R.id.Welcome_RegisterButton})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.Welcome_LoginButton:
+                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                finish();
+                break;
+            case R.id.Welcome_RegisterButton:
+                startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
+                break;
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcome);
+        ButterKnife.bind(this);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 public class WelcomeActivity extends AppCompatActivity {
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
     private LoginInformationManager loginInformationManager;
@@ -147,4 +206,4 @@ public class WelcomeActivity extends AppCompatActivity {
         login.startAnimation(animation);
         register.startAnimation(animation);
     }
-}
+}*/

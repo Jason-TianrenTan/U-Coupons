@@ -1,14 +1,11 @@
 package com.example.administrator.ccoupons.Fragments;
 
-import com.amap.api.location.AMapLocation;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.os.*;
-import android.os.Message;
-import android.support.v4.view.LinkagePager;
+import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,33 +13,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.bigkoo.convenientbanner.listener.OnItemClickListener;
-import com.example.administrator.ccoupons.Banner.BannerPicture;
-import com.example.administrator.ccoupons.Banner.LocalImageHolderView;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
 import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
-import com.example.administrator.ccoupons.Tools.MessageType;
-import com.example.administrator.ccoupons.UI.CustomDialog;
-import com.example.administrator.ccoupons.UI.CustomLoader;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -54,67 +39,68 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
-import me.crosswall.lib.coverflow.core.PageItemClickListener;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class CategoryFragment extends Fragment {
 
 
-    private TextView messageButton;
-    private RecyclerView recommendView;
-    private CustomLoader customLoader;
+    public static final int FOOTER_LOADMORE = 1,
+                            FOOTER_ENDOFLIST = 0;
+
+    @BindView(R.id.location_textview)
+    TextView locationTextview;
+    @BindView(R.id.category_message_button)
+    Button categoryMessageButton;
+    @BindView(R.id.search_text)
+    EditText searchText;
+    @BindView(R.id.search_input_layout)
+    TextInputLayout searchInputLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.category_banner)
+    ConvenientBanner convenientBanner;
+    @BindView(R.id.category_recycler_view)
+    RecyclerView categoryView;
+    @BindView(R.id.recommend_recyclerview)
+    RecyclerView recommendView;
+    @BindView(R.id.main_nestedscrollview)
+    NestedScrollView mainNestedscrollview;
+    @OnClick({R.id.location_textview, R.id.category_message_button})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.location_textview:
+                Intent intent = new Intent(getActivity(), LocationSelectActivity.class);
+                if (location != null)
+                    intent.putExtra("location", location);
+                startActivity(intent);
+                break;
+            case R.id.category_message_button:
+                getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
+                break;
+        }
+
+    }
+
+    private Unbinder unbinder;
     private ArrayList<Category> categoryList;
-    private CategoryAdapter adapter;
-    private TextView location_text;
+    private CategoryAdapter cat_adapter;
+    private MainPageCouponAdapter rec_adapter;
     private ArrayList<String> networkImages;
     private ArrayList<Coupon> recommendList;
-    private ConvenientBanner convenientBanner;
     private String location = null;
-    private LocationGet locationFetchr;
-    //TODO:handler
-    private Handler handler = new Handler() {
-
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case MessageType.LOCATION_GET:
-                    location = locationFetchr.getCity();
-                    location_text.setText(location);
-                    MyApp app = (MyApp) getActivity().getApplicationContext();
-                    app.setLocation(location);
-                    customLoader.finish();
-                    break;
-                case MessageType.LOCATION_FAILED:
-                    Toast.makeText(getActivity().getApplicationContext(), "获取当前定位失败，请检查设置或者网络连接",
-                            Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
+    private JSONObject resultJSON;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_category, container, false);
-        convenientBanner = (ConvenientBanner) view.findViewById(R.id.category_banner);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        unbinder = ButterKnife.bind(this, view);
+
         toolbar.setTitleTextColor(Color.WHITE);
-
-        location_text = (TextView) view.findViewById(R.id.location_textview);
-        location_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), LocationSelectActivity.class);
-                if (location != null)
-                    intent.putExtra("location", location);
-
-                startActivity(intent);
-            }
-        });
-
-
-        EditText searchText = (EditText) view.findViewById(R.id.search_text);
         searchText.setFocusable(false);
         searchText.setOnClickListener(new View.OnClickListener()
 
@@ -124,45 +110,22 @@ public class CategoryFragment extends Fragment {
                 getActivity().startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
-
-        messageButton = (TextView) view.findViewById(R.id.category_message_button);
-        messageButton.setOnClickListener(new View.OnClickListener()
-
-        {
-            @Override
-            public void onClick(View view) {
-                getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
-            }
-        });
-
-        //   SearchView searchView = (SearchView)view.findViewById(R.id.search_view);
         initCategory();
-
-        initRecyclerViews(view);
-
         initRecommends();
-
+        initRecyclerViews(view);
         initBanner();
-
         initLocation();
-
-
-
         return view;
     }
 
 
     private void parseRecommendMessage(String response) {
+        System.out.println("Response = " + response);
         try {
-            JSONObject mainObj = new JSONObject(response);
-            JSONArray jsonArray = mainObj.getJSONArray("result");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                Coupon coupon = Coupon.decodeFromJSON(obj);
-                recommendList.add(coupon);
-            }
-            MainPageCouponAdapter adapter = new MainPageCouponAdapter(recommendList);
-            recommendView.setAdapter(adapter);
+            resultJSON = new JSONObject(response);
+            rec_adapter = new MainPageCouponAdapter(recommendList);
+            recommendView.setAdapter(rec_adapter);
+            requestData(0, 5);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -192,21 +155,69 @@ public class CategoryFragment extends Fragment {
     }
 
     private void initRecyclerViews(View view) {
-        //类别Recylcerview
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
+        categoryView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new CategoryAdapter(categoryList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setNestedScrollingEnabled(false);
+        categoryView.setLayoutManager(layoutManager);
+        cat_adapter = new CategoryAdapter(categoryList);
+        categoryView.setAdapter(cat_adapter);
+        categoryView.setNestedScrollingEnabled(false);
 
         recommendList = new ArrayList<>();
         recommendView = (RecyclerView) view.findViewById(R.id.recommend_recyclerview);
         LinearLayoutManager recLayoutManager = new LinearLayoutManager(getActivity());
         recommendView.setLayoutManager(recLayoutManager);
-        MainPageCouponAdapter rec_adapter = new MainPageCouponAdapter(recommendList);
+        rec_adapter = new MainPageCouponAdapter(recommendList);
         recommendView.setAdapter(rec_adapter);
         recommendView.setNestedScrollingEnabled(false);
+
+
+        mainNestedscrollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (v.getChildAt(v.getChildCount() - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                            scrollY > oldScrollY) {
+                        System.out.println("scrollY = " + scrollY +
+                                ", right = " + (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight()));
+                        //code to fetch more data for endless scrolling
+                        requestData(recommendList.size(), 4);
+                    }
+                }
+            }
+        });
+    }
+
+
+    //设置footer
+    private void setFooterView(int type) {
+        switch (type) {
+            case FOOTER_LOADMORE:
+                View footer = LayoutInflater.from(getActivity()).inflate(R.layout.load_footer, recommendView, false);
+                rec_adapter.setFooterView(footer);
+                break;
+        }
+
+    }
+
+    private void requestData(int start, int ceiling) {
+        int count = 0;
+        try {
+            JSONArray jsonArray = resultJSON.getJSONArray("result");
+            for (int i = start; i < jsonArray.length(); i++, count++) {
+                if (count >= ceiling)
+                    break;
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Coupon coupon = Coupon.decodeFromJSON(jsonObject);
+                recommendList.add(coupon);
+            }
+            if (recommendList.size() < jsonArray.length()) {
+                setFooterView(FOOTER_LOADMORE);
+            } else rec_adapter.setFooterView(null);
+            rec_adapter.notifyDataSetChanged();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void parseBannerMessage(String response) {
@@ -225,7 +236,6 @@ public class CategoryFragment extends Fragment {
                     return new NetworkImageHolderView();
                 }
             }, networkImages).setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused});
-            ;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -261,9 +271,7 @@ public class CategoryFragment extends Fragment {
 
     }
 
-    //初始化网络图片缓存库
     private void initImageLoader() {
-        //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.mascot_nothing)
                 .cacheInMemory(true).cacheOnDisk(true).build();
@@ -277,6 +285,7 @@ public class CategoryFragment extends Fragment {
         ImageLoader.getInstance().init(config);
     }
 
+
     //初始化数据
     private void initCategory() {
         categoryList = new ArrayList<Category>();
@@ -286,25 +295,14 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+
     public void initLocation() {
-        locationFetchr = new LocationGet(getActivity(), handler);
-        locationFetchr.requestLocation();
-        customLoader = new CustomLoader(5, getActivity());
-        customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
-            @Override
-            public void onTimeChanged() {
-
-            }
-
-            @Override
-            public void onTimeFinish() {
-                android.os.Message msg = new android.os.Message();
-                msg.what = MessageType.LOCATION_FAILED;
-                handler.sendMessage(msg);
-            }
-
-        });
-        customLoader.start();
+        (new LocationGet(getActivity(), locationTextview)).requestLocation();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

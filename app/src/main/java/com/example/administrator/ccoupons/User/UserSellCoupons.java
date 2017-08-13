@@ -21,7 +21,7 @@ public class UserSellCoupons extends CouponCommonActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_coupon_layout);
-        setToolbarTitle("sell_icon");
+        setToolbarTitle("我卖出的");
         initData(DataHolder.base_URL + DataHolder.requestSoldList_URL);
     }
 }

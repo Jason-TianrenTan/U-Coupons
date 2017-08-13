@@ -5,6 +5,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Tools.MessageType;
+import com.zyao89.view.zloading.ZLoadingDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,8 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 public class ConnectionManager {
 
+
+    private ZLoadingDialog dialog;
     private UHuiConnection connection;
     private String url;
     private HashMap<String, String> attributes;
@@ -44,6 +47,12 @@ public class ConnectionManager {
         this.url = url;
     }
 
+    public ConnectionManager(String url, HashMap<String,String> reqMap, ZLoadingDialog dialog) {
+        this.attributes = reqMap;
+        this.url = url;
+        this.dialog = dialog;
+    }
+
     public void setConnectionListener(UHuiConnectionListener listener) {
         this.listener = listener;
     }
@@ -65,6 +74,10 @@ public class ConnectionManager {
                     connection.connect();
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+                finally {
+                    if (dialog != null)
+                        dialog.dismiss();
                 }
             }
         }).start();

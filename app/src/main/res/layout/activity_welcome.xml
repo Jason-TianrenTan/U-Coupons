@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bgi">
     <LinearLayout
         android:layout_height="0dp"
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
             <Button
                 android:text="@string/login"
                 style="@style/welcome_button"
-                android:id="@+id/welcome_login_button"/>
+                android:id="@+id/Welcome_LoginButton"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -47,7 +48,7 @@
             <Button
                 android:text="@string/register"
                 style="@style/welcome_button"
-                android:id="@+id/welcome_register_button"/>
+                android:id="@+id/Welcome_RegisterButton"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

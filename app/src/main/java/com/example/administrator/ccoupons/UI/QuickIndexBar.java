@@ -90,7 +90,7 @@ public class QuickIndexBar extends View {
             case MotionEvent.ACTION_MOVE:
                 pressed = true;
                 int tempIndex = (int) (event.getY() / cellHeight);
-                if (tempIndex != index) {
+                if (tempIndex != index && tempIndex > 0) {
                     index = tempIndex;
 
                     //对index进行合法性的判断
@@ -101,6 +101,9 @@ public class QuickIndexBar extends View {
                             listener.onLetterChange(letter);
                         }
                     }
+                }
+                if (tempIndex == 0) {
+                    listener.onLetterChange("START");
                 }
                 break;
             case MotionEvent.ACTION_UP:

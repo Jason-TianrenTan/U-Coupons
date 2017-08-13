@@ -2,7 +2,6 @@ package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.ccoupons.Category;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/7/11 0011.
@@ -27,18 +26,21 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
+
+
     private Context mContext;
     private ArrayList<Category> mCategoryList;
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        TextView textView;
+
+        @BindView(R.id.category_imageview) ImageView imageView;
+        @BindView(R.id.category_textview) TextView textView;
+
         LinearLayout rootView;
         public CategoryViewHolder(View view) {
             super(view);
             rootView = (LinearLayout)view;
-            imageView = (ImageView) view.findViewById(R.id.category_imageview);
-            textView = (TextView) view.findViewById(R.id.category_textview);
+            ButterKnife.bind(this, view);
         }
     }
 
@@ -61,7 +63,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 Category category = mCategoryList.get(position);
                 Intent intent = new Intent(mContext, CategorySearchActivity.class);
                 intent.putExtra("categoryId", (position + 1) + "");
-                System.out.println("categoryId = " + (position + 1));
                 mContext.startActivity(intent);
 
             }
@@ -73,7 +74,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
         Category category = mCategoryList.get(position);
         holder.textView.setText(category.getName());
-        Glide.with(mContext).load(category.getResId()).into(holder.imageView);
+        Glide.with(mContext)
+                .load(category.getResId())
+                .into(holder.imageView);
     }
 
     @Override

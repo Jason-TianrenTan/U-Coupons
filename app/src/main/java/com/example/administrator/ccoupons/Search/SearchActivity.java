@@ -162,7 +162,7 @@ public class SearchActivity extends AppCompatActivity {
                 String result = jsonObject.getString("product");
                 preList.add(result);
             }
-            preSearchFragment.upDate(preList);
+            preSearchFragment.upDate(preList, catId);
         } catch (Exception e) {
             e.printStackTrace();
         }

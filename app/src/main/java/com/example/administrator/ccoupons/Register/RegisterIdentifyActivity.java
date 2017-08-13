@@ -143,11 +143,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_identify);
-        //DEBUG
-        Message sms_msg = new Message();
-        sms_msg.what = SMS_SUCCESS;
-        SMSVerifyHandler.sendMessage(sms_msg);
-        finish();
 
 
         checker = new RegisterCheck();

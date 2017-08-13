@@ -3,34 +3,27 @@ package com.example.administrator.ccoupons.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bumptech.glide.Glide;
-import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Search.SearchActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/7/16 0016.
@@ -41,21 +34,27 @@ public class MessageFragment extends Fragment {
 
     public class MessageClassAdapter extends RecyclerView.Adapter<MessageClassAdapter.MessageViewHolder> {
 
+
         private Context mContext;
         private ArrayList<MessageClass> mMessageClassList;
 
         public class MessageViewHolder extends RecyclerView.ViewHolder {
+
+            @BindView(R.id.message_item_imageview)
             ImageView imageView;
-            TextView titleView, subTitleView, timeTextView;
+            @BindView(R.id.message_item_title)
+            TextView titleView;
+            @BindView(R.id.message_item_subtitle)
+            TextView subTitleView;
+            @BindView(R.id.message_item_time)
+            TextView timeTextView;
+
             CardView cardView;
 
             public MessageViewHolder(View view) {
                 super(view);
                 cardView = (CardView) view;
-                imageView = (ImageView) view.findViewById(R.id.message_item_imageview);
-                titleView = (TextView) view.findViewById(R.id.message_item_title);
-                subTitleView = (TextView) view.findViewById(R.id.message_item_subtitle);
-                timeTextView = (TextView) view.findViewById(R.id.message_item_time);
+                ButterKnife.bind(this, view);
             }
         }
 
@@ -65,14 +64,11 @@ public class MessageFragment extends Fragment {
         }
 
         @Override
-        public MessageClassAdapter.MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (mContext == null) {
                 mContext = parent.getContext();
             }
-            View view = LayoutInflater.from(mContext).inflate(R.layout.messageclass_item, parent, false);
-            final MessageViewHolder holder = new MessageViewHolder(view);
-
-            return holder;
+            return new MessageViewHolder(LayoutInflater.from(mContext).inflate(R.layout.messageclass_item, parent, false));
         }
 
         @Override
@@ -88,8 +84,8 @@ public class MessageFragment extends Fragment {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext.getApplicationContext(), MessageDetailActivity.class);
                     intent.putExtra("index", holder.getAdapterPosition());
-                    Bundle bundle=  new Bundle();
-                    bundle.putSerializable("list", (Serializable)msgClass.getMessages());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("list", (Serializable) msgClass.getMessages());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

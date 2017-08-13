@@ -2,27 +2,29 @@ package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Intent;
 import android.os.*;
+import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.MessageType;
-import com.example.administrator.ccoupons.UI.CustomLoader;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,12 +32,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CategorySearchActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private TextView locationText;
-    private EditText editText;
-    private CustomLoader customLoader;
+
+    @BindView(R.id.category_title)
+    TextView categoryText;
+    @BindView(R.id.cat_main_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.category_location_textview)
+    TextView locationText;
+    @BindView(R.id.pos_img)
+    ImageView posImg;
+    @BindView(R.id.cat_input_search)
+    EditText editText;
+    @BindView(R.id.category_main_recyclerview)
+    RecyclerView recyclerView;
     private String location;
     private LocationGet locationFetchr;
     private MainPageCouponAdapter adapter;
@@ -49,7 +63,6 @@ public class CategorySearchActivity extends AppCompatActivity {
                     location = locationFetchr.getCity();
                     locationText.setText(location);
                     ((MyApp) getApplicationContext()).setLocation(location);
-                    customLoader.finish();
                     break;
                 case MessageType.LOCATION_FAILED:
                     Toast.makeText(getApplicationContext(), "获取定位信息失败!", Toast.LENGTH_SHORT).show();
@@ -64,20 +77,13 @@ public class CategorySearchActivity extends AppCompatActivity {
         if (str != null && str.length() > 0) {
             locationText.setText(str);
         } else {
-            locationFetchr = new LocationGet(this, handler);
+            locationFetchr = new LocationGet(this, locationText);
             locationFetchr.requestLocation();
-            startCountDown();
         }
     }
 
     private void bindViews() {
-        recyclerView = (RecyclerView) findViewById(R.id.category_main_recyclerview);
-        editText = (EditText) findViewById(R.id.cat_input_search);
-        locationText = (TextView) findViewById(R.id.category_location_textview);
-        TextView categoryText = (TextView) findViewById(R.id.category_title);
         categoryText.setText(DataHolder.Categories.nameList[Integer.parseInt(catId) - 1]);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.cat_main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,6 +109,7 @@ public class CategorySearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_search);
+        ButterKnife.bind(this);
 
         catId = getIntent().getStringExtra("categoryId");
         bindViews();
@@ -111,24 +118,6 @@ public class CategorySearchActivity extends AppCompatActivity {
     }
 
 
-    private void startCountDown() {
-        customLoader = new CustomLoader(5, this);
-        customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
-            @Override
-            public void onTimeChanged() {
-
-            }
-
-            @Override
-            public void onTimeFinish() {
-                android.os.Message msg = new android.os.Message();
-                msg.what = MessageType.LOCATION_FAILED;
-                handler.sendMessage(msg);
-            }
-
-        });
-        customLoader.start();
-    }
 
     private void initRecyclerView() {
         recommendList = new ArrayList<>();
@@ -144,6 +133,7 @@ public class CategorySearchActivity extends AppCompatActivity {
         String url = DataHolder.base_URL + DataHolder.requestCatRecommend_URL;
         HashMap<String, String> map = new HashMap<>();
         map.put("categoryID", catId);
+
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override

@@ -2,6 +2,7 @@ package com.example.administrator.ccoupons.Search;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.*;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 
 public class PreSearchFragment extends Fragment {
 
+    private UserInfoManager userInfoManager;
     private RecyclerView recyclerView;
     private ArrayList<String> preList;
     private PreSearchAdapter adapter;
@@ -33,7 +36,9 @@ public class PreSearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.presearch_fragment, container, false);
 
         initData();
+        userInfoManager = new UserInfoManager(getActivity());
         recyclerView = (RecyclerView) view.findViewById(R.id.presearch_recyclerview);
+
         adapter = new PreSearchAdapter(preList);
         recyclerView.setAdapter(adapter);
 
@@ -46,9 +51,10 @@ public class PreSearchFragment extends Fragment {
         return view;
     }
 
-    public void upDate(ArrayList<String> arrayList) {
+    public void upDate(ArrayList<String> arrayList, String catId) {
         this.preList = arrayList;
         adapter = new PreSearchAdapter(preList);
+        adapter.catId = catId;
         recyclerView.setAdapter(adapter);
     }
     private void initData() {
@@ -60,6 +66,7 @@ public class PreSearchFragment extends Fragment {
 
         private Context mContext;
         private ArrayList<String> resultList;
+        private String catId;
 
         public class PreSearchViewHolder extends RecyclerView.ViewHolder {
             TextView textView;
@@ -83,19 +90,23 @@ public class PreSearchFragment extends Fragment {
             }
             View view = LayoutInflater.from(mContext).inflate(R.layout.presearch_item, parent, false);
             final PreSearchViewHolder holder = new PreSearchViewHolder(view);
-            holder.rootView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(PreSearchViewHolder holder, int position) {
+        public void onBindViewHolder(PreSearchViewHolder holder, final int position) {
             String result = resultList.get(position);
             holder.textView.setText(result);
+            holder.rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String result = resultList.get(position);
+                    Intent intent = new Intent(mContext, SearchResultActivity.class);
+                    intent.putExtra("search_string", result);
+                    userInfoManager.addHistory(result);
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override

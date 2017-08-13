@@ -25,8 +25,9 @@ public class CouponPurchaseActivity extends AppCompatActivity {
 
     private Coupon coupon;
     private ImageView couponImg;
-    private TextView couponNameText, couponPriceText,couponConstraintsText, couponDiscountText;
+    private TextView couponNameText, couponPriceText, couponConstraintsText, couponDiscountText;
     private Button purchaseButton;
+
     //处理返回回来的json
     private void parseMessage(String response) {
         if (response.indexOf("errno") >= 0) {
@@ -44,8 +45,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "遇到未知错误，请稍后重试", Toast.LENGTH_LONG).show();
             }
-        }
-        else
+        } else
             Toast.makeText(getApplicationContext(), "遇到未知错误，请稍后重试", Toast.LENGTH_LONG).show();
     }
 
@@ -55,7 +55,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coupon_purchase);
 
         bindViews();
-        Toolbar toolbar = (Toolbar)findViewById(R.id.coupon_purchase_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.coupon_purchase_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -82,7 +82,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("couponID", coupon.getCouponId());
-                MyApp app = (MyApp)getApplicationContext();
+                MyApp app = (MyApp) getApplicationContext();
                 String userId = app.getUserId();
                 map.put("userID", userId);
                 ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.purchase_URL, map);
@@ -109,7 +109,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
 
     private void initInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
-        ImageManager.GlideImage(DataHolder.base_URL + coupon.getImgURL(), couponImg);
+        ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getImgURL(), couponImg);
         couponNameText.setText(coupon.getName());
         couponPriceText.setText("¥" + coupon.getListPrice());
 
@@ -121,7 +121,6 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         couponConstraintsText.setText(sb.toString());
         couponDiscountText.setText(coupon.getDiscount());
     }
-
 
 
 }

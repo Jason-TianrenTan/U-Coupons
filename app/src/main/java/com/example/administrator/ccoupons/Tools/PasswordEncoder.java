@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class PasswordEncoder {
 
-    public String EncodeByMd5(String str) throws NoSuchAlgorithmException {
+    public static String EncodeByMd5(String str) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         str += "UHui";
         md5.update(str.getBytes());

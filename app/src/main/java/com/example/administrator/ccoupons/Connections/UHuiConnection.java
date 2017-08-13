@@ -78,11 +78,13 @@ public class UHuiConnection {
             }
 
         } catch (Exception e) {
+            System.out.println("EXception:");
             e.printStackTrace();
             if (handler != null) {
                 Message msg = new Message();
                 msg.what = MessageType.CONNECTION_ERROR;
                 handler.sendMessage(msg);
+                System.out.println("Message sent");
             }
         }
     }

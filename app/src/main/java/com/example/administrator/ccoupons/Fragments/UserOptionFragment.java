@@ -24,6 +24,7 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 import com.example.administrator.ccoupons.Tools.ImageManager;
+import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 import com.example.administrator.ccoupons.User.UserBuyCoupons;
 import com.example.administrator.ccoupons.User.UserFollowCoupon;
 import com.example.administrator.ccoupons.User.UserSellCoupons;

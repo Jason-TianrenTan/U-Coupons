@@ -1,7 +1,7 @@
 package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
-import android.os.*;
+import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -15,59 +15,53 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
-import com.example.administrator.ccoupons.UI.CustomLoader;
 import com.example.administrator.ccoupons.UI.QuickIndexBar;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LocationSelectActivity extends AppCompatActivity {
 
+
+    @BindView(R.id.input_search)
+    EditText inputSearch;
+    @BindView(R.id.location_select_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.location_select_textview)
+    TextView locationText;
+    @BindView(R.id.current_gps_cardview)
+    CardView gpsCardView;
+    @BindView(R.id.popular_city_recyclerview)
+    RecyclerView popularCityRecyclerview;
+    @BindView(R.id.citylist_recyclerview)
+    RecyclerView citylistRecyclerview;
+    @BindView(R.id.location_nestscrollview)
+    NestedScrollView locationNestscrollview;
+    @BindView(R.id.location_sideindexbar)
+    QuickIndexBar locationSideindexbar;
     private String location = null;
     private LocationGet locationFetchr;
-    private TextView locationText;
-    private CustomLoader customLoader;
     private ArrayList<String> cityList = new ArrayList<>();
     private ArrayList<String> pop_cityList = new ArrayList<>();
     private RecyclerView popCityRecyclerView, recyclerView;
-    private CardView gpsCardView;
-
     private int[] CharIndex = new int[26];
-    private Handler handler = new Handler() {
-
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case MessageType.LOCATION_GET:
-                    location = locationFetchr.getCity();
-                    locationText.setText(location);
-                    customLoader.finish();
-                    break;
-                case MessageType.LOCATION_FAILED:
-                    makeErrorToast();
-                    break;
-            }
-        }
-    };
-
-
-
-    private void makeErrorToast() {
-        Toast.makeText(this, "获取当前定位失败，请检查设置或者网络连接", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_select);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.location_select_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -78,15 +72,13 @@ public class LocationSelectActivity extends AppCompatActivity {
             }
         });
 
-        locationText = (TextView) findViewById(R.id.location_select_textview);
         String localCity = getIntent().getStringExtra("location");
         if (localCity != null) {
             location = localCity;
             locationText.setText(localCity);
         } else {
-            locationFetchr = new LocationGet(this, handler);
+            locationFetchr = new LocationGet(this, locationText);
             locationFetchr.requestLocation();
-            startCountDown();
         }
 
 
@@ -116,10 +108,15 @@ public class LocationSelectActivity extends AppCompatActivity {
         indexBar.setOnLetterChangeListener(new QuickIndexBar.OnLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
-                char[] arr = letter.toCharArray();
-                char ch = arr[0];
-                int index = ch - 'A';
-                scroll(scrollView, index);
+                if (letter.length() == 1) {
+                    char[] arr = letter.toCharArray();
+                    char ch = arr[0];
+                    int index = ch - 'A';
+                    scroll(scrollView, index);
+                }
+                else {
+                    scrollView.smoothScrollTo(0, 0);
+                }
             }
 
             @Override
@@ -135,26 +132,6 @@ public class LocationSelectActivity extends AppCompatActivity {
         scrollView.smoothScrollTo(0, y);
     }
 
-
-
-    private void startCountDown() {
-        customLoader = new CustomLoader(5, this);
-        customLoader.setLoaderListener(new CustomLoader.CustomLoaderListener() {
-            @Override
-            public void onTimeChanged() {
-
-            }
-
-            @Override
-            public void onTimeFinish() {
-                Message msg = new Message();
-                msg.what = MessageType.LOCATION_FAILED;
-                handler.sendMessage(msg);
-            }
-
-        });
-        customLoader.start();
-    }
 
 
     private ArrayList<String> getPopularCityList() {

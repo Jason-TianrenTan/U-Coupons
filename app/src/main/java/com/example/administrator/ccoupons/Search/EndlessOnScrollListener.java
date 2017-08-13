@@ -8,13 +8,15 @@ import android.support.v7.widget.RecyclerView;
  */
 
 public abstract class EndlessOnScrollListener extends RecyclerView.OnScrollListener {
-    private LinearLayoutManager mLinearLayoutManager; //当前页，从0开始
-    private int currentPage = 0;
+
+
+    public static final int VISIBLE_THRESHOLD = 2;
+    private LinearLayoutManager mLinearLayoutManager;
     private int totalItemCount;
+    private int lastVisibleItem;
     private int previousTotal = 0;
-    private int visibleItemCount;
-    private int firstVisibleItem;
     private boolean loading = true;
+    private boolean first = true;
 
     public EndlessOnScrollListener(LinearLayoutManager linearLayoutManager) {
         this.mLinearLayoutManager = linearLayoutManager;
@@ -23,22 +25,22 @@ public abstract class EndlessOnScrollListener extends RecyclerView.OnScrollListe
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-        visibleItemCount = recyclerView.getChildCount();
         totalItemCount = mLinearLayoutManager.getItemCount();
-        firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+        lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+        System.out.println("scrolling, total = " + totalItemCount + ", last visible = " + lastVisibleItem);
         if (loading) {
             if (totalItemCount > previousTotal) {
                 loading = false;
                 previousTotal = totalItemCount;
             }
         }
-        if (!loading && totalItemCount - visibleItemCount <= firstVisibleItem) {
-            currentPage++;
-            onLoadMore(currentPage);
+        if (!loading && totalItemCount < (lastVisibleItem + VISIBLE_THRESHOLD)) {
+            System.out.println("Total = " + totalItemCount + ", last visible = " + lastVisibleItem + ",loading more...");
+            onLoadMore();
             loading = true;
         }
     }
 
-    public abstract void onLoadMore(int currentPage);
+    public abstract void onLoadMore();
 
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.administrator.ccoupons">
-
-    <service android:name="com.amap.api.location.APSService" />
 
     <uses-permission android:name="android.permission.GET_TASKS" />
 
@@ -39,11 +38,13 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
+        tools:ignore="MissingTranslation"
+        tools:replace="android:icon,android:theme"
         android:name=".MyApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/welcome_logo_new"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/welcome_logo_new"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
@@ -93,6 +94,7 @@
         </activity>
 
         <service android:name=".Connections.MessageGetService" />
+        <service android:name="com.amap.api.location.APSService" />
 
         <activity
             android:name=".Fragments.MainPageActivity"

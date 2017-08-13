@@ -54,7 +54,7 @@ public class UserSettingActivity extends SlideBackActivity {
     private void showClearDialog() {
         final AlertDialog.Builder clearDialog =
                 new AlertDialog.Builder(UserSettingActivity.this);
-        clearDialog.setMessage("确定要清空搜索历史记录?");
+        clearDialog.setMessage("确定要清空搜索历史记录、用户登录信息以及图片等缓存?");
         clearDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @Override
