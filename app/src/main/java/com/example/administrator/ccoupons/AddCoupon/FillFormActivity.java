@@ -200,9 +200,9 @@ public class FillFormActivity extends AppCompatActivity {
                 }
 
                 if (valid) {
-                    coupon.setName(productName);
-                    coupon.setImgURL(path);
-                    coupon.setExpireDate(expireDate);
+                    coupon.setProduct(productName);
+                    coupon.setPic(path);
+                    coupon.setExpiredtime(expireDate);
                     coupon.setBrandName(brandName);
                     coupon.setDiscount(discount);
                     for (int i =0;i<DataHolder.Categories.nameList.length;i++) {

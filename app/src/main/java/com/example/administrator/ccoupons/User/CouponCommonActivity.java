@@ -1,8 +1,8 @@
 package com.example.administrator.ccoupons.User;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,7 +23,6 @@ import java.util.HashMap;
 public abstract class CouponCommonActivity extends AppCompatActivity {
 
 
-    private boolean hook = false;
     private Toolbar toolbar;
     private FrameLayout frameView;
     private UserCouponInfoAdapter adapter;
@@ -72,7 +71,7 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
-                parseMessgae(response);
+                parseMessage(response);
             }
 
             @Override
@@ -88,55 +87,34 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
-    //{"broughtStoreList": [], "broughtUsedList": []} 买到的
-/*
-    {"likeList": [{"couponid": "001", "product": "\u542e\u6307\u539f\u5473\u9e21wh", "listprice": "1", "value": "1",
-    "expiredtime": "2017-01-01", "discount": "20"}
-     */
-    private void parseMessgae(String str) {
+
+    private void parseMessage(String str) {
         commonFragment = new CouponCommonFragment();
         emptyFragment = new CommonEmptyFragment();
         couponList = new ArrayList<>();
         try {
-            System.out.println("Response = " + str);
-            JSONObject jsonObject = new JSONObject(str);
-            JSONArray jsonArray = null;
-            if (str.indexOf("boughtList") != -1) {
-
-                jsonArray = jsonObject.getJSONArray("boughtList");
-            }
-            if (str.indexOf("soldList") != -1) {
-                jsonArray = jsonObject.getJSONArray("soldList");
-            }
-            if (str.indexOf("likeList") != -1) {
-                hook = true;
-                jsonArray = jsonObject.getJSONArray("likeList");
-            }
-
-            parseJSONMessage(jsonArray);
-            FragmentManager fragmentManager = getFragmentManager();
+            String parseString = null;
+            String[] parseList = "boughtList,soldList,likeList".split(",");
+            for (String pStr : parseList)
+                if (str.indexOf(pStr) != -1)
+                    parseString = pStr;
+            parseJSONMessage((new JSONObject(str)).getJSONArray(parseString));
+            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.common_frame, commonFragment);
             fragmentTransaction.add(R.id.common_frame, emptyFragment);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("coupons", couponList);
-            if (hook)
-                bundle.putSerializable("hook", "hook");
             commonFragment.setArguments(bundle);
             if (couponList.size() > 0) {
                 fragmentTransaction.hide(emptyFragment);
                 fragmentTransaction.show(commonFragment);
-
-                System.out.println("couponlist = " + couponList.size());
-
-                //    commonFragment.setData(couponList);
             } else {
                 fragmentTransaction.show(emptyFragment);
                 fragmentTransaction.hide(commonFragment);
             }
             fragmentTransaction.commit();
-            System.out.println("commit()");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,13 +126,13 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
                 Coupon coupon = new Coupon();
-                coupon.setCouponId(obj.getString("couponid"));
-                coupon.setName(obj.getString("product"));
-                coupon.setListPrice(Double.parseDouble(obj.getString("listprice")));
-                coupon.setEvaluatePrice(Double.parseDouble(obj.getString("value")));
-                coupon.setExpireDate(obj.getString("expiredtime"));
+                coupon.setCouponid(obj.getString("couponid"));
+                coupon.setProduct(obj.getString("product"));
+                coupon.setListprice(obj.getString("listprice"));
+                coupon.setValue(obj.getString("value"));
+                coupon.setExpiredtime(obj.getString("expiredtime"));
                 coupon.setDiscount(obj.getString("discount"));
-                coupon.setImgURL(obj.getString("pic"));
+                coupon.setPic(obj.getString("pic"));
                 couponList.add(coupon);
                 System.out.println("parsing " + obj.toString());
             }

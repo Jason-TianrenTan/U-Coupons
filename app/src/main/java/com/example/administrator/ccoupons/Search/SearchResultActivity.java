@@ -333,9 +333,9 @@ public class SearchResultActivity extends AppCompatActivity {
                 return;
             final Coupon coupon = mCouponList.get(position);
             setImage(holder, coupon);
-            holder.nameText.setText(coupon.getName());
-            holder.detailText.setText(coupon.getExpireDate());
-            holder.priceText.setText(coupon.getListPrice() + "");
+            holder.nameText.setText(coupon.getProduct());
+            holder.detailText.setText(coupon.getExpiredtime());
+            holder.priceText.setText(coupon.getListprice() + "");
             holder.specialText.setText(coupon.getWord());
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -349,7 +349,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
+            String url = DataHolder.base_URL + "/static/" + coupon.getPic();
             Glide.with(mContext).load(url).into(holder.imageView);
         }
 

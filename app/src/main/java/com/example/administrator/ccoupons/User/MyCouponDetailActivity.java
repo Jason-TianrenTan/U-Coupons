@@ -41,8 +41,6 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
 
 
     private String msgId = null;
-    private boolean statType = false;
-    private int index = 0;
     private Coupon coupon;
     private ImageView mImageView;
     private ImageView mainButton, followButton, purchaseButton;
@@ -60,14 +58,6 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
 
 
         String iStr = getIntent().getStringExtra("index");
-        if (iStr != null && iStr.length() > 0)
-            index = Integer.parseInt(getIntent().getStringExtra("index"));
-
-        String type = getIntent().getStringExtra("type");
-        if (type.equals("show")) {
-            statType = true;
-            inflateBottomStatView();
-        }
         bindViews();
 
         setSupportActionBar(mToolbarView);
@@ -76,7 +66,7 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pullback();
+                finish();
 
             }
         });
@@ -93,16 +83,6 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         showInfo();
     }
 
-
-    private void pullback() {
-        System.out.println("statType = " + statType);
-        if (statType) {
-            Intent intent = new Intent(MyCouponDetailActivity.this, UserMyCouponActivity.class);
-            intent.putExtra("index", index + "");
-            startActivity(intent);
-            finish();
-        } else finish();
-    }
 
 
     private void inflateBottomStatView() {
@@ -159,7 +139,7 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
     private void sendStatRequest(String type) {
         String url = DataHolder.base_URL + DataHolder.postChangeCouponState_URL;
         HashMap<String, String> map = new HashMap<>();
-        map.put("couponID", coupon.getCouponId());
+        map.put("couponID", coupon.getCouponid());
         map.put("state", type);
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -198,7 +178,7 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            pullback();
+            finish();
             return false;
         } else {
             return super.onKeyDown(keyCode, event);
@@ -210,19 +190,19 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
         //url
-        String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
+        String url = DataHolder.base_URL + "/static/" + coupon.getPic();
         ImageManager.GlideImage(url, mImageView);
 
         //name
-        String name = coupon.getName();
+        String name = coupon.getProduct();
         nameText.setText(name);
 
         //list price
-        double listprice = coupon.getListPrice();
+        String listprice = coupon.getListprice();
         listpriceText.setText("¥" + listprice + "");
 
         //eval price
-        double evalprice = coupon.getEvaluatePrice();
+        String evalprice = coupon.getValue();
         evalpriceText.setText("¥" + evalprice + "");
 
         //优惠额度
@@ -233,7 +213,7 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         String brandName = "懒得起名字的公司" + coupon.getBrandName();
         brandNameText.setText(brandName);
 
-        String expireDate = coupon.getExpireDate();
+        String expireDate = coupon.getExpiredtime();
         expireText.setText(expireDate + "");
 
 
@@ -241,7 +221,7 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         constaintsText.setText(constraints);
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("couponID", coupon.getCouponId() + "");
+        map.put("couponID", coupon.getCouponid() + "");
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
 
         if (msgId != null) {

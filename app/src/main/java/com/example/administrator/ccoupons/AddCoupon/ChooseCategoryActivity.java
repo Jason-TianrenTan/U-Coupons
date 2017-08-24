@@ -99,7 +99,7 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         public void onBindViewHolder(ChooseViewHolder holder, final int position) {
             Category category = categoryList.get(position);
             holder.imageView.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), category.getResId()));
-            holder.textView.setText(category.getName());
+            holder.textView.setText(category.getProduct());
             holder.rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

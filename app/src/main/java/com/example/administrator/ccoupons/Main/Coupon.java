@@ -1,16 +1,11 @@
 package com.example.administrator.ccoupons.Main;
 
-import com.example.administrator.ccoupons.MyApp;
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.Random;
-
-import static java.lang.System.currentTimeMillis;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/11 0011.
@@ -26,55 +21,31 @@ public class Coupon implements Serializable {
     private static final int UNLIKED = 0;
 
     private boolean liked = false;
-    private String address;//地址
-    private String name;//=>product 优惠券名字
-    private String couponId;
-    private String brandName;//品牌id ->可口可乐、吮指原味鸡->肯德基
-    private String catId;//类别
-    private double listPrice;//用户列出来的价格
-    private double evaluatePrice;//估值价格 =>value
-    private String discount;//打折多少 20表示20元
-    private int stat;//状态 详见下
-    private String sellerId;//卖家id
-    private String imgURL;//url
-    private String expireDate;//过期时间
-    private String[] constraints;//限制
+    //地址
+    private String address;
 
-    private String sellerNickname;//卖家名字
-    private String sellerAvatarURL;//头像URL
+    //类别
+    private String catId;
+    //品牌
+    private String brandName;
 
-    /*
-    状态:
-    onSale => 正在卖
-    expired =>过期的
-    used  =>用过的
-    store =>储存的
-     */
+    //状态
+    private int stat;
+    //卖家id
+    private String sellerId;
+
+
+    // 限制
+    private String[] constraints;
+    //卖家名字
+    private String sellerNickname;
+    // 头像URL
+    private String sellerAvatarURL;
+
     public Coupon() {
 
     }
 
-    public Coupon(String name, String couponId, String brand, String catId, double listPrice, double evaluatePrice, String discount, int stat, String imgURL, String expireDate) {
-        this.name = name;
-        this.couponId = couponId;
-        this.brandName = brand;
-        this.catId = catId;
-        this.listPrice = listPrice;
-        this.evaluatePrice = evaluatePrice;
-        this.discount = discount;
-        this.stat = stat;
-        this.imgURL = imgURL;
-        this.expireDate = expireDate;
-    }
-
-    //名称
-    public void setName(String str) {
-        this.name = str;
-    }
-
-    public String getName() {
-        return this.name;
-    }
 
     //地址
     public void setAddress(String str) {
@@ -134,27 +105,6 @@ public class Coupon implements Serializable {
     }
 
 
-    public void setImgURL(String url) {
-        this.imgURL = url;
-    }
-
-    public void setListPrice(double price) {
-        this.listPrice = price;
-    }
-
-    public void setEvaluatePrice(double price) {
-        this.evaluatePrice = price;
-    }
-
-
-    public double getListPrice() {
-        return this.listPrice;
-    }
-
-    public double getEvaluatePrice() {
-        return this.evaluatePrice;
-    }
-
     public void setCategory(String cat) {
         this.catId = cat;
     }
@@ -164,36 +114,8 @@ public class Coupon implements Serializable {
     }
 
 
-    public void setCouponId(String id) {
-        this.couponId = id;
-    }
-
-    public String getCouponId() {
-        return this.couponId;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
-    }
-
-    public String getDiscount() {
-        return this.discount;
-    }
-
     public int getStat() {
         return this.stat;
-    }
-
-    public String getImgURL() {
-        return this.imgURL;
-    }
-
-    public void setExpireDate(String date) {
-        this.expireDate = date;
-    }
-
-    public String getExpireDate() {
-        return this.expireDate;
     }
 
 
@@ -213,13 +135,13 @@ public class Coupon implements Serializable {
     public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
-            coupon.couponId = jsonObject.getString("couponid");
-            coupon.listPrice = Double.parseDouble(jsonObject.getString("listprice"));
-            coupon.evaluatePrice = Double.parseDouble(jsonObject.getString("value"));
-            coupon.name = jsonObject.getString("product");
+            coupon.couponid = jsonObject.getString("couponid");
+            coupon.listprice = jsonObject.getString("listprice");
+            coupon.value = jsonObject.getString("value");
+            coupon.product = jsonObject.getString("product");
             coupon.discount = jsonObject.getString("discount");
-            coupon.expireDate = jsonObject.getString("expiredtime");
-            coupon.imgURL = jsonObject.getString("pic");
+            coupon.expiredtime = jsonObject.getString("expiredtime");
+            coupon.pic = jsonObject.getString("pic");
         } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();
@@ -254,10 +176,6 @@ public class Coupon implements Serializable {
             //关注
             String likeStr = mainObj.getString("isLike");
             this.liked = false;
-            if (likeStr.equals("1")) {
-                System.out.println(this.name + " is liked");
-                this.liked = true;
-            }
 
             //seller 卖家
             JSONObject sellerObj = mainObj.getJSONArray("seller").getJSONObject(0);
@@ -282,9 +200,9 @@ public class Coupon implements Serializable {
             json.put("userID", userID);
             json.put("brand", brandName);
             json.put("category", catId);
-            json.put("expiredTime", expireDate);
-            json.put("listPrice", listPrice);
-            json.put("product", name);
+            json.put("expiredTime", expiredtime);
+            json.put("listPrice", listprice);
+            json.put("product", product);
             json.put("discount", discount);
             //json.put("stat", stat);
             JSONArray jsonArray = new JSONArray();
@@ -303,7 +221,7 @@ public class Coupon implements Serializable {
         Coupon coupon = new Coupon();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            coupon.name = jsonObject.getString("product");
+            coupon.product = jsonObject.getString("product");
             coupon.brandName = jsonObject.getString("brand");
             coupon.catId = jsonObject.getString("category");
             JSONArray limitArray = jsonObject.getJSONArray("limit");
@@ -315,7 +233,7 @@ public class Coupon implements Serializable {
             }
             coupon.constraints = constraintList;
             coupon.discount = jsonObject.getString("discount");
-            coupon.expireDate = jsonObject.getString("expiredTime");
+            coupon.expiredtime = jsonObject.getString("expiredTime");
         } catch (Exception e) {
             System.out.println("Error when decoding coupon json");
             e.printStackTrace();
@@ -333,4 +251,69 @@ public class Coupon implements Serializable {
         String result = group1[a] + group2[b] + "，" + group3[c] + "！";
         return result;
     }
+
+    private String couponid;
+    private String product;
+    private String listprice;
+    private String value;
+    private String expiredtime;
+    private String discount;
+    private String pic;
+
+    public String getCouponid() {
+        return couponid;
+    }
+
+    public void setCouponid(String couponid) {
+        this.couponid = couponid;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getListprice() {
+        return listprice;
+    }
+
+    public void setListprice(String listprice) {
+        this.listprice = listprice;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getExpiredtime() {
+        return expiredtime;
+    }
+
+    public void setExpiredtime(String expiredtime) {
+        this.expiredtime = expiredtime;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
 }

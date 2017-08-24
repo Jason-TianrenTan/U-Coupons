@@ -1,23 +1,21 @@
 package com.example.administrator.ccoupons.User;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
+import com.todddavies.components.progressbar.ProgressWheel;
 
 import java.util.ArrayList;
-import java.util.Random;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/7/21 0021.
@@ -26,106 +24,103 @@ import java.util.Random;
 public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
 
-    boolean stub = false;
-    boolean hook = false;
-    int index = 0;
+    public static final int TYPE_FOOTER = 0; //footer view
+    public static final int TYPE_ITEM = 1; // normal list item
+    private View footerView;
+    protected ArrayList<Coupon> couponList;
+    private CouponClickedListener listener;
     private Context mContext;
-    private ArrayList<Coupon> mUserCouponInfoList;
 
-    public static class UserCouponInfoViewHolder extends RecyclerView.ViewHolder {
+    public class UserCouponInfoViewHolder extends RecyclerView.ViewHolder {
         FrameLayout rootView;
-        TextView couponListText,
-                couponEvalText,
-                couponNameText,
-                couponDiscountText,
-                couponExpireText;
+        @BindView(R.id.coupon_listprice_text)
+        TextView couponListText;
+        @BindView(R.id.coupon_evalprice_text)
+        TextView couponEvalText;
+        @BindView(R.id.usercoupon_name_text)
+        TextView couponNameText;
+        @BindView(R.id.usercoupon_discount_text)
+        TextView couponDiscountText;
+        @BindView(R.id.usercoupon_expire_text)
+        TextView couponExpireText;
 
         public UserCouponInfoViewHolder(View view) {
             super(view);
+            if (view == footerView)
+                return;
+            ButterKnife.bind(this, view);
             rootView = (FrameLayout) view;
-            couponListText = (TextView) view.findViewById(R.id.coupon_listprice_text);
-            couponEvalText = (TextView) view.findViewById(R.id.coupon_evalprice_text);
-            couponNameText = (TextView) view.findViewById(R.id.usercoupon_name_text);
-            couponExpireText = (TextView) view.findViewById(R.id.usercoupon_expire_text);
-            couponDiscountText = (TextView) view.findViewById(R.id.usercoupon_discount_text);
         }
     }
 
 
-    public void setIndex(int i) {
-        this.index = i;
-        System.out.println("At set index = " + i);
-    }
-
-    public void hook() {
-        hook = true;
-    }
-
-    public void stub() {
-        stub = true;
-    }
-
     public UserCouponInfoAdapter(ArrayList<Coupon> cList) {
-        this.mUserCouponInfoList = cList;
+        this.couponList = cList;
     }
 
+    /**
+     * purchase -> 关注页面
+     * seller -> 含出售者信息
+     * show -> 自己的优惠券
+     */
     @Override
-    public UserCouponInfoAdapter.UserCouponInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UserCouponInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.usercouponinfo_item, parent, false);
-        final UserCouponInfoAdapter.UserCouponInfoViewHolder holder = new UserCouponInfoAdapter.UserCouponInfoViewHolder(view);
-        if (index > 0 || hook || stub) {
-            holder.rootView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = holder.getAdapterPosition();
-                    Coupon coupon = mUserCouponInfoList.get(position);
-                    Intent intent;
-                    if (hook) {
-                        //关注
-                        intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
-                        intent.putExtra("type", "purchase");
-                    } else {
-                        if (stub && index == 0) {
-                            //卖家购买列表
-                            intent = new Intent(mContext.getApplicationContext(), CouponDetailActivity.class);
-                            intent.putExtra("type", "seller");
-                        } else {
-                            intent = new Intent(mContext.getApplicationContext(), MyCouponDetailActivity.class);
-                            intent.putExtra("type", "show");
-                        }
-                    }
-                    intent.putExtra("Coupon", coupon);
-
-                    intent.putExtra("index", index + "");
-                    mContext.startActivity(intent);
-                    Intent broadcastIntent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");
-                    mContext.sendBroadcast(broadcastIntent);
-                    //Todo:获得当前Coupon编号，跳转到Coupon页面
-                }
-            });
+        if (footerView != null && viewType == TYPE_FOOTER) {
+            ProgressWheel progressWheel = (ProgressWheel)footerView.findViewById(R.id.pw_spinner);
+            progressWheel.startSpinning();
+            return new UserCouponInfoViewHolder(footerView);
         }
-        return holder;
+        return new UserCouponInfoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.usercouponinfo_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(UserCouponInfoAdapter.UserCouponInfoViewHolder holder, int position) {
-        Coupon coupon = mUserCouponInfoList.get(position);
-        holder.couponNameText.setText(coupon.getName());
+    public int getItemViewType(int position) {
+        if (footerView == null)
+            return TYPE_ITEM;
+        if (footerView != null && position == (getItemCount() - 1))
+            return TYPE_FOOTER;
+        return TYPE_ITEM;
+    }
+
+    @Override
+    public void onBindViewHolder(UserCouponInfoViewHolder holder, final int position) {
+        if (position == getItemCount() - 1)
+            return;
+        Coupon coupon = couponList.get(position);
+        holder.couponNameText.setText(coupon.getProduct());
         holder.couponDiscountText.setText(coupon.getDiscount());
-        holder.couponExpireText.setText(coupon.getExpireDate());
-        holder.couponEvalText.setText("¥" + coupon.getEvaluatePrice());
-        holder.couponListText.setText("¥" + coupon.getListPrice());
-        System.out.println("bind view holder");
-        //TODO:有待完善
+        holder.couponExpireText.setText(coupon.getExpiredtime());
+        holder.couponEvalText.setText("¥" + coupon.getValue());
+        holder.couponListText.setText("¥" + coupon.getListprice());
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null)
+                    listener.onCouponClicked(couponList.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mUserCouponInfoList.size();
+        return couponList.size();
     }
 
 
+    public void setCouponClickListener(CouponClickedListener listener) {
+        this.listener = listener;
+    }
+
+    public interface CouponClickedListener {
+        public abstract void onCouponClicked(Coupon coupon);
+    }
+
+
+    public void setFooterView(View footer) {
+        footerView = footer;
+        notifyItemInserted(getItemCount() -1);
+    }
 }

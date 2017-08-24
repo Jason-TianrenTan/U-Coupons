@@ -17,7 +17,7 @@ public class BannerPicture {
         return this.resId;
     }
 
-    public String getName() {
+    public String getProduct() {
         return this.name;
     }
 }

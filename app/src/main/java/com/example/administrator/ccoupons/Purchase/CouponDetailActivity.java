@@ -40,9 +40,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
 
 
     private String msgId = null;
-    private boolean statType = false;
-    private boolean sigmaType = false;
-    private int index = 0;
     private Coupon coupon;
     private ImageView mImageView;
     private ImageView mainButton, followButton, purchaseButton;
@@ -60,30 +57,14 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupon_detail);
 
-
-        String iStr = getIntent().getStringExtra("index");
-        if (iStr != null && iStr.length() > 0)
-            index = Integer.parseInt(getIntent().getStringExtra("index"));
-
         String type = getIntent().getStringExtra("type");
-        if (type.equals("purchase"))
-            inflateBottomPurchaseView();//初始化底部栏样式
-        if (type.equals("show")) {
-            statType = true;
-            inflateBottomStatView();
-        }
-        if (type.equals("message")) {
-            //TODO:
+        if (type != null && type.equals("message")) {
             String catStr = getIntent().getStringExtra("msgCat");
             msgId = getIntent().getStringExtra("msgId");
             if (catStr.equals("1") || catStr.equals("3"))
                 inflateBottomPurchaseView();
             else
                 inflateBottomStatView();
-        }
-        if (type.equals("seller")) {
-            sigmaType = true;
-            inflateBottomPurchaseView();
         }
         bindViews();
 
@@ -93,7 +74,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pullback();
+                finish();
 
             }
         });
@@ -110,16 +91,6 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         showInfo();
     }
 
-
-    private void pullback() {
-        if (statType) {
-            Intent intent = new Intent(CouponDetailActivity.this, UserMyCouponActivity.class);
-            intent.putExtra("index", index + "");
-            startActivity(intent);
-        }
-
-        finish();
-    }
 
     private void inflateBottomPurchaseView() {
 
@@ -151,7 +122,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
                 //关注
                 HashMap<String, String> map = new HashMap<String, String>();
                 MyApp app = (MyApp) getApplicationContext();
-                map.put("couponID", coupon.getCouponId());
+                map.put("couponID", coupon.getCouponid());
                 map.put("userID", app.getUserId());
                 ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.postFollow_URL, map);
                 connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -192,7 +163,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         purchaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = coupon.getCouponId();
+                String id = coupon.getCouponid();
                 Intent intent = new Intent(CouponDetailActivity.this, CouponPurchaseActivity.class);
                 intent.putExtra("coupon", coupon);
                 startActivity(intent);
@@ -255,7 +226,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     private void sendStatRequest(String type) {
         String url = DataHolder.base_URL + DataHolder.postChangeCouponState_URL;
         HashMap<String, String> map = new HashMap<>();
-        map.put("couponID", coupon.getCouponId());
+        map.put("couponID", coupon.getCouponid());
         map.put("state", type);
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -310,7 +281,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            pullback();
+            finish();
             return false;
         } else {
             return super.onKeyDown(keyCode, event);
@@ -322,19 +293,19 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
         //url
-        String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
+        String url = DataHolder.base_URL + "/static/" + coupon.getPic();
         ImageManager.GlideImage(url, mImageView);
 
         //name
-        String name = coupon.getName();
+        String name = coupon.getProduct();
         nameText.setText(name);
 
         //list price
-        double listprice = coupon.getListPrice();
+        String listprice = coupon.getListprice();
         listpriceText.setText("¥" + listprice + "");
 
         //eval price
-        double evalprice = coupon.getEvaluatePrice();
+        String evalprice = coupon.getValue();
         evalpriceText.setText("¥" + evalprice + "");
 
         //优惠额度
@@ -345,7 +316,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         String brandName = "懒得起名字的公司" + coupon.getBrandName();
         brandNameText.setText(brandName);
 
-        String expireDate = coupon.getExpireDate();
+        String expireDate = coupon.getExpiredtime();
         expireText.setText(expireDate + "");
 
 
@@ -353,7 +324,7 @@ public class CouponDetailActivity extends AppCompatActivity implements Observabl
         constaintsText.setText(constraints);
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("couponID", coupon.getCouponId() + "");
+        map.put("couponID", coupon.getCouponid() + "");
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
 
         if (msgId != null) {

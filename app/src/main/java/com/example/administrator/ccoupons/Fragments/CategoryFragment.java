@@ -23,6 +23,8 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
 import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Connections.UniversalPresenter;
+import com.example.administrator.ccoupons.CouponListEvent;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
@@ -34,6 +36,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -91,14 +96,28 @@ public class CategoryFragment extends Fragment {
     private MainPageCouponAdapter rec_adapter;
     private ArrayList<String> networkImages;
     private ArrayList<Coupon> recommendList;
+    private ArrayList<Coupon> fullRecList;
     private String location = null;
-    private JSONObject resultJSON;
+
+
+    /**
+     *
+     * @param clistEvent recommend list
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(CouponListEvent clistEvent) {
+        System.out.println("on event call in main, list type = " + clistEvent.getListname());
+        fullRecList= clistEvent.getList();
+        requestData(0, 4);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_category, container, false);
         unbinder = ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
 
         toolbar.setTitleTextColor(Color.WHITE);
         searchText.setFocusable(false);
@@ -111,48 +130,14 @@ public class CategoryFragment extends Fragment {
             }
         });
         initCategory();
-        initRecommends();
         initRecyclerViews(view);
+
+        new UniversalPresenter().getRecommendByRxRetrofit();
         initBanner();
         initLocation();
         return view;
     }
 
-
-    private void parseRecommendMessage(String response) {
-        System.out.println("Response = " + response);
-        try {
-            resultJSON = new JSONObject(response);
-            rec_adapter = new MainPageCouponAdapter(recommendList);
-            recommendView.setAdapter(rec_adapter);
-            requestData(0, 5);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void initRecommends() {
-        String url = DataHolder.base_URL + DataHolder.postRecommend_URL;
-        HashMap<String, String> map = new HashMap<>();
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseRecommendMessage(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-
-            }
-
-            @Override
-            public void onConnectionFailed() {
-
-            }
-        });
-        connectionManager.connect();
-    }
 
     private void initRecyclerViews(View view) {
         categoryView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
@@ -177,9 +162,6 @@ public class CategoryFragment extends Fragment {
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
                             scrollY > oldScrollY) {
-                        System.out.println("scrollY = " + scrollY +
-                                ", right = " + (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight()));
-                        //code to fetch more data for endless scrolling
                         requestData(recommendList.size(), 4);
                     }
                 }
@@ -202,15 +184,13 @@ public class CategoryFragment extends Fragment {
     private void requestData(int start, int ceiling) {
         int count = 0;
         try {
-            JSONArray jsonArray = resultJSON.getJSONArray("result");
-            for (int i = start; i < jsonArray.length(); i++, count++) {
+            for (int i = start; i < fullRecList.size(); i++, count++) {
                 if (count >= ceiling)
                     break;
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Coupon coupon = Coupon.decodeFromJSON(jsonObject);
+                Coupon coupon = fullRecList.get(i);
                 recommendList.add(coupon);
             }
-            if (recommendList.size() < jsonArray.length()) {
+            if (recommendList.size() < fullRecList.size()) {
                 setFooterView(FOOTER_LOADMORE);
             } else rec_adapter.setFooterView(null);
             rec_adapter.notifyDataSetChanged();
@@ -303,6 +283,9 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         unbinder.unbind();
     }
+
+
 }

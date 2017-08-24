@@ -74,9 +74,9 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
             return;
         final Coupon coupon = mCouponList.get(position);
         setImage(holder, coupon);
-        holder.nameText.setText(coupon.getName());
-        holder.detailText.setText(coupon.getExpireDate());
-        holder.priceText.setText(coupon.getListPrice() + "");
+        holder.nameText.setText(coupon.getProduct());
+        holder.detailText.setText(coupon.getExpiredtime());
+        holder.priceText.setText(coupon.getListprice() + "");
         holder.specialText.setText(coupon.getWord());
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
 
 
     private void setImage(CouponViewHolder holder, Coupon coupon) {
-        String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
+        String url = DataHolder.base_URL + "/static/" + coupon.getPic();
         Glide.with(mContext)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

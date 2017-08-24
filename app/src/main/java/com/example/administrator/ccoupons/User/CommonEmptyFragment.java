@@ -8,16 +8,20 @@ import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.R;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2017/7/26 0026.
  */
 
-public class CommonEmptyFragment extends Fragment {
+public class CommonEmptyFragment extends CouponCommonFragment {
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.user_fragment_empty, container, false);
+        ButterKnife.bind(this, view);
         return view;
     }
 }

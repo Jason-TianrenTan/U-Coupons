@@ -1,19 +1,32 @@
 package com.example.administrator.ccoupons.User;
 
-import android.app.Fragment;
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.view.menu.ExpandedMenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.administrator.ccoupons.Connections.UniversalPresenter;
+import com.example.administrator.ccoupons.CouponListEvent;
 import com.example.administrator.ccoupons.Fragments.MessageFragment;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Search.EndlessOnScrollListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/7/26 0026.
@@ -22,29 +35,54 @@ import java.util.ArrayList;
 
 public class CouponCommonFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    ArrayList<Coupon> couponList;
+
+    private String[] typeStrings = "UserUsed,UserUnsold,UserOnsale".split(",");
+    public static final int USED_TYPE = 0,
+            UNSOLD_TYPE = 1,
+            ONSALE_TYPE = 2;
+    public static final int COUPON_MAX_RESULT = 4;
+    @BindView(R.id.common_recyclerview)
+    public RecyclerView recyclerView;
+
+    protected ArrayList<Coupon> fullList,
+            adapterList;
+    protected UserCouponInfoAdapter adapter;
+    protected Context mContext;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.common_fragment, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.common_recyclerview);
+        ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+        adapterList = new ArrayList<>();
         recyclerView.addItemDecoration(new SpacesItemDecoration(20));
-        System.out.println("On create super fragment");
+        initData();
 
-        couponList = (ArrayList<Coupon>) getArguments().getSerializable("coupons");
-        if (couponList != null) {
-            UserCouponInfoAdapter adapter = new UserCouponInfoAdapter(couponList);
-            recyclerView.setAdapter(adapter);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(layoutManager);
-
-            String hook = (String) getArguments().getSerializable("hook");
-            if (hook != null && hook.length() > 0)
-                adapter.hook();
-        }
         return view;
     }
+
+
+    public void initData() {
+
+    }
+
+    protected void requestResults(int start) {
+        int count = 0;
+        for (int i = start; i < fullList.size(); i++, count++) {
+            if (count == COUPON_MAX_RESULT)
+                break;
+            adapterList.add(fullList.get(i));
+            System.out.println("added one");
+        }
+        if (adapterList.size() < fullList.size())
+            adapter.setFooterView(LayoutInflater.from(mContext).inflate(R.layout.load_footer, recyclerView, false));
+        else adapter.setFooterView(null);
+        adapter.notifyDataSetChanged();
+
+    }
+
 
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -66,5 +104,23 @@ public class CouponCommonFragment extends Fragment {
                 outRect.top = 20;
             }
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext = context;
+    }
+
+
+    protected void setData(ArrayList<Coupon> cList) {
+        this.fullList = cList;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnScrollListener(new EndlessOnScrollListener((LinearLayoutManager) recyclerView.getLayoutManager()) {
+            @Override
+            public void onLoadMore() {
+                requestResults(adapterList.size());
+            }
+        });
     }
 }

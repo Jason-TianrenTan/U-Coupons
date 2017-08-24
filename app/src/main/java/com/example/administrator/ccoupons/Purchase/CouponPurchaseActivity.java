@@ -81,7 +81,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("couponID", coupon.getCouponId());
+                map.put("couponID", coupon.getCouponid());
                 MyApp app = (MyApp) getApplicationContext();
                 String userId = app.getUserId();
                 map.put("userID", userId);
@@ -109,9 +109,9 @@ public class CouponPurchaseActivity extends AppCompatActivity {
 
     private void initInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
-        ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getImgURL(), couponImg);
-        couponNameText.setText(coupon.getName());
-        couponPriceText.setText("¥" + coupon.getListPrice());
+        ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getPic(), couponImg);
+        couponNameText.setText(coupon.getProduct());
+        couponPriceText.setText("¥" + coupon.getListprice());
 
         String[] constraints = coupon.getConstraints();
         StringBuilder sb = new StringBuilder();

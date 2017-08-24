@@ -52,12 +52,12 @@ public class AddCouponActivity extends AppCompatActivity {
         bindViews();
         getCouponInfo();
         if (coupon != null) {
-            couponEvalText.setText(coupon.getEvaluatePrice() + "");
+            couponEvalText.setText(coupon.getValue() + "");
             //TODO:如果一定要添加图片的话 请修改
-            if (coupon.getImgURL() != null && !coupon.getImgURL().equals("")) {
-                ImageManager.GlideImage(coupon.getImgURL(), couponImg, getApplicationContext());
+            if (coupon.getPic() != null && !coupon.getPic().equals("")) {
+                ImageManager.GlideImage(coupon.getPic(), couponImg, getApplicationContext());
             }
-            couponNameText.setText(coupon.getName());
+            couponNameText.setText(coupon.getProduct());
             couponBrandText.setText(coupon.getBrandName());
             couponDiscountText.setText(coupon.getDiscount());
             couponCatText.setText(coupon.getCategory());
@@ -80,12 +80,12 @@ public class AddCouponActivity extends AppCompatActivity {
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
         map.put("brand", coupon.getBrandName());
         map.put("category", coupon.getCategory());
-        map.put("expiredTime", coupon.getExpireDate());
+        map.put("expiredTime", coupon.getExpiredtime());
         map.put("listPrice", couponListPriceText.getText().toString());
-        map.put("product", coupon.getName());
+        map.put("product", coupon.getProduct());
         map.put("discount", coupon.getDiscount());
-        //    map.put("pic", coupon.getImgURL());
-        new UpLoadCoupon(map, coupon.getConstraints(), coupon.getImgURL()).execute();
+        //    map.put("pic", coupon.getPic());
+        new UpLoadCoupon(map, coupon.getConstraints(), coupon.getPic()).execute();
     }
 
 

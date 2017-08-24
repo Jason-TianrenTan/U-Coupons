@@ -32,11 +32,11 @@ public class Message implements Serializable {
 
 
     public void setCouponPrice(String price) {
-        coupon.setListPrice(Double.parseDouble(price));
+        coupon.setListprice(price);
     }
 
     public void setCouponURL(String url) {
-        this.coupon.setImgURL(url);
+        this.coupon.setPic(url);
     }
 
     public boolean hasRead() {
@@ -56,19 +56,19 @@ public class Message implements Serializable {
     }
 
     public void setCouponName(String name) {
-        this.coupon.setName(name);
+        this.coupon.setProduct(name);
     }
 
     public String getCouponName() {
-        return this.coupon.getName();
+        return this.coupon.getProduct();
     }
 
     public int getMessageCat() {
         return this.messageCat;
     }
 
-    public String getCouponId() {
-        return this.coupon.getCouponId();
+    public String getCouponid() {
+        return this.coupon.getCouponid();
     }
 
     public Coupon getCoupon() {
@@ -101,7 +101,7 @@ public class Message implements Serializable {
             else message.hasRead = true;
 
 
-            message.coupon.setCouponId(obj.getString("couponid"));
+            message.coupon.setCouponid(obj.getString("couponid"));
 
         } catch (Exception e) {
             e.printStackTrace();
