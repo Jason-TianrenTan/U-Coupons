@@ -1,7 +1,5 @@
-package com.example.administrator.ccoupons.User;
+package com.example.administrator.ccoupons.User.CouponDetail;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,21 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
-import com.example.administrator.ccoupons.Purchase.CouponPurchaseActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
-import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -191,7 +185,9 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
 
         //url
         String url = DataHolder.base_URL + "/static/" + coupon.getPic();
-        ImageManager.GlideImage(url, mImageView);
+        Glide.with(this)
+                .load(url)
+                .into(mImageView);
 
         //name
         String name = coupon.getProduct();

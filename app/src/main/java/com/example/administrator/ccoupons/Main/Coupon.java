@@ -242,14 +242,7 @@ public class Coupon implements Serializable {
     }
 
     public String getWord() {
-        String[] group1 = {"限时", "超值", "专享", "活动"};
-        String[] group2 = {"优惠", "折扣", "促销", "抢购"};
-        String[] group3 = {"心动不如行动", "大家都在抢", "抓紧机会", "编辑推荐"};
-        int a = (int) (Math.random() * 4);
-        int b = (int) (Math.random() * 4);
-        int c = (int) (Math.random() * 4);
-        String result = group1[a] + group2[b] + "，" + group3[c] + "！";
-        return result;
+        return "这是一条用来DEBUG的" + couponid;
     }
 
     private String couponid;

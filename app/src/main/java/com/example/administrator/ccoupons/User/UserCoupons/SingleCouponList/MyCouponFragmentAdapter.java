@@ -1,10 +1,11 @@
-package com.example.administrator.ccoupons.User;
+package com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.User.CouponCommonFragment;
 
 import java.util.ArrayList;
 

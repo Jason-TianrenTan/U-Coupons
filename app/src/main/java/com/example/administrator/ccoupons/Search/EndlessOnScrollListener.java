@@ -10,13 +10,12 @@ import android.support.v7.widget.RecyclerView;
 public abstract class EndlessOnScrollListener extends RecyclerView.OnScrollListener {
 
 
-    public static final int VISIBLE_THRESHOLD = 2;
     private LinearLayoutManager mLinearLayoutManager;
     private int totalItemCount;
     private int lastVisibleItem;
+    private int firstVisibleItem;
     private int previousTotal = 0;
     private boolean loading = true;
-    private boolean first = true;
 
     public EndlessOnScrollListener(LinearLayoutManager linearLayoutManager) {
         this.mLinearLayoutManager = linearLayoutManager;
@@ -27,15 +26,14 @@ public abstract class EndlessOnScrollListener extends RecyclerView.OnScrollListe
         super.onScrolled(recyclerView, dx, dy);
         totalItemCount = mLinearLayoutManager.getItemCount();
         lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
-        System.out.println("scrolling, total = " + totalItemCount + ", last visible = " + lastVisibleItem);
+        firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
         if (loading) {
             if (totalItemCount > previousTotal) {
                 loading = false;
                 previousTotal = totalItemCount;
             }
         }
-        if (!loading && totalItemCount < (lastVisibleItem + VISIBLE_THRESHOLD)) {
-            System.out.println("Total = " + totalItemCount + ", last visible = " + lastVisibleItem + ",loading more...");
+        if (!loading && totalItemCount <= (lastVisibleItem + 1)) {
             onLoadMore();
             loading = true;
         }

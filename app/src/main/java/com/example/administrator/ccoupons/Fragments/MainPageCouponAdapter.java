@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
+import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.todddavies.components.progressbar.ProgressWheel;
 
@@ -131,6 +131,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
 
     public void setFooterView(View footer) {
         footerView = footer;
+        System.out.println("cat item count = " + getItemCount());
         notifyItemInserted(getItemCount() - 1);
     }
 }

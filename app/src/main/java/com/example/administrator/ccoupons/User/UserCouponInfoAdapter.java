@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/7/21 0021.
  */
 
-public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
+public abstract class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
 
     public static final int TYPE_FOOTER = 0; //footer view
@@ -69,6 +69,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
             mContext = parent.getContext();
         }
         if (footerView != null && viewType == TYPE_FOOTER) {
+            System.out.println("FOOTERVIEW");
             ProgressWheel progressWheel = (ProgressWheel)footerView.findViewById(R.id.pw_spinner);
             progressWheel.startSpinning();
             return new UserCouponInfoViewHolder(footerView);
@@ -87,7 +88,7 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
 
     @Override
     public void onBindViewHolder(UserCouponInfoViewHolder holder, final int position) {
-        if (position == getItemCount() - 1)
+        if (footerView != null && position == (getItemCount() - 1))
             return;
         Coupon coupon = couponList.get(position);
         holder.couponNameText.setText(coupon.getProduct());
@@ -121,6 +122,6 @@ public class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAd
 
     public void setFooterView(View footer) {
         footerView = footer;
-        notifyItemInserted(getItemCount() -1);
+        notifyItemInserted(getItemCount() - 1);
     }
 }

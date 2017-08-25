@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.User;
+package com.example.administrator.ccoupons.User.UserCoupons.User;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,15 +7,20 @@ import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.CouponListEvent;
+import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.User.CouponCommonFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/8/24 0024.
  */
 
-public class UserOnsaleFragment extends CouponCommonFragment {
+public class UserUnsoldFragment extends CouponCommonFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,14 +33,17 @@ public class UserOnsaleFragment extends CouponCommonFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponListEvent clistEvent) {
-        System.out.println("on event call at fragment");
-        if (clistEvent.getListname().equals("UserOnsale"))
+        if (clistEvent.getListname().equals("UserUnsold")) {
+            System.out.println("on setData at unsold fragment");
             setData(clistEvent.getList());
+        }
     }
 
     @Override
     public void initData() {
-        adapter = new UserOnsaleAdapter(adapterList);
-        new UniversalPresenter().getUserOnsaleByRxRetrofit();
+        adapterList = new ArrayList<>();
+        adapter = new UserUnsoldAdapter(adapterList);
+        new UniversalPresenter().getUserUnsoldByRxRetrofit();
     }
+
 }

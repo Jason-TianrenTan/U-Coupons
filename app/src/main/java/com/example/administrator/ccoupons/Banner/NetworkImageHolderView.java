@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class NetworkImageHolderView implements Holder<String> {

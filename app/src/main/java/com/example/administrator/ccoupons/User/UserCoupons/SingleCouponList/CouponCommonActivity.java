@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.User;
+package com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +13,9 @@ import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.User.CouponCommonFragment;
+import com.example.administrator.ccoupons.User.UserCouponInfoAdapter;
+import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerSoldFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +31,6 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
     private UserCouponInfoAdapter adapter;
 
     private CouponCommonFragment commonFragment;
-    private CommonEmptyFragment emptyFragment;
     private ArrayList<Coupon> couponList;
 
     @Override
@@ -89,8 +91,8 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
 
 
     private void parseMessage(String str) {
-        commonFragment = new CouponCommonFragment();
-        emptyFragment = new CommonEmptyFragment();
+        System.out.println("Response = " + str);
+        commonFragment = new SingleListFragment();
         couponList = new ArrayList<>();
         try {
             String parseString = null;
@@ -102,18 +104,11 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.common_frame, commonFragment);
-            fragmentTransaction.add(R.id.common_frame, emptyFragment);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("coupons", couponList);
             commonFragment.setArguments(bundle);
-            if (couponList.size() > 0) {
-                fragmentTransaction.hide(emptyFragment);
-                fragmentTransaction.show(commonFragment);
-            } else {
-                fragmentTransaction.show(emptyFragment);
-                fragmentTransaction.hide(commonFragment);
-            }
+            fragmentTransaction.show(commonFragment);
             fragmentTransaction.commit();
         } catch (Exception e) {
             e.printStackTrace();

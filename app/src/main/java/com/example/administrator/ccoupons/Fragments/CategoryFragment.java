@@ -169,7 +169,6 @@ public class CategoryFragment extends Fragment {
         });
     }
 
-
     //设置footer
     private void setFooterView(int type) {
         switch (type) {

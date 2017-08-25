@@ -20,11 +20,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
+import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.todddavies.components.progressbar.ProgressWheel;
 
 import org.json.JSONArray;

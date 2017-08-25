@@ -1,34 +1,31 @@
-package com.example.administrator.ccoupons.Purchase;
+package com.example.administrator.ccoupons.User.CouponDetail;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
-import com.example.administrator.ccoupons.User.CommonEmptyFragment;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
-import com.example.administrator.ccoupons.User.MyCouponFragmentAdapter;
+import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerOnsaleFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerSoldFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.MyCouponFragmentAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,8 +41,8 @@ public class SellerDetailActivity extends AppCompatActivity{
     private TextView onsaleText, soldText;
 
     private LinearLayout scrollBar;
-    private CouponCommonFragment onsaleFragment = new CouponCommonFragment(),
-            soldFragment = new CouponCommonFragment();
+    private CouponCommonFragment onsaleFragment = new SellerOnsaleFragment(),
+            soldFragment = new SellerSoldFragment();
 
     private ArrayList<Coupon> onsaleList, soldList;
 
@@ -83,7 +80,9 @@ public class SellerDetailActivity extends AppCompatActivity{
         sellerNameText.setText(name);
         sellerAvatar.setImageResource(R.drawable.testportrait);
         if (url != "") {
-            ImageManager.GlideImage(url, sellerAvatar);
+            Glide.with(this)
+                    .load(url)
+                    .into(sellerAvatar);
         }
         onsaleList = new ArrayList<>();
         soldList = new ArrayList<>();

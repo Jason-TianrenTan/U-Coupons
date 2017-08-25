@@ -2,9 +2,7 @@ package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -13,24 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.UploadTask;
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Main.ResetPasswordActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
-import com.example.administrator.ccoupons.Tools.DataBase.ImageLruCache;
-import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 import com.jph.takephoto.model.TResult;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.mob.MobSDK.getContext;
 
@@ -231,13 +222,17 @@ public class UserInformationActivity extends SlideBackActivity {
         //Todo:上传图片到服务器 并返回图片对应的url
         //Todo:更新头像 更新本地储存的url
 
-        ImageManager.GlideImage(path, portrait, getContext());
+        Glide.with(this)
+                .load(path)
+                .into(portrait);
     }
 
     public void initPortrait() {
         String url = app.getAvatar();
         if (url != "") {
-            ImageManager.GlideImage(url, portrait, getContext());
+            Glide.with(this)
+                    .load(url)
+                    .into(portrait);
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

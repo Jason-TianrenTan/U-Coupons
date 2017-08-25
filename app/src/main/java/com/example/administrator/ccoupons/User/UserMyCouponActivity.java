@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -17,24 +16,18 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Connections.UniversalPresenter;
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.MyCouponFragmentAdapter;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserOnsaleFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedFragment;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class UserMyCouponActivity extends AppCompatActivity {

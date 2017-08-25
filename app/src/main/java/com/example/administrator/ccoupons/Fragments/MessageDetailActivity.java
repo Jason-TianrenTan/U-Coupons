@@ -12,18 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
+import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MessageDetailActivity extends AppCompatActivity {

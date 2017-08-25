@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,21 +13,19 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
-import com.example.administrator.ccoupons.Tools.ImageManager;
-import com.example.administrator.ccoupons.Tools.XCRoundImageView;
-import com.example.administrator.ccoupons.User.UserBuyCoupons;
-import com.example.administrator.ccoupons.User.UserFollowCoupon;
+import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.UserBuyCoupons;
+import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.UserFollowCoupons;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
 import com.example.administrator.ccoupons.User.UserMyCouponActivity;
-import com.example.administrator.ccoupons.User.UserSellCoupons;
+import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.UserSellCoupons;
 import com.example.administrator.ccoupons.User.UserSettingActivity;
 import com.example.administrator.ccoupons.User.UserWalletActivity;
 
@@ -81,7 +78,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
                 getActivity().startActivity(new Intent(getActivity(), UserBuyCoupons.class));
                 break;
             case R.id.user_follow:
-                getActivity().startActivity(new Intent(getActivity(), UserFollowCoupon.class));
+                getActivity().startActivity(new Intent(getActivity(), UserFollowCoupons.class));
                 break;
             case R.id.user_to_set:
                 getActivity().startActivity(new Intent(getActivity(), UserSettingActivity.class));
@@ -172,7 +169,9 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         String url = app.getAvatar();
         System.out.println("avatar = " + url);
         if (url != "") {
-            ImageManager.GlideImage(url, portrait, getActivity().getApplicationContext());
+            Glide.with(getActivity())
+                    .load(url)
+                    .into(portrait);
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 
