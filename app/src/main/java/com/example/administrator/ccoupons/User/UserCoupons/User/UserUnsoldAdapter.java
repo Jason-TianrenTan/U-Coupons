@@ -1,12 +1,20 @@
 package com.example.administrator.ccoupons.User.UserCoupons.User;
 
+import android.app.Activity;
+import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.Intent;
 import android.view.ViewGroup;
 
+import com.example.administrator.ccoupons.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.User.CouponDetail.MyCouponDetailActivity;
 import com.example.administrator.ccoupons.User.UserCouponInfoAdapter;
+import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -25,6 +33,7 @@ public class UserUnsoldAdapter extends UserCouponInfoAdapter {
             public void onCouponClicked(Coupon coupon) {
                 Intent intent = new Intent(mContext, MyCouponDetailActivity.class);
                 intent.putExtra("Coupon", coupon);
+                intent.putExtra("stat", "unsold");
                 mContext.startActivity(intent);
             }
         });
@@ -37,4 +46,5 @@ public class UserUnsoldAdapter extends UserCouponInfoAdapter {
             mContext = parent.getContext();
         return super.onCreateViewHolder(parent, viewType);
     }
+
 }

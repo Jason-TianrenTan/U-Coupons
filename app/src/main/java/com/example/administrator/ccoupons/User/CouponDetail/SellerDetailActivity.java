@@ -20,7 +20,6 @@ import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerOnsaleFragment;
@@ -33,11 +32,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SellerDetailActivity extends AppCompatActivity{
 
 
     private TextView sellerNameText;
-    private XCRoundImageView sellerAvatar;
+    private CircleImageView sellerAvatar;
     private TextView onsaleText, soldText;
 
     private LinearLayout scrollBar;
@@ -92,7 +93,7 @@ public class SellerDetailActivity extends AppCompatActivity{
     private void bindViews() {
 
         sellerNameText  = (TextView) findViewById(R.id.seller_name_text);
-        sellerAvatar = (XCRoundImageView) findViewById(R.id.seller_avatar_imageview);
+        sellerAvatar = (CircleImageView) findViewById(R.id.seller_avatar_imageview);
 
         scrollBar = (LinearLayout) findViewById(R.id.seller_coupon_scrollbar);
         onsaleText = (TextView) findViewById(R.id.seller_onsale_text);

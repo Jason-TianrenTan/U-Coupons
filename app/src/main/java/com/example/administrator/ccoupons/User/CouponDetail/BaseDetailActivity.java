@@ -1,8 +1,8 @@
 package com.example.administrator.ccoupons.User.CouponDetail;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -33,9 +33,9 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class BaseDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
-
 
 
     @BindView(R.id.coupon_image)
@@ -53,7 +53,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
     @BindView(R.id.coupon_detail_seller_name)
     TextView sellerNameText;
     @BindView(R.id.seller_avatar_img)
-    ImageView sellerAvatar;
+    CircleImageView sellerAvatar;
     @BindView(R.id.to_seller_button)
     LinearLayout toSellerButton;
     @BindView(R.id.coupon_detail_expire_date)
@@ -66,6 +66,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
     Toolbar mToolbarView;
     @BindView(R.id.detail_rootview)
     RelativeLayout detailRootview;
+
     @OnClick(R.id.to_seller_button)
     public void click() {
         Intent intent = new Intent(BaseDetailActivity.this, SellerDetailActivity.class);
@@ -74,6 +75,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
         intent.putExtra("id", coupon.getSellerId());
         startActivity(intent);
     }
+
     protected int mParallaxImageHeight;
     protected String msgId = null;
     protected Coupon coupon;
@@ -91,6 +93,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
         mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onKeyBack();
                 finish();
 
             }
@@ -126,11 +129,23 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
     }
 
 
-    public abstract void initBottomViews();
+    /**
+     *
+     * @param isLiked 是否被关注
+     */
+    public abstract void initBottomViews(boolean isLiked);
+
+    /**
+     * 回调
+     */
+    public abstract void onKeyBack();
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            System.out.println("base key back");
+            onKeyBack();
             finish();
             return false;
         } else {
@@ -205,7 +220,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
                     index++;
                 }
                 constaintsText.setText(sb.toString());
-                initBottomViews();
+                initBottomViews(coupon.isLiked());
             }
 
             @Override

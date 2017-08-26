@@ -22,7 +22,7 @@
             android:id="@+id/change_portrait"
             style="@style/user_option_layout">
 
-            <com.example.administrator.ccoupons.Tools.XCRoundImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/uinf_portrait"
                 android:src="@drawable/mascot_nothing"
                 style="@style/user_portrait_layout"

@@ -176,6 +176,8 @@ public class Coupon implements Serializable {
             //关注
             String likeStr = mainObj.getString("isLike");
             this.liked = false;
+            if (likeStr.equals("1"))
+                this.liked = true;
 
             //seller 卖家
             JSONObject sellerObj = mainObj.getJSONArray("seller").getJSONObject(0);

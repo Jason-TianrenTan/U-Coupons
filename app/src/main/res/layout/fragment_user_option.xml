@@ -262,7 +262,7 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <com.example.administrator.ccoupons.Tools.XCRoundImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="top|left"
@@ -270,10 +270,6 @@
         android:layout_marginTop="36dp"
         android:src="@drawable/testportrait"
         android:id="@+id/user_portrait"
-        app:finalHeight="32dp"
-        app:finalXPosition="12dp"
-        app:finalYPosition="12dp"
-        app:finalToolbarHeight="?attr/actionBarSize"
         app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior"
         />
 

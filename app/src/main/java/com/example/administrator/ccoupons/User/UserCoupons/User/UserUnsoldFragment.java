@@ -9,8 +9,10 @@ import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldAdapter;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -24,7 +26,6 @@ public class UserUnsoldFragment extends CouponCommonFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -38,6 +39,7 @@ public class UserUnsoldFragment extends CouponCommonFragment {
             setData(clistEvent.getList());
         }
     }
+
 
     @Override
     public void initData() {

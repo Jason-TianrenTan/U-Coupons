@@ -15,8 +15,11 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.EndlessOnScrollListener;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -68,6 +71,12 @@ public abstract class CouponCommonFragment extends Fragment {
         initData();
 
         return view;
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(CouponModifiedEvent event) {
+        System.out.println("modified event");
     }
 
 

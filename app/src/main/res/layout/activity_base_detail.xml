@@ -146,7 +146,7 @@
                                     android:textColor="@color/darkgray"
                                     android:textSize="20dp" />
 
-                                <com.example.administrator.ccoupons.Tools.XCRoundImageView
+                                <de.hdodenhof.circleimageview.CircleImageView
                                     android:id="@+id/seller_avatar_img"
                                     android:src="@drawable/mascot_nothing"
                                     android:layout_marginLeft="5dp"

@@ -21,6 +21,7 @@ import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.example.administrator.ccoupons.UI.GlideCircleTransform;
 import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.UserBuyCoupons;
 import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.UserFollowCoupons;
 import com.example.administrator.ccoupons.User.UserInformationActivity;
@@ -33,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by CZJ on 2017/7/13.
@@ -54,7 +56,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     @BindView(R.id.user_main_toolbar)
     Toolbar toolbar;
     @BindView(R.id.user_portrait)
-    ImageView portrait;
+    CircleImageView portrait;
 
     @OnClick({R.id.user_main_toolbar, R.id.user_nickname_text, R.id.user_to_mycoupons, R.id.user_to_wal, R.id.user_to_inf, R.id.user_sell, R.id.user_buy, R.id.user_follow, R.id.user_to_set, R.id.user_logoff, R.id.user_portrait})
     public void onViewClicked(View view) {
@@ -171,6 +173,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         if (url != "") {
             Glide.with(getActivity())
                     .load(url)
+                    .transform(new GlideCircleTransform(getActivity()))
                     .into(portrait);
         } else portrait.setImageResource(R.drawable.testportrait);
     }

@@ -22,6 +22,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+/**
+ * 不属于我的优惠券
+ */
 public class CouponDetailActivity extends BaseDetailActivity {
 
 
@@ -34,13 +37,22 @@ public class CouponDetailActivity extends BaseDetailActivity {
 
 
     @Override
-    public void initBottomViews() {
+    public void onKeyBack() {
+
+    }
+
+
+    @Override
+    public void initBottomViews(boolean isLiked) {
+        System.out.println("is like == " + isLiked);
         super.inflateBottomView(R.layout.purchase_bottom_bar);
 
         mainButton = (ImageView) bottomView.findViewById(R.id.page_button_mainpage);
         followButton = (ImageView) bottomView.findViewById(R.id.page_button_follow);
         purchaseButton = (ImageView) bottomView.findViewById(R.id.page_button_purchase);
 
+        if (isLiked)
+            followButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.follow_pressed));
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,80 +116,4 @@ public class CouponDetailActivity extends BaseDetailActivity {
             }
         });
     }
-
-    private void inflateBottomStatView() {
-        ImageView saleButton, storeButton;
-        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.detail_rootview);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.stat_bottom_bar, null);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, PixelUtils.dp2px(this, 45));
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        view.setLayoutParams(params);
-        rootView.addView(view);
-
-        saleButton = (ImageView) view.findViewById(R.id.page_button_sale);
-        storeButton = (ImageView) view.findViewById(R.id.page_button_store);
-
-        saleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendStatRequest("onSale");
-            }
-        });
-
-        storeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendStatRequest("store");
-            }
-        });
-
-    }
-
-
-    private void parseMessage(String response) {
-
-        try {
-            JSONObject obj = new JSONObject(response);
-            String result = obj.getString("errno");
-            int code = Integer.parseInt(result);
-            if (code == 0) {
-                /*
-                Intent intent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");
-                sendBroadcast(intent);*/
-
-                Toast.makeText(this, "操作成功", Toast.LENGTH_SHORT).show();
-            } else
-                Toast.makeText(this, "已经上架/下架！", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void sendStatRequest(String type) {
-        String url = DataHolder.base_URL + DataHolder.postChangeCouponState_URL;
-        HashMap<String, String> map = new HashMap<>();
-        map.put("couponID", coupon.getCouponid());
-        map.put("state", type);
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseMessage(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-
-            }
-
-            @Override
-            public void onConnectionFailed() {
-
-            }
-        });
-        connectionManager.connect();
-    }
-
 }

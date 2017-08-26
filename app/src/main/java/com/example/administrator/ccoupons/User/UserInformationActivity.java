@@ -17,19 +17,17 @@ import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Main.ResetPasswordActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
-import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 import com.jph.takephoto.model.TResult;
 
-import static com.mob.MobSDK.getContext;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class UserInformationActivity extends SlideBackActivity {
     private TextView name;
     private TextView sex;
-    private XCRoundImageView portrait;
+    private CircleImageView portrait;
     private TakePhotoUtil takePhotoUtil;
     private Toolbar toolbar;
     private LinearLayout changeportrait;
@@ -37,7 +35,6 @@ public class UserInformationActivity extends SlideBackActivity {
     private LinearLayout toUpdateNickname;
     private LinearLayout toUpdateGender;
     private LinearLayout toUpdatePhone;
-    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(this);
     private MyApp app;
 
     @Override
@@ -66,7 +63,7 @@ public class UserInformationActivity extends SlideBackActivity {
     private void bindViews() {
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
-        portrait = (XCRoundImageView) findViewById(R.id.uinf_portrait);
+        portrait = (CircleImageView) findViewById(R.id.uinf_portrait);
         toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
         changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
         app = (MyApp) this.getApplicationContext();
@@ -125,7 +122,6 @@ public class UserInformationActivity extends SlideBackActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
@@ -141,7 +137,6 @@ public class UserInformationActivity extends SlideBackActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });

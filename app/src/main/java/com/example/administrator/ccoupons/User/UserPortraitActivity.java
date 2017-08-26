@@ -16,17 +16,13 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.UploadTask;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
-
-import static com.mob.MobSDK.getContext;
 
 public class UserPortraitActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
     private ImageView portrait;
     private LinearLayout bg;
-    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +68,6 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });
@@ -88,7 +83,6 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
-                                imageDiskCache.writeToDiskCache(s, BitmapFactory.decodeFile(s));
                                 updatePortrait(s);
                             }
                         });

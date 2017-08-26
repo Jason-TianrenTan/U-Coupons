@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 public abstract class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCouponInfoAdapter.UserCouponInfoViewHolder> {
 
 
+    public static final int INFO_CODE = 1943;
     public static final int TYPE_FOOTER = 0; //footer view
     public static final int TYPE_ITEM = 1; // normal list item
     private View footerView;

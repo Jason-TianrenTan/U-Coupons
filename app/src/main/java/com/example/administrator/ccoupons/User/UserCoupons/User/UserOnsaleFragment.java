@@ -9,6 +9,7 @@ import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserOnsaleAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -37,6 +38,11 @@ public class UserOnsaleFragment extends CouponCommonFragment {
             System.out.println("on setData at onsale fragment");
             setData(clistEvent.getList());
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(CouponModifiedEvent event) {
+        System.out.println("modified event");
     }
 
     @Override

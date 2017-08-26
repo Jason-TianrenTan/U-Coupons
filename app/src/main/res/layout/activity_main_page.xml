@@ -53,7 +53,7 @@
         android:layout_marginBottom="45dp"
         android:background="#F0F3F6" />
 
-    <com.example.administrator.ccoupons.Tools.XCRoundImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/mainpage_button_sell"
         android:layout_width="60dp"
         android:layout_height="60dp"

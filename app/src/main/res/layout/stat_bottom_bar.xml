@@ -14,21 +14,12 @@
         android:src="@drawable/mainpage_selector" />
 
     <ImageView
-        android:id="@+id/page_button_sale"
+        android:id="@+id/page_button_stat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:src="@drawable/coupon_sale" />
-
-
-    <ImageView
-        android:id="@+id/page_button_store"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:src="@drawable/coupon_store" />
 
 
 </LinearLayout>

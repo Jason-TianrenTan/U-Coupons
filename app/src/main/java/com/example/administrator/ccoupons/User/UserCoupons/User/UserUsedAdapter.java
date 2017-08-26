@@ -8,6 +8,8 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.User.UserCouponInfoAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 /**

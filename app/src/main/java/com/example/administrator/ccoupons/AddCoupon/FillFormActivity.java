@@ -31,7 +31,6 @@ import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
 
@@ -58,7 +57,6 @@ public class FillFormActivity extends AppCompatActivity {
     private ImageView couponPicture;
     private TakePhotoUtil takePhotoUtil;
     private String path = "";
-    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(getContext());
     private TextView nextButton;
 
     private TextInputLayout productInputLayout, brandInputLayout, discountInputLayout, expireInputLayout, addressInputLayout;
@@ -245,7 +243,6 @@ public class FillFormActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 path = result.getImage().getCompressPath();
                                 System.out.println("success:" + path);
-                                imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
                                 System.out.println("success");
                                 hasImage = true;
                                 updatePic();
@@ -263,7 +260,6 @@ public class FillFormActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 path = result.getImage().getCompressPath();
                                 System.out.println("success:" + path);
-                                imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
                                 System.out.println("success");
                                 hasImage = true;
                                 updatePic();
