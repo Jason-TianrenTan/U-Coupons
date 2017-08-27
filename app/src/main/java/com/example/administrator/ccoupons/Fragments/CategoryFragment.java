@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -30,6 +29,7 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -49,12 +49,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 public class CategoryFragment extends Fragment {
 
 
     public static final int FOOTER_LOADMORE = 1,
-                            FOOTER_ENDOFLIST = 0;
+            FOOTER_ENDOFLIST = 0;
 
     @BindView(R.id.location_textview)
     TextView locationTextview;
@@ -74,6 +78,11 @@ public class CategoryFragment extends Fragment {
     RecyclerView recommendView;
     @BindView(R.id.main_nestedscrollview)
     NestedScrollView mainNestedscrollview;
+    @BindView(R.id.category_ptr_frame)
+    PtrFrameLayout categoryPtrFrame;
+
+    PtrFrameLayout currentRefreshLayout = null;
+
     @OnClick({R.id.location_textview, R.id.category_message_button})
     public void click(View view) {
         switch (view.getId()) {
@@ -101,13 +110,12 @@ public class CategoryFragment extends Fragment {
 
 
     /**
-     *
      * @param clistEvent recommend list
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponListEvent clistEvent) {
         System.out.println("on event call in main, list type = " + clistEvent.getListname());
-        fullRecList= clistEvent.getList();
+        fullRecList = clistEvent.getList();
         requestData(0, 4);
     }
 
@@ -131,6 +139,7 @@ public class CategoryFragment extends Fragment {
         });
         initCategory();
         initRecyclerViews(view);
+        initPTR();
 
         new UniversalPresenter().getRecommendByRxRetrofit();
         initBanner();
@@ -169,6 +178,27 @@ public class CategoryFragment extends Fragment {
         });
     }
 
+
+    private void initPTR() {
+        PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
+        header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);
+        categoryPtrFrame.setHeaderView(header);
+        categoryPtrFrame.addPtrUIHandler(header);
+        categoryPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                currentRefreshLayout = frame;
+                new UniversalPresenter().getRecommendByRxRetrofit();
+            }
+        });
+    }
+
+
     //设置footer
     private void setFooterView(int type) {
         switch (type) {
@@ -193,7 +223,8 @@ public class CategoryFragment extends Fragment {
                 setFooterView(FOOTER_LOADMORE);
             } else rec_adapter.setFooterView(null);
             rec_adapter.notifyDataSetChanged();
-
+            if (currentRefreshLayout != null)
+                currentRefreshLayout.refreshComplete();
         } catch (Exception e) {
             e.printStackTrace();
         }
