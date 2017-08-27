@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -93,7 +94,7 @@ public class CategoryFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.category_message_button:
-                getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
+                //getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
                 break;
         }
 
@@ -193,6 +194,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 currentRefreshLayout = frame;
+            //    categoryAppbar.setVisibility(View.INVISIBLE);
                 new UniversalPresenter().getRecommendByRxRetrofit();
             }
         });
@@ -225,6 +227,7 @@ public class CategoryFragment extends Fragment {
             rec_adapter.notifyDataSetChanged();
             if (currentRefreshLayout != null)
                 currentRefreshLayout.refreshComplete();
+         //   categoryAppbar.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -142,16 +142,16 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_message, container, false);
+        unbinder = ButterKnife.bind(this, view);
         initData();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageClassAdapter(messageClasses);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpacesItemDecoration(3));
-        unbinder = ButterKnife.bind(this, view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         return view;
     }
+
 
 
     private void initData() {
@@ -169,6 +169,7 @@ public class MessageFragment extends Fragment {
                 messageClasses.get(catId).add(msg);
             }
         }
+
     }
 
 }

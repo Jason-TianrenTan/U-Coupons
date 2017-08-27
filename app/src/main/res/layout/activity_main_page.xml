@@ -4,47 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/bottom_nav_container"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom_nav_bg"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="3"
-            android:paddingTop="15dp">
-
-            <include
-                android:id="@+id/id_left1"
-                layout="@layout/navigation_item" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center"></LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="3"
-            android:paddingTop="15dp">
-
-            <include
-                android:id="@+id/id_right1"
-                layout="@layout/navigation_item" />
-
-        </LinearLayout>
-    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragment_frame"
@@ -53,12 +12,10 @@
         android:layout_marginBottom="45dp"
         android:background="#F0F3F6" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/mainpage_button_sell"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:elevation="10dp"
-        android:src="@drawable/mainpage_icon"
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:id="@+id/main_bottombar"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
 </RelativeLayout>

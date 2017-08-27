@@ -8,19 +8,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
-import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,16 +24,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
+import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 import com.example.administrator.ccoupons.Connections.MessageGetService;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,28 +42,31 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class MainPageActivity extends AppCompatActivity {
+
+public class MainPageActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
 
 
+    @BindView(R.id.main_bottombar)
+    BottomNavigationBar bottomLayout;
     private ArrayList<Message> messageList;
     private boolean exit = false;
     private AlarmReceiver receiver;
     private CategoryFragment categoryFragment;
     private UserOptionFragment userOptionFragment;
+    private MessageFragment messageFragment;
 
-    private TextView titleView_main, titleView_aboutme;
-    private ImageView imgView_main, imgView_me;
-
-    private Fragment[] fragments = new Fragment[2];
+    private Fragment[] fragments = new Fragment[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+        ButterKnife.bind(this);
         initNavigationBar();
         initFragments();
-
         initService();
     }
 
@@ -87,34 +86,25 @@ public class MainPageActivity extends AppCompatActivity {
     private void initFragments() {
         categoryFragment = new CategoryFragment();
         userOptionFragment = new UserOptionFragment();
+        messageFragment = new MessageFragment();
         fragments[0] = categoryFragment;
         fragments[1] = userOptionFragment;
+        fragments[2] = messageFragment;
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment_frame, categoryFragment);
         fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
+        fragmentTransaction.add(R.id.fragment_frame, messageFragment);
         fragmentTransaction.commit();
-        showFragment(1);
-        imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage_pressed));
+        showFragment(0);
     }
 
 
     private void showFragment(int index) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         hideAllFragments(ft);
-        ft.show(fragments[index - 1]);
+        ft.show(fragments[index]);
         ft.commitAllowingStateLoss();
-        imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage));
-        imgView_me.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_me));
-        titleView_main.setTextColor(Color.WHITE);
-        titleView_aboutme.setTextColor(Color.WHITE);
-        if (index == 1) {
-            imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage_pressed));
-            titleView_main.setTextColor(ContextCompat.getColor(this, R.color.black));
-        } else {
-            imgView_me.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_me_pressed));
-            titleView_aboutme.setTextColor(ContextCompat.getColor(this, R.color.black));
-        }
     }
 
     private void hideAllFragments(FragmentTransaction ft) {
@@ -123,43 +113,38 @@ public class MainPageActivity extends AppCompatActivity {
         if (userOptionFragment != null) {
             ft.hide(userOptionFragment);
         }
+        if (messageFragment != null)
+            ft.hide(messageFragment);
     }
 
     //初始化底部导航栏
     private void initNavigationBar() {
+        bottomLayout.setMode(BottomNavigationBar.MODE_FIXED);
+        bottomLayout.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        bottomLayout.addItem(new BottomNavigationItem(R.drawable.main_mainpage, "主页").setActiveColor(R.color.blue))
+                .addItem(new BottomNavigationItem(R.drawable.message, "消息").setActiveColor(R.color.red))
+                .addItem(new BottomNavigationItem(R.drawable.main_me, "我的").setActiveColor(R.color.yellow))
+                .setFirstSelectedPosition(0)
+                .initialise();
+        bottomLayout.setTabSelectedListener(this);
+    }
 
-        LinearLayout navigationBar = (LinearLayout) findViewById(R.id.bottom_nav_container);
-        LinearLayout nav_item_main = (LinearLayout) navigationBar.findViewById(R.id.id_left1),
-                nav_item_aboutme = (LinearLayout) navigationBar.findViewById(R.id.id_right1);
-        titleView_main = (TextView) nav_item_main.findViewById(R.id.navigation_icon_text);
-        titleView_main.setText("首页");
 
-        imgView_main = (ImageView) nav_item_main.findViewById(R.id.navigation_icon);
-        imgView_main.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_mainpage));
-        titleView_aboutme = (TextView) nav_item_aboutme.findViewById(R.id.navigation_icon_text);
-        titleView_aboutme.setText("我的");
+    @Override
+    public void onTabSelected(int position) {
+        if (fragments != null) {
+            showFragment(position);
+        }
 
-        imgView_me = (ImageView) nav_item_aboutme.findViewById(R.id.navigation_icon);
-        imgView_me.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.main_me));
-        ImageView sellButton = (ImageView) findViewById(R.id.mainpage_button_sell);
-        sellButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setDialog();
-            }
-        });
-        nav_item_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showFragment(1);
-            }
-        });
-        nav_item_aboutme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showFragment(2);
-            }
-        });
+    }
+
+    @Override
+    public void onTabUnselected(int position) {
+    }
+
+    @Override
+    public void onTabReselected(int position) {
+
     }
 
     //按返回键回到F1,在F1双击返回键退出
@@ -181,7 +166,7 @@ public class MainPageActivity extends AppCompatActivity {
                     }
                 }, 2000);
             }
-        } else showFragment(1);
+        } else showFragment(0);
     }
 
 

@@ -105,7 +105,6 @@
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
-        <activity android:name=".Fragments.MyMessageActivity" />
         <activity android:name=".User.UserCoupons.SingleCouponList.UserSellCoupons" />
         <activity android:name=".User.UserCoupons.SingleCouponList.UserBuyCoupons" />
         <activity android:name=".User.UserCoupons.SingleCouponList.UserFollowCoupons" />
