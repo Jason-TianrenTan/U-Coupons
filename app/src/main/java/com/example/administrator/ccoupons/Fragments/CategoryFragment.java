@@ -1,10 +1,10 @@
 package com.example.administrator.ccoupons.Fragments;
 
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,10 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -31,6 +33,8 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -83,6 +87,15 @@ public class CategoryFragment extends Fragment {
     PtrFrameLayout categoryPtrFrame;
 
     PtrFrameLayout currentRefreshLayout = null;
+    @BindView(R.id.fab_action_fillform)
+    FloatingActionButton fillFormFab;
+    @BindView(R.id.fab_action_scanqr)
+    FloatingActionButton scanQRFab;
+    @BindView(R.id.multiple_actions)
+    FloatingActionsMenu fab_menu;
+
+    @BindView(R.id.category_rootview)
+    LinearLayout rootView;
 
     @OnClick({R.id.location_textview, R.id.category_message_button})
     public void click(View view) {
@@ -108,7 +121,6 @@ public class CategoryFragment extends Fragment {
     private ArrayList<Coupon> recommendList;
     private ArrayList<Coupon> fullRecList;
     private String location = null;
-
 
     /**
      * @param clistEvent recommend list
@@ -141,12 +153,19 @@ public class CategoryFragment extends Fragment {
         initCategory();
         initRecyclerViews(view);
         initPTR();
+        initFAB(view);
 
         new UniversalPresenter().getRecommendByRxRetrofit();
         initBanner();
         initLocation();
         return view;
     }
+
+
+    private void initFAB(final View view) {
+
+    }
+
 
 
     private void initRecyclerViews(View view) {
@@ -169,6 +188,7 @@ public class CategoryFragment extends Fragment {
         mainNestedscrollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                fab_menu.collapse();
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
                             scrollY > oldScrollY) {
@@ -194,7 +214,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 currentRefreshLayout = frame;
-            //    categoryAppbar.setVisibility(View.INVISIBLE);
+                //    categoryAppbar.setVisibility(View.INVISIBLE);
                 new UniversalPresenter().getRecommendByRxRetrofit();
             }
         });
@@ -227,7 +247,7 @@ public class CategoryFragment extends Fragment {
             rec_adapter.notifyDataSetChanged();
             if (currentRefreshLayout != null)
                 currentRefreshLayout.refreshComplete();
-         //   categoryAppbar.setVisibility(View.VISIBLE);
+            //   categoryAppbar.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -320,5 +340,9 @@ public class CategoryFragment extends Fragment {
         unbinder.unbind();
     }
 
+
+    public static CategoryFragment newInstance() {
+        return new CategoryFragment();
+    }
 
 }

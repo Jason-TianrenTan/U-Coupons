@@ -172,4 +172,8 @@ public class MessageFragment extends Fragment {
 
     }
 
+    public static MessageFragment newInstance() {
+        return new MessageFragment();
+    }
+
 }

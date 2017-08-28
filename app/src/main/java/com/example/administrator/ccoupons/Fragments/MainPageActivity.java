@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.util.DisplayMetrics;
@@ -54,6 +55,7 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     private ArrayList<Message> messageList;
     private boolean exit = false;
     private AlarmReceiver receiver;
+
     private CategoryFragment categoryFragment;
     private UserOptionFragment userOptionFragment;
     private MessageFragment messageFragment;
@@ -65,8 +67,8 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         ButterKnife.bind(this);
-        initNavigationBar();
         initFragments();
+        initNavigationBar();
         initService();
     }
 
@@ -88,13 +90,13 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
         userOptionFragment = new UserOptionFragment();
         messageFragment = new MessageFragment();
         fragments[0] = categoryFragment;
-        fragments[1] = userOptionFragment;
-        fragments[2] = messageFragment;
+        fragments[1] = messageFragment;
+        fragments[2] = userOptionFragment;
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment_frame, categoryFragment);
-        fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
         fragmentTransaction.add(R.id.fragment_frame, messageFragment);
+        fragmentTransaction.add(R.id.fragment_frame, userOptionFragment);
         fragmentTransaction.commit();
         showFragment(0);
     }
@@ -147,26 +149,25 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
 
     }
 
+
     //按返回键回到F1,在F1双击返回键退出
     @Override
     public void onBackPressed() {
-        if (!categoryFragment.isHidden()) {
-            if (exit) {
-                this.finish();
-            } else {
-                exit = true;
-                Toast.makeText(this,
-                        "再按返回键退出程序", Toast.LENGTH_SHORT).show();
-                final Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        exit = false;
-                        timer.cancel();
-                    }
-                }, 2000);
-            }
-        } else showFragment(0);
+        if (exit) {
+            this.finish();
+        } else {
+            exit = true;
+            Toast.makeText(this,
+                    "再按返回键退出程序", Toast.LENGTH_SHORT).show();
+            final Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    exit = false;
+                    timer.cancel();
+                }
+            }, 2000);
+        }
     }
 
 

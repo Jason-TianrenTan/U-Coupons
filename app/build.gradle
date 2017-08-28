@@ -87,11 +87,11 @@ dependencies {
     compile 'com.github.Todd-Davies:ProgressWheel:1.2'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.zyao89:zloading:1.0.5'
-
+    compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
+    compile 'me.riddhimanadib.bottom-nav-bar:bottom-nav-bar:1.0.1'
     //pull to refresh
     compile 'in.srain.cube:ultra-ptr:1.0.11'
 

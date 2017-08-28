@@ -243,5 +243,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
         unbinder.unbind();
     }
 
-
+    public static UserOptionFragment newInstance() {
+        return new UserOptionFragment();
+    }
 }

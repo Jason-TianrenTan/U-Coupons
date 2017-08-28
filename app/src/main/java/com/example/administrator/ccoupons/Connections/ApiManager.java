@@ -43,7 +43,7 @@ public class ApiManager {
                 .build();
         if (myApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(/*"http://news-at.zhihu.com/api/4/"*/DataHolder.base_URL)
+                    .baseUrl(DataHolder.base_URL)
                     .client(client)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
