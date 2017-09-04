@@ -3,7 +3,6 @@ package com.example.administrator.ccoupons.Main;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -38,7 +37,7 @@ public class WelcomeActivity extends Activity {
     @BindView(R.id.Welcome_RegisterButton)
     Button Welcome_RegisterButton;
 
-    @OnClick({R.id.Welcome_LoginButton,R.id.Welcome_RegisterButton})
+    @OnClick({R.id.Welcome_LoginButton, R.id.Welcome_RegisterButton})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.Welcome_LoginButton:
