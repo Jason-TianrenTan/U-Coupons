@@ -118,12 +118,13 @@
         <activity android:name=".AddCoupon.ChooseCategoryActivity" />
         <activity android:name=".User.ResetPhoneNumberActivity" />
         <activity
-            android:name=".Fragments.CategorySearchActivity"
+            android:name=".Fragments.Category.CategorySearchActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".Fragments.MessageDetailActivity" />
+        <activity android:name=".Fragments.Message.MessageDetailActivity" />
         <activity android:name=".User.CouponDetail.SellerDetailActivity" />
         <activity android:name=".User.CouponDetail.MyCouponDetailActivity" />
-        <activity android:name=".User.CouponDetail.BaseDetailActivity"></activity>
+        <activity android:name=".User.CouponDetail.BaseDetailActivity"/>
+        <activity android:name=".User.CouponDetail.DisplayCouponDetailActivity"/>
     </application>
 
 </manifest>

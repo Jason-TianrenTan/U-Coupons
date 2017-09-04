@@ -1,12 +1,10 @@
-package com.example.administrator.ccoupons.Fragments;
+package com.example.administrator.ccoupons.Fragments.Message;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;

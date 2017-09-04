@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,12 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.administrator.ccoupons.Category;
+import com.example.administrator.ccoupons.Fragments.Category.Category;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.CategoryAdapter;
 import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;

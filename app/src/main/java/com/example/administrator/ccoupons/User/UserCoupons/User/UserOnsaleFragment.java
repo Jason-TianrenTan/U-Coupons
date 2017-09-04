@@ -6,11 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
-import com.example.administrator.ccoupons.CouponListEvent;
-import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
-import com.example.administrator.ccoupons.User.UserCoupons.User.UserOnsaleAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

@@ -4,9 +4,7 @@ package com.example.administrator.ccoupons;
  * Created by Administrator on 2017/7/18 0018.
  */
 
-import android.app.Application;
-
-import com.example.administrator.ccoupons.Fragments.Message;
+import com.example.administrator.ccoupons.Fragments.Message.Message;
 import com.mob.MobApplication;
 
 import java.util.ArrayList;

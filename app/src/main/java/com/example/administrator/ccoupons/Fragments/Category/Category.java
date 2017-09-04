@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons;
+package com.example.administrator.ccoupons.Fragments.Category;
 
 /**
  * Created by Administrator on 2017/7/11 0011.

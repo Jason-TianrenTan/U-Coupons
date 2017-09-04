@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.util.DisplayMetrics;
@@ -30,12 +29,20 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.ashokvarma.bottomnavigation.ShapeBadgeItem;
 import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
 import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 import com.example.administrator.ccoupons.Connections.MessageGetService;
+import com.example.administrator.ccoupons.Events.MessageRefreshEvent;
+import com.example.administrator.ccoupons.Fragments.Category.CategoryFragment;
+import com.example.administrator.ccoupons.Fragments.Message.Message;
+import com.example.administrator.ccoupons.Fragments.Message.MessageFragment;
+import com.example.administrator.ccoupons.Fragments.User.UserOptionFragment;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.zyao89.view.zloading.ZLoadingView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -47,11 +54,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainPageActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
+public class MainPageActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
 
 
     @BindView(R.id.main_bottombar)
     BottomNavigationBar bottomLayout;
+
     private ArrayList<Message> messageList;
     private boolean exit = false;
     private AlarmReceiver receiver;
@@ -61,6 +69,9 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     private MessageFragment messageFragment;
 
     private Fragment[] fragments = new Fragment[3];
+    private BottomNavigationItem mainNavItem, messageNavItem, meNavItem;
+    private ShapeBadgeItem messageBadgeItem;
+    private boolean hasUnread = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,20 +123,23 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     private void hideAllFragments(FragmentTransaction ft) {
         if (categoryFragment != null)
             ft.hide(categoryFragment);
-        if (userOptionFragment != null) {
+        if (userOptionFragment != null)
             ft.hide(userOptionFragment);
-        }
         if (messageFragment != null)
             ft.hide(messageFragment);
     }
 
     //初始化底部导航栏
     private void initNavigationBar() {
+        mainNavItem = new BottomNavigationItem(R.drawable.main_mainpage, "主页").setActiveColor(R.color.blue);
+        messageNavItem = new BottomNavigationItem(R.drawable.message, "消息").setActiveColor(R.color.red);
+        meNavItem = new BottomNavigationItem(R.drawable.main_me, "我的").setActiveColor(R.color.yellow);
+        addMessageBadge();
         bottomLayout.setMode(BottomNavigationBar.MODE_FIXED);
         bottomLayout.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        bottomLayout.addItem(new BottomNavigationItem(R.drawable.main_mainpage, "主页").setActiveColor(R.color.blue))
-                .addItem(new BottomNavigationItem(R.drawable.message, "消息").setActiveColor(R.color.red))
-                .addItem(new BottomNavigationItem(R.drawable.main_me, "我的").setActiveColor(R.color.yellow))
+        bottomLayout.addItem(mainNavItem)
+                .addItem(messageNavItem)
+                .addItem(meNavItem)
                 .setFirstSelectedPosition(0)
                 .initialise();
         bottomLayout.setTabSelectedListener(this);
@@ -188,7 +202,6 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
             JSONObject mainObj = new JSONObject(msg);
             JSONArray jsonArray = mainObj.getJSONArray("messageResult");
             JSONArray couponArray = mainObj.getJSONArray("couponResult");
-            System.out.println(jsonArray.length() + ",,,," + couponArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
                 Message message = Message.decodeFromJSON(this, obj);
@@ -204,9 +217,26 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
             MyApp app = (MyApp) getApplicationContext();
             app.setMessageList(messageList);
             sendNotification("您有新的消息");
+            EventBus.getDefault().post(new MessageRefreshEvent());
+            hasUnread = true;
+            messageBadgeItem.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * add badge to message fragment
+     */
+    public void addMessageBadge() {
+        messageBadgeItem = new ShapeBadgeItem();
+        messageBadgeItem.setShape(ShapeBadgeItem.SHAPE_OVAL)
+                .setShapeColorResource(R.color.red)
+                .setSizeInDp(this, 10, 10)
+                .setHideOnSelect(false);
+        messageNavItem.setBadgeItem(messageBadgeItem);
+        messageBadgeItem.hide();
     }
 
     public class AlarmReceiver extends BroadcastReceiver {

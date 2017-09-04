@@ -1,10 +1,11 @@
-package com.example.administrator.ccoupons.Fragments;
+package com.example.administrator.ccoupons.Fragments.Message;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,8 +17,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Events.MessageRefreshEvent;
+import com.example.administrator.ccoupons.Fragments.Message.Message;
+import com.example.administrator.ccoupons.Fragments.Message.MessageClass;
+import com.example.administrator.ccoupons.Fragments.Message.MessageDetailActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +35,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Created by Administrator on 2017/7/16 0016.
@@ -36,6 +50,10 @@ public class MessageFragment extends Fragment {
     @BindView(R.id.messageclass_recyclerview)
     RecyclerView recyclerView;
     Unbinder unbinder;
+    @BindView(R.id.message_ptr_frame)
+    PtrFrameLayout messagePtrFrame;
+
+    PtrFrameLayout currentRefreshLayout = null;
 
     @Override
     public void onDestroyView() {
@@ -44,7 +62,6 @@ public class MessageFragment extends Fragment {
     }
 
     public class MessageClassAdapter extends RecyclerView.Adapter<MessageClassAdapter.MessageViewHolder> {
-
 
         private Context mContext;
         private ArrayList<MessageClass> mMessageClassList;
@@ -143,28 +160,39 @@ public class MessageFragment extends Fragment {
         View view = inflater.inflate(
                 R.layout.fragment_message, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initData();
+        initTitles();
+
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+
         adapter = new MessageClassAdapter(messageClasses);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpacesItemDecoration(3));
+        initPTR();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         return view;
     }
 
 
-
-    private void initData() {
+    private void initTitles() {
         messageClasses = new ArrayList<MessageClass>();
 
         for (int i = 0; i < DataHolder.MessageClasses.strings.length; i++) {
             MessageClass msgClass = new MessageClass(getResources().getString(DataHolder.MessageClasses.strings[i]));
             messageClasses.add(msgClass);
         }
+    }
+
+
+    private void initData() {
 
         ArrayList<Message> messageList = ((MyApp) getActivity().getApplicationContext()).getMessageList();
         if (messageList != null) {
+
             for (Message msg : messageList) {
+                System.out.println("message from global list: " + msg.getCouponName());
                 int catId = msg.getMessageCat();
                 messageClasses.get(catId).add(msg);
             }
@@ -172,8 +200,40 @@ public class MessageFragment extends Fragment {
 
     }
 
-    public static MessageFragment newInstance() {
-        return new MessageFragment();
+
+    private void initPTR() {
+        PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
+        header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);
+        messagePtrFrame.setHeaderView(header);
+        messagePtrFrame.addPtrUIHandler(header);
+        messagePtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                currentRefreshLayout = frame;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        currentRefreshLayout.refreshComplete();
+                    }
+                }, 1600);
+                //    categoryAppbar.setVisibility(View.INVISIBLE);
+            //    new UniversalPresenter().getRecommendByRxRetrofit();
+            }
+        });
+    }
+
+
+    /**
+     * @param event refresh message view
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(MessageRefreshEvent event) {
+        initData();
     }
 
 }

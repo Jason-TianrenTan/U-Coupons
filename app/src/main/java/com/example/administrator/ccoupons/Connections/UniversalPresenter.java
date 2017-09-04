@@ -1,16 +1,11 @@
 package com.example.administrator.ccoupons.Connections;
 
-import android.widget.Adapter;
-
-import com.example.administrator.ccoupons.CouponListEvent;
-import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.google.zxing.Result;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -168,6 +163,8 @@ public class UniversalPresenter extends BasePresenter{
                     }
                 });
     }
+
+
     /*
     //我的
     public void getOwnByRxRetrofit(String userid) {

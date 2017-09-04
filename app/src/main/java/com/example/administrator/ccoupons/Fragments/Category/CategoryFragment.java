@@ -1,10 +1,11 @@
-package com.example.administrator.ccoupons.Fragments;
+package com.example.administrator.ccoupons.Fragments.Category;
 
 
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,11 +23,12 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
-import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
-import com.example.administrator.ccoupons.CouponListEvent;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Fragments.LocationSelectActivity;
+import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
@@ -40,6 +41,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.zyao89.view.zloading.ZLoadingView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +67,8 @@ public class CategoryFragment extends Fragment {
     public static final int FOOTER_LOADMORE = 1,
             FOOTER_ENDOFLIST = 0;
 
+    @BindView(R.id.loading_view)
+    ZLoadingView loadingView;
     @BindView(R.id.location_textview)
     TextView locationTextview;
     @BindView(R.id.category_message_button)
@@ -127,9 +131,15 @@ public class CategoryFragment extends Fragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponListEvent clistEvent) {
-        System.out.println("on event call in main, list type = " + clistEvent.getListname());
         fullRecList = clistEvent.getList();
         requestData(0, 4);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadingView.setVisibility(View.INVISIBLE);
+            }
+        }, 1000);
+
     }
 
     @Override

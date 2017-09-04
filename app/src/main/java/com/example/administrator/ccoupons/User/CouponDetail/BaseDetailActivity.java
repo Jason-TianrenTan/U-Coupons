@@ -66,6 +66,8 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
     Toolbar mToolbarView;
     @BindView(R.id.detail_rootview)
     RelativeLayout detailRootview;
+    @BindView(R.id.detail_seller_rootview)
+    LinearLayout sellerRootview;
 
     @OnClick(R.id.to_seller_button)
     public void click() {
@@ -80,11 +82,12 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
     protected String msgId = null;
     protected Coupon coupon;
     protected View bottomView;
+    protected boolean onDisplay = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coupon_detail);
+        setContentView(R.layout.activity_base_detail);
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbarView);
@@ -108,6 +111,8 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screen_width = displayMetrics.widthPixels;
         mParallaxImageHeight = PixelUtils.px2dp(this, screen_width);
+        if (onDisplay)
+            sellerRootview.setVisibility(View.INVISIBLE);
         showInfo();
     }
 
