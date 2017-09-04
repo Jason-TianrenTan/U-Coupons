@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Fragments;
 
+
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,11 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -23,17 +25,25 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
 import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Connections.UniversalPresenter;
+import com.example.administrator.ccoupons.CouponListEvent;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,12 +54,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 public class CategoryFragment extends Fragment {
 
 
     public static final int FOOTER_LOADMORE = 1,
-                            FOOTER_ENDOFLIST = 0;
+            FOOTER_ENDOFLIST = 0;
 
     @BindView(R.id.location_textview)
     TextView locationTextview;
@@ -69,6 +83,20 @@ public class CategoryFragment extends Fragment {
     RecyclerView recommendView;
     @BindView(R.id.main_nestedscrollview)
     NestedScrollView mainNestedscrollview;
+    @BindView(R.id.category_ptr_frame)
+    PtrFrameLayout categoryPtrFrame;
+
+    PtrFrameLayout currentRefreshLayout = null;
+    @BindView(R.id.fab_action_fillform)
+    FloatingActionButton fillFormFab;
+    @BindView(R.id.fab_action_scanqr)
+    FloatingActionButton scanQRFab;
+    @BindView(R.id.multiple_actions)
+    FloatingActionsMenu fab_menu;
+
+    @BindView(R.id.category_rootview)
+    LinearLayout rootView;
+
     @OnClick({R.id.location_textview, R.id.category_message_button})
     public void click(View view) {
         switch (view.getId()) {
@@ -79,7 +107,7 @@ public class CategoryFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.category_message_button:
-                getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
+                //getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
                 break;
         }
 
@@ -91,14 +119,26 @@ public class CategoryFragment extends Fragment {
     private MainPageCouponAdapter rec_adapter;
     private ArrayList<String> networkImages;
     private ArrayList<Coupon> recommendList;
+    private ArrayList<Coupon> fullRecList;
     private String location = null;
-    private JSONObject resultJSON;
+
+    /**
+     * @param clistEvent recommend list
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(CouponListEvent clistEvent) {
+        System.out.println("on event call in main, list type = " + clistEvent.getListname());
+        fullRecList = clistEvent.getList();
+        requestData(0, 4);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_category, container, false);
         unbinder = ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
 
         toolbar.setTitleTextColor(Color.WHITE);
         searchText.setFocusable(false);
@@ -111,48 +151,22 @@ public class CategoryFragment extends Fragment {
             }
         });
         initCategory();
-        initRecommends();
         initRecyclerViews(view);
+        initPTR();
+        initFAB(view);
+
+        new UniversalPresenter().getRecommendByRxRetrofit();
         initBanner();
         initLocation();
         return view;
     }
 
 
-    private void parseRecommendMessage(String response) {
-        System.out.println("Response = " + response);
-        try {
-            resultJSON = new JSONObject(response);
-            rec_adapter = new MainPageCouponAdapter(recommendList);
-            recommendView.setAdapter(rec_adapter);
-            requestData(0, 5);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void initFAB(final View view) {
+
     }
 
-    private void initRecommends() {
-        String url = DataHolder.base_URL + DataHolder.postRecommend_URL;
-        HashMap<String, String> map = new HashMap<>();
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseRecommendMessage(response);
-            }
 
-            @Override
-            public void onConnectionTimeOut() {
-
-            }
-
-            @Override
-            public void onConnectionFailed() {
-
-            }
-        });
-        connectionManager.connect();
-    }
 
     private void initRecyclerViews(View view) {
         categoryView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
@@ -174,15 +188,34 @@ public class CategoryFragment extends Fragment {
         mainNestedscrollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                fab_menu.collapse();
                 if (v.getChildAt(v.getChildCount() - 1) != null) {
                     if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
                             scrollY > oldScrollY) {
-                        System.out.println("scrollY = " + scrollY +
-                                ", right = " + (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight()));
-                        //code to fetch more data for endless scrolling
                         requestData(recommendList.size(), 4);
                     }
                 }
+            }
+        });
+    }
+
+
+    private void initPTR() {
+        PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
+        header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);
+        categoryPtrFrame.setHeaderView(header);
+        categoryPtrFrame.addPtrUIHandler(header);
+        categoryPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                currentRefreshLayout = frame;
+                //    categoryAppbar.setVisibility(View.INVISIBLE);
+                new UniversalPresenter().getRecommendByRxRetrofit();
             }
         });
     }
@@ -202,19 +235,19 @@ public class CategoryFragment extends Fragment {
     private void requestData(int start, int ceiling) {
         int count = 0;
         try {
-            JSONArray jsonArray = resultJSON.getJSONArray("result");
-            for (int i = start; i < jsonArray.length(); i++, count++) {
+            for (int i = start; i < fullRecList.size(); i++, count++) {
                 if (count >= ceiling)
                     break;
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Coupon coupon = Coupon.decodeFromJSON(jsonObject);
+                Coupon coupon = fullRecList.get(i);
                 recommendList.add(coupon);
             }
-            if (recommendList.size() < jsonArray.length()) {
+            if (recommendList.size() < fullRecList.size()) {
                 setFooterView(FOOTER_LOADMORE);
             } else rec_adapter.setFooterView(null);
             rec_adapter.notifyDataSetChanged();
-
+            if (currentRefreshLayout != null)
+                currentRefreshLayout.refreshComplete();
+            //   categoryAppbar.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -303,6 +336,13 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         unbinder.unbind();
     }
+
+
+    public static CategoryFragment newInstance() {
+        return new CategoryFragment();
+    }
+
 }

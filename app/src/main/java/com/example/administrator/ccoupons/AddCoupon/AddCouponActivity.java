@@ -1,9 +1,7 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -11,28 +9,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
@@ -52,12 +45,14 @@ public class AddCouponActivity extends AppCompatActivity {
         bindViews();
         getCouponInfo();
         if (coupon != null) {
-            couponEvalText.setText(coupon.getEvaluatePrice() + "");
+            couponEvalText.setText(coupon.getValue() + "");
             //TODO:如果一定要添加图片的话 请修改
-            if (coupon.getImgURL() != null && !coupon.getImgURL().equals("")) {
-                ImageManager.GlideImage(coupon.getImgURL(), couponImg, getApplicationContext());
+            if (coupon.getPic() != null && !coupon.getPic().equals("")) {
+                Glide.with(this)
+                        .load(coupon.getPic())
+                        .into(couponImg);
             }
-            couponNameText.setText(coupon.getName());
+            couponNameText.setText(coupon.getProduct());
             couponBrandText.setText(coupon.getBrandName());
             couponDiscountText.setText(coupon.getDiscount());
             couponCatText.setText(coupon.getCategory());
@@ -80,12 +75,12 @@ public class AddCouponActivity extends AppCompatActivity {
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
         map.put("brand", coupon.getBrandName());
         map.put("category", coupon.getCategory());
-        map.put("expiredTime", coupon.getExpireDate());
+        map.put("expiredTime", coupon.getExpiredtime());
         map.put("listPrice", couponListPriceText.getText().toString());
-        map.put("product", coupon.getName());
+        map.put("product", coupon.getProduct());
         map.put("discount", coupon.getDiscount());
-        //    map.put("pic", coupon.getImgURL());
-        new UpLoadCoupon(map, coupon.getConstraints(), coupon.getImgURL()).execute();
+        //    map.put("pic", coupon.getPic());
+        new UpLoadCoupon(map, coupon.getConstraints(), coupon.getPic()).execute();
     }
 
 

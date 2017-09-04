@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
+import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
 import com.todddavies.components.progressbar.ProgressWheel;
 
@@ -74,9 +74,9 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
             return;
         final Coupon coupon = mCouponList.get(position);
         setImage(holder, coupon);
-        holder.nameText.setText(coupon.getName());
-        holder.detailText.setText(coupon.getExpireDate());
-        holder.priceText.setText(coupon.getListPrice() + "");
+        holder.nameText.setText(coupon.getProduct());
+        holder.detailText.setText(coupon.getExpiredtime());
+        holder.priceText.setText(coupon.getListprice() + "");
         holder.specialText.setText(coupon.getWord());
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
 
 
     private void setImage(CouponViewHolder holder, Coupon coupon) {
-        String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
+        String url = DataHolder.base_URL + "/static/" + coupon.getPic();
         Glide.with(mContext)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -131,6 +131,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
 
     public void setFooterView(View footer) {
         footerView = footer;
+        System.out.println("cat item count = " + getItemCount());
         notifyItemInserted(getItemCount() - 1);
     }
 }

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/7/16 0016.
@@ -31,6 +32,16 @@ import butterknife.ButterKnife;
 
 public class MessageFragment extends Fragment {
 
+
+    @BindView(R.id.messageclass_recyclerview)
+    RecyclerView recyclerView;
+    Unbinder unbinder;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 
     public class MessageClassAdapter extends RecyclerView.Adapter<MessageClassAdapter.MessageViewHolder> {
 
@@ -131,16 +142,16 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
                 R.layout.fragment_message, container, false);
+        unbinder = ButterKnife.bind(this, view);
         initData();
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.messageclass_recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
         adapter = new MessageClassAdapter(messageClasses);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpacesItemDecoration(3));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
         return view;
     }
+
 
 
     private void initData() {
@@ -158,6 +169,11 @@ public class MessageFragment extends Fragment {
                 messageClasses.get(catId).add(msg);
             }
         }
+
+    }
+
+    public static MessageFragment newInstance() {
+        return new MessageFragment();
     }
 
 }

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.example.administrator.ccoupons.Tools.XCRoundImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/seller_avatar_imageview"
                 android:layout_width="40dp"
                 android:layout_height="40dp"

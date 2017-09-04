@@ -38,8 +38,6 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
-        tools:ignore="MissingTranslation"
-        tools:replace="android:icon,android:theme"
         android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@drawable/welcome_logo_new"
@@ -47,7 +45,9 @@
         android:roundIcon="@drawable/welcome_logo_new"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="adjustResize">
+        android:windowSoftInputMode="adjustResize"
+        tools:ignore="MissingTranslation"
+        tools:replace="android:icon,android:theme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c296a0f6c75d92cfa711456893eac5a8" />
@@ -105,11 +105,10 @@
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".User.UserMyCouponActivity" />
-        <activity android:name=".Fragments.MyMessageActivity" />
-        <activity android:name=".User.UserSellCoupons" />
-        <activity android:name=".User.UserBuyCoupons" />
-        <activity android:name=".User.UserFollowCoupon" />
-        <activity android:name=".Purchase.CouponDetailActivity" />
+        <activity android:name=".User.UserCoupons.SingleCouponList.UserSellCoupons" />
+        <activity android:name=".User.UserCoupons.SingleCouponList.UserBuyCoupons" />
+        <activity android:name=".User.UserCoupons.SingleCouponList.UserFollowCoupons" />
+        <activity android:name=".User.CouponDetail.CouponDetailActivity" />
         <activity android:name=".Purchase.CouponPurchaseActivity" />
         <activity android:name=".AddCoupon.QRcodeActivity" />
         <activity android:name=".AddCoupon.AddCouponActivity" />
@@ -122,8 +121,9 @@
             android:name=".Fragments.CategorySearchActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".Fragments.MessageDetailActivity" />
-        <activity android:name=".Purchase.SellerDetailActivity" />
-        <activity android:name=".User.MyCouponDetailActivity"></activity>
+        <activity android:name=".User.CouponDetail.SellerDetailActivity" />
+        <activity android:name=".User.CouponDetail.MyCouponDetailActivity" />
+        <activity android:name=".User.CouponDetail.BaseDetailActivity"></activity>
     </application>
 
 </manifest>

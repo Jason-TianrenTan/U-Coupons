@@ -1,33 +1,30 @@
-package com.example.administrator.ccoupons.Purchase;
+package com.example.administrator.ccoupons.User.CouponDetail;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
-import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
-import com.example.administrator.ccoupons.User.MyCouponFragmentAdapter;
-import com.example.administrator.ccoupons.User.UserCouponFragments.EmptyFragment;
+import com.example.administrator.ccoupons.User.CouponCommonFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerOnsaleFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerSoldFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.MyCouponFragmentAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,15 +32,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SellerDetailActivity extends AppCompatActivity{
 
 
     private TextView sellerNameText;
-    private XCRoundImageView sellerAvatar;
+    private CircleImageView sellerAvatar;
     private TextView onsaleText, soldText;
 
     private LinearLayout scrollBar;
-    private Fragment fr1, fr2;
+    private CouponCommonFragment onsaleFragment = new SellerOnsaleFragment(),
+            soldFragment = new SellerSoldFragment();
 
     private ArrayList<Coupon> onsaleList, soldList;
 
@@ -81,11 +81,10 @@ public class SellerDetailActivity extends AppCompatActivity{
         sellerNameText.setText(name);
         sellerAvatar.setImageResource(R.drawable.testportrait);
         if (url != "") {
-            ImageManager.GlideImage(url, sellerAvatar);
+            Glide.with(this)
+                    .load(url)
+                    .into(sellerAvatar);
         }
-
-        fr1 = new EmptyFragment();
-        fr2 = new EmptyFragment();
         onsaleList = new ArrayList<>();
         soldList = new ArrayList<>();
     }
@@ -94,7 +93,7 @@ public class SellerDetailActivity extends AppCompatActivity{
     private void bindViews() {
 
         sellerNameText  = (TextView) findViewById(R.id.seller_name_text);
-        sellerAvatar = (XCRoundImageView) findViewById(R.id.seller_avatar_imageview);
+        sellerAvatar = (CircleImageView) findViewById(R.id.seller_avatar_imageview);
 
         scrollBar = (LinearLayout) findViewById(R.id.seller_coupon_scrollbar);
         onsaleText = (TextView) findViewById(R.id.seller_onsale_text);
@@ -139,17 +138,12 @@ public class SellerDetailActivity extends AppCompatActivity{
             bundle.putSerializable("coupons", onsaleList);
             bundle.putSerializable("index", 0);
 
-            fr1 = new CouponDisplayFragment();
-            fr1.setArguments(bundle);
 
         }
         if (soldList.size() > 0) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("coupons", soldList);
             bundle.putSerializable("index", 1);
-
-            fr2 = new CouponDisplayFragment();
-            fr2.setArguments(bundle);
         }
 
         initTabs();
@@ -177,9 +171,9 @@ public class SellerDetailActivity extends AppCompatActivity{
 
     private void initTabs() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ArrayList<Fragment> frList = new ArrayList<Fragment>();
-        frList.add(fr1);
-        frList.add(fr2);
+        ArrayList<CouponCommonFragment> frList = new ArrayList<>();
+        frList.add(onsaleFragment);
+        frList.add(soldFragment);
         MyCouponFragmentAdapter frAdapter = new MyCouponFragmentAdapter(fragmentManager, frList);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.seller_coupon_viewpager);
         viewPager.setAdapter(frAdapter);

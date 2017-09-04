@@ -1,8 +1,6 @@
-package com.example.administrator.ccoupons.User;
+package com.example.administrator.ccoupons.User.CouponDetail;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,58 +15,77 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
-import com.example.administrator.ccoupons.Purchase.CouponPurchaseActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
-import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 
-public class MyCouponDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public abstract class BaseDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
 
-    private String msgId = null;
-    private boolean statType = false;
-    private int index = 0;
-    private Coupon coupon;
-    private ImageView mImageView;
-    private ImageView mainButton, followButton, purchaseButton;
+    @BindView(R.id.coupon_image)
+    ImageView mImageView;
+    @BindView(R.id.coupon_detail_name_text)
+    TextView nameText;
+    @BindView(R.id.coupon_detail_list_price)
+    TextView listpriceText;
+    @BindView(R.id.coupon_detail_evaluate_price)
+    TextView evalpriceText;
+    @BindView(R.id.coupon_detail_discount_price)
+    TextView discountText;
+    @BindView(R.id.coupon_detail_brand_name)
+    TextView brandNameText;
+    @BindView(R.id.coupon_detail_seller_name)
+    TextView sellerNameText;
+    @BindView(R.id.seller_avatar_img)
+    CircleImageView sellerAvatar;
+    @BindView(R.id.to_seller_button)
+    LinearLayout toSellerButton;
+    @BindView(R.id.coupon_detail_expire_date)
+    TextView expireText;
+    @BindView(R.id.coupon_detail_constraints_text)
+    TextView constaintsText;
+    @BindView(R.id.scroll)
+    ObservableScrollView mScrollView;
+    @BindView(R.id.fading_toolbar)
+    Toolbar mToolbarView;
+    @BindView(R.id.detail_rootview)
+    RelativeLayout detailRootview;
 
-    private ObservableScrollView mScrollView;
-    private Toolbar mToolbarView;
-    private int mParallaxImageHeight;
-    private TextView nameText, listpriceText, evalpriceText,
-            discountText, brandNameText, expireText, constaintsText, sellerNameText;
+    @OnClick(R.id.to_seller_button)
+    public void click() {
+        Intent intent = new Intent(BaseDetailActivity.this, SellerDetailActivity.class);
+        intent.putExtra("nickname", coupon.getSellerNickname());
+        intent.putExtra("avatar", coupon.getSellerAvatarURL());
+        intent.putExtra("id", coupon.getSellerId());
+        startActivity(intent);
+    }
+
+    protected int mParallaxImageHeight;
+    protected String msgId = null;
+    protected Coupon coupon;
+    protected View bottomView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_coupon_detail);
-
-
-        String iStr = getIntent().getStringExtra("index");
-        if (iStr != null && iStr.length() > 0)
-            index = Integer.parseInt(getIntent().getStringExtra("index"));
-
-        String type = getIntent().getStringExtra("type");
-        if (type.equals("show")) {
-            statType = true;
-            inflateBottomStatView();
-        }
-        bindViews();
+        setContentView(R.layout.activity_coupon_detail);
+        ButterKnife.bind(this);
 
         setSupportActionBar(mToolbarView);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -76,7 +93,8 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pullback();
+                onKeyBack();
+                finish();
 
             }
         });
@@ -93,112 +111,42 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         showInfo();
     }
 
-
-    private void pullback() {
-        System.out.println("statType = " + statType);
-        if (statType) {
-            Intent intent = new Intent(MyCouponDetailActivity.this, UserMyCouponActivity.class);
-            intent.putExtra("index", index + "");
-            startActivity(intent);
-            finish();
-        } else finish();
-    }
-
-
-    private void inflateBottomStatView() {
-        ImageView saleButton, storeButton;
+    /**
+     * inflate bottom view
+     * TYPES:
+     * Purchase Coupon -> buy like
+     * My Coupon -> store sell
+     * Coupon from Message -> nothing
+     */
+    public void inflateBottomView(int id) {
         RelativeLayout rootView = (RelativeLayout) findViewById(R.id.detail_rootview);
         LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.stat_bottom_bar, null);
+        bottomView = inflater.inflate(id, null);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, PixelUtils.dp2px(this, 45));
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        view.setLayoutParams(params);
-        rootView.addView(view);
-
-
-        saleButton = (ImageView) view.findViewById(R.id.page_button_sale);
-        storeButton = (ImageView) view.findViewById(R.id.page_button_store);
-
-        saleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendStatRequest("onSale");
-            }
-        });
-
-        storeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendStatRequest("store");
-            }
-        });
-
+        bottomView.setLayoutParams(params);
+        rootView.addView(bottomView);
     }
 
 
-    private void parseMessage(String response) {
+    /**
+     *
+     * @param isLiked 是否被关注
+     */
+    public abstract void initBottomViews(boolean isLiked);
 
-        try {
-            JSONObject obj = new JSONObject(response);
-            String result = obj.getString("errno");
-            int code = Integer.parseInt(result);
-            if (code == 0) {
-                /*
-                Intent intent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");
-                sendBroadcast(intent);*/
-
-                Toast.makeText(this, "操作成功", Toast.LENGTH_SHORT).show();
-            } else
-                Toast.makeText(this, "已经上架/下架！", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void sendStatRequest(String type) {
-        String url = DataHolder.base_URL + DataHolder.postChangeCouponState_URL;
-        HashMap<String, String> map = new HashMap<>();
-        map.put("couponID", coupon.getCouponId());
-        map.put("state", type);
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseMessage(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-
-            }
-
-            @Override
-            public void onConnectionFailed() {
-
-            }
-        });
-        connectionManager.connect();
-    }
-
-
-    private void bindViews() {
-        mImageView = (ImageView) findViewById(R.id.coupon_image);
-        mToolbarView = (Toolbar) findViewById(R.id.fading_toolbar);
-        nameText = (TextView) findViewById(R.id.coupon_detail_name_text);
-        listpriceText = (TextView) findViewById(R.id.coupon_detail_list_price);
-        evalpriceText = (TextView) findViewById(R.id.coupon_detail_evaluate_price);
-        discountText = (TextView) findViewById(R.id.coupon_detail_discount_price);
-        brandNameText = (TextView) findViewById(R.id.coupon_detail_brand_name);//品牌
-        expireText = (TextView) findViewById(R.id.coupon_detail_expire_date);
-        constaintsText = (TextView) findViewById(R.id.coupon_detail_constraints_text);
-    }
+    /**
+     * 回调
+     */
+    public abstract void onKeyBack();
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            pullback();
+            System.out.println("base key back");
+            onKeyBack();
+            finish();
             return false;
         } else {
             return super.onKeyDown(keyCode, event);
@@ -210,19 +158,21 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
         //url
-        String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
-        ImageManager.GlideImage(url, mImageView);
+        String url = DataHolder.base_URL + "/static/" + coupon.getPic();
+        Glide.with(this)
+                .load(url)
+                .into(mImageView);
 
         //name
-        String name = coupon.getName();
+        String name = coupon.getProduct();
         nameText.setText(name);
 
         //list price
-        double listprice = coupon.getListPrice();
+        String listprice = coupon.getListprice();
         listpriceText.setText("¥" + listprice + "");
 
         //eval price
-        double evalprice = coupon.getEvaluatePrice();
+        String evalprice = coupon.getValue();
         evalpriceText.setText("¥" + evalprice + "");
 
         //优惠额度
@@ -233,7 +183,7 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         String brandName = "懒得起名字的公司" + coupon.getBrandName();
         brandNameText.setText(brandName);
 
-        String expireDate = coupon.getExpireDate();
+        String expireDate = coupon.getExpiredtime();
         expireText.setText(expireDate + "");
 
 
@@ -241,7 +191,7 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
         constaintsText.setText(constraints);
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("couponID", coupon.getCouponId() + "");
+        map.put("couponID", coupon.getCouponid() + "");
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
 
         if (msgId != null) {
@@ -255,6 +205,8 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
             public void onConnectionSuccess(String response) {
                 coupon.getDetails(response);
                 System.out.println("Response = " + response);
+                //卖家
+                sellerNameText.setText(coupon.getSellerNickname());
                 //    ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
                 //商家 品牌
                 brandNameText.setText(coupon.getBrandName());
@@ -263,13 +215,12 @@ public class MyCouponDetailActivity extends AppCompatActivity implements Observa
                 String[] constraints = coupon.getConstraints();
                 StringBuilder sb = new StringBuilder();
                 int index = 1;
-                for (String str : constraints)
+                for (String str : constraints) {
                     sb.append(index + ". " + str + '\n');
+                    index++;
+                }
                 constaintsText.setText(sb.toString());
-
-                //关注
-                if (coupon.isLiked() && followButton != null)
-                    followButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.follow_pressed));
+                initBottomViews(coupon.isLiked());
             }
 
             @Override

@@ -20,11 +20,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Purchase.CouponDetailActivity;
+import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 import com.todddavies.components.progressbar.ProgressWheel;
 
 import org.json.JSONArray;
@@ -333,9 +331,9 @@ public class SearchResultActivity extends AppCompatActivity {
                 return;
             final Coupon coupon = mCouponList.get(position);
             setImage(holder, coupon);
-            holder.nameText.setText(coupon.getName());
-            holder.detailText.setText(coupon.getExpireDate());
-            holder.priceText.setText(coupon.getListPrice() + "");
+            holder.nameText.setText(coupon.getProduct());
+            holder.detailText.setText(coupon.getExpiredtime());
+            holder.priceText.setText(coupon.getListprice() + "");
             holder.specialText.setText(coupon.getWord());
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -349,7 +347,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            String url = DataHolder.base_URL + "/static/" + coupon.getImgURL();
+            String url = DataHolder.base_URL + "/static/" + coupon.getPic();
             Glide.with(mContext).load(url).into(holder.imageView);
         }
 

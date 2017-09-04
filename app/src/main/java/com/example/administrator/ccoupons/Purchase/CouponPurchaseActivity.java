@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.ImageManager;
 
 import org.json.JSONObject;
 
@@ -81,7 +81,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("couponID", coupon.getCouponId());
+                map.put("couponID", coupon.getCouponid());
                 MyApp app = (MyApp) getApplicationContext();
                 String userId = app.getUserId();
                 map.put("userID", userId);
@@ -109,9 +109,11 @@ public class CouponPurchaseActivity extends AppCompatActivity {
 
     private void initInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
-        ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getImgURL(), couponImg);
-        couponNameText.setText(coupon.getName());
-        couponPriceText.setText("¥" + coupon.getListPrice());
+        Glide.with(this)
+                .load(DataHolder.base_URL + "/static/" + coupon.getPic())
+                .into(couponImg);
+        couponNameText.setText(coupon.getProduct());
+        couponPriceText.setText("¥" + coupon.getListprice());
 
         String[] constraints = coupon.getConstraints();
         StringBuilder sb = new StringBuilder();

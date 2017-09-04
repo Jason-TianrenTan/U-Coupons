@@ -3,14 +3,10 @@ package com.example.administrator.ccoupons.AddCoupon;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -24,32 +20,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.bumptech.glide.load.engine.cache.DiskCache;
+import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.ImageDiskCache;
-import com.example.administrator.ccoupons.Tools.ImageManager;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
-import com.example.administrator.ccoupons.User.UserPortraitActivity;
 import com.jph.takephoto.model.TResult;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.mob.MobSDK.getContext;
 
@@ -72,7 +57,6 @@ public class FillFormActivity extends AppCompatActivity {
     private ImageView couponPicture;
     private TakePhotoUtil takePhotoUtil;
     private String path = "";
-    private ImageDiskCache imageDiskCache = ImageDiskCache.getInstance(getContext());
     private TextView nextButton;
 
     private TextInputLayout productInputLayout, brandInputLayout, discountInputLayout, expireInputLayout, addressInputLayout;
@@ -200,9 +184,9 @@ public class FillFormActivity extends AppCompatActivity {
                 }
 
                 if (valid) {
-                    coupon.setName(productName);
-                    coupon.setImgURL(path);
-                    coupon.setExpireDate(expireDate);
+                    coupon.setProduct(productName);
+                    coupon.setPic(path);
+                    coupon.setExpiredtime(expireDate);
                     coupon.setBrandName(brandName);
                     coupon.setDiscount(discount);
                     for (int i =0;i<DataHolder.Categories.nameList.length;i++) {
@@ -259,7 +243,6 @@ public class FillFormActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 path = result.getImage().getCompressPath();
                                 System.out.println("success:" + path);
-                                imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
                                 System.out.println("success");
                                 hasImage = true;
                                 updatePic();
@@ -277,7 +260,6 @@ public class FillFormActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 path = result.getImage().getCompressPath();
                                 System.out.println("success:" + path);
-                                imageDiskCache.writeToDiskCache(path, BitmapFactory.decodeFile(path));
                                 System.out.println("success");
                                 hasImage = true;
                                 updatePic();
@@ -291,7 +273,9 @@ public class FillFormActivity extends AppCompatActivity {
     }
 
     private void updatePic() {
-        ImageManager.GlideImage(path, couponPicture, getContext());
+        Glide.with(this)
+                .load(path)
+                .into(couponPicture);
     }
 
 

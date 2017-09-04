@@ -1,8 +1,11 @@
-package com.example.administrator.ccoupons.User;
+package com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.User.CouponCommonFragment;
 
 import java.util.ArrayList;
 
@@ -12,8 +15,8 @@ import java.util.ArrayList;
 
 public class MyCouponFragmentAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<Fragment> frList;
-    public MyCouponFragmentAdapter(FragmentManager frManager, ArrayList<Fragment> list) {
+    private ArrayList<CouponCommonFragment> frList;
+    public MyCouponFragmentAdapter(FragmentManager frManager, ArrayList<CouponCommonFragment> list) {
         super(frManager);
         frList = list;
     }

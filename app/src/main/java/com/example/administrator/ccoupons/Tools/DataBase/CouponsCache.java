@@ -26,26 +26,19 @@ public class CouponsCache {
 
     public CouponsCache addCoupon(Coupon coupon) {
         ContentValues values = new ContentValues();
-        values.put("id", coupon.getCouponId());
-        values.put("name", coupon.getName());
+        values.put("id", coupon.getCouponid());
+        values.put("name", coupon.getProduct());
         values.put("brandId", coupon.getBrandName());
         values.put("catId", coupon.getCategory());
-        values.put("listPrice", coupon.getListPrice());
-        values.put("evaluatePrice", coupon.getEvaluatePrice());
+        values.put("listPrice", coupon.getListprice());
+        values.put("evaluatePrice", coupon.getValue());
         values.put("discount", coupon.getDiscount());
         values.put("stat", coupon.getStat());
-        values.put("imgURL", coupon.getImgURL());
-        values.put("expireDate", coupon.getExpireDate());
+        values.put("imgURL", coupon.getPic());
+        values.put("expireDate", coupon.getExpiredtime());
         //values.put("limit", coupon.getLimit());
         db.insert("Coupon", null, values);
         return this;
-    }
-
-    public Coupon findCouponById(int id) {
-        Cursor cursor = db.rawQuery("select * from Coupon where id = ?", new String[]{String.valueOf(id)});
-        Coupon c = collectOneCoupon(cursor);
-        cursor.close();
-        return c;
     }
 
     public ArrayList<Integer> findCouponByStat(int stat) {
@@ -55,7 +48,7 @@ public class CouponsCache {
     }
 
     public void updateCoupon(Coupon coupon) {
-        String id = String.valueOf(coupon.getCouponId());
+        String id = String.valueOf(coupon.getCouponid());
         db.execSQL("delete from Coupon where id = ?", new String[]{id});
         addCoupon(coupon);
     }
@@ -74,21 +67,6 @@ public class CouponsCache {
         db.execSQL("delete from Coupon", null);
     }
 
-    private Coupon collectOneCoupon(Cursor cursor) {
-        String name = cursor.getString(cursor.getColumnIndex("name"));
-        String id = cursor.getString(cursor.getColumnIndex("id"));
-        String brandId = cursor.getString(cursor.getColumnIndex("brandId"));
-        String catId = cursor.getString(cursor.getColumnIndex("catId"));
-        double listPrice = cursor.getDouble(cursor.getColumnIndex("listPrice"));
-        double evaluatePrice = cursor.getDouble(cursor.getColumnIndex("evaluatePrice"));
-        String discount = cursor.getString(cursor.getColumnIndex("discount"));
-        int stat = cursor.getInt(cursor.getColumnIndex("stat"));
-        String imgURL = cursor.getString(cursor.getColumnIndex("imgURL"));
-        String expireDate = cursor.getString(cursor.getColumnIndex("expireDate"));
-        String limit = cursor.getString(cursor.getColumnIndex("limit"));
-        Coupon coupon = new Coupon(name, id, brandId, catId, listPrice, evaluatePrice, discount, stat, imgURL, expireDate);
-        return coupon;
-    }
 
     private ArrayList<Integer> collectCouponId(Cursor cursor) {
         ArrayList<Integer> arrayList = new ArrayList<Integer>();

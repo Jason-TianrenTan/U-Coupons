@@ -11,7 +11,7 @@ public class Category {
         this.name = cname;
         this.resId = cid;
     }
-    public String getName() {
+    public String getProduct() {
         return this.name;
     }
     public int getResId() {
