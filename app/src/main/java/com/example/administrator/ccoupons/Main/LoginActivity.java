@@ -274,17 +274,7 @@ public class LoginActivity extends AppCompatActivity {
             imgLayout.startAnimation(anim);
             stateShrinked = false;
         }
-
     }
-
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
-        finish();
-        super.onBackPressed();
-    }
-
 
     private void parseMessage(String response) {
         System.out.println("response = " + response);
@@ -310,7 +300,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 app.setPhoneNumber("13111111111");
 
-                startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
+                Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             } catch (Exception e) {
                 e.printStackTrace();

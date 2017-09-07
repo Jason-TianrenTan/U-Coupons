@@ -19,33 +19,40 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
+
 public class UserPortraitActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
-    private ImageView portrait;
-    private LinearLayout bg;
+    @BindView(R.id.user_portrait_view)
+    ImageView portrait;
+    @BindView(R.id.portrait_bg)
+    LinearLayout bg;
+
+    @OnClick({R.id.portrait_bg})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.portrait_bg:
+                finish();
+                overridePendingTransition(R.anim.noanim, R.anim.portrait_out);//Todo:动画需要调整
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_portrait);
-        initView();
-
         takePhotoUtil = new TakePhotoUtil(this);
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);
         }
-        initPortrait();
         setOnLongClickListeners();
+        initPortrait();
     }
 
+    //Todo:尚无法修改注入
     private void setOnLongClickListeners() {
-        bg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.noanim, R.anim.portrait_out);
-            }
-        });
 
         bg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -94,10 +101,35 @@ public class UserPortraitActivity extends AppCompatActivity {
         });
     }
 
-    private void initView() {
-        portrait = (ImageView) findViewById(R.id.user_portrait_view);
-        //portrait.setImageResource(DataHolder.User.portraitId);
-        bg = (LinearLayout) findViewById(R.id.portrait_bg);
+    public void updatePortrait(final String path) {
+        try {
+            MyApp app = (MyApp) getApplicationContext();
+            String userId = app.getUserId();
+            new UploadTask(userId, path).execute();
+            app.setAvatar(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Todo:上传图片到服务器 并返回图片对应的url
+        //Todo:更新头像 更新本地储存的url
+
+        Glide.with(this)
+                .load(path)
+                .into(portrait);
+    }
+
+    public void initPortrait() {
+        MyApp app = (MyApp) this.getApplicationContext();
+        String url = app.getAvatar();
+        if (url != "") {
+            Glide.with(this)
+                    .load(url)
+                    .into(portrait);
+        } else portrait.setImageResource(R.drawable.testportrait);
+    }
+
+    protected boolean useTakePhoto() {
+        return true;
     }
 
     @Override
@@ -122,36 +154,5 @@ public class UserPortraitActivity extends AppCompatActivity {
             takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    protected boolean useTakePhoto() {
-        return true;
-    }
-
-    public void updatePortrait(final String path) {
-        try {
-            MyApp app = (MyApp) getApplicationContext();
-            String userId = app.getUserId();
-            new UploadTask(userId, path).execute();
-            app.setAvatar(path);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        //Todo:上传图片到服务器 并返回图片对应的url
-        //Todo:更新头像 更新本地储存的url
-
-        Glide.with(this)
-                .load(path)
-                .into(portrait);
-    }
-
-    public void initPortrait() {
-        MyApp app = (MyApp) this.getApplicationContext();
-        String url = app.getAvatar();
-        if (url != "") {
-            Glide.with(this)
-                    .load(url)
-                    .into(portrait);
-        } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

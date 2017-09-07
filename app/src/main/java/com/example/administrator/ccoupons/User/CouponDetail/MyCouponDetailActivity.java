@@ -34,6 +34,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.example.administrator.ccoupons.User.UserCouponInfoAdapter.INFO_CODE;
 
 /**
@@ -41,7 +44,7 @@ import static com.example.administrator.ccoupons.User.UserCouponInfoAdapter.INFO
  */
 public class MyCouponDetailActivity extends BaseDetailActivity {
 
-
+    @BindView(R.id.page_button_stat)
     ImageView statButton;
     boolean isOnsale = false;
 
@@ -49,6 +52,7 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         String statString = getIntent().getStringExtra("stat");
         if (statString.equals("onsale"))
             isOnsale = true;
@@ -65,7 +69,6 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
     @Override
     public void initBottomViews(boolean isLiked) {
         super.inflateBottomView(R.layout.stat_bottom_bar);
-        statButton = (ImageView) bottomView.findViewById(R.id.page_button_stat);
         refreshStat();
 
         statButton.setOnClickListener(new View.OnClickListener() {

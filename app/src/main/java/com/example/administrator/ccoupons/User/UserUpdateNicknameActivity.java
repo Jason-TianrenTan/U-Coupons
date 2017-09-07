@@ -21,47 +21,52 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class UserUpdateNicknameActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private TextView updatenick;
-    private EditText nicknameEdit;
     private String nickname;
     private MyApp app;
     private final static String updateUserInformationURL = DataHolder.base_URL + DataHolder.updateUserInformation_URL;
+
+    @BindView(R.id.user_update_nickname_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.user_update_nickname)
+    TextView updatenick;
+    @BindView(R.id.update_nickname_edit)
+    EditText nicknameEdit;
+
+    @OnClick(R.id.user_update_nickname)
+    public void onclick(View view){
+        nickname = nicknameEdit.getText().toString();
+        update(nickname);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_update_nickname);
-        bindViews();
-        setOnClinckListeners();
+        ButterKnife.bind(this);
+        initToolbar();
+        initData();
     }
 
-    private void bindViews() {
-        app = (MyApp) getApplicationContext();
-        toolbar = (Toolbar) findViewById(R.id.user_update_nickname_toolbar);
-        updatenick = (TextView) findViewById(R.id.user_update_nickname);
-        nicknameEdit = (EditText) findViewById(R.id.update_nickname_edit);
-        nicknameEdit.setHint(app.getNickname());
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void setOnClinckListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        updatenick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nickname = nicknameEdit.getText().toString();
-                update(nickname);
-            }
-        });
+    }
+
+    private void initData() {
+        app = (MyApp) getApplicationContext();
+        nicknameEdit.setHint(app.getNickname());
     }
 
     private void update(String nickname) {

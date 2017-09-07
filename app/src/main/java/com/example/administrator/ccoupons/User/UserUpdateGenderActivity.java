@@ -23,41 +23,60 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class UserUpdateGenderActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private TextView updateGender;
-    private RadioGroup genderRadio;
     private int gender;
     private MyApp app;
     private final static String updateUserInformationURL = DataHolder.base_URL + DataHolder.updateUserInformation_URL;
     private final String[] genderStr = {"男", "女"};
 
+    @BindView(R.id.user_update_gender_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.user_update_gender)
+    TextView updateGender;
+    @BindView(R.id.user_update_gender_radio)
+    RadioGroup genderRadio;
+
+    @OnClick(R.id.user_update_gender)
+    public void onclick(View view) {
+        if (gender == Gender.MALE) {
+            update(genderStr[0]);
+        } else update(genderStr[1]);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_update_gender);
-        bindViews();
-        setOnClinckListeners();
+        ButterKnife.bind(this);
+        initToolbar();
+        initData();
+        initRadio();
     }
 
-    private void bindViews() {
-        app = (MyApp) getApplicationContext();
-        toolbar = (Toolbar) findViewById(R.id.user_update_gender_toolbar);
-        updateGender = (TextView) findViewById(R.id.user_update_gender);
-        genderRadio = (RadioGroup) findViewById(R.id.user_update_gender_radio);
+    private void initToolbar(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-    }
-
-    private void setOnClinckListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+    }
+
+    private void initData(){
+        app = (MyApp) getApplicationContext();
+        if (app.getGender() == Gender.MALE) {
+            genderRadio.check(R.id.radio_button_male);
+        } else genderRadio.check(R.id.radio_button_female);
+    }
+
+    private void initRadio() {
         genderRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
@@ -65,19 +84,6 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
                 if (buttonId == R.id.radio_button_male)
                     gender = Gender.MALE;
                 else gender = Gender.FEMALE;
-            }
-        });
-
-        if (app.getGender() == Gender.MALE) {
-            genderRadio.check(R.id.radio_button_male);
-        } else genderRadio.check(R.id.radio_button_female);
-
-        updateGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (gender == Gender.MALE) {
-                    update(genderStr[0]);
-                } else update(genderStr[1]);
             }
         });
     }

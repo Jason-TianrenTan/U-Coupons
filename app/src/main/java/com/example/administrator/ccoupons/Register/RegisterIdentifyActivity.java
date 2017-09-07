@@ -144,7 +144,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_identify);
 
-
         checker = new RegisterCheck();
         Toolbar toolbar = (Toolbar) findViewById(R.id.register_identify_toolbar);
         setSupportActionBar(toolbar);

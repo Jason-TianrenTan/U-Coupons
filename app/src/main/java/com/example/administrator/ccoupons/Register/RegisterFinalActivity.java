@@ -108,6 +108,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
 
     private void Login() {
         Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         MyApp app = (MyApp) getApplicationContext();
         app.setNickname(nickname_edittext.getText().toString());
         app.setPhoneNumber(phoneString);

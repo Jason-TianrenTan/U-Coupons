@@ -25,14 +25,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class WelcomeActivity extends Activity {
-
-
     @BindView(R.id.Welcome_LoginButton)
     Button Welcome_LoginButton;
     @BindView(R.id.Welcome_RegisterButton)
@@ -43,7 +40,6 @@ public class WelcomeActivity extends Activity {
         switch (view.getId()) {
             case R.id.Welcome_LoginButton:
                 startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-                finish();
                 break;
             case R.id.Welcome_RegisterButton:
                 startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
@@ -54,6 +50,7 @@ public class WelcomeActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));//Todo:for test
         setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
     }

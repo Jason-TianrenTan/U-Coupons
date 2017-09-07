@@ -15,38 +15,37 @@ import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager
 import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
-public class UserSettingActivity extends SlideBackActivity {
-    private Toolbar toolbar;
-    private LinearLayout clear;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+public class UserSettingActivity extends SlideBackActivity {
+    @BindView(R.id.uset_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.uset_clear)
+    LinearLayout clear;
+
+    @OnClick(R.id.uset_clear)
+    public void click(View view) {
+        showClearDialog();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
-        initView();
-        setOnClickListeners();
+        ButterKnife.bind(this);
+        initToolbar();
     }
 
-    private void initView(){
-        toolbar = (Toolbar) findViewById(R.id.uset_toolbar);
-        clear = (LinearLayout) findViewById(R.id.uset_clear);
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void setOnClickListeners(){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showClearDialog();
             }
         });
     }

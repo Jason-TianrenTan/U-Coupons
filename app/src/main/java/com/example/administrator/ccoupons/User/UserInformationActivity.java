@@ -21,160 +21,103 @@ import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class UserInformationActivity extends SlideBackActivity {
-    private TextView name;
-    private TextView sex;
-    private CircleImageView portrait;
     private TakePhotoUtil takePhotoUtil;
-    private Toolbar toolbar;
-    private LinearLayout changeportrait;
-    private LinearLayout toResetPassword;
-    private LinearLayout toUpdateNickname;
-    private LinearLayout toUpdateGender;
-    private LinearLayout toUpdatePhone;
     private MyApp app;
+
+    @BindView(R.id.user_name)
+    TextView name;
+    @BindView(R.id.user_sex)
+    TextView sex;
+    @BindView(R.id.uinf_portrait)
+    CircleImageView portrait;
+    @BindView(R.id.uinf_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.change_portrait)
+    LinearLayout changeportrait;
+    @BindView(R.id.uinf_to_resetpw)
+    LinearLayout toResetPassword;
+    @BindView(R.id.to_update_nickname)
+    LinearLayout toUpdateNickname;
+    @BindView(R.id.to_update_gender)
+    LinearLayout toUpdateGender;
+    @BindView(R.id.to_update_phone)
+    LinearLayout toUpdatePhone;
+
+    @OnClick({R.id.uinf_portrait, R.id.change_portrait, R.id.uinf_to_resetpw, R.id.to_update_nickname,
+            R.id.to_update_gender, R.id.to_update_phone})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.uinf_portrait:
+                startActivity(new Intent(UserInformationActivity.this, UserPortraitActivity.class));
+                overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
+                initPortrait();
+                break;
+            case R.id.change_portrait:
+                changePortrait();
+                break;
+            case R.id.uinf_to_resetpw:
+                Intent intent = new Intent(UserInformationActivity.this, ResetPasswordActivity.class);
+                intent.putExtra("phoneString", ((MyApp) getApplicationContext()).getPhoneNumber());
+                startActivity(intent);
+                break;
+            case R.id.to_update_nickname:
+                startActivity(new Intent(UserInformationActivity.this, UserUpdateNicknameActivity.class));
+                break;
+            case R.id.to_update_gender:
+                startActivity(new Intent(UserInformationActivity.this, UserUpdateGenderActivity.class));
+                break;
+            case R.id.to_update_phone:
+                startActivity(new Intent(UserInformationActivity.this, ResetPhoneNumberActivity.class));
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
-        bindViews();
+        ButterKnife.bind(this);
+        initToolbar();
+        initData();
+        initPortrait();
+        //portrait.setImageResource(DataHolder.User.portraitId);
+        takePhotoUtil = new TakePhotoUtil(this);
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);
         }
-
-        initinfo();
-        initPortrait();
-        //portrait.setImageResource(DataHolder.User.portraitId);
-
-        setOnClickListeners();
     }
 
     @Override
     protected void onStart() {
-        initinfo();
+        initData();
         initPortrait();
         super.onStart();
     }
 
-    private void bindViews() {
-        name = (TextView) findViewById(R.id.user_name);
-        sex = (TextView) findViewById(R.id.user_sex);
-        portrait = (CircleImageView) findViewById(R.id.uinf_portrait);
-        toolbar = (Toolbar) findViewById(R.id.uinf_toolbar);
-        changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
-        app = (MyApp) this.getApplicationContext();
-        takePhotoUtil = new TakePhotoUtil(this);
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toResetPassword = (LinearLayout) findViewById(R.id.uinf_to_resetpw);
-        toUpdateNickname = (LinearLayout) findViewById(R.id.to_update_nickname);
-        toUpdateGender = (LinearLayout) findViewById(R.id.to_update_gender);
-        toUpdatePhone = (LinearLayout) findViewById(R.id.to_update_phone);
-    }
-
-    private void initinfo() {
-        name.setText(app.getNickname());
-        if (app.getGender() == Gender.MALE)
-            sex.setText("男");
-        else sex.setText("女");
-    }
-
-    private void setOnClickListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        changeportrait = (LinearLayout) findViewById(R.id.change_portrait);
-        portrait.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(UserInformationActivity.this, UserPortraitActivity.class));
-                overridePendingTransition(R.anim.portrait_in, R.anim.noanim);
-                initPortrait();
-            }
-        });
+    }
 
-        changeportrait.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view = getLayoutInflater().inflate(R.layout.portrait_bottom_dialog, null);
-                TextView tv_account = (TextView) view.findViewById(R.id.tv_take_photo);
-                TextView tv_compare = (TextView) view.findViewById(R.id.tv_from_album);
-                final Dialog mBottomSheetDialog = new Dialog(UserInformationActivity.this, R.style.MaterialDialogSheet);
-                mBottomSheetDialog.setContentView(view);
-                mBottomSheetDialog.setCancelable(true);
-                mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
-                mBottomSheetDialog.show();
-                tv_account.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(UserInformationActivity.this, "拍照", Toast.LENGTH_SHORT).show();
-                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_TAKE, new TakePhotoUtil.SimpleTakePhotoListener() {
-                            @Override
-                            public void takeSuccess(TResult result) {
-                                String s = result.getImage().getCompressPath();
-                                System.out.println(s);
-                                updatePortrait(s);
-                            }
-                        });
-                        mBottomSheetDialog.dismiss();
-                    }
-                });
-                tv_compare.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(UserInformationActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
-                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_SELECT, new TakePhotoUtil.SimpleTakePhotoListener() {
-                            @Override
-                            public void takeSuccess(TResult result) {
-                                String s = result.getImage().getCompressPath();
-                                System.out.println(s);
-                                updatePortrait(s);
-                            }
-                        });
-                        mBottomSheetDialog.dismiss();
-                    }
-                });
-            }
-        });
-
-        toResetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserInformationActivity.this, ResetPasswordActivity.class);
-                intent.putExtra("phoneString", ((MyApp) getApplicationContext()).getPhoneNumber());
-                startActivity(intent);
-            }
-        });
-
-        toUpdateNickname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserInformationActivity.this, UserUpdateNicknameActivity.class));
-            }
-        });
-
-        toUpdateGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserInformationActivity.this, UserUpdateGenderActivity.class));
-            }
-        });
-
-        toUpdatePhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserInformationActivity.this, ResetPhoneNumberActivity.class));
-            }
-        });
+    private void initData() {
+        app = (MyApp) this.getApplicationContext();
+        name.setText(app.getNickname());
+        if (app.getGender() == Gender.MALE)
+            sex.setText("男");
+        else sex.setText("女");
     }
 
     @Override
@@ -205,13 +148,13 @@ public class UserInformationActivity extends SlideBackActivity {
         return true;
     }
 
-    public void updatePortrait(String path) {
+    private void updatePortrait(String path) {
         try {
             MyApp app = (MyApp) getApplicationContext();
             String userId = app.getUserId();
             new UploadTask(userId, path).execute();
             app.setAvatar(path);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //Todo:上传图片到服务器 并返回图片对应的url
@@ -222,12 +165,54 @@ public class UserInformationActivity extends SlideBackActivity {
                 .into(portrait);
     }
 
-    public void initPortrait() {
+    private void initPortrait() {
         String url = app.getAvatar();
         if (url != "") {
             Glide.with(this)
                     .load(url)
                     .into(portrait);
         } else portrait.setImageResource(R.drawable.testportrait);
+    }
+
+    private void changePortrait() {
+        View view = getLayoutInflater().inflate(R.layout.portrait_bottom_dialog, null);
+        TextView tv_account = (TextView) view.findViewById(R.id.tv_take_photo);
+        TextView tv_compare = (TextView) view.findViewById(R.id.tv_from_album);
+        final Dialog mBottomSheetDialog = new Dialog(UserInformationActivity.this, R.style.MaterialDialogSheet);
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
+        tv_account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(UserInformationActivity.this, "拍照", Toast.LENGTH_SHORT).show();
+                takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_TAKE, new TakePhotoUtil.SimpleTakePhotoListener() {
+                    @Override
+                    public void takeSuccess(TResult result) {
+                        String s = result.getImage().getCompressPath();
+                        System.out.println(s);
+                        updatePortrait(s);
+                    }
+                });
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        tv_compare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(UserInformationActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
+                takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_SELECT, new TakePhotoUtil.SimpleTakePhotoListener() {
+                    @Override
+                    public void takeSuccess(TResult result) {
+                        String s = result.getImage().getCompressPath();
+                        System.out.println(s);
+                        updatePortrait(s);
+                    }
+                });
+                mBottomSheetDialog.dismiss();
+            }
+        });
     }
 }

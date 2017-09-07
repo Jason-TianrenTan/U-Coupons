@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,16 +33,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SellerDetailActivity extends AppCompatActivity{
+    @BindView(R.id.seller_name_text)
+    TextView sellerNameText;
+    @BindView(R.id.seller_avatar_imageview)
+    CircleImageView sellerAvatar;
+    @BindView(R.id.seller_onsale_text)
+    TextView onsaleText;
+    @BindView(R.id.seller_sold_text)
+    TextView soldText;
+    @BindView(R.id.seller_coupon_scrollbar)
+    LinearLayout scrollBar;
 
-
-    private TextView sellerNameText;
-    private CircleImageView sellerAvatar;
-    private TextView onsaleText, soldText;
-
-    private LinearLayout scrollBar;
     private CouponCommonFragment onsaleFragment = new SellerOnsaleFragment(),
             soldFragment = new SellerSoldFragment();
 
@@ -57,8 +64,8 @@ public class SellerDetailActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_detail);
+        ButterKnife.bind(this);
 
-        bindViews();
         initViews();
         initSlidingBar();
 
@@ -88,18 +95,6 @@ public class SellerDetailActivity extends AppCompatActivity{
         onsaleList = new ArrayList<>();
         soldList = new ArrayList<>();
     }
-
-
-    private void bindViews() {
-
-        sellerNameText  = (TextView) findViewById(R.id.seller_name_text);
-        sellerAvatar = (CircleImageView) findViewById(R.id.seller_avatar_imageview);
-
-        scrollBar = (LinearLayout) findViewById(R.id.seller_coupon_scrollbar);
-        onsaleText = (TextView) findViewById(R.id.seller_onsale_text);
-        soldText = (TextView) findViewById(R.id.seller_sold_text);
-    }
-
 
     //解析商家列表
     private void parseMessage(String response) {
