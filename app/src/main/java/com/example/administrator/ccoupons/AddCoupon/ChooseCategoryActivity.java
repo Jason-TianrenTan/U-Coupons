@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.Category.Category;
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
@@ -37,9 +37,9 @@ public class ChooseCategoryActivity extends AppCompatActivity {
 
     private void initData() {
         mCList = new ArrayList<>();
-        for (int i=0;i<DataHolder.Categories.covers.length;i++) {
-            int resId = DataHolder.Categories.covers[i];
-            String name = DataHolder.Categories.nameList[i];
+        for (int i = 0; i< GlobalConfig.Categories.covers.length; i++) {
+            int resId = GlobalConfig.Categories.covers[i];
+            String name = GlobalConfig.Categories.nameList[i];
             Category category = new Category(name, resId);
             mCList.add(category);
         }

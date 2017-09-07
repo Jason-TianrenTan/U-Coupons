@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
@@ -131,6 +131,7 @@ public class SearchResultActivity extends AppCompatActivity {
      * @param response 收到的回复
      */
     private void parseMessage(String response) {
+
         resultString = response;
         clear();
         requestResults(0);
@@ -155,12 +156,12 @@ public class SearchResultActivity extends AppCompatActivity {
      * @param type 排序标准类型
      */
     private void requestSort(String type) {
-        String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.requestSearch_URL;
         HashMap<String, String> map = new HashMap<>();
         map.put("keyWord", requestString);
         map.put("order", type);
         if (catId != null && catId.length() > 0) {
-            url = DataHolder.base_URL + DataHolder.requestCatSearch_URL;
+            url = GlobalConfig.base_URL + GlobalConfig.requestCatSearch_URL;
             map.put("category", catId);
         }
 
@@ -247,11 +248,11 @@ public class SearchResultActivity extends AppCompatActivity {
 
 
     private void requestResults(int start) {
-        System.out.println("request results at index = " + start);
+        System.out.println("request results at index = " + start + ", result = " + resultString);
         int count = 0;
         try {
             JSONObject obj = new JSONObject(resultString);
-            JSONArray jsonArray = obj.getJSONArray("coupons");
+            JSONArray jsonArray = obj.getJSONArray("coupons");//TODO:need to change!!
             for (int i = start; i < jsonArray.length(); i++, count++) {
                 if (count >= SEARCH_MAX_RESULT)
                     break;
@@ -347,7 +348,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            String url = DataHolder.base_URL + "/static/" + coupon.getPic();
+            String url = GlobalConfig.base_URL + "/static/" + coupon.getPic();
             Glide.with(mContext).load(url).into(holder.imageView);
         }
 

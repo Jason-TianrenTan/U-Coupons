@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:saveEnabled="false"
                         android:textSize="20dp"
-                        android:text="13111111111"
+                        android:text="13522330013"
                         android:maxLength="11"
                         android:textColor="@color/gray"
                         android:digits="1234567890"
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:text="1"
+                        android:text="qwerty"
                         android:id="@+id/Login_passwordEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

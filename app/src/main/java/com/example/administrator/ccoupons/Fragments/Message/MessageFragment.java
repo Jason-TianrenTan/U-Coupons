@@ -16,11 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Events.MessageRefreshEvent;
-import com.example.administrator.ccoupons.Fragments.Message.Message;
-import com.example.administrator.ccoupons.Fragments.Message.MessageClass;
-import com.example.administrator.ccoupons.Fragments.Message.MessageDetailActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -179,8 +176,8 @@ public class MessageFragment extends Fragment {
     private void initTitles() {
         messageClasses = new ArrayList<MessageClass>();
 
-        for (int i = 0; i < DataHolder.MessageClasses.strings.length; i++) {
-            MessageClass msgClass = new MessageClass(getResources().getString(DataHolder.MessageClasses.strings[i]));
+        for (int i = 0; i < GlobalConfig.MessageClasses.strings.length; i++) {
+            MessageClass msgClass = new MessageClass(getResources().getString(GlobalConfig.MessageClasses.strings[i]));
             messageClasses.add(msgClass);
         }
     }

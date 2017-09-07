@@ -2,7 +2,7 @@ package com.example.administrator.ccoupons.Fragments.Message;
 
 import android.content.Context;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 
 import org.json.JSONObject;
@@ -85,8 +85,8 @@ public class Message implements Serializable {
             message.time = obj.getString("time");
 
             String cat_str = obj.getString("messagecat");
-            for (int i = 0; i < DataHolder.MessageClasses.strings.length; i++) {
-                String str = context.getResources().getString(DataHolder.MessageClasses.strings[i]);
+            for (int i = 0; i < GlobalConfig.MessageClasses.strings.length; i++) {
+                String str = context.getResources().getString(GlobalConfig.MessageClasses.strings[i]);
                 if (cat_str.equals(str)) {
                     message.messageCat = i;
                 }

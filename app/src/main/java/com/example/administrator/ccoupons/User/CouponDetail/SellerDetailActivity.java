@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -75,7 +75,7 @@ public class SellerDetailActivity extends AppCompatActivity{
 
     private void initViews() {
 
-        String url = DataHolder.base_URL + "/static/" + getIntent().getStringExtra("avatar");
+        String url = GlobalConfig.base_URL + "/static/" + getIntent().getStringExtra("avatar");
         System.out.println("url=" + url);
         String name = getIntent().getStringExtra("nickname");
         sellerNameText.setText(name);
@@ -248,7 +248,7 @@ public class SellerDetailActivity extends AppCompatActivity{
 
     //获取卖家信息
     private void requestData() {
-        String url = DataHolder.base_URL + DataHolder.requestSellerInfo_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.requestSellerInfo_URL;
         HashMap<String, String> map = new HashMap<>();
         String sellerId = getIntent().getStringExtra("id");
         map.put("sellerID", sellerId);

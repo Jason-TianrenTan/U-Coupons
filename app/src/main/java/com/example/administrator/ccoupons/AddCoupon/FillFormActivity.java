@@ -3,7 +3,6 @@ package com.example.administrator.ccoupons.AddCoupon;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
@@ -28,15 +27,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
 
 import java.util.ArrayList;
-
-import static com.mob.MobSDK.getContext;
 
 public class FillFormActivity extends AppCompatActivity {
 
@@ -189,8 +186,8 @@ public class FillFormActivity extends AppCompatActivity {
                     coupon.setExpiredtime(expireDate);
                     coupon.setBrandName(brandName);
                     coupon.setDiscount(discount);
-                    for (int i =0;i<DataHolder.Categories.nameList.length;i++) {
-                        if (category.equals(DataHolder.Categories.nameList[i]))
+                    for (int i = 0; i< GlobalConfig.Categories.nameList.length; i++) {
+                        if (category.equals(GlobalConfig.Categories.nameList[i]))
                             coupon.setCategory((i + 1) + "");
                     }
                     ArrayList<String> nCList = new ArrayList<String>();
@@ -378,7 +375,7 @@ public class FillFormActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CATEGORY) {
             System.out.println("选择了类别" + resultCode);
-            categoryEditText.setText(DataHolder.Categories.nameList[resultCode]);
+            categoryEditText.setText(GlobalConfig.Categories.nameList[resultCode]);
         } else {
             takePhotoUtil.onActivityResult(requestCode, resultCode, data);
         }

@@ -2,9 +2,8 @@ package com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList;
 
 import android.os.Bundle;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.CouponCommonActivity;
 
 public class UserSellCoupons extends CouponCommonActivity {
 
@@ -13,6 +12,6 @@ public class UserSellCoupons extends CouponCommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_coupon_layout);
         setToolbarTitle("我卖出的");
-        initData(DataHolder.base_URL + DataHolder.requestSoldList_URL);
+        initData(GlobalConfig.base_URL + GlobalConfig.requestSoldList_URL);
     }
 }

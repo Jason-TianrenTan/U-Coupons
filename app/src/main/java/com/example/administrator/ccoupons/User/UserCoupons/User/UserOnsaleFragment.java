@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
@@ -23,7 +24,6 @@ public class UserOnsaleFragment extends CouponCommonFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -40,14 +40,14 @@ public class UserOnsaleFragment extends CouponCommonFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponModifiedEvent event) {
-        System.out.println("modified event");
+        initData();
     }
 
     @Override
     public void initData() {
         adapterList = new ArrayList<>();
         adapter = new UserOnsaleAdapter(adapterList);
-        new UniversalPresenter().getUserOnsaleByRxRetrofit();
+        new UniversalPresenter().getUserOnsaleByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
     }
 
 }

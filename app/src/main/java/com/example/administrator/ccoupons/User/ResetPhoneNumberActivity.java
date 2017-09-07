@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -185,7 +185,7 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
                     valid = true;
                     verify_cord = false;
                     phoneString = phoneText.getText().toString();
-                    String url = DataHolder.base_URL + DataHolder.updatePhoneNumber_URL;
+                    String url = GlobalConfig.base_URL + GlobalConfig.updatePhoneNumber_URL;
                     HashMap<String, String> map = new HashMap<>();
                     map.put("userID", ((MyApp) getApplicationContext()).getUserId());
                     map.put("username", phoneString);

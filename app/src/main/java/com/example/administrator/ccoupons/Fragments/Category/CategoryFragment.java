@@ -25,8 +25,8 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
-import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.LocationSelectActivity;
 import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
@@ -269,7 +269,7 @@ public class CategoryFragment extends Fragment {
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             for (int i = 0; i < jsonArray.length(); i++) {
                 String url = jsonArray.getString(i);
-                String nurl = DataHolder.base_URL + "/static/" + url;
+                String nurl = GlobalConfig.base_URL + "/static/" + url;
                 networkImages.add(nurl);
             }
             initImageLoader();
@@ -289,7 +289,7 @@ public class CategoryFragment extends Fragment {
     private void initBanner() {
         networkImages = new ArrayList<String>();
         //post
-        String url = DataHolder.base_URL + DataHolder.postBanner_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.postBanner_URL;
         HashMap<String, String> map = new HashMap<>();
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -332,8 +332,8 @@ public class CategoryFragment extends Fragment {
     //初始化数据
     private void initCategory() {
         categoryList = new ArrayList<Category>();
-        for (int i = 0; i < DataHolder.Categories.covers.length; i++) {
-            Category category = new Category(DataHolder.Categories.nameList[i], DataHolder.Categories.covers[i]);
+        for (int i = 0; i < GlobalConfig.Categories.covers.length; i++) {
+            Category category = new Category(GlobalConfig.Categories.nameList[i], GlobalConfig.Categories.covers[i]);
             categoryList.add(category);
         }
     }
@@ -348,11 +348,6 @@ public class CategoryFragment extends Fragment {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
         unbinder.unbind();
-    }
-
-
-    public static CategoryFragment newInstance() {
-        return new CategoryFragment();
     }
 
 }

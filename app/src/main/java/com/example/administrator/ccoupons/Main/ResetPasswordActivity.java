@@ -17,12 +17,10 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.CustomEditText.PasswordToggleEditText;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
 import com.example.administrator.ccoupons.Tools.AlertType;
-import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.EditTextTools;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
@@ -274,7 +272,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     verify_cord = false;
                     phoneString = phoneText.getText().toString();
                     password = passText.getText().toString();
-                    String url = DataHolder.base_URL + DataHolder.resetPass_URL;
+                    String url = GlobalConfig.base_URL + GlobalConfig.resetPass_URL;
                     String passwordString;//new password
                     try {
                         passwordString = new PasswordEncoder().EncodeByMd5(password);

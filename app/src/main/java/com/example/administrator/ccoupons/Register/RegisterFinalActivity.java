@@ -13,10 +13,9 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
-import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
@@ -34,7 +33,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
 
     private String[] GenderChars = {"男", "女"};
     private LoginInformationManager loginInformationManager;
-    private final static String requestURL = DataHolder.base_URL + DataHolder.register_URL;
+    private final static String requestURL = GlobalConfig.base_URL + GlobalConfig.register_URL;
     private Button button_next;
     private RadioGroup radioGroup;
     private int gender;
@@ -44,6 +43,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
 
     //处理返回回来的json
     private void parseMessage(String response) {
+        System.out.println("response = " + response);
         try {
             JSONObject jsonObject = new JSONObject(response);
             String errno = jsonObject.getString("errno");

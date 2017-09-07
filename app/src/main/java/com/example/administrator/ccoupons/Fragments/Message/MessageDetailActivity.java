@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.User.CouponDetail.DisplayCouponDetailActivity;
@@ -63,7 +63,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         });
 
         TextView title = (TextView) findViewById(R.id.message_detail_title);
-        title.setText(DataHolder.MessageClasses.strings[index]);
+        title.setText(GlobalConfig.MessageClasses.strings[index]);
     }
 
 

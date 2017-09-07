@@ -22,9 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
@@ -89,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (check) {
-            //   requestLogin(DataHolder.base_URL + DataHolder.login_URL, username, password);
+            //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
             requestLogin(username, password);
         }
     }
@@ -107,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //登录
     private void requestLogin(String username, String password) {
-        String url = DataHolder.base_URL + DataHolder.login_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.login_URL;
         String md5pass = null;
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("username", username);
@@ -301,7 +300,7 @@ public class LoginActivity extends AppCompatActivity {
                 app.setNickname(nickname);
                 app.setUcoin(UB);
                 if (!avatar.equals("null")) {
-                    app.setAvatar(DataHolder.base_URL + "/static/" + avatar);
+                    app.setAvatar(GlobalConfig.base_URL + "/static/" + avatar);
                 }
 
                 app.setGender(Gender.MALE);

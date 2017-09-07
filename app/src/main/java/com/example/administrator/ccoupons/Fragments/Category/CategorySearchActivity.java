@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
@@ -79,7 +79,7 @@ public class CategorySearchActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        categoryText.setText(DataHolder.Categories.nameList[Integer.parseInt(catId) - 1]);
+        categoryText.setText(GlobalConfig.Categories.nameList[Integer.parseInt(catId) - 1]);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -126,7 +126,7 @@ public class CategorySearchActivity extends AppCompatActivity {
 
     //请求推送数据
     private void requestData() {
-        String url = DataHolder.base_URL + DataHolder.requestCatRecommend_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.requestCatRecommend_URL;
         HashMap<String, String> map = new HashMap<>();
         map.put("categoryID", catId);
 

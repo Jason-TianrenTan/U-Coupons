@@ -2,7 +2,6 @@ package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +17,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LocationGet;
-import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.UI.QuickIndexBar;
 
@@ -89,6 +87,8 @@ public class LocationSelectActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        layoutManager.setItemPrefetchEnabled(true);
+        layoutManager.setInitialPrefetchItemCount(GlobalConfig.Cities.cityList.length + 1);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
@@ -96,7 +96,6 @@ public class LocationSelectActivity extends AppCompatActivity {
 
         final NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.location_nestscrollview);
         gpsCardView = (CardView) findViewById(R.id.current_gps_cardview);
-
 
         pop_cityList = getPopularCityList();
         popCityRecyclerView = (RecyclerView) findViewById(R.id.popular_city_recyclerview);
@@ -136,8 +135,8 @@ public class LocationSelectActivity extends AppCompatActivity {
 
     private ArrayList<String> getPopularCityList() {
         ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0; i < DataHolder.Cities.popCityList.length; i++) {
-            String str = DataHolder.Cities.popCityList[i];
+        for (int i = 0; i < GlobalConfig.Cities.popCityList.length; i++) {
+            String str = GlobalConfig.Cities.popCityList[i];
             arrayList.add(str);
         }
         return arrayList;
@@ -148,8 +147,8 @@ public class LocationSelectActivity extends AppCompatActivity {
     private ArrayList<String> getCityList() {
 
         ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0; i < DataHolder.Cities.cityList.length; i++) {
-            String str = DataHolder.Cities.cityList[i];
+        for (int i = 0; i < GlobalConfig.Cities.cityList.length; i++) {
+            String str = GlobalConfig.Cities.cityList[i];
             if (str.length() == 1) {//是字母
                 char ch = str.charAt(0);
                 CharIndex[ch - 'A'] = i;

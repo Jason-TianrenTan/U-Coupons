@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
@@ -92,7 +92,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
 
 
     private void setImage(CouponViewHolder holder, Coupon coupon) {
-        String url = DataHolder.base_URL + "/static/" + coupon.getPic();
+        String url = GlobalConfig.base_URL + "/static/" + coupon.getPic();
         Glide.with(mContext)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

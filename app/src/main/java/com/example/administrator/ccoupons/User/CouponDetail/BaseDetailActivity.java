@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -163,7 +163,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
         coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
         //url
-        String url = DataHolder.base_URL + "/static/" + coupon.getPic();
+        String url = GlobalConfig.base_URL + "/static/" + coupon.getPic();
         Glide.with(this)
                 .load(url)
                 .into(mImageView);
@@ -203,7 +203,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
             map.put("messageID", msgId);
         }
 
-        ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.requestDetail_URL, map);
+        ConnectionManager connectionManager = new ConnectionManager(GlobalConfig.base_URL + GlobalConfig.requestDetail_URL, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
 
             @Override
@@ -212,7 +212,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
                 System.out.println("Response = " + response);
                 //卖家
                 sellerNameText.setText(coupon.getSellerNickname());
-                //    ImageManager.GlideImage(DataHolder.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
+                //    ImageManager.GlideImage(GlobalConfig.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
                 //商家 品牌
                 brandNameText.setText(coupon.getBrandName());
 
@@ -225,6 +225,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
                     index++;
                 }
                 constaintsText.setText(sb.toString());
+                System.out.println("是否关注: " + coupon.isLiked());
                 initBottomViews(coupon.isLiked());
             }
 

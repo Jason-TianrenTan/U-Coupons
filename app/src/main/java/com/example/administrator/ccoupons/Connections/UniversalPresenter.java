@@ -1,7 +1,10 @@
 package com.example.administrator.ccoupons.Connections;
 
+import android.content.Context;
+
 import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -19,6 +22,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UniversalPresenter extends BasePresenter{
+
 
 
     //首页推荐
@@ -51,6 +55,7 @@ public class UniversalPresenter extends BasePresenter{
 
                     @Override
                     public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println(" on rx, recommend list size = " + couponList);
                         EventBus.getDefault().post(new CouponListEvent("Recommend", couponList));
                     }
                 });
@@ -58,11 +63,11 @@ public class UniversalPresenter extends BasePresenter{
 
 
     //我使用过的
-    public void getUserUsedByRxRetrofit() {
+    public void getUserUsedByRxRetrofit(String userid) {
 
         ApiManager.getInstance().
                 getRetrofitService()
-                .getRecList()//暂时使用这个替代
+                .getUsedList(userid)
                 .map(new Function<CouponBean, ArrayList<Coupon>>() {
                     @Override
                     public ArrayList<Coupon> apply(CouponBean bean) {
@@ -87,6 +92,7 @@ public class UniversalPresenter extends BasePresenter{
 
                     @Override
                     public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println("user used list size = " + couponList.size());
                         EventBus.getDefault().post(new CouponListEvent("UserUsed", couponList));
                     }
                 });
@@ -94,11 +100,11 @@ public class UniversalPresenter extends BasePresenter{
 
 
     //我未使用的
-    public void getUserUnsoldByRxRetrofit() {
+    public void getUserUnsoldByRxRetrofit(String userid) {
 
         ApiManager.getInstance().
                 getRetrofitService()
-                .getRecList()//暂时使用这个替代
+                .getUnusedList(userid)
                 .map(new Function<CouponBean, ArrayList<Coupon>>() {
                     @Override
                     public ArrayList<Coupon> apply(CouponBean bean) {
@@ -123,6 +129,7 @@ public class UniversalPresenter extends BasePresenter{
 
                     @Override
                     public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println("user store list size = " + couponList.size());
                         EventBus.getDefault().post(new CouponListEvent("UserUnsold", couponList));
                     }
                 });
@@ -130,11 +137,11 @@ public class UniversalPresenter extends BasePresenter{
 
 
     //我正在出售的
-    public void getUserOnsaleByRxRetrofit() {
+    public void getUserOnsaleByRxRetrofit(String userid) {
 
         ApiManager.getInstance().
                 getRetrofitService()
-                .getRecList()//暂时使用这个替代
+                .getOnSaleList(userid)
                 .map(new Function<CouponBean, ArrayList<Coupon>>() {
                     @Override
                     public ArrayList<Coupon> apply(CouponBean bean) {
@@ -159,6 +166,7 @@ public class UniversalPresenter extends BasePresenter{
 
                     @Override
                     public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println("user onsale list size = " + couponList.size());
                         EventBus.getDefault().post(new CouponListEvent("UserOnsale", couponList));
                     }
                 });
