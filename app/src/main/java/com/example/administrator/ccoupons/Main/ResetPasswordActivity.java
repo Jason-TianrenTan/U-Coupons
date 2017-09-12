@@ -1,10 +1,10 @@
 package com.example.administrator.ccoupons.Main;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -17,12 +17,10 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.CustomEditText.PasswordToggleEditText;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
 import com.example.administrator.ccoupons.Tools.AlertType;
-import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.EditTextTools;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
@@ -31,6 +29,9 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -40,16 +41,58 @@ public class ResetPasswordActivity extends AppCompatActivity {
     public static final int COUNTDOWN_TIME = 30;
     public static final int SMS_FAILED = 1;//验证失败
     public static final int SMS_SUCCESS = 2;//验证通过
-    private Toolbar toolbar;
     private boolean verify_cord = false, valid = false;
     private String phoneString;
     private String password;
 
-    private TextView requestCordButton;
-    private Button button_next;
-    private EditText phoneText, cordText;
-    private PasswordToggleEditText passText, confirmText;
-    private TextInputLayout phoneInputLayout, cordInputLayout, passInputLayout, confirmInputLayout;
+    @BindView(R.id.reset_pass_toolbar)
+    Toolbar resetPassToolbar;
+    @BindView(R.id.reset_phone_edittext)
+    EditText resetPhoneEdittext;
+    @BindView(R.id.reset_phone_inputlayout)
+    TextInputLayout resetPhoneInputlayout;
+    @BindView(R.id.reset_cord_edittext)
+    EditText resetCordEdittext;
+    @BindView(R.id.reset_cord_inputlayout)
+    TextInputLayout resetCordInputlayout;
+    @BindView(R.id.request_cord_button)
+    TextView requestCordButton;
+    @BindView(R.id.reset_newpass_edittext)
+    PasswordToggleEditText resetNewpassEdittext;
+    @BindView(R.id.reset_newpass_inputlayout)
+    TextInputLayout resetNewpassInputlayout;
+    @BindView(R.id.reset_confirmpass_edittext)
+    PasswordToggleEditText resetConfirmpassEdittext;
+    @BindView(R.id.reset_confirmpass_inputlayout)
+    TextInputLayout resetConfirmpassInputlayout;
+    @BindView(R.id.reset_button_ok)
+    Button resetButtonOk;
+
+    @OnClick({R.id.request_cord_button, R.id.reset_button_ok})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.request_cord_button:
+                phoneString = resetPhoneEdittext.getText().toString();
+                if (phoneString.length() < 11) {
+                    resetPhoneInputlayout.setError("长度必须为11位");
+                } else {
+                    sendSMS();
+                    requestCordButton.setEnabled(false);
+                    startCountDown();
+                }
+                break;
+            case R.id.reset_button_ok:
+                String cord = resetCordEdittext.getText().toString();
+                if (cord.length() < 4)
+                    resetCordInputlayout.setError("验证码必须为4位");
+                if (valid) {
+                    String iCord = resetCordEdittext.getText().toString().trim();
+                    SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
+                    verify_cord = true;
+                }
+                break;
+        }
+    }
 
     //reset timer
     private int current = COUNTDOWN_TIME;
@@ -58,177 +101,15 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,密码强度太弱".split(",");
     private RegisterCheck checker = new RegisterCheck();
-    private void bindViews() {
-        requestCordButton = (TextView) findViewById(R.id.request_cord_button);
-        button_next = (Button) findViewById(R.id.reset_button_ok);
-        phoneText = (EditText) findViewById(R.id.reset_phone_edittext);
-        cordText = (EditText) findViewById(R.id.reset_cord_edittext);
-        phoneInputLayout = (TextInputLayout) findViewById(R.id.reset_phone_inputlayout);
-        cordInputLayout = (TextInputLayout) findViewById(R.id.reset_cord_inputlayout);
-        passText = (PasswordToggleEditText) findViewById(R.id.reset_newpass_edittext);
-        passInputLayout = (TextInputLayout) findViewById(R.id.reset_newpass_inputlayout);
-        confirmText = (PasswordToggleEditText) findViewById(R.id.reset_confirmpass_edittext);
-        confirmInputLayout = (TextInputLayout) findViewById(R.id.reset_confirmpass_inputlayout);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+        ButterKnife.bind(this);
 
-        bindViews();
-        toolbar = (Toolbar) findViewById(R.id.reset_pass_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-
-        requestCordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                phoneString = phoneText.getText().toString();
-                if (phoneString.length() < 11) {
-                    phoneInputLayout.setError("长度必须为11位");
-                } else {
-                    sendSMS();
-                    requestCordButton.setEnabled(false);
-                    startCountDown();
-                }
-            }
-        });
-
-        phoneText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String str = phoneText.getText().toString();
-                if (str.length() == 11) {
-                    phoneInputLayout.setErrorEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        button_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String cord = cordText.getText().toString();
-                if (cord.length() < 4)
-                    cordInputLayout.setError("验证码必须为4位");
-                if (valid) {
-                    String iCord = cordText.getText().toString().trim();
-                    SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
-                    verify_cord = true;
-                }
-
-            }
-        });
-
-        cordText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String str = cordText.getText().toString();
-                if (str.length() == 4) {
-                    cordInputLayout.setError("");
-                    cordInputLayout.setErrorEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        passText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                password = passText.getText().toString();
-                int err_type = checker.alertPassword(password);
-                if (err_type != AlertType.NO_ERROR && err_type != AlertType.TOO_SIMPLE) {
-                    EditTextTools.setCursorColor(passText, getResources().getColor(R.color.red));
-                    passInputLayout.setErrorEnabled(true);
-                    passInputLayout.setError(errorStrings[err_type - 1]);
-                    valid = false;
-                } else {
-                    if (err_type == AlertType.NO_ERROR) {
-                        //密码合格
-                        EditTextTools.setCursorColor(passText, getResources().getColor(R.color.colorAccent));
-                        passInputLayout.setError("");
-                        passInputLayout.setErrorEnabled(false);
-                        valid = true;
-                    } else {
-                        //强度不够
-                        EditTextTools.setCursorColor(passText, getResources().getColor(R.color.skyblue));
-                        passInputLayout.setErrorEnabled(true);
-                        passInputLayout.setError(errorStrings[err_type - 1]);
-                    }
-                }
-            }
-        });
-
-        confirmText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                password = confirmText.getText().toString();
-                int err_type = checker.alertPassword(password);
-                if (err_type != AlertType.NO_ERROR && err_type != AlertType.TOO_SIMPLE) {
-                    EditTextTools.setCursorColor(confirmText, getResources().getColor(R.color.red));
-                    confirmInputLayout.setError(errorStrings[err_type - 1]);
-                    valid = false;
-                } else {
-                    if (passText.getText().toString().equals(confirmText.getText().toString())) {
-                        EditTextTools.setCursorColor(confirmText, getResources().getColor(R.color.colorAccent));
-                        confirmInputLayout.setErrorEnabled(false);
-                        valid = true;
-                    } else {
-                        EditTextTools.setCursorColor(confirmText, getResources().getColor(R.color.red));
-                        confirmInputLayout.setError("两次密码不匹配");
-                        valid = false;
-                    }
-                }
-            }
-        });
+        initToolbar();
+        initEditText();
 
         EventHandler eh = new EventHandler() {
 
@@ -249,9 +130,134 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         String intentString = getIntent().getStringExtra("phoneString");
         if (intentString != null)
-            phoneText.setText(intentString);
+            resetPhoneEdittext.setText(intentString);
     }
 
+    private void initEditText(){
+        resetPhoneEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String str = resetPhoneEdittext.getText().toString();
+                if (str.length() == 11) {
+                    resetPhoneInputlayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+        resetCordEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String str = resetCordEdittext.getText().toString();
+                if (str.length() == 4) {
+                    resetCordInputlayout.setError("");
+                    resetCordInputlayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        resetNewpassEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                password = resetNewpassEdittext.getText().toString();
+                int err_type = checker.alertPassword(password);
+                if (err_type != AlertType.NO_ERROR && err_type != AlertType.TOO_SIMPLE) {
+                    EditTextTools.setCursorColor(resetNewpassEdittext, getResources().getColor(R.color.red));
+                    resetNewpassInputlayout.setErrorEnabled(true);
+                    resetNewpassInputlayout.setError(errorStrings[err_type - 1]);
+                    valid = false;
+                } else {
+                    if (err_type == AlertType.NO_ERROR) {
+                        //密码合格
+                        EditTextTools.setCursorColor(resetNewpassEdittext, getResources().getColor(R.color.colorAccent));
+                        resetNewpassInputlayout.setError("");
+                        resetNewpassInputlayout.setErrorEnabled(false);
+                        valid = true;
+                    } else {
+                        //强度不够
+                        EditTextTools.setCursorColor(resetNewpassEdittext, getResources().getColor(R.color.skyblue));
+                        resetNewpassInputlayout.setErrorEnabled(true);
+                        resetNewpassInputlayout.setError(errorStrings[err_type - 1]);
+                    }
+                }
+            }
+        });
+
+        resetConfirmpassEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                password = resetConfirmpassEdittext.getText().toString();
+                int err_type = checker.alertPassword(password);
+                if (err_type != AlertType.NO_ERROR && err_type != AlertType.TOO_SIMPLE) {
+                    EditTextTools.setCursorColor(resetConfirmpassEdittext, getResources().getColor(R.color.red));
+                    resetConfirmpassInputlayout.setError(errorStrings[err_type - 1]);
+                    valid = false;
+                } else {
+                    if (resetNewpassEdittext.getText().toString().equals(resetConfirmpassEdittext.getText().toString())) {
+                        EditTextTools.setCursorColor(resetConfirmpassEdittext, getResources().getColor(R.color.colorAccent));
+                        resetConfirmpassInputlayout.setErrorEnabled(false);
+                        valid = true;
+                    } else {
+                        EditTextTools.setCursorColor(resetConfirmpassEdittext, getResources().getColor(R.color.red));
+                        resetConfirmpassInputlayout.setError("两次密码不匹配");
+                        valid = false;
+                    }
+                }
+            }
+        });
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(resetPassToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        resetPassToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
     private void sendSMS() {
         //发送验证码
@@ -266,15 +272,15 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 case SMS_FAILED:
                     Toast.makeText(getApplicationContext(), "验证码错误!", Toast.LENGTH_SHORT).show();
                     valid = false;
-                    cordText.setText("");
+                    resetCordEdittext.setText("");
                     verify_cord = false;
                     break;
                 case SMS_SUCCESS:
                     valid = true;
                     verify_cord = false;
-                    phoneString = phoneText.getText().toString();
-                    password = passText.getText().toString();
-                    String url = DataHolder.base_URL + DataHolder.resetPass_URL;
+                    phoneString = resetPhoneEdittext.getText().toString();
+                    password = resetNewpassEdittext.getText().toString();
+                    String url = GlobalConfig.base_URL + GlobalConfig.resetPass_URL;
                     String passwordString;//new password
                     try {
                         passwordString = new PasswordEncoder().EncodeByMd5(password);
@@ -292,6 +298,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         public void onConnectionSuccess(String response) {
                             Toast.makeText(getApplicationContext(), "修改密码成功", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(ResetPasswordActivity.this, MainPageActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         }
 

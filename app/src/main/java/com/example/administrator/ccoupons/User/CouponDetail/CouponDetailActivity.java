@@ -3,20 +3,16 @@ package com.example.administrator.ccoupons.User.CouponDetail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.Purchase.CouponPurchaseActivity;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
 
 import org.json.JSONObject;
 
@@ -70,7 +66,7 @@ public class CouponDetailActivity extends BaseDetailActivity {
                 MyApp app = (MyApp) getApplicationContext();
                 map.put("couponID", coupon.getCouponid());
                 map.put("userID", app.getUserId());
-                ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.postFollow_URL, map);
+                ConnectionManager connectionManager = new ConnectionManager(GlobalConfig.base_URL + GlobalConfig.postFollow_URL, map);
                 connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
                     @Override
                     public void onConnectionSuccess(String response) {

@@ -2,8 +2,7 @@ package com.example.administrator.ccoupons.Connections;
 
 import android.os.AsyncTask;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -16,7 +15,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
 
 /**
  * Created by Administrator on 2017/7/28 0028.
@@ -24,7 +22,7 @@ import java.nio.charset.Charset;
 
 public class UploadTask extends AsyncTask<Void, Integer, String> {
 
-    String url = DataHolder.base_URL + DataHolder.postAvatar_URL;
+    String url = GlobalConfig.base_URL + GlobalConfig.postAvatar_URL;
     String filepath, userId;
     public UploadTask(String userId, String path) {
         filepath = path;

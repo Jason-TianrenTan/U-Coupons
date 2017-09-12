@@ -6,13 +6,13 @@ import com.example.administrator.ccoupons.R;
  * Created by Administrator on 2017/7/11 0011.
  */
 
-public class DataHolder {
+public class GlobalConfig {
 
     static final String dormBase = "http://10.132.55.96:8000";
     static final String localBase = "http://192.168.0.109:8000";
-    static final String teamBase = "http://192.168.204.83:8000";
+    static final String teamBase = "http://192.168.207.222:8000";
     static final String serverBase = "http://119.23.72.43";
-    public static final String base_URL = serverBase;
+    public static final String base_URL = teamBase;
     public static final String login_URL = "/post_loginForAndroid";
     public static final String register_URL = "/post_signUpForAndroid";
     public static final String requestMsg_URL = "/post_sendMessage";
@@ -27,7 +27,7 @@ public class DataHolder {
     public static final String requestFollowList_URL = "/post_getLikeList";//已关注
     public static final String requestSoldList_URL = "/post_getSoldList";//已卖出
     public static final String updateUserInformation_URL = "/post_updateUserInformation";//修改个人资料
-    public static final String updatePhoneNumber_URL = "/post_updatePhonenumOrEmail";
+    public static final String updatePhoneNumber_URL = "/post_updatePhonenumOrEmail";//修改手机号或邮箱
 
     public static final String postFollow_URL = "/post_likeCoupon";//关注
     public static final String postAvatar_URL = "/post_updateAvatar";//上传头像

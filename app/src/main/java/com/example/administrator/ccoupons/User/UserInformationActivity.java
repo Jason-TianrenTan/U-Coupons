@@ -86,7 +86,7 @@ public class UserInformationActivity extends SlideBackActivity {
         initToolbar();
         initData();
         initPortrait();
-        //portrait.setImageResource(DataHolder.User.portraitId);
+        //portrait.setImageResource(GlobalConfig.User.portraitId);
         takePhotoUtil = new TakePhotoUtil(this);
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);

@@ -10,8 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Main.LoginActivity;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -28,7 +27,7 @@ import butterknife.OnClick;
 public class UserUpdateNicknameActivity extends AppCompatActivity {
     private String nickname;
     private MyApp app;
-    private final static String updateUserInformationURL = DataHolder.base_URL + DataHolder.updateUserInformation_URL;
+    private final static String updateUserInformationURL = GlobalConfig.base_URL + GlobalConfig.updateUserInformation_URL;
 
     @BindView(R.id.user_update_nickname_toolbar)
     Toolbar toolbar;

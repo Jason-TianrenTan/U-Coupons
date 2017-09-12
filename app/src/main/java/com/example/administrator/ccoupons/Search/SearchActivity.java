@@ -4,37 +4,24 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
-import com.example.administrator.ccoupons.User.UserSettingActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -173,9 +160,9 @@ public class SearchActivity extends AppCompatActivity {
         String url = null;
         HashMap<String,String> map = new HashMap<String,String>();
         map.put("keyword", text);
-        url = DataHolder.base_URL + DataHolder.requestPreSearch_URL;
+        url = GlobalConfig.base_URL + GlobalConfig.requestPreSearch_URL;
         if (catId != null && catId.length() > 0) {
-            url = DataHolder.base_URL + DataHolder.requestCatPreSearch_URL;
+            url = GlobalConfig.base_URL + GlobalConfig.requestCatPreSearch_URL;
             map.put("category", catId);
         }
         ConnectionManager connectionManager = new ConnectionManager(url, map);

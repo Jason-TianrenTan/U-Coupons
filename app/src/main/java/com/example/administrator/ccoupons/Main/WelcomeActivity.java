@@ -4,25 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Connections.UniversalPresenter;
-import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Fragments.MainPageActivity;
-import com.example.administrator.ccoupons.Gender;
-import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterActivity;
-import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.Tools.PasswordEncoder;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,7 +65,7 @@ public class WelcomeActivity extends Activity {
 
 /*
 public class WelcomeActivity extends AppCompatActivity {
-    private static String url = DataHolder.base_URL + DataHolder.login_URL;
+    private static String url = GlobalConfig.base_URL + GlobalConfig.login_URL;
     private LoginInformationManager loginInformationManager;
     private boolean auto_login;
     private String username;
@@ -106,7 +91,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 app.setNickname(nickname);
                 app.setUcoin(UB);
                 if (!avatar.equals("null")) {
-                    app.setAvatar(DataHolder.base_URL + "/static/" + avatar);
+                    app.setAvatar(GlobalConfig.base_URL + "/static/" + avatar);
                 }
 
                 app.setGender(Gender.MALE);

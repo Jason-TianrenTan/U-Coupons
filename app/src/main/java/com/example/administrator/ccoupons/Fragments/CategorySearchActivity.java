@@ -2,8 +2,6 @@ package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Intent;
 import android.os.*;
-import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,16 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.MessageType;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,7 +78,7 @@ public class CategorySearchActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        categoryText.setText(DataHolder.Categories.nameList[Integer.parseInt(catId) - 1]);
+        categoryText.setText(GlobalConfig.Categories.nameList[Integer.parseInt(catId) - 1]);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -130,7 +125,7 @@ public class CategorySearchActivity extends AppCompatActivity {
 
     //请求推送数据
     private void requestData() {
-        String url = DataHolder.base_URL + DataHolder.requestCatRecommend_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.requestCatRecommend_URL;
         HashMap<String, String> map = new HashMap<>();
         map.put("categoryID", catId);
 

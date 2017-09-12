@@ -8,41 +8,41 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.ccoupons.Search.SearchResultActivity">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/search_result_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
-        app:theme="@style/SearchToolBarStyle"
         app:layout_scrollFlags="scroll|enterAlways|snap"
-        >
+        app:theme="@style/SearchToolBarStyle">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_height="60dp"
                 android:layout_marginRight="30dp"
-                android:layout_height="60dp">
+                android:layout_weight="4">
 
                 <EditText
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/search_icon"
-                    android:drawablePadding="3dp"
                     android:id="@+id/input_search_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:textSize="16dp"
-                    android:padding="5dp"
-
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                    android:layout_gravity="center"
                     android:background="@drawable/searchtext_bg"
+                    android:drawableLeft="@drawable/search_icon"
+                    android:drawablePadding="3dp"
                     android:imeOptions="actionSearch"
+                    android:inputType="text"
+
                     android:maxLines="1"
-                    />
+                    android:padding="5dp"
+                    android:saveEnabled="false"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
@@ -54,24 +54,25 @@
         android:background="@color/white"
         android:orientation="horizontal">
 
-        <TextView style="@style/SearchResultSortText"
+        <TextView
+            android:id="@+id/sort_date_button"
+            style="@style/SearchResultSortText"
             android:text="过期时间"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/sort_date_button"/>
+            android:textColor="@color/colorPrimary" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="wrap_content"
             android:id="@+id/sort_listprice_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textview_sort_price"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="价格"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
@@ -80,45 +81,68 @@
                 android:id="@+id/imageview_sort_price"
                 android:layout_width="15dp"
                 android:layout_height="50dp"
-                android:src="@drawable/sort"/>
+                android:src="@drawable/sort" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="wrap_content"
             android:id="@+id/sort_eval_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textview_sort_eval"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
                 android:text="估值"
+                android:textColor="@color/black"
                 android:textSize="20dp" />
 
             <ImageView
                 android:id="@+id/imageview_sort_eval"
                 android:layout_width="15dp"
                 android:layout_height="50dp"
-                android:src="@drawable/sort"/>
+                android:src="@drawable/sort" />
 
         </LinearLayout>
 
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/empty_imageview"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/mascot_nothing" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/empty_imageview"
+            android:layout_centerHorizontal="true"
+            android:text="空空如也..."
+            android:textSize="25dp" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/white"
-        android:layout_marginTop="15dp"
+        android:id="@+id/search_result_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/search_result_recyclerview">
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        >
 
     </android.support.v7.widget.RecyclerView>
 

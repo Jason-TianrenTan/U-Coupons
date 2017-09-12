@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -34,7 +34,6 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -48,7 +47,7 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
     //reset timer
     private int current = COUNTDOWN_TIME;
     private boolean reget_permission = false;
-    private String url = DataHolder.base_URL + DataHolder.updatePhoneNumber_URL;
+    private String url = GlobalConfig.base_URL + GlobalConfig.updatePhoneNumber_URL;
     //Todo:失败可能会跳转到设定密码的界面？ 尚未解决的未知BUG
 
     @BindView(R.id.update_phone_toolbar)

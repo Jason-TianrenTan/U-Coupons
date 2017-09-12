@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -115,7 +115,7 @@ public class AddCouponActivity extends AppCompatActivity {
         private HashMap<String, String> map;
         private String[] list;
         private String filepath;
-        String url = DataHolder.base_URL + DataHolder.postAddCoupon_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.postAddCoupon_URL;
 
         public UpLoadCoupon(HashMap<String, String> map, String[] constraintList, String url) {
             this.map = map;

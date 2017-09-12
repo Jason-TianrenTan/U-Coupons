@@ -22,9 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
@@ -72,25 +71,32 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.rootLayout)
     LinearLayout rootLayout;
 
-    @OnClick(R.id.Login_loginButton)
-    public void click() {
-        boolean check = true;
-        String username = LoginUsernameEditText.getText().toString(),
-                password = LoginPasswordEditText.getText().toString();
+    @OnClick({R.id.Login_loginButton, R.id.Login_forgetTextView})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.Login_loginButton:
+                boolean check = true;
+                String username = LoginUsernameEditText.getText().toString(),
+                        password = LoginPasswordEditText.getText().toString();
 
-        if (username.length() == 0) {
-            check = false;
-            LoginUsernameHolder.setErrorEnabled(true);
-            LoginUsernameHolder.setError("请输入用户名!");
-        } else if (password.length() == 0) {
-            check = false;
-            LoginPasswordHolder.setErrorEnabled(true);
-            LoginPasswordHolder.setError("请输入密码!");
-        }
+                if (username.length() == 0) {
+                    check = false;
+                    LoginUsernameHolder.setErrorEnabled(true);
+                    LoginUsernameHolder.setError("请输入用户名!");
+                } else if (password.length() == 0) {
+                    check = false;
+                    LoginPasswordHolder.setErrorEnabled(true);
+                    LoginPasswordHolder.setError("请输入密码!");
+                }
 
-        if (check) {
-            //   requestLogin(DataHolder.base_URL + DataHolder.login_URL, username, password);
-            requestLogin(username, password);
+                if (check) {
+                    //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
+                    requestLogin(username, password);
+                }
+                break;
+            case R.id.Login_forgetTextView:
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+                break;
         }
     }
 
@@ -107,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //登录
     private void requestLogin(String username, String password) {
-        String url = DataHolder.base_URL + DataHolder.login_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.login_URL;
         String md5pass = null;
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("username", username);
@@ -142,7 +148,6 @@ public class LoginActivity extends AppCompatActivity {
         connectionManager.connect();
 
     }
-
 
 
     private void initToolbar() {
@@ -291,7 +296,7 @@ public class LoginActivity extends AppCompatActivity {
                 app.setNickname(nickname);
                 app.setUcoin(UB);
                 if (!avatar.equals("null")) {
-                    app.setAvatar(DataHolder.base_URL + "/static/" + avatar);
+                    app.setAvatar(GlobalConfig.base_URL + "/static/" + avatar);
                 }
 
                 app.setGender(Gender.MALE);
@@ -301,7 +306,7 @@ public class LoginActivity extends AppCompatActivity {
                 app.setPhoneNumber("13111111111");
 
                 Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             } catch (Exception e) {

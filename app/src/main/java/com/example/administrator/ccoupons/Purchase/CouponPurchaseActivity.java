@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -85,7 +85,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
                 MyApp app = (MyApp) getApplicationContext();
                 String userId = app.getUserId();
                 map.put("userID", userId);
-                ConnectionManager connectionManager = new ConnectionManager(DataHolder.base_URL + DataHolder.purchase_URL, map);
+                ConnectionManager connectionManager = new ConnectionManager(GlobalConfig.base_URL + GlobalConfig.purchase_URL, map);
                 connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
                     @Override
                     public void onConnectionSuccess(String response) {
@@ -110,7 +110,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
     private void initInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
         Glide.with(this)
-                .load(DataHolder.base_URL + "/static/" + coupon.getPic())
+                .load(GlobalConfig.base_URL + "/static/" + coupon.getPic())
                 .into(couponImg);
         couponNameText.setText(coupon.getProduct());
         couponPriceText.setText("¥" + coupon.getListprice());

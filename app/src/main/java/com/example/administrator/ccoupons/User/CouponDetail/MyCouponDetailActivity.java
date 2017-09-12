@@ -1,33 +1,15 @@
 package com.example.administrator.ccoupons.User.CouponDetail;
 
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.MyApp;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
-import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
-import com.nineoldandroids.view.ViewHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -36,8 +18,6 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.administrator.ccoupons.User.UserCouponInfoAdapter.INFO_CODE;
 
 /**
  * 属于我的优惠券
@@ -113,7 +93,7 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
 
 
     private void sendStatRequest(String type) {
-        String url = DataHolder.base_URL + DataHolder.postChangeCouponState_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.postChangeCouponState_URL;
         HashMap<String, String> map = new HashMap<>();
         map.put("couponID", coupon.getCouponid());
         map.put("state", type);

@@ -1,16 +1,7 @@
 package com.example.administrator.ccoupons.Connections;
 
-import com.example.administrator.ccoupons.Data.DataHolder;
-import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 
-import java.util.ArrayList;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -43,7 +34,7 @@ public class ApiManager {
                 .build();
         if (myApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(DataHolder.base_URL)
+                    .baseUrl(GlobalConfig.base_URL)
                     .client(client)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())

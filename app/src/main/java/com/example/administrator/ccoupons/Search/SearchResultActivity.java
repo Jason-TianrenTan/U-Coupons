@@ -15,14 +15,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.todddavies.components.progressbar.ProgressWheel;
 
 import org.json.JSONArray;
@@ -41,6 +42,8 @@ public class SearchResultActivity extends AppCompatActivity {
     public static final int SEARCH_MAX_RESULT = 4;//最大获取结果数
     private String catId;
 
+    @BindView(R.id.empty_view)
+    RelativeLayout emptyView;
     @BindView(R.id.input_search_result)
     EditText editText;
     @BindView(R.id.search_result_toolbar)
@@ -155,12 +158,12 @@ public class SearchResultActivity extends AppCompatActivity {
      * @param type 排序标准类型
      */
     private void requestSort(String type) {
-        String url = DataHolder.base_URL + DataHolder.requestSearch_URL;
+        String url = GlobalConfig.base_URL + GlobalConfig.requestSearch_URL;
         HashMap<String, String> map = new HashMap<>();
         map.put("keyWord", requestString);
         map.put("order", type);
         if (catId != null && catId.length() > 0) {
-            url = DataHolder.base_URL + DataHolder.requestCatSearch_URL;
+            url = GlobalConfig.base_URL + GlobalConfig.requestCatSearch_URL;
             map.put("category", catId);
         }
 
@@ -213,6 +216,14 @@ public class SearchResultActivity extends AppCompatActivity {
         requestSort("");
     }
 
+    private void setEmpty(){
+        System.out.println("Size::" + couponResults.size());
+        if (couponResults.isEmpty()){
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
+    }
 
     private void clear() {
         int size = couponResults.size();
@@ -236,6 +247,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 requestResults(couponResults.size());
             }
         });
+        setEmpty();
     }
 
     private void setUpAdapter() {
@@ -262,9 +274,8 @@ public class SearchResultActivity extends AppCompatActivity {
             if (couponResults.size() < jsonArray.length())
                 adapter.setFooterView(LayoutInflater.from(this).inflate(R.layout.load_footer, recyclerView, false));
             else
-               adapter.setFooterView(null);
+                adapter.setFooterView(null);
             adapter.notifyDataSetChanged();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -299,6 +310,7 @@ public class SearchResultActivity extends AppCompatActivity {
             TextView specialText;
             @BindView(R.id.coupon_price_text)
             TextView priceText;
+
             public ResultViewHolder(View view) {
                 super(view);
                 if (view == footerView)
@@ -347,7 +359,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         private void setImage(ResultViewHolder holder, Coupon coupon) {
-            String url = DataHolder.base_URL + "/static/" + coupon.getPic();
+            String url = GlobalConfig.base_URL + "/static/" + coupon.getPic();
             Glide.with(mContext).load(url).into(holder.imageView);
         }
 
@@ -357,7 +369,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 mContext = parent.getContext();
             }
             if (footerView != null && viewType == TYPE_FOOTER) {
-                ProgressWheel progressWheel = (ProgressWheel)footerView.findViewById(R.id.pw_spinner);
+                ProgressWheel progressWheel = (ProgressWheel) footerView.findViewById(R.id.pw_spinner);
                 progressWheel.startSpinning();
                 return new ResultViewHolder(footerView);
             }
@@ -372,7 +384,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         public void setFooterView(View footer) {
             footerView = footer;
-            notifyItemInserted(getItemCount() -1);
+            notifyItemInserted(getItemCount() - 1);
         }
     }
 }
