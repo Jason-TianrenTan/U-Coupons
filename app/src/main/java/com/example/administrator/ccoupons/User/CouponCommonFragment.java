@@ -97,9 +97,10 @@ public abstract class CouponCommonFragment extends Fragment {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 currentRefreshLayout = frame;
                 //initData();
+                new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
                 new UniversalPresenter().getUserOnsaleByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
                 new UniversalPresenter().getUserUnsoldByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
-                new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
+
             }
         });
     }
