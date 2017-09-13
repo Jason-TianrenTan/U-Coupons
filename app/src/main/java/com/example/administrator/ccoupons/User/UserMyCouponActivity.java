@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
-import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.MyCouponFragmentAdapter;
+import com.example.administrator.ccoupons.User.UserCoupons.User.MyCouponFragmentAdapter;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserOnsaleFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedFragment;

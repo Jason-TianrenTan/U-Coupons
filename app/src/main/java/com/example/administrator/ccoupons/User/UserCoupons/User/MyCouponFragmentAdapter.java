@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList;
+package com.example.administrator.ccoupons.User.UserCoupons.User;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

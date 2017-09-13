@@ -12,6 +12,6 @@ public class UserFollowCoupons extends CouponCommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_coupon_layout);
         setToolbarTitle("我关注的");
-        initData(GlobalConfig.base_URL + GlobalConfig.requestFollowList_URL);
+        initData(1);
     }
 }

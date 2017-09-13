@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:theme="@style/MainToolBarStyle"
-        app:layout_scrollFlags="scroll|enterAlways|snap">
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:theme="@style/MainToolBarStyle">
 
         <TextView
             android:id="@+id/common_text_title"
@@ -23,7 +23,6 @@
             android:padding="5dp"
             android:textColor="@color/white"
             android:textSize="20dp" />
-
 
 
     </android.support.v7.widget.Toolbar>
@@ -37,18 +36,24 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/common_frame">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
+            android:id="@+id/common_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/common_recyclerview">
+            android:layout_height="match_parent">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/common_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    </FrameLayout>
+            </android.support.v7.widget.RecyclerView>
+
+        </FrameLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

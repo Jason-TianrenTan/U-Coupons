@@ -1,15 +1,21 @@
 package com.example.administrator.ccoupons;
 
-/**
- * Created by Administrator on 2017/7/18 0018.
- */
+import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.example.administrator.ccoupons.Fragments.Message.Message;
 import com.mob.MobApplication;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Administrator on 2017/9/13 0013.
+ */
+
 public class MyApp extends MobApplication {
+
 
     private static MyApp instance = null;
 
@@ -100,4 +106,13 @@ public class MyApp extends MobApplication {
     public String getLocation() {
         return this.location;
     }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+
+
 }

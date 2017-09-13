@@ -133,14 +133,16 @@ public class CategoryFragment extends Fragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponListEvent clistEvent) {
-        fullRecList = clistEvent.getList();
-        requestData(0, 4);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadingView.setVisibility(View.INVISIBLE);
-            }
-        }, 1000);
+        if (clistEvent.getListname().equals("Recommend")) {
+            fullRecList = clistEvent.getList();
+            requestData(0, 4);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadingView.setVisibility(View.INVISIBLE);
+                }
+            }, 1000);
+        }
 
     }
 

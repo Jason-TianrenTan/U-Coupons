@@ -40,7 +40,6 @@ import com.example.administrator.ccoupons.Fragments.Message.MessageFragment;
 import com.example.administrator.ccoupons.Fragments.User.UserOptionFragment;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.zyao89.view.zloading.ZLoadingView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;

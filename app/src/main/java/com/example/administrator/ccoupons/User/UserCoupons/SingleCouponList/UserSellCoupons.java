@@ -12,6 +12,6 @@ public class UserSellCoupons extends CouponCommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_coupon_layout);
         setToolbarTitle("我卖出的");
-        initData(GlobalConfig.base_URL + GlobalConfig.requestSoldList_URL);
+        initData(2);
     }
 }
