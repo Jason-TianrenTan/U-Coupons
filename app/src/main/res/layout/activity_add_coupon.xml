@@ -116,6 +116,7 @@
                     android:hint="请输入优惠券价格" />
 
                 <TextView
+                    android:id="@+id/use_eval_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -162,13 +163,6 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="20dp"
-                    android:text="修改"
-                    android:textSize="18dp" />
 
             </LinearLayout>
 
