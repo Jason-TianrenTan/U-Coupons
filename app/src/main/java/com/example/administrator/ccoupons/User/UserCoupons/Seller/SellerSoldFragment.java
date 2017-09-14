@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
-import com.example.administrator.ccoupons.CouponListEvent;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
-import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerSoldAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,7 +41,7 @@ public class SellerSoldFragment extends CouponCommonFragment {
     @Override
     public void initData() {
         adapter = new SellerSoldAdapter(adapterList);
-        new UniversalPresenter().getUserUsedByRxRetrofit();//TODO: TO BE CHANGED
+    //    new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());//TODO: TO BE CHANGED
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.example.administrator.ccoupons.Fragments;
+package com.example.administrator.ccoupons.Fragments.Message;
 
+import com.example.administrator.ccoupons.Fragments.Message.Message;
 import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class MessageClass {
         return this.messageList;
     }
     public String getSubtitle() {
-        String ret = "无消息哟";
+        String ret = "暂无消息";
         for (Message msg:messageList) {
             ret = msg.getCouponName();
         }

@@ -1,10 +1,10 @@
-package com.example.administrator.ccoupons.Fragments;
+package com.example.administrator.ccoupons.Fragments.Message;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +15,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.GlobalConfig;
-import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.User.CouponDetail.CouponDetailActivity;
+import com.example.administrator.ccoupons.User.CouponDetail.DisplayCouponDetailActivity;
+import com.example.administrator.ccoupons.User.CouponDetail.MyCouponDetailActivity;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MessageDetailActivity extends AppCompatActivity {
 
@@ -64,24 +69,26 @@ public class MessageDetailActivity extends AppCompatActivity {
 
     public class MessageDetailAdapter extends RecyclerView.Adapter<MessageDetailAdapter.MessageDetailViewHolder> {
 
+
         private Context mContext;
         private ArrayList<Message> mMessageList;
 
         public class MessageDetailViewHolder extends RecyclerView.ViewHolder {
 
             CardView rootView;
+            @BindView(R.id.message_detail_stat_text)
             TextView statText;
+            @BindView(R.id.message_detail_name_text)
             TextView nameText;
+            @BindView(R.id.message_detail_price_text)
             TextView priceText;
+            @BindView(R.id.message_detail_check_text)
             TextView checkText;
 
             public MessageDetailViewHolder(View view) {
                 super(view);
                 rootView = (CardView) view;
-                statText = (TextView) view.findViewById(R.id.message_detail_stat_text);
-                nameText = (TextView) view.findViewById(R.id.message_detail_name_text);
-                priceText = (TextView) view.findViewById(R.id.message_detail_price_text);
-                checkText = (TextView) view.findViewById(R.id.message_detail_check_text);
+                ButterKnife.bind(this, view);
             }
         }
 
@@ -91,23 +98,23 @@ public class MessageDetailActivity extends AppCompatActivity {
         }
 
         @Override
-        public MessageDetailAdapter.MessageDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MessageDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (mContext == null) {
                 mContext = parent.getContext();
             }
             View view = LayoutInflater.from(mContext).inflate(R.layout.message_detail_item, parent, false);
-            MessageDetailAdapter.MessageDetailViewHolder holder = new MessageDetailAdapter.MessageDetailViewHolder(view);
+            MessageDetailViewHolder holder = new MessageDetailViewHolder(view);
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(MessageDetailAdapter.MessageDetailViewHolder holder, int position) {
+        public void onBindViewHolder(MessageDetailViewHolder holder, int position) {
             final Message message = mMessageList.get(position);
             holder.nameText.setText(message.getCouponName());
             holder.statText.setText(statList[message.getMessageCat()]);
 
             final int msgCat = message.getMessageCat();
-            if (msgCat == 1 || msgCat == 3 || msgCat == 4) {
+            if (msgCat != 5) {
                 holder.rootView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -127,11 +134,24 @@ public class MessageDetailActivity extends AppCompatActivity {
 
 
     private void requestCouponDetail(Message msg) {
-        Intent intent = new Intent(MessageDetailActivity.this, CouponDetailActivity.class);
+        Class<?> target = null;
+        switch (msg.getMessageCat()) {
+            case 1:
+            case 4:target = MyCouponDetailActivity.class;
+                break;
+            case 3:target = CouponDetailActivity.class;
+                break;
+            case 0:
+            case 2:target = DisplayCouponDetailActivity.class;
+                break;
+        }
+        Intent intent = new Intent(MessageDetailActivity.this, target);
         intent.putExtra("type", "message");
         intent.putExtra("msgCat", msg.getMessageCat() + "");
         intent.putExtra("Coupon", msg.getCoupon());
         intent.putExtra("msgId", msg.getMessageId());
         startActivity(intent);
     }
+
+
 }

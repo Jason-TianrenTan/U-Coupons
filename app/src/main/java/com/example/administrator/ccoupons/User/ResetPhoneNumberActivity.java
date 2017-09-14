@@ -26,6 +26,8 @@ import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -204,6 +206,7 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
                     valid = true;
                     verify_cord = false;
                     phoneString = phoneText.getText().toString();
+                    String url = GlobalConfig.base_URL + GlobalConfig.updatePhoneNumber_URL;
                     HashMap<String, String> map = new HashMap<>();
                     map.put("userID", ((MyApp) getApplicationContext()).getUserId());
                     map.put("username", phoneString);
@@ -216,10 +219,8 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
                     connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
                         @Override
                         public void onConnectionSuccess(String response) {
-                            Toast.makeText(getApplicationContext(), "修改手机号成功", Toast.LENGTH_SHORT).show();
-                            updateUserInfo(phoneString);
-                            Intent intent = new Intent(ResetPhoneNumberActivity.this, MainPageActivity.class);
-                            startActivity(intent);
+                            System.out.println(response.toString());
+                            parseMessage(response);
                         }
 
                         @Override
@@ -322,5 +323,34 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         loginInformationManager.setUsername(newPhoneNum);
         UserInfoManager newUserInfoManager = new UserInfoManager(this);
         newUserInfoManager.setHistory(old);
+    }
+
+    private void parseMessage(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            if (jsonObject.has("result")) {
+                String result = jsonObject.getString("result");
+                if (result.equals("200")) {
+                    Toast.makeText(getApplicationContext(), "修改手机号成功", Toast.LENGTH_SHORT).show();
+                    updateUserInfo(phoneString);
+                    Intent intent = new Intent(ResetPhoneNumberActivity.this, MainPageActivity.class);
+                    startActivity(intent);
+                }
+            }
+            if (jsonObject.has("error")) {
+                String error = jsonObject.getString("error");
+                if (error.equals("109")) {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "手机或邮箱已存在", Toast.LENGTH_SHORT).show();
+                } else if (error.equals("111")) {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "该账户使用手机注册", Toast.LENGTH_SHORT).show();
+                } else if (error.equals("112")) {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "该账户使用邮箱注册", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "好像出了点问题哟", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

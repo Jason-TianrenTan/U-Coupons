@@ -4,6 +4,7 @@
     android:id="@+id/message_detail_rootview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
     app:cardCornerRadius="6dp"
     app:cardElevation="5dp">
 

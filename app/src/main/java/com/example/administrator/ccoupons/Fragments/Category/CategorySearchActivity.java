@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.Fragments;
+package com.example.administrator.ccoupons.Fragments.Category;
 
 import android.content.Intent;
 import android.os.*;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
+import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;

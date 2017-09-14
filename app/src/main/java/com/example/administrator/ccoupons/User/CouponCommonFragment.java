@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.EndlessOnScrollListener;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -94,7 +96,11 @@ public abstract class CouponCommonFragment extends Fragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 currentRefreshLayout = frame;
-                initData();
+                //initData();
+                new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
+                new UniversalPresenter().getUserOnsaleByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
+                new UniversalPresenter().getUserUnsoldByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
+
             }
         });
     }

@@ -28,7 +28,6 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
     private String nickname;
     private MyApp app;
     private final static String updateUserInformationURL = GlobalConfig.base_URL + GlobalConfig.updateUserInformation_URL;
-
     @BindView(R.id.user_update_nickname_toolbar)
     Toolbar toolbar;
     @BindView(R.id.user_update_nickname)
@@ -37,7 +36,7 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
     EditText nicknameEdit;
 
     @OnClick(R.id.user_update_nickname)
-    public void onclick(View view){
+    public void onclick(View view) {
         nickname = nicknameEdit.getText().toString();
         update(nickname);
     }
@@ -84,6 +83,7 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
+                System.out.println(response.toString());
                 parseMessage(response);
             }
 
@@ -103,13 +103,19 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            String result = jsonObject.getString("result");
-            if (result.equals("success")) {
-                app.setNickname(nickname);
-                Toast.makeText(UserUpdateNicknameActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                finish();
-            } else if (result.equals("nickname exist")) {
-                Toast.makeText(UserUpdateNicknameActivity.this, "用户名已存在", Toast.LENGTH_SHORT).show();
+            if (jsonObject.has("result")) {
+                String result = jsonObject.getString("result");
+                if (result.equals("200")) {
+                    app.setNickname(nickname);
+                    Toast.makeText(UserUpdateNicknameActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+            if (jsonObject.has("error")) {
+                String error = jsonObject.getString("error");
+                if (error.equals("110")) {
+                    Toast.makeText(UserUpdateNicknameActivity.this, "昵称已存在", Toast.LENGTH_SHORT).show();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

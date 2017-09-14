@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons;
+package com.example.administrator.ccoupons.Events;
 
 import com.example.administrator.ccoupons.Main.Coupon;
 

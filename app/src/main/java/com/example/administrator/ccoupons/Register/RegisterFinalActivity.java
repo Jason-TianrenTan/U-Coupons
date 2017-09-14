@@ -43,6 +43,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
 
     //处理返回回来的json
     private void parseMessage(String response) {
+        System.out.println("response = " + response);
         try {
             JSONObject jsonObject = new JSONObject(response);
             String errno = jsonObject.getString("errno");

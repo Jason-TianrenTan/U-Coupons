@@ -93,10 +93,6 @@ public class LoginActivity extends AppCompatActivity {
                     //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
                     requestLogin(username, password);
                 }
-                break;
-            case R.id.Login_forgetTextView:
-                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
-                break;
         }
     }
 

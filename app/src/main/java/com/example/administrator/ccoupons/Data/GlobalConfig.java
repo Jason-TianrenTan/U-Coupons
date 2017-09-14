@@ -9,46 +9,45 @@ import com.example.administrator.ccoupons.R;
 public class GlobalConfig {
 
     static final String dormBase = "http://10.132.55.96:8000";
-    static final String localBase = "http://192.168.0.109:8000";
+    static final String localBase = "http://192.168.206.11:8000";
     static final String teamBase = "http://192.168.207.222:8000";
     static final String serverBase = "http://119.23.72.43";
     public static final String base_URL = teamBase;
-    public static final String login_URL = "/post_loginForAndroid";
-    public static final String register_URL = "/post_signUpForAndroid";
-    public static final String requestMsg_URL = "/post_sendMessage";
+    public static final String login_URL = "/loginForAndroid";
+    public static final String register_URL = "/signUpForAndroid";
+    public static final String requestMsg_URL = "/sendMessage";
+    public static final String requestSearch_URL = "/searchForAndroid";
+    public static final String requestPreSearch_URL = "/preSearch";//预搜索
+    public static final String requestDetail_URL = "/returnInformation";
+    public static final String purchase_URL = "/buyCoupon";
+    public static final String resetPass_URL = "/updatePassword";
+    public static final String requestBoughtList_URL = "/getBoughtList"; //已购买
+    public static final String requestFollowList_URL = "/getLikeList";//已关注
+    public static final String requestSoldList_URL = "/getSoldList";//已卖出
+    public static final String updateUserInformation_URL = "/updateUserInformation";//修改个人资料
+    public static final String updatePhoneNumber_URL = "/updatePhonenumOrEmail";
 
-    public static final String requestSearch_URL = "/post_searchForAndroid";
-    public static final String requestPreSearch_URL = "/post_preSearch";//预搜索
+    public static final String postFollow_URL = "/likeCoupon";//关注
+    public static final String postUnFollow_URL = "/dislikeCoupon";//取消关注
+    public static final String postAvatar_URL = "/updateAvatar";//上传头像
 
-    public static final String requestDetail_URL = "/post_returnInformation";
-    public static final String purchase_URL = "/post_buyCoupon";
-    public static final String resetPass_URL = "/post_updatePassword";
-    public static final String requestBoughtList_URL = "/post_getBoughtList"; //已购买
-    public static final String requestFollowList_URL = "/post_getLikeList";//已关注
-    public static final String requestSoldList_URL = "/post_getSoldList";//已卖出
-    public static final String updateUserInformation_URL = "/post_updateUserInformation";//修改个人资料
-    public static final String updatePhoneNumber_URL = "/post_updatePhonenumOrEmail";//修改手机号或邮箱
-
-    public static final String postFollow_URL = "/post_likeCoupon";//关注
-    public static final String postAvatar_URL = "/post_updateAvatar";//上传头像
-
-    public static final String postBanner_URL = "/post_getBanner";//获取轮播图
-    public static final String postRecommend_URL = "/post_homepageCoupon";//主页推荐
+    public static final String postBanner_URL = "/getBanner";//获取轮播图
+    public static final String postRecommend_URL = "/homepageCoupon";//主页推荐
 
 
-    public static final String postChangeCouponState_URL = "/post_changeCouponState";//换优惠券状态
+    public static final String postChangeCouponState_URL = "/changeCouponState";//换优惠券状态
 
-    public static final String postGetEvaluation_URL = "/post_getValue";//获取估值
+    public static final String postGetEvaluation_URL = "/getValue";//获取估值
 
-    public static final String postAddCoupon_URL = "/post_addCoupon";//添加优惠券
+    public static final String postAddCoupon_URL = "/addCoupon";//添加优惠券
 
-    public static final String requestOwnList_URL = "/post_getOwnList";//获取我的优惠券
+    public static final String requestOwnList_URL = "/getOwnList";//获取我的优惠券
 
-    public static final String requestCatRecommend_URL = "/post_searchByCategory";//分类推荐
-    public static final String requestCatSearch_URL = "/post_searchInCertainCategory";//按分类搜索
-    public static final String requestCatPreSearch_URL = "/post_preSearchInCategory";//分类下预搜索
+    public static final String requestCatRecommend_URL = "/searchByCategory";//分类推荐
+    public static final String requestCatSearch_URL = "/searchInCertainCategory";//按分类搜索
+    public static final String requestCatPreSearch_URL = "/preSearchInCategory";//分类下预搜索
 
-    public static final String requestSellerInfo_URL = "/post_sellerInformation";//获取卖家信息
+    public static final String requestSellerInfo_URL = "/sellerInformation";//获取卖家信息
 
 
     public static class Categories {

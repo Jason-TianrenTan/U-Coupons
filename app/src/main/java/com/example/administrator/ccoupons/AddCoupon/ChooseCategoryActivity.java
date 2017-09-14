@@ -13,9 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.example.administrator.ccoupons.Category;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
+import com.example.administrator.ccoupons.Fragments.Category.Category;
 import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;

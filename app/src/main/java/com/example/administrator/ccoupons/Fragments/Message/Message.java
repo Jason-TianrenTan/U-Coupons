@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.Fragments;
+package com.example.administrator.ccoupons.Fragments.Message;
 
 import android.content.Context;
 

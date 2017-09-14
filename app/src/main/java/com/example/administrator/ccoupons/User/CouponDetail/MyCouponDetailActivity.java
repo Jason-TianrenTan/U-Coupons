@@ -13,9 +13,7 @@ import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
-
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -56,7 +54,7 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
             public void onClick(View view) {
                 if (isOnsale)
                     sendStatRequest("store");
-                else sendStatRequest("onsale");
+                else sendStatRequest("onSale");
             }
         });
 
@@ -74,16 +72,12 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
         System.out.println("received response = " + response);
         try {
             JSONObject obj = new JSONObject(response);
-            String result = obj.getString("errno");
-            int code = Integer.parseInt(result);
-            if (code == 0) {
-                /*
-                Intent intent = new Intent("com.example.administrator.ccoupons.UPDATEVIEWS");
-                sendBroadcast(intent);*/
+            if (response.contains("result")) {
                 this.isOnsale = !this.isOnsale;
                 System.out.println("now on sale stat = " + this.isOnsale);
                 Toast.makeText(this, "操作成功", Toast.LENGTH_SHORT).show();
-            } else
+            }
+            else
                 Toast.makeText(this, "已经上架/下架！", Toast.LENGTH_SHORT).show();
             refreshStat();
         } catch (Exception e) {

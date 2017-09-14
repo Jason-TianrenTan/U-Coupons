@@ -24,6 +24,9 @@ import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.EditTextTools;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
+import com.example.administrator.ccoupons.User.UserUpdateGenderActivity;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -133,7 +136,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             resetPhoneEdittext.setText(intentString);
     }
 
-    private void initEditText(){
+    private void initEditText() {
         resetPhoneEdittext.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -296,10 +299,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
                         @Override
                         public void onConnectionSuccess(String response) {
-                            Toast.makeText(getApplicationContext(), "修改密码成功", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ResetPasswordActivity.this, MainPageActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            System.out.println(response.toString());
+                            parseMessage(response);
                         }
 
                         @Override
@@ -393,6 +394,31 @@ public class ResetPasswordActivity extends AppCompatActivity {
             Message msg = new Message();
             msg.what = 1;
             TimerHandler.sendMessage(msg);
+        }
+    }
+
+    private void parseMessage(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            if (jsonObject.has("result")) {
+                String result = jsonObject.getString("result");
+                if (result.equals("200")) {
+                    Toast.makeText(getApplicationContext(), "修改密码成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ResetPasswordActivity.this, MainPageActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }
+            if (jsonObject.has("error")) {
+                String error = jsonObject.getString("error");
+                if (error.equals("108")) {
+                    Toast.makeText(ResetPasswordActivity.this, "旧密码与新密码相同", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ResetPasswordActivity.this, "好像出了点问题哟", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -18,8 +18,21 @@ import retrofit2.http.Query;
 public interface RetrofitService {
 
     @FormUrlEncoded
-    @POST("post_getOwnList")
+    @POST("getOwnList")//我拥有的优惠券
     Observable<CouponBean> getOwnList(@Field("userID") String userid);
-    @POST("post_homepageCoupon")
+
+    @FormUrlEncoded
+    @POST("getUsedList")//我已使用过的
+    Observable<CouponBean> getUsedList(@Field("userID") String userid);
+
+    @FormUrlEncoded
+    @POST("getOnSaleList")//已上架
+    Observable<CouponBean> getOnSaleList(@Field("userID") String userid);
+
+    @FormUrlEncoded
+    @POST("getStoreList")//未上架
+    Observable<CouponBean> getUnusedList(@Field("userID") String userid);
+
+    @POST("homepageCoupon")//主页推荐
     Observable<CouponBean> getRecList();
 }

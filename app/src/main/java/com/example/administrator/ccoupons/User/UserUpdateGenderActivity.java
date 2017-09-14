@@ -56,7 +56,7 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         initRadio();
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,7 +68,7 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         });
     }
 
-    private void initData(){
+    private void initData() {
         app = (MyApp) getApplicationContext();
         if (app.getGender() == Gender.MALE) {
             genderRadio.check(R.id.radio_button_male);
@@ -103,6 +103,7 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
+                System.out.println("Result: " + response.toString());
                 parseMessage(response);
             }
 
@@ -122,12 +123,15 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            String result = jsonObject.getString("result");
-            if (result.equals("success")) {
-                app.setGender(gender);
-                Toast.makeText(UserUpdateGenderActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
+            if (jsonObject.has("result")) {
+                String result = jsonObject.getString("result");
+                if (result.equals("200")) {
+                    app.setGender(gender);
+                    Toast.makeText(UserUpdateGenderActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+            if (jsonObject.has("error")) {
                 Toast.makeText(UserUpdateGenderActivity.this, "好像出了点问题哟", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {

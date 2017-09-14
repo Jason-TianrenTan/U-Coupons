@@ -87,6 +87,8 @@ public class LocationSelectActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        layoutManager.setItemPrefetchEnabled(true);
+        layoutManager.setInitialPrefetchItemCount(GlobalConfig.Cities.cityList.length + 1);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
@@ -94,7 +96,6 @@ public class LocationSelectActivity extends AppCompatActivity {
 
         final NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.location_nestscrollview);
         gpsCardView = (CardView) findViewById(R.id.current_gps_cardview);
-
 
         pop_cityList = getPopularCityList();
         popCityRecyclerView = (RecyclerView) findViewById(R.id.popular_city_recyclerview);

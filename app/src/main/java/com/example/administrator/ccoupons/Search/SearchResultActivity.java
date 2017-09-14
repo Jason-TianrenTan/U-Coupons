@@ -134,6 +134,7 @@ public class SearchResultActivity extends AppCompatActivity {
      * @param response 收到的回复
      */
     private void parseMessage(String response) {
+
         resultString = response;
         clear();
         requestResults(0);
@@ -259,11 +260,11 @@ public class SearchResultActivity extends AppCompatActivity {
 
 
     private void requestResults(int start) {
-        System.out.println("request results at index = " + start);
+        System.out.println("request results at index = " + start + ", result = " + resultString);
         int count = 0;
         try {
             JSONObject obj = new JSONObject(resultString);
-            JSONArray jsonArray = obj.getJSONArray("coupons");
+            JSONArray jsonArray = obj.getJSONArray("coupons");//TODO:need to change!!
             for (int i = start; i < jsonArray.length(); i++, count++) {
                 if (count >= SEARCH_MAX_RESULT)
                     break;

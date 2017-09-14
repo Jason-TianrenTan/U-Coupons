@@ -153,13 +153,14 @@ public class Coupon implements Serializable {
 
     //二次解析
     public void getDetails(String str) {
+        System.out.println("response = " + str);
         try {
             JSONObject mainObj = new JSONObject(str);
 
             //brand
             JSONObject brandObj = mainObj.getJSONArray("brand").getJSONObject(0);
             this.brandName = brandObj.getString("name");
-            this.address = brandObj.getString("address");
+         //   this.address = brandObj.getString("area");
 
             //limit
             JSONArray limitArray = mainObj.getJSONArray("limit");

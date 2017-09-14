@@ -131,6 +131,8 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.commit();
         showFragment(historyFragment);
     }
+
+
     private void showFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.hide(historyFragment);
