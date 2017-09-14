@@ -1,8 +1,10 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,6 +20,8 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.MessageType;
+import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -243,11 +247,32 @@ public class AddCouponActivity extends AppCompatActivity {
                 int statusCode = response.getStatusLine().getStatusCode();
 
                 String result = EntityUtils.toString(response.getEntity());
-                System.out.println("RRRRRRREEEEEEEEESULT = " + result);
+                if (result.contains("200")) {
+                    Message msg = new Message();
+                    msg.what = START_ACTIVITY;
+                    handler.sendMessage(msg);
+                }
                 httpclient.getConnectionManager().shutdown();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+
+    public static final int START_ACTIVITY = -190;
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case START_ACTIVITY:
+                    Toast.makeText(getApplicationContext(), "添加优惠券成功!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddCouponActivity.this, UserMyCouponActivity.class);
+                    intent.putExtra("index", "2");
+                    startActivity(intent);
+                    finish();
+                    break;
+            }
+        }
+    };
+
 }

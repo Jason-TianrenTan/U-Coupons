@@ -15,7 +15,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -25,6 +27,8 @@ import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldFragme
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedFragment;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +38,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
 
 
     int screen_width = 0;
+    int index = 0;
     CouponCommonFragment usedFragment = new UserUsedFragment(),
                         onsaleFragment = new UserOnsaleFragment(),
                         unsoldFragment = new UserUnsoldFragment();
@@ -56,10 +61,24 @@ public class UserMyCouponActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_my_coupon);
         ButterKnife.bind(this);
+        String indexstr = getIntent().getStringExtra("index");
+        if (indexstr != null)
+            index = Integer.parseInt(indexstr);
         initViews();
-        selectPage(0);
+        selectPage(index);
         initReceiver();
         initTabs();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (index == 0)
+            finish();
+        else {
+            finish();
+            startActivity(new Intent(UserMyCouponActivity.this, MainPageActivity.class));
+        }
     }
 
 
@@ -116,7 +135,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
         MyCouponFragmentAdapter frAdapter = new MyCouponFragmentAdapter(fragmentManager, frList);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.mycoupon_viewpager);
         viewPager.setAdapter(frAdapter);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(index);
         title_used.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
