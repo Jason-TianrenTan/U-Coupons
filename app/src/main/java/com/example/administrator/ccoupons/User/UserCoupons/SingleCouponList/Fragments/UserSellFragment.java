@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.User.UserCoupons.User;
+package com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
+import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.Adapters.UserSellAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -17,10 +18,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/8/24 0024.
+ * Created by Administrator on 2017/9/12 0012.
  */
 
-public class UserUsedFragment extends CouponCommonFragment {
+public class UserSellFragment extends CouponCommonFragment {
 
 
     @Override
@@ -33,8 +34,8 @@ public class UserUsedFragment extends CouponCommonFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponListEvent clistEvent) {
-        if (clistEvent.getListname().equals("UserUsed")) {
-            System.out.println("on setData at used fragment");
+        if (clistEvent.getListname().equals("UserSold")) {
+            System.out.println("on setData at user sold fragment");
             setData(clistEvent.getList());
         }
     }
@@ -47,8 +48,8 @@ public class UserUsedFragment extends CouponCommonFragment {
     @Override
     public void initData() {
         adapterList = new ArrayList<>();
-        adapter = new UserUsedAdapter(adapterList);
-        new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
+        adapter = new UserSellAdapter(adapterList);
+        new UniversalPresenter().getUserSoldByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
     }
 
 }

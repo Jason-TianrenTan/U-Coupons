@@ -24,7 +24,7 @@ import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerOnsaleFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerSoldFragment;
-import com.example.administrator.ccoupons.User.UserCoupons.SingleCouponList.MyCouponFragmentAdapter;
+import com.example.administrator.ccoupons.User.UserCoupons.User.MyCouponFragmentAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

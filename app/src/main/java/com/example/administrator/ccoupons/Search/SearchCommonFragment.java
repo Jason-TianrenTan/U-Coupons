@@ -1,4 +1,4 @@
-package com.example.administrator.ccoupons.User;
+package com.example.administrator.ccoupons.Search;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -13,8 +13,8 @@ import android.widget.RelativeLayout;
 
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Search.EndlessOnScrollListener;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.User.UserCouponInfoAdapter;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,11 +32,10 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
 /**
- * Created by Administrator on 2017/7/26 0026.
+ * Created by Administrator on 2017/9/13 0013.
  */
 
-
-public abstract class CouponCommonFragment extends Fragment {
+public abstract class SearchCommonFragment extends Fragment {
 
 
     public static final int USED_TYPE = 0,
@@ -52,7 +51,7 @@ public abstract class CouponCommonFragment extends Fragment {
 
     protected ArrayList<Coupon> fullList,
             adapterList;
-    protected UserCouponInfoAdapter adapter;
+    protected ResultAdapter adapter;
     protected Context mContext;
 
     private Unbinder unbinder;
@@ -66,7 +65,7 @@ public abstract class CouponCommonFragment extends Fragment {
         emptyView.setVisibility(View.INVISIBLE);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(20));
+        recyclerView.addItemDecoration(new SearchCommonFragment.SpacesItemDecoration(20));
         initPTR();
         initData();
 

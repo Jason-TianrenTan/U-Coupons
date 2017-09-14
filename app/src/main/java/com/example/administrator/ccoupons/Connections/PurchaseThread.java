@@ -2,10 +2,8 @@ package com.example.administrator.ccoupons.Connections;
 
 import android.content.Context;
 import android.os.Handler;
-import android.widget.Toast;
 
 import com.example.administrator.ccoupons.MyApp;
-import com.example.administrator.ccoupons.Tools.PasswordEncoder;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 

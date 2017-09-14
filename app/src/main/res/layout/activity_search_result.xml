@@ -136,14 +136,13 @@
             android:textSize="25dp" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/search_result_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+    <FrameLayout
         android:background="@color/white"
-        >
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/search_result_fragment">
 
-    </android.support.v7.widget.RecyclerView>
+    </FrameLayout>
 
 </LinearLayout>

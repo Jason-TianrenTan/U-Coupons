@@ -12,6 +12,6 @@ public class UserBuyCoupons extends CouponCommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_coupon_layout);
         setToolbarTitle("我购买的");
-        initData(GlobalConfig.base_URL + GlobalConfig.requestBoughtList_URL);
+        initData(0);
     }
 }

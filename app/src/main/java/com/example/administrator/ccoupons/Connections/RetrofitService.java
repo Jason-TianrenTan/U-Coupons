@@ -18,10 +18,6 @@ import retrofit2.http.Query;
 public interface RetrofitService {
 
     @FormUrlEncoded
-    @POST("getOwnList")//我拥有的优惠券
-    Observable<CouponBean> getOwnList(@Field("userID") String userid);
-
-    @FormUrlEncoded
     @POST("getUsedList")//我已使用过的
     Observable<CouponBean> getUsedList(@Field("userID") String userid);
 
@@ -33,6 +29,24 @@ public interface RetrofitService {
     @POST("getStoreList")//未上架
     Observable<CouponBean> getUnusedList(@Field("userID") String userid);
 
+    @FormUrlEncoded
+    @POST("getSoldList")//未上架
+    Observable<CouponBean> getSoldList(@Field("userID") String userid);
+
+    @FormUrlEncoded
+    @POST("getBoughtList")//已经购买的
+    Observable<CouponBean> getBoughtList(@Field("userID") String userid);
+
+    @FormUrlEncoded
+    @POST("getLikeList")//已经购买的
+    Observable<CouponBean> getFollowList(@Field("userID") String userid);
+
     @POST("homepageCoupon")//主页推荐
     Observable<CouponBean> getRecList();
+
+    @FormUrlEncoded
+    @POST("/searchForAndroid")//搜索
+    Observable<CouponBean> getSearchResultList(@Field("keyWord") String keyWord, @Field("order") String order);
+
+
 }

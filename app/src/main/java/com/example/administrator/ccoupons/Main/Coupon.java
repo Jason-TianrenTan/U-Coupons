@@ -42,6 +42,20 @@ public class Coupon implements Serializable {
     // 头像URL
     private String sellerAvatarURL;
 
+    private String couponid;
+
+    private String product;
+
+    private String listprice;
+
+    private String value;
+
+    private String expiredtime;
+
+    private String discount;
+
+    private String pic;
+
     public Coupon() {
 
     }
@@ -248,13 +262,7 @@ public class Coupon implements Serializable {
         return "这是一条用来DEBUG的" + couponid;
     }
 
-    private String couponid;
-    private String product;
-    private String listprice;
-    private String value;
-    private String expiredtime;
-    private String discount;
-    private String pic;
+
 
     public String getCouponid() {
         return couponid;

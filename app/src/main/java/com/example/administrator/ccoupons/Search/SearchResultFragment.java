@@ -1,4 +1,8 @@
-package com.example.administrator.ccoupons.User.UserCoupons.User;
+package com.example.administrator.ccoupons.Search;
+
+/**
+ * Created by Administrator on 2017/9/13 0013.
+ */
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,31 +14,30 @@ import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 2017/8/24 0024.
- */
-
-public class UserUsedFragment extends CouponCommonFragment {
+public class SearchResultFragment extends SearchCommonFragment {
 
 
+    private String keyWord = null, order = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     /**
-     * @param clistEvent recommend list
+     * @param clistEvent search result list
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponListEvent clistEvent) {
-        if (clistEvent.getListname().equals("UserUsed")) {
-            System.out.println("on setData at used fragment");
+        if (clistEvent.getListname().equals("UserSearch")) {
+            System.out.println("on setData at search result fragment");
             setData(clistEvent.getList());
         }
     }
@@ -46,9 +49,17 @@ public class UserUsedFragment extends CouponCommonFragment {
 
     @Override
     public void initData() {
+        keyWord = getArguments().getString("keyWord");
+    //    System.out.println("key word = " + keyWord + ", order = " + order);
         adapterList = new ArrayList<>();
-        adapter = new UserUsedAdapter(adapterList);
-        new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());
+        adapter = new ResultAdapter(adapterList);
+        new UniversalPresenter().getSearchResultByRxRetrofit(keyWord, order);
+    }
+
+
+    public void requestSort(String order) {
+        this.order = order;
+        initData();
     }
 
 }

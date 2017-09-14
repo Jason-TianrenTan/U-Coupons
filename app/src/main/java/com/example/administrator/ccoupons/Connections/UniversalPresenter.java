@@ -1,10 +1,7 @@
 package com.example.administrator.ccoupons.Connections;
 
-import android.content.Context;
-
 import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
-import com.example.administrator.ccoupons.MyApp;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -173,13 +170,12 @@ public class UniversalPresenter extends BasePresenter{
     }
 
 
-    /*
-    //我的
-    public void getOwnByRxRetrofit(String userid) {
+    //我已经卖出的
+    public void getUserSoldByRxRetrofit(String userid) {
 
         ApiManager.getInstance().
                 getRetrofitService()
-                .getRecList()
+                .getSoldList(userid)
                 .map(new Function<CouponBean, ArrayList<Coupon>>() {
                     @Override
                     public ArrayList<Coupon> apply(CouponBean bean) {
@@ -204,8 +200,126 @@ public class UniversalPresenter extends BasePresenter{
 
                     @Override
                     public void onNext(ArrayList<Coupon> couponList) {
-                        EventBus.getDefault().post(new CouponListEvent("Recommend", couponList));
+                        System.out.println("user already sold list size = " + couponList.size());
+                        EventBus.getDefault().post(new CouponListEvent("UserSold", couponList));
                     }
                 });
-    }*/
+    }
+
+
+    //我已经买到的
+    public void getUserBoughtByRxRetrofit(String userid) {
+
+        ApiManager.getInstance().
+                getRetrofitService()
+                .getBoughtList(userid)
+                .map(new Function<CouponBean, ArrayList<Coupon>>() {
+                    @Override
+                    public ArrayList<Coupon> apply(CouponBean bean) {
+                        return bean.getResult();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Coupon>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        addDisposable(d);
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println("user bought list size = " + couponList.size());
+                        EventBus.getDefault().post(new CouponListEvent("UserBought", couponList));
+                    }
+                });
+    }
+
+
+    //我关注的
+    public void getUserFollowByRxRetrofit(String userid) {
+
+        ApiManager.getInstance().
+                getRetrofitService()
+                .getFollowList(userid)
+                .map(new Function<CouponBean, ArrayList<Coupon>>() {
+                    @Override
+                    public ArrayList<Coupon> apply(CouponBean bean) {
+                        return bean.getResult();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Coupon>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        addDisposable(d);
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println("user follow list size = " + couponList.size());
+                        EventBus.getDefault().post(new CouponListEvent("UserFollow", couponList));
+                    }
+                });
+    }
+
+
+    //搜索
+
+    /**
+     *
+     * @param keyWord 搜索关键字
+     * @param order 排序方式
+     */
+    public void getSearchResultByRxRetrofit(String keyWord, String order) {
+
+        ApiManager.getInstance().
+                getRetrofitService()
+                .getSearchResultList(keyWord, order)
+                .map(new Function<CouponBean, ArrayList<Coupon>>() {
+                    @Override
+                    public ArrayList<Coupon> apply(CouponBean bean) {
+                        return bean.getResult();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Coupon>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        addDisposable(d);
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println("search result list size = " + couponList.size());
+                        EventBus.getDefault().post(new CouponListEvent("UserSearch", couponList));
+                    }
+                });
+    }
 }
