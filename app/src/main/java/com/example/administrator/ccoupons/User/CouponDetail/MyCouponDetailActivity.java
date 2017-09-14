@@ -71,13 +71,15 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
         System.out.println("received response = " + response);
         try {
             JSONObject obj = new JSONObject(response);
-            if (response.contains("result")) {
-                this.isOnsale = !this.isOnsale;
-                System.out.println("now on sale stat = " + this.isOnsale);
-                Toast.makeText(this, "操作成功", Toast.LENGTH_SHORT).show();
+            String result = obj.getString("result");
+            if (result.equals("200")) { //状态修改成功
+                Toast.makeText(getApplicationContext(), "修改成功！", Toast.LENGTH_SHORT).show();
+                isOnsale = !isOnsale;
             }
-            else
-                Toast.makeText(this, "已经上架/下架！", Toast.LENGTH_SHORT).show();
+            else {
+                if (result.equals("113") || result.equals("114"))
+                    Toast.makeText(getApplicationContext(), "遇到了错误，请刷新后重试", Toast.LENGTH_SHORT).show();
+            }
             refreshStat();
         } catch (Exception e) {
             e.printStackTrace();

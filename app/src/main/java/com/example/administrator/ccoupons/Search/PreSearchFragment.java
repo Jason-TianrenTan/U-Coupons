@@ -103,6 +103,8 @@ public class PreSearchFragment extends Fragment {
                     String result = resultList.get(position);
                     Intent intent = new Intent(mContext, SearchResultActivity.class);
                     intent.putExtra("search_string", result);
+                    if (catId != null)
+                        intent.putExtra("categoryId", catId);
                     userInfoManager.addHistory(result);
                     startActivity(intent);
                 }

@@ -46,7 +46,7 @@ import butterknife.OnClick;
 public class SearchResultActivity extends AppCompatActivity {
 
 
-    SearchResultFragment fragment;
+    SearchCommonFragment fragment;
     public static final int SEARCH_MAX_RESULT = 4;//最大获取结果数
     private String catId;
 
@@ -161,14 +161,21 @@ public class SearchResultActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         catId = getIntent().getStringExtra("categoryId");
+        System.out.println("cat id = " + catId);
         bindViews();
 
         requestString = getIntent().getStringExtra("search_string");
         editText.setText(requestString);
 
-        fragment = new SearchResultFragment();
         Bundle bundle = new Bundle();
         bundle.putString("keyWord", requestString);
+        if (catId != null) {
+            bundle.putString("catId", catId);
+            System.out.println("put string in bundle 'catid = '" + catId);
+            fragment = new SearchCatResultFragment();
+        }
+        else
+            fragment = new SearchResultFragment();
         fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.search_result_fragment, fragment);

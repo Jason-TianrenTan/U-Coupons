@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -36,17 +38,19 @@ public class SellerSoldFragment extends CouponCommonFragment {
         }
     }
 
-    @Override
-    public void initData() {
-        adapter = new SellerSoldAdapter(adapterList);
-    //    new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp)getActivity().getApplicationContext()).getUserId());//TODO: TO BE CHANGED
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(CouponModifiedEvent event) {
+        initData();
     }
 
+
     @Override
-    public void setData(ArrayList<Coupon> cList) {
-        super.setData(cList);
-        recyclerView.setAdapter(adapter);
-        System.out.println("at set data, list size = " + cList.size());
-        requestResults(0, 5);
+    public void initData() {
+        String sellerId = getArguments().getString("sellerId");
+        adapterList = new ArrayList<>();
+        adapter = new SellerSoldAdapter(adapterList);
+        new UniversalPresenter().getSellerSoldByRxRetrofit(sellerId);//TODO: TO BE CHANGED
     }
+
 }

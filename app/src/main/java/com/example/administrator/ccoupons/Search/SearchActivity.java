@@ -45,6 +45,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         catId = getIntent().getStringExtra("type");
+        System.out.println("at oncreate, catid = " + catId);
 
         userInfoManager = new UserInfoManager(this);
         searchText = (EditText) findViewById(R.id.input_search);
@@ -52,6 +53,8 @@ public class SearchActivity extends AppCompatActivity {
 
         historyFragment = new SearchHistoryFragment();
         preSearchFragment = new PreSearchFragment();
+        if (catId != null)
+            historyFragment.setCatId(catId);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
@@ -201,6 +204,7 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
         intent.putExtra("categoryId", catId);
+        System.out.println("put extra, requestString = " + requestStr + ", catid = " + catId);
         userInfoManager.addHistory(requestStr);
         historyFragment.addHistory(requestStr);
         startActivity(intent);

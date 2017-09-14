@@ -33,6 +33,7 @@ public class SearchHistoryFragment extends Fragment {
     private HistoryAdapter adapter;
     private ArrayList<String> mHistoryList;
     private UserInfoManager userInfoManager;
+    private String catId = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +62,9 @@ public class SearchHistoryFragment extends Fragment {
 
     }
 
+    public void setCatId(String catId) {
+        this.catId = catId;
+    }
     //确定清空记录对话框
     private void showClearDialog() {
         final AlertDialog.Builder clearDialog =
@@ -148,6 +152,8 @@ public class SearchHistoryFragment extends Fragment {
                         //TODO: 启动，用historyString
                         Intent intent = new Intent(getActivity(), SearchResultActivity.class);
                         intent.putExtra("search_string", historyString);
+                        if (catId != null)
+                            intent.putExtra("categoryId", catId);
                         startActivity(intent);
                         addHistory(historyString);
                     }

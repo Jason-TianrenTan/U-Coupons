@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:text="qwerty"
+                        android:text="123456"
                         android:id="@+id/Login_passwordEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

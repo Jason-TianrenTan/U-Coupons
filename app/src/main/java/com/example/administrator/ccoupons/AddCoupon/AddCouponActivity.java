@@ -2,6 +2,7 @@ package com.example.administrator.ccoupons.AddCoupon;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -10,10 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,6 +29,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -37,6 +43,7 @@ public class AddCouponActivity extends AppCompatActivity {
     private EditText couponListPriceText;
     private ImageView couponImg;
     private TextView nextButton;
+    private ZLoadingDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +51,65 @@ public class AddCouponActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_coupon);
         bindViews();
         getCouponInfo();
-        if (coupon != null) {
-            couponEvalText.setText(coupon.getValue() + "");
-            //TODO:如果一定要添加图片的话 请修改
-            if (coupon.getPic() != null && !coupon.getPic().equals("")) {
-                Glide.with(this)
-                        .load(coupon.getPic())
-                        .into(couponImg);
-            }
-            couponNameText.setText(coupon.getProduct());
-            couponBrandText.setText(coupon.getBrandName());
-            couponDiscountText.setText(coupon.getDiscount());
-            couponCatText.setText(coupon.getCategory());
-            StringBuilder sb = new StringBuilder("");
-            String[] constraints = coupon.getConstraints();
-            for (int i = 0; i < constraints.length; i++) {
-                sb.append((i + 1) + ". " + constraints[i] + "\n");
-            }
-            couponConstraintsText.setText(sb.toString());
-        }
+        if (coupon != null)
+            requestCouponValue();
     }
+
+
+    //请求优惠券估值
+    private void requestCouponValue() {
+        String url = GlobalConfig.base_URL + GlobalConfig.postGetEvaluation_URL;
+        HashMap<String, String> map = new HashMap<>();
+        map.put("discount", coupon.getDiscount());
+        dialog = new ZLoadingDialog(AddCouponActivity.this);
+        dialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)
+                .setLoadingColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setCanceledOnTouchOutside(false)
+                .setHintText("正在获取优惠券估值...")
+                .show();
+        ConnectionManager connectionManager = new ConnectionManager(url, map, dialog);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                parseMessage(response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+            }
+        });
+        connectionManager.connect();
+    }
+
+
+    private void parseMessage(String response) {
+        dialog.dismiss();
+        System.out.println("Response = " + response);
+        couponEvalText.setText(coupon.getValue() + "");
+        //TODO:如果一定要添加图片的话 请修改
+        if (coupon.getPic() != null && !coupon.getPic().equals("")) {
+            Glide.with(this)
+                    .load(coupon.getPic())
+                    .into(couponImg);
+        }
+        couponNameText.setText(coupon.getProduct());
+        couponBrandText.setText(coupon.getBrandName());
+        couponDiscountText.setText(coupon.getDiscount());
+        couponCatText.setText(coupon.getCategory());
+        StringBuilder sb = new StringBuilder("");
+        String[] constraints = coupon.getConstraints();
+        for (int i = 0; i < constraints.length; i++) {
+            sb.append((i + 1) + ". " + constraints[i] + "\n");
+        }
+        couponConstraintsText.setText(sb.toString());
+    }
+
 
     private void getCouponInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");

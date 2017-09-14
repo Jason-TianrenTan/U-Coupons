@@ -4,14 +4,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -35,94 +36,162 @@ import com.jph.takephoto.model.TResult;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class FillFormActivity extends AppCompatActivity {
 
 
     public static int REQUEST_CATEGORY = 6;
+    @BindView(R.id._toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.coupon_picture)
+    ImageView couponPicture;
+    @BindView(R.id.form_product_edittext)
+    ClearableEditText productNameText;
+    @BindView(R.id.form_product_inputlayout)
+    TextInputLayout productInputLayout;
+    @BindView(R.id.form_brand_edittext)
+    ClearableEditText brandNameText;
+    @BindView(R.id.form_brand_inputlayout)
+    TextInputLayout brandInputLayout;
+    @BindView(R.id.form_category_edittext)
+    EditText categoryEditText;
+    @BindView(R.id.form_discount_edittext)
+    ClearableEditText discountText;
+    @BindView(R.id.form_discount_inputlayout)
+    TextInputLayout discountInputLayout;
+    @BindView(R.id.form_expire_edittext)
+    ClearableEditText expireText;
+    @BindView(R.id.form_expire_inputlayout)
+    TextInputLayout expireInputLayout;
+    @BindView(R.id.form_scrollview)
+    NestedScrollView scrollview;
+
+    @OnClick(R.id.coupon_add_picture)
+    public void onClick() {
+        View view = getLayoutInflater().inflate(R.layout.portrait_bottom_dialog, null);
+        TextView tv_account = (TextView) view.findViewById(R.id.tv_take_photo);
+        TextView tv_compare = (TextView) view.findViewById(R.id.tv_from_album);
+        final Dialog mBottomSheetDialog = new Dialog(FillFormActivity.this, R.style.MaterialDialogSheet);
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
+        tv_account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(FillFormActivity.this, "拍照", Toast.LENGTH_SHORT).show();
+                takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_TAKE_NOT_CROP, new TakePhotoUtil.SimpleTakePhotoListener() {
+                    @Override
+                    public void takeSuccess(TResult result) {
+                        path = result.getImage().getCompressPath();
+                        System.out.println("success:" + path);
+                        System.out.println("success");
+                        hasImage = true;
+                        updatePic();
+                    }
+                });
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        tv_compare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(FillFormActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
+                takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_SELECT_NOT_CROP, new TakePhotoUtil.SimpleTakePhotoListener() {
+                    @Override
+                    public void takeSuccess(TResult result) {
+                        path = result.getImage().getCompressPath();
+                        System.out.println("success:" + path);
+                        System.out.println("success");
+                        hasImage = true;
+                        updatePic();
+                    }
+                });
+                mBottomSheetDialog.dismiss();
+            }
+        });
+    }
+
+    @OnClick(R.id.form_category_edittext)
+    public void onClick1() {
+        Intent intent = new Intent(FillFormActivity.this, ChooseCategoryActivity.class);
+        //TODO: intialize intent
+        startActivityForResult(intent, REQUEST_CATEGORY);
+    }
+
+    @OnClick(R.id.form_next_button)
+    public void onClick2() {
+        valid = true;
+        Intent intent = new Intent(FillFormActivity.this, AddConstraintsActivity.class);
+        Coupon coupon = new Coupon();
+        String productName = productNameText.getText().toString(),
+                brandName = brandNameText.getText().toString(),
+                discount = discountText.getText().toString(),
+                category = categoryEditText.getText().toString(),
+                expireDate = expireText.getText().toString();
+
+        if (!hasImage) {
+            valid = false;
+            Toast.makeText(getApplicationContext(), "必须上传一张优惠券的图片!", Toast.LENGTH_SHORT).show();
+        }
+
+        if (productName.length() == 0) {
+            valid = false;
+            productInputLayout.setError("请输入商品名");
+        }
+        if (brandName.length() == 0) {
+            valid = false;
+            brandInputLayout.setError("请输入品牌名");
+        }
+        if (discount.length() == 0) {
+            valid = false;
+            discountInputLayout.setError("请输入优惠详情");
+        }
+        if (category.length() == 0) {
+            valid = false;
+            Toast.makeText(getApplicationContext(), "请选择种类", Toast.LENGTH_SHORT).show();
+        }
+        if (expireDate.length() == 0) {
+            valid = false;
+            expireInputLayout.setError("请输入过期时间");
+        }
+
+        if (valid) {
+            coupon.setProduct(productName);
+            coupon.setPic(path);
+            coupon.setExpiredtime(expireDate);
+            coupon.setBrandName(brandName);
+            coupon.setDiscount(discount);
+            for (int i = 0; i < GlobalConfig.Categories.nameList.length; i++) {
+                if (category.equals(GlobalConfig.Categories.nameList[i]))
+                    coupon.setCategory((i + 1) + "");
+            }
+            intent.putExtra("coupon", coupon);
+            startActivity(intent);
+        }
+
+    }
     private boolean hasImage = false;
-    private boolean requestFocus = false;
-    private EditText categoryEditText;
-    private ClearableEditText productNameText,
-            brandNameText,
-            discountText,
-            expireText;
-    private RecyclerView recyclerView;
-    private ConstraintsAdapter adapter;
-    private NestedScrollView scrollView;
-    private ArrayList<String> constraintList;
-    private LinearLayout addpicture;
-    private ImageView couponPicture;
     private TakePhotoUtil takePhotoUtil;
     private String path = "";
-    private TextView nextButton;
-
-    private TextInputLayout productInputLayout, brandInputLayout, discountInputLayout, expireInputLayout, addressInputLayout;
-
     private boolean valid = true;
 
-    private void bindViews() {
-        categoryEditText = (EditText) findViewById(R.id.form_category_edittext);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fill_form);
+        ButterKnife.bind(this);
+
+        takePhotoUtil = new TakePhotoUtil(this);
+        takePhotoUtil.onCreate(savedInstanceState);
+
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.arrow);
         drawable.setBounds(0, 0, 40, 40);
         categoryEditText.setCompoundDrawables(null, null, drawable, null);
-
-        nextButton = (TextView) findViewById(R.id.form_next_button);
-        scrollView = (NestedScrollView) findViewById(R.id.form_scrollview);
-        nextButton = (TextView) findViewById(R.id.form_next_button);
-        productNameText = (ClearableEditText) findViewById(R.id.form_product_edittext);
-        brandNameText = (ClearableEditText) findViewById(R.id.form_brand_edittext);
-        discountText = (ClearableEditText) findViewById(R.id.form_discount_edittext);
-        recyclerView = (RecyclerView) findViewById(R.id.form_constraints_recyclerview);
-        addpicture = (LinearLayout) findViewById(R.id.coupon_add_picture);
-        couponPicture = (ImageView) findViewById(R.id.coupon_picture);
-        expireText = (ClearableEditText) findViewById(R.id.form_expire_edittext);
-        expireInputLayout = (TextInputLayout) findViewById(R.id.form_expire_inputlayout);
-
-        productInputLayout = (TextInputLayout) findViewById(R.id.form_product_inputlayout);
-        brandInputLayout = (TextInputLayout) findViewById(R.id.form_brand_inputlayout);
-        discountInputLayout = (TextInputLayout) findViewById(R.id.form_discount_inputlayout);
-        constraintList = new ArrayList<>();
-        constraintList.add("输入使用限制");
-        constraintList.add("输入使用限制");
-        constraintList.add("输入使用限制");
-        //TODO: adapter
-
-        adapter = new ConstraintsAdapter();
-        recyclerView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        final ImageView addButton = (ImageView) findViewById(R.id.add_constraint_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int size = constraintList.size();
-                constraintList.add("点击输入限制");
-                requestFocus = true;
-                adapter.notifyItemInserted(size);
-
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
-                    }
-                });
-            }
-        });
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<String> NConstraintList = new ArrayList<String>();
-                for (String str : constraintList) {
-                    if (str.length() > 0)
-                        NConstraintList.add(str);
-                }
-                //   Intent intent = new Intent(FillFormActivity.this, AddCouponActivity.class);
-            }
-        });
-
         categoryEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -133,141 +202,8 @@ public class FillFormActivity extends AppCompatActivity {
                 }
             }
         });
-        categoryEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(FillFormActivity.this, ChooseCategoryActivity.class);
-                //TODO: intialize intent
-                startActivityForResult(intent, REQUEST_CATEGORY);
-            }
-        });
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                valid = true;
-                Intent intent = new Intent(FillFormActivity.this, AddCouponActivity.class);
-                Coupon coupon = new Coupon();
-                String productName = productNameText.getText().toString(),
-                        brandName = brandNameText.getText().toString(),
-                        discount = discountText.getText().toString(),
-                        category = categoryEditText.getText().toString(),
-                        expireDate = expireText.getText().toString();
-
-                if (!hasImage) {
-                    valid = false;
-                    Toast.makeText(getApplicationContext(), "必须上传一张优惠券的图片!", Toast.LENGTH_SHORT).show();
-                }
-
-                if (productName.length() == 0) {
-                    valid = false;
-                    productInputLayout.setError("请输入商品名");
-                }
-                if (brandName.length() == 0) {
-                    valid = false;
-                    brandInputLayout.setError("请输入品牌名");
-                }
-                if (discount.length() == 0) {
-                    valid = false;
-                    discountInputLayout.setError("请输入优惠详情");
-                }
-                if (category.length() == 0) {
-                    valid = false;
-                    Toast.makeText(getApplicationContext(), "请选择种类", Toast.LENGTH_SHORT).show();
-                }
-                if (expireDate.length() == 0) {
-                    valid = false;
-                    expireInputLayout.setError("请输入过期时间");
-                }
-
-                if (valid) {
-                    coupon.setProduct(productName);
-                    coupon.setPic(path);
-                    coupon.setExpiredtime(expireDate);
-                    coupon.setBrandName(brandName);
-                    coupon.setDiscount(discount);
-                    for (int i = 0; i< GlobalConfig.Categories.nameList.length; i++) {
-                        if (category.equals(GlobalConfig.Categories.nameList[i]))
-                            coupon.setCategory((i + 1) + "");
-                    }
-                    ArrayList<String> nCList = new ArrayList<String>();
-                    for (String str : constraintList)
-                        if (str.length() > 0)
-                            nCList.add(str);
-                    String[] arrStr = new String[nCList.size()];
-                    for (int i = 0; i < arrStr.length; i++)
-                        arrStr[i] = nCList.get(i);
-                    coupon.setConstraints(arrStr);
-                    intent.putExtra("coupon", coupon);
-                    startActivity(intent);
-                }
-
-            }
-        });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fill_form);
-
-        bindViews();
-        takePhotoUtil = new TakePhotoUtil(this);
-        takePhotoUtil.onCreate(savedInstanceState);
-        setAddpicture();
-
-    }
-
-    private void setAddpicture() {
-        addpicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view = getLayoutInflater().inflate(R.layout.portrait_bottom_dialog, null);
-                TextView tv_account = (TextView) view.findViewById(R.id.tv_take_photo);
-                TextView tv_compare = (TextView) view.findViewById(R.id.tv_from_album);
-                final Dialog mBottomSheetDialog = new Dialog(FillFormActivity.this, R.style.MaterialDialogSheet);
-                mBottomSheetDialog.setContentView(view);
-                mBottomSheetDialog.setCancelable(true);
-                mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
-                mBottomSheetDialog.show();
-                tv_account.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(FillFormActivity.this, "拍照", Toast.LENGTH_SHORT).show();
-                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_TAKE_NOT_CROP, new TakePhotoUtil.SimpleTakePhotoListener() {
-                            @Override
-                            public void takeSuccess(TResult result) {
-                                path = result.getImage().getCompressPath();
-                                System.out.println("success:" + path);
-                                System.out.println("success");
-                                hasImage = true;
-                                updatePic();
-                            }
-                        });
-                        mBottomSheetDialog.dismiss();
-                    }
-                });
-                tv_compare.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(FillFormActivity.this, "从相册中选择", Toast.LENGTH_SHORT).show();
-                        takePhotoUtil.takePhoto(TakePhotoUtil.Select_type.PICK_BY_SELECT_NOT_CROP, new TakePhotoUtil.SimpleTakePhotoListener() {
-                            @Override
-                            public void takeSuccess(TResult result) {
-                                path = result.getImage().getCompressPath();
-                                System.out.println("success:" + path);
-                                System.out.println("success");
-                                hasImage = true;
-                                updatePic();
-                            }
-                        });
-                        mBottomSheetDialog.dismiss();
-                    }
-                });
-            }
-        });
-    }
 
     private void updatePic() {
         Glide.with(this)
@@ -275,88 +211,6 @@ public class FillFormActivity extends AppCompatActivity {
                 .into(couponPicture);
     }
 
-
-    public class ConstraintsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-        private Context mContext;
-
-        public ConstraintsAdapter() {
-
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (mContext == null) {
-                mContext = parent.getContext();
-            }
-            View view = LayoutInflater.from(mContext).inflate(R.layout.constraint_item, parent, false);
-            return new ConstraintsViewHolder(view);
-
-        }
-
-        @Override
-        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            final String constraint = constraintList.get(position);
-            final ConstraintsViewHolder viewHolder = (ConstraintsViewHolder) holder;
-            viewHolder.editText.setText(constraintList.get(position));
-            viewHolder.editText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    System.out.println("current change at index = " + holder.getAdapterPosition());
-                    constraintList.set(holder.getAdapterPosition(), viewHolder.editText.getText().toString());
-                }
-            });
-            viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    System.out.println("Delete index " + position);
-                    constraintList.remove(position);
-                    adapter.notifyItemRemoved(position);
-                    adapter.notifyItemRangeChanged(0, constraintList.size());
-                }
-            });
-            if (requestFocus && position == constraintList.size() - 1) {
-                ((ConstraintsViewHolder) holder).editText.postDelayed(new Runnable() {
-                    @Override
-
-                    public void run() {
-                        ((ConstraintsViewHolder) holder).editText.requestFocus();
-                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
-                }, 300);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return constraintList.size();
-        }
-
-
-        public class ConstraintsViewHolder extends RecyclerView.ViewHolder {
-            LinearLayout rootView;
-            EditText editText;
-            ImageView deleteButton;
-
-            public ConstraintsViewHolder(View view) {
-                super(view);
-                rootView = (LinearLayout) view;
-                editText = (EditText) view.findViewById(R.id.form_constraint_edittext);
-                deleteButton = (ImageView) view.findViewById(R.id.delete_constraint_button);
-            }
-        }
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
