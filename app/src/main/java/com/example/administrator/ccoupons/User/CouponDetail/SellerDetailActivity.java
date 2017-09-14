@@ -4,11 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -36,46 +37,38 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SellerDetailActivity extends AppCompatActivity{
-    @BindView(R.id.seller_name_text)
-    TextView sellerNameText;
+public class SellerDetailActivity extends AppCompatActivity {
+
+
+    SellerOnsaleFragment onsaleFragment;
+    SellerSoldFragment soldFragment;
+    int screen_width = -1;
+    UpdateUIReceiver receiver;
     @BindView(R.id.seller_avatar_imageview)
     CircleImageView sellerAvatar;
+    @BindView(R.id.seller_name_text)
+    TextView sellerNameText;
+    @BindView(R.id.register_main_toolbar)
+    Toolbar toolbar;
     @BindView(R.id.seller_onsale_text)
     TextView onsaleText;
     @BindView(R.id.seller_sold_text)
     TextView soldText;
     @BindView(R.id.seller_coupon_scrollbar)
     LinearLayout scrollBar;
-
-    private CouponCommonFragment onsaleFragment = new SellerOnsaleFragment(),
-            soldFragment = new SellerSoldFragment();
-
-    private ArrayList<Coupon> onsaleList, soldList;
-
-    private int screen_width;
-
-    private int index = 0;
-
-    private UpdateUIReceiver receiver;
+    @BindView(R.id.seller_coupon_viewpager)
+    ViewPager sellerCouponViewpager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_detail);
         ButterKnife.bind(this);
-
         initViews();
-        initSlidingBar();
-
-        selectPage(index);
-
+        selectPage(0);
         initReceiver();
+        initTabs();
 
-        String iStr = getIntent().getStringExtra("index");
-        if (iStr != null)
-            index = Integer.parseInt(iStr);
-        requestData();
     }
 
 
@@ -91,57 +84,11 @@ public class SellerDetailActivity extends AppCompatActivity{
                     .load(url)
                     .into(sellerAvatar);
         }
-        onsaleList = new ArrayList<>();
-        soldList = new ArrayList<>();
-    }
-
-    //解析商家列表
-    private void parseMessage(String response) {
-        try {
-            JSONObject mainObj = new JSONObject(response);
-
-            //on sale
-            JSONArray onsale_Arr = mainObj.getJSONArray("onSale");
-            for (int i = 0; i < onsale_Arr.length(); i++) {
-                JSONObject obj = onsale_Arr.getJSONObject(i);
-                Coupon coupon = Coupon.decodeFromJSON(obj);
-                onsaleList.add(coupon);
-            }
-
-            //JSONArray
-            JSONArray sold_Arr = mainObj.getJSONArray("sold");
-            for (int i = 0; i < sold_Arr.length(); i++) {
-                JSONObject obj = sold_Arr.getJSONObject(i);
-                Coupon coupon = Coupon.decodeFromJSON(obj);
-                soldList.add(coupon);
-            }
-
-
-            initData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        WindowManager wm = getWindowManager();
+        screen_width = wm.getDefaultDisplay().getWidth();
     }
 
 
-    private void initData() {
-
-        //TODO:init coupons
-        if (onsaleList.size() > 0) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("coupons", onsaleList);
-            bundle.putSerializable("index", 0);
-
-
-        }
-        if (soldList.size() > 0) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("coupons", soldList);
-            bundle.putSerializable("index", 1);
-        }
-
-        initTabs();
-    }
 
 
     public void initReceiver() {
@@ -166,12 +113,20 @@ public class SellerDetailActivity extends AppCompatActivity{
     private void initTabs() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         ArrayList<CouponCommonFragment> frList = new ArrayList<>();
+        onsaleFragment = new SellerOnsaleFragment();
+        soldFragment = new SellerSoldFragment();
+        Bundle onsaleBundle = new Bundle(),
+                soldBundle = new Bundle();
+        onsaleBundle.putString("sellerId", getIntent().getStringExtra("id"));
+        soldBundle.putString("sellerId", getIntent().getStringExtra("id"));
+        onsaleFragment.setArguments(onsaleBundle);
+        soldFragment.setArguments(soldBundle);
         frList.add(onsaleFragment);
         frList.add(soldFragment);
         MyCouponFragmentAdapter frAdapter = new MyCouponFragmentAdapter(fragmentManager, frList);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.seller_coupon_viewpager);
         viewPager.setAdapter(frAdapter);
-        viewPager.setCurrentItem(index);
+        viewPager.setCurrentItem(0);
 
         onsaleText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -207,14 +162,8 @@ public class SellerDetailActivity extends AppCompatActivity{
             }
         });
 
-        selectPage(index);
     }
 
-
-    private void initSlidingBar() {
-        WindowManager wm = getWindowManager();
-        screen_width = wm.getDefaultDisplay().getWidth();
-    }
 
     private void slideTo(int pos) {
         int preWidth = screen_width / 2;
@@ -240,29 +189,4 @@ public class SellerDetailActivity extends AppCompatActivity{
         }
     }
 
-    //获取卖家信息
-    private void requestData() {
-        String url = GlobalConfig.base_URL + GlobalConfig.requestSellerInfo_URL;
-        HashMap<String, String> map = new HashMap<>();
-        String sellerId = getIntent().getStringExtra("id");
-        map.put("sellerID", sellerId);
-        ConnectionManager connectionManager = new ConnectionManager(url, map);
-        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
-            @Override
-            public void onConnectionSuccess(String response) {
-                parseMessage(response);
-            }
-
-            @Override
-            public void onConnectionTimeOut() {
-
-            }
-
-            @Override
-            public void onConnectionFailed() {
-
-            }
-        });
-        connectionManager.connect();
-    }
 }

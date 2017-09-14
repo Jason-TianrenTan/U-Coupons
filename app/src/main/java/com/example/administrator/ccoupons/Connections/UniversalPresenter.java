@@ -289,7 +289,7 @@ public class UniversalPresenter extends BasePresenter{
      * @param order 排序方式
      */
     public void getSearchResultByRxRetrofit(String keyWord, String order) {
-
+        System.out.println("Search --> " + keyWord + ", " + order);
         ApiManager.getInstance().
                 getRetrofitService()
                 .getSearchResultList(keyWord, order)
@@ -322,4 +322,118 @@ public class UniversalPresenter extends BasePresenter{
                     }
                 });
     }
+
+
+    //分类搜索
+    public void getCatSearchResultByRxRetrofit(String keyWord, String order, String catId) {
+        System.out.println("Category Search --> " + keyWord + ", " + order + ", " + catId);
+        ApiManager.getInstance().
+                getRetrofitService()
+                .getCatSearchResultList(keyWord, order, catId)
+                .map(new Function<CouponBean, ArrayList<Coupon>>() {
+                    @Override
+                    public ArrayList<Coupon> apply(CouponBean bean) {
+                        return bean.getResult();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Coupon>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        addDisposable(d);
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Coupon> couponList) {
+                        System.out.println("search result list size = " + couponList.size());
+                        EventBus.getDefault().post(new CouponListEvent("UserSearch", couponList));
+                    }
+                });
+    }
+
+
+    /**
+     *
+     * @param sellerId
+     */
+    public void getSellerOnsaleByRxRetrofit(String sellerId) {
+        ApiManager.getInstance().
+                getRetrofitService()
+                .getSellerOnsaleList(sellerId)
+                .map(new Function<CouponBean, ArrayList<Coupon>>() {
+                    @Override
+                    public ArrayList<Coupon> apply(CouponBean bean) {
+                        return bean.getResult();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Coupon>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        addDisposable(d);
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Coupon> couponList) {
+                        EventBus.getDefault().post(new CouponListEvent("SellerOnsale", couponList));
+                    }
+                });
+    }
+
+
+    /**
+     *
+     * @param sellerId
+     */
+    public void getSellerSoldByRxRetrofit(String sellerId) {
+        ApiManager.getInstance().
+                getRetrofitService()
+                .getSellerSoldList(sellerId)
+                .map(new Function<CouponBean, ArrayList<Coupon>>() {
+                    @Override
+                    public ArrayList<Coupon> apply(CouponBean bean) {
+                        return bean.getResult();
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Coupon>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        addDisposable(d);
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Coupon> couponList) {
+                        EventBus.getDefault().post(new CouponListEvent("SellerSold", couponList));
+                    }
+                });
+    }
+
 }

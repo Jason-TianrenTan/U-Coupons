@@ -1,9 +1,5 @@
 package com.example.administrator.ccoupons.Search;
 
-/**
- * Created by Administrator on 2017/9/13 0013.
- */
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +7,21 @@ import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
-import com.example.administrator.ccoupons.MyApp;
-import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
-import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
-public class SearchResultFragment extends SearchCommonFragment {
+/**
+ * Created by Administrator on 2017/9/13 0013.
+ */
+
+public class SearchCatResultFragment extends SearchCommonFragment {
 
 
-    private String keyWord = null, order = "";
+    private String keyWord = null, order = "", catId = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,13 +48,14 @@ public class SearchResultFragment extends SearchCommonFragment {
     public void initData() {
         if (keyWord == null)
             keyWord = getArguments().getString("keyWord");
+        if (catId == null)
+            catId = getArguments().getString("catId");
         clear();
-        System.out.println("at init data in normal search, key word = " + keyWord + ", order = " + order);
         adapterList = new ArrayList<>();
         adapter = new ResultAdapter(adapterList);
-        new UniversalPresenter().getSearchResultByRxRetrofit(keyWord, order);
+        System.out.println("at init data in fragment, keyWord = " + keyWord + ", catId = " + catId);
+        new UniversalPresenter().getCatSearchResultByRxRetrofit(keyWord, order, catId);
     }
-
 
 
     private void clear() {

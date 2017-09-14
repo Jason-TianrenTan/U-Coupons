@@ -34,9 +34,6 @@ public class UserMyCouponActivity extends AppCompatActivity {
 
 
     int screen_width = 0;
-    ArrayList<Coupon> usedList,
-                        onsaleList,
-                        unsoldList;
     CouponCommonFragment usedFragment = new UserUsedFragment(),
                         onsaleFragment = new UserOnsaleFragment(),
                         unsoldFragment = new UserUnsoldFragment();

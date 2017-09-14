@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.Search;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +54,7 @@ public abstract class SearchCommonFragment extends Fragment {
             adapterList;
     protected ResultAdapter adapter;
     protected Context mContext;
+    protected String order;
 
     private Unbinder unbinder;
     private PtrFrameLayout currentRefreshLayout = null;
@@ -91,15 +93,14 @@ public abstract class SearchCommonFragment extends Fragment {
             }
 
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
+            public void onRefreshBegin(final PtrFrameLayout frame) {
                 currentRefreshLayout = frame;
-                //initData();
-                /*
-                new UniversalPresenter().getUserUsedByRxRetrofit(((MyApp) getActivity().getApplicationContext()).getUserId());
-                new UniversalPresenter().getUserOnsaleByRxRetrofit(((MyApp) getActivity().getApplicationContext()).getUserId());
-                new UniversalPresenter().getUserUnsoldByRxRetrofit(((MyApp) getActivity().getApplicationContext()).getUserId());*/
-                EventBus.getDefault().post(new CouponModifiedEvent());
-
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        frame.refreshComplete();
+                    }
+                }, 800);
             }
         });
     }
@@ -158,6 +159,12 @@ public abstract class SearchCommonFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = context;
+    }
+
+
+    public void requestSort(String order) {
+        this.order = order;
+        initData();
     }
 
 

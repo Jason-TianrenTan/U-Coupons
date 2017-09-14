@@ -44,7 +44,7 @@ public class GlobalConfig {
     public static final String requestOwnList_URL = "/getOwnList";//获取我的优惠券
 
     public static final String requestCatRecommend_URL = "/searchByCategory";//分类推荐
-    public static final String requestCatSearch_URL = "/searchInCertainCategory";//按分类搜索
+    public static final String requestCatSearch_URL = "/searchInCategory";//按分类搜索
     public static final String requestCatPreSearch_URL = "/preSearchInCategory";//分类下预搜索
 
     public static final String requestSellerInfo_URL = "/sellerInformation";//获取卖家信息

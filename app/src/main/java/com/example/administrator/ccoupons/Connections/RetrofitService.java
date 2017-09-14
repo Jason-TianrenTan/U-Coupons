@@ -48,5 +48,18 @@ public interface RetrofitService {
     @POST("/searchForAndroid")//搜索
     Observable<CouponBean> getSearchResultList(@Field("keyWord") String keyWord, @Field("order") String order);
 
+    @FormUrlEncoded
+    @POST("/searchInCategory")//分类搜索
+    Observable<CouponBean> getCatSearchResultList(@Field("keyWord") String keyWord,
+                                                  @Field("order") String order, @Field("catId") String catId);
+
+    @FormUrlEncoded
+    @POST("/sellerOnSaleList")//卖家正在出售
+    Observable<CouponBean> getSellerOnsaleList(@Field("sellerID") String sellerId);
+
+
+    @FormUrlEncoded
+    @POST("/sellerSoldList")//卖家已卖出
+    Observable<CouponBean> getSellerSoldList(@Field("sellerID") String sellerId);
 
 }

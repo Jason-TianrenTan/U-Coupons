@@ -126,8 +126,9 @@
         <activity android:name=".Fragments.Message.MessageDetailActivity" />
         <activity android:name=".User.CouponDetail.SellerDetailActivity" />
         <activity android:name=".User.CouponDetail.MyCouponDetailActivity" />
-        <activity android:name=".User.CouponDetail.BaseDetailActivity"/>
-        <activity android:name=".User.CouponDetail.DisplayCouponDetailActivity"/>
+        <activity android:name=".User.CouponDetail.BaseDetailActivity" />
+        <activity android:name=".User.CouponDetail.DisplayCouponDetailActivity" />
+        <activity android:name=".AddCoupon.AddConstraintsActivity"></activity>
     </application>
 
 </manifest>
