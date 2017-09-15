@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/user_bg">
 
     <android.support.v7.widget.Toolbar
@@ -24,11 +25,13 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/uinf_portrait"
-                android:src="@drawable/mascot_nothing"
                 style="@style/user_portrait_layout"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginRight="15dp" />
+                android:layout_marginRight="15dp"
+                android:src="@drawable/mascot_nothing"
+                app:civ_border_color="@color/thistle"
+                app:civ_border_width="2dp" />
 
             <TextView
                 style="@style/user_text"
@@ -38,11 +41,11 @@
             <ImageView style="@style/user_img_arrow" />
         </LinearLayout>
 
-        <ImageView
-            style="@style/user_divider" />
+        <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/to_update_nickname">
+        <LinearLayout
+            android:id="@+id/to_update_nickname"
+            style="@style/user_option_layout">
 
             <TextView
                 android:id="@+id/user_name"
@@ -51,8 +54,9 @@
 
         <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/to_update_gender">
+        <LinearLayout
+            android:id="@+id/to_update_gender"
+            style="@style/user_option_layout">
 
             <TextView
                 android:id="@+id/user_sex"
@@ -67,8 +71,9 @@
 
         <ImageView style="@style/user_edgeline" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/to_update_phone">
+        <LinearLayout
+            android:id="@+id/to_update_phone"
+            style="@style/user_option_layout">
 
             <TextView
                 style="@style/user_text"
@@ -79,8 +84,9 @@
 
         <ImageView style="@style/user_divider" />
 
-        <LinearLayout style="@style/user_option_layout"
-            android:id="@+id/uinf_to_resetpw">
+        <LinearLayout
+            android:id="@+id/uinf_to_resetpw"
+            style="@style/user_option_layout">
 
             <TextView
                 style="@style/user_text"

@@ -95,6 +95,7 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     }
 
 
+
     private void initFragments() {
         categoryFragment = new CategoryFragment();
         userOptionFragment = new UserOptionFragment();
@@ -198,22 +199,28 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
         //TODO:parse JSON string
         messageList = new ArrayList<>();
         try {
+            MyApp app = (MyApp) getApplicationContext();
             JSONObject mainObj = new JSONObject(msg);
             JSONArray jsonArray = mainObj.getJSONArray("messageResult");
             JSONArray couponArray = mainObj.getJSONArray("couponResult");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
                 Message message = Message.decodeFromJSON(this, obj);
-                JSONObject couponObj = couponArray.getJSONObject(i);
-                String couponName = couponObj.getString("product");
-                message.setCouponName(couponName);
-                String listprice = couponObj.getString("listprice");
-                String img_url = couponObj.getString("pic");
-                message.setCouponPrice(listprice);
-                message.setCouponURL(img_url);
-                messageList.add(message);
+                if (app.getMessageList()!=null && !app.getMessageList().contains(message)) {
+                    JSONObject couponObj = couponArray.getJSONObject(i);
+                    String couponName = couponObj.getString("product");
+                    message.setCouponName(couponName);
+                    String listprice = couponObj.getString("listprice");
+                    String img_url = couponObj.getString("pic");
+                    String discount = couponObj.getString("discount");
+                    String expireTime = couponObj.getString("expiredtime");
+                    //TODO:set discount, set expiretime
+                    message.setCouponPrice(listprice);
+                    message.setCouponURL(img_url);
+                    messageList.add(message);
+                }
             }
-            MyApp app = (MyApp) getApplicationContext();
+
             app.setMessageList(messageList);
             sendNotification("您有新的消息");
             EventBus.getDefault().post(new MessageRefreshEvent());
