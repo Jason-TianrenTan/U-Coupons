@@ -1,12 +1,15 @@
 package com.example.administrator.ccoupons.User;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Data.DataHolder;
+=======
+import com.example.administrator.ccoupons.MyApp;
+>>>>>>> ttr
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 

@@ -10,7 +10,14 @@ import java.security.NoSuchAlgorithmException;
 
 public class PasswordEncoder {
 
-    public String EncodeByMd5(String str) throws NoSuchAlgorithmException {
+
+    /**
+     *
+     * @param str String to be encoded
+     * @return String after encoding
+     * @throws NoSuchAlgorithmException
+     */
+    public static String EncodeByMd5(String str) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         str += "UHui";
         md5.update(str.getBytes());
@@ -18,6 +25,12 @@ public class PasswordEncoder {
         return toHex(m);
     }
 
+
+    /**
+     * Change decimal into hex
+     * @param hash
+     * @return password in hex-encode
+     */
     public static final String toHex(byte hash[]) {
         StringBuffer buf = new StringBuffer(hash.length * 2);
         int i;

@@ -18,12 +18,14 @@ import com.example.administrator.ccoupons.Tools.RegisterCheck;
 
 public class RegisterPasswordActivity extends AppCompatActivity {
 
+
     private PasswordToggleEditText inputPass, confirmPass;
     private RegisterCheck checker = new RegisterCheck();
     private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,密码强度太弱".split(",");
     private boolean valid = false;
     private TextInputLayout firstlayout, confirmLayout;
     private String phoneString,password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

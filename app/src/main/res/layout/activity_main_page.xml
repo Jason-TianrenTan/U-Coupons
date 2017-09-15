@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<<<<<<< HEAD
     <LinearLayout
         android:id="@+id/bottom_nav_container"
         android:layout_width="match_parent"
@@ -36,11 +37,20 @@
 
         </LinearLayout>
     </LinearLayout>
+=======
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:id="@+id/main_bottombar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+>>>>>>> ttr
     <FrameLayout
         android:id="@+id/fragment_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F0F3F6"
+<<<<<<< HEAD
         android:layout_marginBottom="45dp"
         />
     <ImageView
@@ -51,4 +61,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/plus"/>
+=======
+        android:layout_above="@id/main_bottombar"/>
+
+
+>>>>>>> ttr
 </RelativeLayout>

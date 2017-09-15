@@ -13,6 +13,7 @@ import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
 public class UserSettingActivity extends SlideBackActivity {
+
     private Toolbar toolbar;
     private LinearLayout clear;
 
@@ -24,6 +25,7 @@ public class UserSettingActivity extends SlideBackActivity {
         setOnClickListeners();
     }
 
+
     private void initView(){
         toolbar = (Toolbar) findViewById(R.id.uset_toolbar);
         clear = (LinearLayout) findViewById(R.id.uset_clear);;
@@ -31,6 +33,7 @@ public class UserSettingActivity extends SlideBackActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 
     private void setOnClickListeners(){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -47,10 +50,18 @@ public class UserSettingActivity extends SlideBackActivity {
         });
     }
 
+
+    /**
+     * Show dialog confirming clear
+     */
     private void showClearDialog() {
         final AlertDialog.Builder clearDialog =
                 new AlertDialog.Builder(UserSettingActivity.this);
+<<<<<<< HEAD
         clearDialog.setMessage("确定要清空所有应用缓存（图片、优惠券信息、用户信息等）?");
+=======
+        clearDialog.setMessage("确定要清空搜索历史记录、用户登录信息以及图片等缓存?");
+>>>>>>> ttr
         clearDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @Override

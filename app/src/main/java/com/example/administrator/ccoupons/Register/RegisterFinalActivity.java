@@ -4,6 +4,11 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
+<<<<<<< HEAD
+=======
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+>>>>>>> ttr
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,24 +19,35 @@ import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Connections.RegisterThread;
 import com.example.administrator.ccoupons.CustomEditText.ClearableEditText;
-import com.example.administrator.ccoupons.Data.DataHolder;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.UI.CustomDialog;
+=======
+import com.example.administrator.ccoupons.Tools.PasswordEncoder;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
+>>>>>>> ttr
 
 import org.json.JSONObject;
 
 public class RegisterFinalActivity extends AppCompatActivity {
 
-    //127.0.0.1
 
+<<<<<<< HEAD
     private CustomDialog customDialog = null;
     private LoginInformationManager loginInformationManager;
     private RegisterThread thread;
     private final static String requestURL = DataHolder.base_URL + DataHolder.register_URL;
+=======
+    private String[] GenderChars = {"男", "女"};
+    private LoginInformationManager loginInformationManager;
+    private final static String requestURL = GlobalConfig.base_URL + GlobalConfig.register_URL;
+>>>>>>> ttr
     private Button button_next;
     private RadioGroup radioGroup;
     private int gender;
@@ -70,8 +86,12 @@ public class RegisterFinalActivity extends AppCompatActivity {
         }
     };
 
-    //处理返回回来的json
+    /**
+     * parse response string from server
+     * @param response
+     */
     private void parseMessage(String response) {
+        System.out.println("response = " + response);
         try {
             JSONObject jsonObject = new JSONObject(response);
             String errno = jsonObject.getString("errno");
@@ -134,6 +154,10 @@ public class RegisterFinalActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Login
+     */
     private void Login() {
         Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
         intent.putExtra("phone_number",phoneString)
@@ -141,7 +165,13 @@ public class RegisterFinalActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * Register
+     * @param nickname user's nickname
+     */
     private void Register(String nickname) {
+<<<<<<< HEAD
         //phone/email
         //password
         //nickname
@@ -152,6 +182,44 @@ public class RegisterFinalActivity extends AppCompatActivity {
         thread.start();
         customDialog = new CustomDialog(this, R.style.CustomDialog);
         customDialog.show();
+=======
+        String url_str = requestURL;
+        String md5pass = null;
+        HashMap<String, String> map = new HashMap<String, String>();
+        try {
+            md5pass = new PasswordEncoder().EncodeByMd5(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        map.put("username", phoneString);
+        map.put("password", md5pass);
+        map.put("nickname", nickname);
+        map.put("gender", GenderChars[gender]);
+
+        ZLoadingDialog dialog = new ZLoadingDialog(RegisterFinalActivity.this);
+        dialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)
+                .setLoadingColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setCanceledOnTouchOutside(false)
+                .show();
+        ConnectionManager connectionManager = new ConnectionManager(url_str, map, dialog);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                parseMessage(response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请稍后再试", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请稍后再试", Toast.LENGTH_SHORT).show();
+            }
+        });
+        connectionManager.connect();
+>>>>>>> ttr
     }
 
 

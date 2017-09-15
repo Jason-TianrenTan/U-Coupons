@@ -28,26 +28,19 @@ public class CouponsManager {
 
     public CouponsManager addCoupon(Coupon coupon) {
         ContentValues values = new ContentValues();
-        values.put("id", coupon.getCouponId());
-        values.put("name", coupon.getName());
+        values.put("id", coupon.getCouponid());
+        values.put("name", coupon.getProduct());
         values.put("brandId", coupon.getBrandName());
         values.put("catId", coupon.getCategory());
-        values.put("listPrice", coupon.getListPrice());
-        values.put("evaluatePrice", coupon.getEvaluatePrice());
+        values.put("listPrice", coupon.getListprice());
+        values.put("evaluatePrice", coupon.getValue());
         values.put("discount", coupon.getDiscount());
         values.put("stat", coupon.getStat());
-        values.put("imgURL", coupon.getImgURL());
-        values.put("expireDate", coupon.getExpireDate());
+        values.put("imgURL", coupon.getPic());
+        values.put("expireDate", coupon.getExpiredtime());
         //values.put("limit", coupon.getLimit());
         db.insert("Coupon", null, values);
         return this;
-    }
-
-    public Coupon findCouponById(int id) {
-        Cursor cursor = db.rawQuery("select * from Coupon where id = ?", new String[]{String.valueOf(id)});
-        Coupon c = collectOneCoupon(cursor);
-        cursor.close();
-        return c;
     }
 
     public ArrayList<Integer> findCouponByStat(int stat) {
@@ -57,7 +50,7 @@ public class CouponsManager {
     }
 
     public void updateCoupon(Coupon coupon) {
-        String id = String.valueOf(coupon.getCouponId());
+        String id = String.valueOf(coupon.getCouponid());
         db.execSQL("delete from Coupon where id = ?", new String[]{id});
         addCoupon(coupon);
     }
@@ -76,6 +69,7 @@ public class CouponsManager {
         db.execSQL("delete from Coupon", null);
     }
 
+<<<<<<< HEAD
     private Coupon collectOneCoupon(Cursor cursor) {
         String name = cursor.getString(cursor.getColumnIndex("name"));
         String id = cursor.getString(cursor.getColumnIndex("id"));
@@ -91,6 +85,8 @@ public class CouponsManager {
         Coupon coupon = new Coupon(name, id, brandId, catId, listPrice, evaluatePrice, discount, stat, imgURL, expireDate);
         return coupon;
     }
+=======
+>>>>>>> ttr
 
     private ArrayList<Integer> collectCouponId(Cursor cursor) {
         ArrayList<Integer> arrayList = new ArrayList<Integer>();

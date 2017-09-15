@@ -8,9 +8,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.XCRoundImageView;
 
-public class AvatarImageBehavior extends CoordinatorLayout.Behavior<XCRoundImageView> {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageView> {
 
     // calculated from given layout
     private int startXPositionImage;
@@ -45,7 +46,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<XCRoundImage
     @Override
     public boolean layoutDependsOn(
             final CoordinatorLayout parent,
-            final XCRoundImageView child,
+            final CircleImageView child,
             final View dependency) {
 
         return dependency instanceof AppBarLayout; // change if you want another sibling to depend on
@@ -54,7 +55,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<XCRoundImage
     @Override
     public boolean onDependentViewChanged(
             final CoordinatorLayout parent,
-            final XCRoundImageView child,
+            final CircleImageView child,
             final View dependency) {
 
         // make child (avatar) change in relation to dependency (toolbar) in both size and position, init with properties from layout
@@ -86,7 +87,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<XCRoundImage
     }
 
     private void initProperties(
-            final XCRoundImageView child,
+            final CircleImageView child,
             final View dependency) {
 
         if (!initialised) {

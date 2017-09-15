@@ -12,12 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+<<<<<<< HEAD:app/src/main/res/layout/activity_user_sell_coupons.xml
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_scrollFlags="scroll|enterAlways|snap">
+=======
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:theme="@style/MainToolBarStyle">
+>>>>>>> ttr:app/src/main/res/layout/common_coupon_layout.xml
 
         <TextView
             style="@style/user_title_text"
             android:layout_gravity="center"
+<<<<<<< HEAD:app/src/main/res/layout/activity_user_sell_coupons.xml
             android:text="我卖出的" />
     </android.support.v7.widget.Toolbar>
 
@@ -30,9 +36,43 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+=======
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
 
-        </android.support.v7.widget.RecyclerView>
 
+    </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whitesmoke"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/common_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/common_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+>>>>>>> ttr:app/src/main/res/layout/common_coupon_layout.xml
+
+        </FrameLayout>
+
+<<<<<<< HEAD:app/src/main/res/layout/activity_user_sell_coupons.xml
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,5 +95,8 @@
         </LinearLayout>
 
     </FrameLayout>
+=======
+    </RelativeLayout>
+>>>>>>> ttr:app/src/main/res/layout/common_coupon_layout.xml
 
 </LinearLayout>

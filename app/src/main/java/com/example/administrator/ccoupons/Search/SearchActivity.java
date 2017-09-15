@@ -2,6 +2,7 @@ package com.example.administrator.ccoupons.Search;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+<<<<<<< HEAD
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -18,9 +19,18 @@ import android.support.v7.view.menu.MenuAdapter;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+=======
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+>>>>>>> ttr
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+<<<<<<< HEAD
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +48,22 @@ import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.CategoryAdapter;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.SystemBarTintManager;
+=======
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
+import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+>>>>>>> ttr
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -50,6 +76,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final int HISTORY_MAX_RESULT = 10;//最大历史结果数
 
 
+<<<<<<< HEAD
     private boolean firstTime = true;
     private boolean shouldHide = false;
     private RecyclerView mRecyclerView;
@@ -58,14 +85,31 @@ public class SearchActivity extends AppCompatActivity {
 
 
     private EditText searchText;
+=======
+>>>>>>> ttr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+<<<<<<< HEAD
         searchText = (EditText) findViewById(R.id.input_search);
         searchText.requestFocus();
 
+=======
+        catId = getIntent().getStringExtra("type");
+        System.out.println("at oncreate, catid = " + catId);
+
+        userInfoManager = new UserInfoManager(this);
+        searchText = (EditText) findViewById(R.id.input_search);
+        searchText.requestFocus();
+
+        historyFragment = new SearchHistoryFragment();
+        preSearchFragment = new PreSearchFragment();
+        if (catId != null)
+            historyFragment.setCatId(catId);
+
+>>>>>>> ttr
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -184,6 +228,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+<<<<<<< HEAD
     private void search(String requestStr) {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
@@ -219,6 +264,55 @@ public class SearchActivity extends AppCompatActivity {
                     //清除历史记录
                 }
             });
+=======
+
+    /**
+     *
+     * @param fragment fragment to show
+     */
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.hide(historyFragment);
+        fragmentTransaction.hide(preSearchFragment);
+        fragmentTransaction.show(fragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
+
+    /**
+     * parse response string from server
+     * @param response
+     */
+    private void parseMessage(String response) {
+        try {
+            JSONObject obj = new JSONObject(response);
+            JSONArray arr = obj.getJSONArray("result");
+            ArrayList<String> preList = new ArrayList<>();
+            for (int i=0;i<arr.length();i++) {
+                JSONObject jsonObject = arr.getJSONObject(i);
+                String result = jsonObject.getString("product");
+                preList.add(result);
+            }
+            preSearchFragment.upDate(preList, catId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * pre-search for input text
+     * @param text
+     */
+    private void preSearch(String text) {
+        String url = null;
+        HashMap<String,String> map = new HashMap<String,String>();
+        map.put("keyword", text);
+        url = GlobalConfig.base_URL + GlobalConfig.requestPreSearch_URL;
+        if (catId != null && catId.length() > 0) {
+            url = GlobalConfig.base_URL + GlobalConfig.requestCatPreSearch_URL;
+            map.put("category", catId);
+>>>>>>> ttr
         }
     }
 
@@ -252,12 +346,27 @@ public class SearchActivity extends AppCompatActivity {
                 return new ClearHistoryViewHolder(view);
             }
 
+<<<<<<< HEAD
         }
+=======
+
+    /**
+     * hide soft-keyboard
+     */
+    public void hideSoftKeyBoard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) this.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                this.getCurrentFocus().getWindowToken(), 0);
+    }
+>>>>>>> ttr
 
         public HistoryAdapter(ArrayList<String> hList) {
             this.mHistoryList = hList;
         }
 
+<<<<<<< HEAD
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String historyString = mHistoryList.get(position);
@@ -275,6 +384,20 @@ public class SearchActivity extends AppCompatActivity {
             return mHistoryList.size();
         }
 
+=======
+    /**
+     * search with requested string inputted
+     * @param requestStr requested string
+     */
+    private void search(String requestStr) {
+        Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
+        intent.putExtra("search_string", requestStr);
+        intent.putExtra("categoryId", catId);
+        System.out.println("put extra, requestString = " + requestStr + ", catid = " + catId);
+        userInfoManager.addHistory(requestStr);
+        historyFragment.addHistory(requestStr);
+        startActivity(intent);
+>>>>>>> ttr
     }
 
 
@@ -288,6 +411,7 @@ public class SearchActivity extends AppCompatActivity {
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(colorId);//设置标题栏颜色，此颜色在color中声明
 
+<<<<<<< HEAD
         //字体
         Class clazz = this.getWindow().getClass();
         try {
@@ -298,6 +422,27 @@ public class SearchActivity extends AppCompatActivity {
             Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
             if (true) {
                 extraFlagField.invoke(this.getWindow(), darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
+=======
+
+    /**
+     *
+     * @param v view
+     * @param event event
+     * @return whether should hide the soft keyboard
+     */
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+>>>>>>> ttr
             } else {
                 extraFlagField.invoke(this.getWindow(), 0, darkModeFlag);//清除黑色字体
             }

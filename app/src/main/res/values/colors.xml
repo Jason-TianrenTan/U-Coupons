@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#3F51B5</color>
+=======
+    <color name="colorPrimary">#F5705D</color><!--#ff5a00 -->
+    <color name="colorPrimaryDark">#F5705D</color>
+>>>>>>> ttr
     <color name="colorAccent">#1e90ff</color>
+    <color name="black_semi_transparent">#B2000000</color>
     <color name="pink">#ffc0cb</color><!--粉红色 -->
     <color name="lightpink">#ffb6c1</color><!--亮粉红色 -->
     <color name="white">#ffffff</color><!--白色 -->
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="half_black">#808080</color>
     <color name="peachpuff">#ffdab9</color><!--桃色 -->
     <color name="gold">#ffd700</color><!--金色 -->
     <color name="ivory">#fffff0</color><!--象牙色 -->

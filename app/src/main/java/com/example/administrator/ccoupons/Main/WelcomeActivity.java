@@ -1,17 +1,20 @@
 package com.example.administrator.ccoupons.Main;
 
+import android.app.Activity;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+=======
+import android.os.Bundle;
+>>>>>>> ttr
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Connections.LoginThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
@@ -22,11 +25,73 @@ import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.mob.MobApplication;
 import com.mob.MobSDK;
+=======
+import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Register.RegisterActivity;
+>>>>>>> ttr
 
-import org.json.JSONObject;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+<<<<<<< HEAD
+=======
+
+public class WelcomeActivity extends Activity {
+
+
+    @BindView(R.id.Welcome_LoginButton)
+    Button Welcome_LoginButton;
+    @BindView(R.id.Welcome_RegisterButton)
+    Button Welcome_RegisterButton;
+
+    @OnClick({R.id.Welcome_LoginButton,R.id.Welcome_RegisterButton})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.Welcome_LoginButton:
+                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                finish();
+                break;
+            case R.id.Welcome_RegisterButton:
+                startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
+                break;
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcome);
+        ButterKnife.bind(this);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+>>>>>>> ttr
 public class WelcomeActivity extends AppCompatActivity {
-    private static String url = DataHolder.base_URL + DataHolder.login_URL;
+    private static String url = GlobalConfig.base_URL + GlobalConfig.login_URL;
     private LoginInformationManager loginInformationManager;
     private boolean auto_login;
     private String username;
@@ -60,8 +125,23 @@ public class WelcomeActivity extends AppCompatActivity {
                 MyApp app = (MyApp) getApplicationContext();
                 app.setUserId(userId);
                 System.out.println("Response = " + response);
+<<<<<<< HEAD
                 Toast.makeText(getApplicationContext(), "登录成功\n账号:" + username +
                         "\n密码:" + password, Toast.LENGTH_SHORT).show();
+=======
+                System.out.println("登录成功\n账号:" + username + "\n密码:" + password);
+                app.setNickname(nickname);
+                app.setUcoin(UB);
+                if (!avatar.equals("null")) {
+                    app.setAvatar(GlobalConfig.base_URL + "/static/" + avatar);
+                }
+
+                app.setGender(Gender.MALE);
+                if (sex.equals("女")) {
+                    app.setGender(Gender.FEMALE);
+                }
+                app.setPhoneNumber(username);
+>>>>>>> ttr
                 Intent intent = new Intent(WelcomeActivity.this, MainPageActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("password", password);
@@ -134,9 +214,13 @@ public class WelcomeActivity extends AppCompatActivity {
         login.startAnimation(animation);
         register.startAnimation(animation);
     }
+<<<<<<< HEAD
 
 
 
 
 }
 
+=======
+}*/
+>>>>>>> ttr

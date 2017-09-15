@@ -2,8 +2,12 @@ package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+=======
+import android.os.Bundle;
+>>>>>>> ttr
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
@@ -21,6 +26,15 @@ import com.jph.takephoto.model.TResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+=======
+import com.bumptech.glide.Glide;
+import com.example.administrator.ccoupons.Connections.UploadTask;
+import com.example.administrator.ccoupons.MyApp;
+import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
+import com.jph.takephoto.model.TResult;
+
+>>>>>>> ttr
 public class UserPortraitActivity extends AppCompatActivity {
     private TakePhotoUtil takePhotoUtil;
     private LoginInformationManager informationManager;
@@ -71,8 +85,11 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
+<<<<<<< HEAD
                                 Bitmap bitmap = BitmapFactory.decodeFile(s);
                                 portrait.setImageBitmap(bitmap);
+=======
+>>>>>>> ttr
                                 updatePortrait(s);
                             }
                         });
@@ -88,8 +105,11 @@ public class UserPortraitActivity extends AppCompatActivity {
                             public void takeSuccess(TResult result) {
                                 String s = result.getImage().getCompressPath();
                                 System.out.println(s);
+<<<<<<< HEAD
                                 Bitmap bitmap = BitmapFactory.decodeFile(s);
                                 portrait.setImageBitmap(bitmap);
+=======
+>>>>>>> ttr
                                 updatePortrait(s);
                             }
                         });
@@ -136,6 +156,7 @@ public class UserPortraitActivity extends AppCompatActivity {
         return true;
     }
 
+<<<<<<< HEAD
     public void updatePortrait(String path) {
         Pattern pat = Pattern.compile("(portrait_)([0-9]+)(.jpg)");
         Matcher mat = pat.matcher(path);
@@ -150,6 +171,32 @@ public class UserPortraitActivity extends AppCompatActivity {
         if (s != "") {
             Bitmap bitmap = BitmapFactory.decodeFile(s);
             portrait.setImageBitmap(bitmap);
+=======
+    public void updatePortrait(final String path) {
+        try {
+            MyApp app = (MyApp) getApplicationContext();
+            String userId = app.getUserId();
+            new UploadTask(userId, path).execute();
+            app.setAvatar(path);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Todo:上传图片到服务器 并返回图片对应的url
+        //Todo:更新头像 更新本地储存的url
+
+        Glide.with(this)
+                .load(path)
+                .into(portrait);
+    }
+
+    public void initPortrait() {
+        MyApp app = (MyApp) this.getApplicationContext();
+        String url = app.getAvatar();
+        if (url != "") {
+            Glide.with(this)
+                    .load(url)
+                    .into(portrait);
+>>>>>>> ttr
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 }

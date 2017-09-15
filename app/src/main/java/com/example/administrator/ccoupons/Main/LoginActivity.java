@@ -3,14 +3,24 @@ package com.example.administrator.ccoupons.Main;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.os.Handler;
 import android.os.Message;
+=======
+import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
+>>>>>>> ttr
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+<<<<<<< HEAD
 import android.util.TypedValue;
+=======
+import android.text.Editable;
+import android.text.TextWatcher;
+>>>>>>> ttr
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
@@ -22,11 +32,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Connections.LoginThread;
 import com.example.administrator.ccoupons.Data.DataHolder;
+=======
+import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Data.GlobalConfig;
+>>>>>>> ttr
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -34,10 +50,26 @@ import com.example.administrator.ccoupons.UI.CustomDialog;
 
 import org.json.JSONObject;
 
+=======
+import com.example.administrator.ccoupons.Tools.PasswordEncoder;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+>>>>>>> ttr
 
 public class LoginActivity extends AppCompatActivity {
 
 
+<<<<<<< HEAD
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
     private LoginThread thread;
     private Button login;
@@ -45,9 +77,51 @@ public class LoginActivity extends AppCompatActivity {
     private EditText signup_phone, signup_pass;
     private String myUsername, myPassword;
     private Handler handler = new Handler() {
+=======
+    public static final int ANIM_SHRINK = 0,
+            ANIM_EXPAND = 1;
+    boolean editTextFocus = false,
+            stateShrinked = false;
+>>>>>>> ttr
 
-        public void handleMessage(Message msg) {
+    @BindView(R.id.login_toolbar)
+    Toolbar loginToolbar;
+    @BindView(R.id.imglayout)
+    RelativeLayout imglayout;
+    @BindView(R.id.Login_usernameEditText)
+    EditText LoginUsernameEditText;
+    @BindView(R.id.Login_usernameHolder)
+    TextInputLayout LoginUsernameHolder;
+    @BindView(R.id.Login_passwordEditText)
+    EditText LoginPasswordEditText;
+    @BindView(R.id.Login_passwordHolder)
+    TextInputLayout LoginPasswordHolder;
+    @BindView(R.id.Login_forgetTextView)
+    TextView LoginForgetTextView;
+    @BindView(R.id.Login_loginButton)
+    Button LoginLoginButton;
+    @BindView(R.id.text_root_view)
+    LinearLayout textRootView;
+    @BindView(R.id.rootLayout)
+    LinearLayout rootLayout;
 
+    @OnClick(R.id.Login_loginButton)
+    public void click() {
+        boolean check = true;
+        String username = LoginUsernameEditText.getText().toString(),
+                password = LoginPasswordEditText.getText().toString();
+
+        if (username.length() == 0) {
+            check = false;
+            LoginUsernameHolder.setErrorEnabled(true);
+            LoginUsernameHolder.setError("请输入用户名!");
+        } else if (password.length() == 0) {
+            check = false;
+            LoginPasswordHolder.setErrorEnabled(true);
+            LoginPasswordHolder.setError("请输入密码!");
+        }
+
+<<<<<<< HEAD
             switch (msg.what) {
                 case MessageType.CONNECTION_ERROR:
                     Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
@@ -64,20 +138,26 @@ public class LoginActivity extends AppCompatActivity {
                     login.setEnabled(true);
                     break;
             }
+=======
+        if (check) {
+            //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
+            requestLogin(username, password);
+>>>>>>> ttr
         }
-    };
-
-    private int mergeHeight;
-    private boolean editTextFocus = false;
-    private LoginInformationManager loginInformationManager;
-    //    private boolean auto_login;
-    private String rem_phonenumber;
-    private String rem_pass;
-
-    private void saveUserLoginInfo() {
-        loginInformationManager.setAutoLogin(true).setUsername(myUsername).setPassword(myPassword);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
+
+        initToolbar();
+        initEditText();
+        initSoftKeyboard();
+    }
+
+<<<<<<< HEAD
     //处理返回回来的json
     private void parseMessage(String response) {
         if (response.indexOf("result") != -1) {
@@ -118,42 +198,74 @@ public class LoginActivity extends AppCompatActivity {
                 Message msg = new Message();
                 msg.what = MessageType.CONNECTION_ERROR;
                 handler.sendMessage(msg);
-            }
+=======
+
+    /**
+     * Login to server
+     * @param username
+     * @param password
+     */
+    private void requestLogin(String username, String password) {
+        String url = GlobalConfig.base_URL + GlobalConfig.login_URL;
+        String md5pass = null;
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("username", username);
+        try {
+            md5pass = new PasswordEncoder().EncodeByMd5(password);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        map.put("password", md5pass);
+        ZLoadingDialog dialog = new ZLoadingDialog(LoginActivity.this);
+        dialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)
+                .setLoadingColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setCanceledOnTouchOutside(false)
+                .show();
+        ConnectionManager connectionManager = new ConnectionManager(url, map, dialog);
+        connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
+            @Override
+            public void onConnectionSuccess(String response) {
+                parseMessage(response);
+            }
+
+            @Override
+            public void onConnectionTimeOut() {
+                Toast.makeText(getApplicationContext(), "连接服务器超时，请检查网络连接!", Toast.LENGTH_LONG).show();
+>>>>>>> ttr
+            }
+
+            @Override
+            public void onConnectionFailed() {
+                Toast.makeText(getApplicationContext(), "连接服务器遇到问题，请检查网络连接!", Toast.LENGTH_LONG).show();
+            }
+        });
+        connectionManager.connect();
+
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        //    getSupportActionBar().hide();
 
-        toolbar = (Toolbar) findViewById(R.id.login_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    /**
+     * Initialize toolbar
+     */
+    private void initToolbar() {
+        setSupportActionBar(loginToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        loginToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
                 finish();
             }
         });
+    }
 
-        login = (Button) findViewById(R.id.button_login);
-        signup_phone = (EditText) findViewById(R.id.signup_phone);
-        signup_phone.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        signup_pass = (EditText) findViewById(R.id.signup_password);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        loginInformationManager = new LoginInformationManager(this);
 
-        //读取记忆的账号
-        rem_phonenumber = loginInformationManager.getUsername();
-        rem_pass = loginInformationManager.getPassword();
-        signup_phone.setText(rem_phonenumber);
-        signup_pass.setText(rem_pass);
-
-        signup_phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+    /**
+     * initialize edittext
+     */
+    private void initEditText() {
+        LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus)
@@ -163,7 +275,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-        signup_pass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        LoginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus)
@@ -173,33 +285,56 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //登录
-        login.setOnClickListener(new View.OnClickListener() {
+        LoginUsernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                String username = signup_phone.getText().toString();
-                String password = signup_pass.getText().toString();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                login.setEnabled(false);
-                if (password != null) {
-                    requestLogin(url, username, password);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (LoginUsernameEditText.getText().toString().length() > 0) {
+                    LoginUsernameHolder.setError("");
+                    LoginUsernameHolder.setErrorEnabled(false);
                 }
-                //finish();
             }
         });
-
-        TextView text_forget = (TextView) findViewById(R.id.text_forget);
-        text_forget.setOnClickListener(new View.OnClickListener() {
+        LoginPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+<<<<<<< HEAD
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+=======
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (LoginPasswordEditText.getText().toString().length() > 0) {
+                    LoginPasswordHolder.setError("");
+                    LoginPasswordHolder.setErrorEnabled(false);
+                }
+>>>>>>> ttr
             }
         });
-        LinearLayout rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
-        mergeHeight = PixelUtils.dp2px(this, 120);
+    }
 
-        //
+
+    /**
+     * Initialize soft-keyboard actions
+     */
+    private void initSoftKeyboard() {
         SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
         softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
             @Override
@@ -218,6 +353,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
     //登录
     private void requestLogin(String url, String username, String password) {
         myUsername = username;
@@ -227,18 +363,21 @@ public class LoginActivity extends AppCompatActivity {
         //TODO 播放动画
     }
 
+=======
+>>>>>>> ttr
     private void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 
-    private boolean stateShrinked = false;
-    private static final int ANIM_SHRINK = 0,
-            ANIM_EXPAND = 1;
-
+    /**
+     * Start animation in specific type
+     * @param anim_type type of animation
+     */
     private void startAnimation(int anim_type) {
 
+        int mergeHeight = PixelUtils.dp2px(this, 120);
         if (anim_type == ANIM_SHRINK) {
 
             LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
@@ -272,6 +411,49 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+        finish();
         super.onBackPressed();
     }
+
+
+    /**
+     * parse response from server
+     * @param response
+     */
+    private void parseMessage(String response) {
+        System.out.println("response = " + response);
+        if (response.indexOf("result") != -1) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String userId = jsonObject.getString("userid");
+                String nickname = jsonObject.getString("nickname");
+                String avatar = jsonObject.getString("avatar");
+                String sex = jsonObject.getString("gender");
+                int UB = jsonObject.getInt("Ucoin");
+                MyApp app = (MyApp) getApplicationContext();
+                app.setUserId(userId);
+                app.setNickname(nickname);
+                app.setUcoin(UB);
+                if (!avatar.equals("null")) {
+                    app.setAvatar(GlobalConfig.base_URL + "/static/" + avatar);
+                }
+
+                app.setGender(Gender.MALE);
+                if (sex.equals("女")) {
+                    app.setGender(Gender.FEMALE);
+                }
+                app.setPhoneNumber("13111111111");
+
+                startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
+                finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            Toast.makeText(getApplicationContext(), "用户名/密码错误", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
+

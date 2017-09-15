@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">CCoupons</string>
+    <string name="app_name">U惠</string>
     <string name="document_string">假装这是文案</string>
     <string name="mainpage_title_string">"推荐"</string>
 
@@ -84,7 +84,7 @@
     <string name="coupon_bought_title">上架的优惠券被购买</string>
     <string name="coupon_abouttoexpire_title">上架的优惠券即将过期</string>
     <string name="coupon_expired_title">上架的优惠券已过期</string>
-    <string name="coupon_followed_abouttoexpire_title">关注的优惠券即将过期,</string>
+    <string name="coupon_followed_abouttoexpire_title">关注的优惠券即将过期</string>
     <string name="coupon_mine_aboutto_expire_title">我的优惠券即将过期</string>
     <string name="coupon_system_title">系统消息</string>
 

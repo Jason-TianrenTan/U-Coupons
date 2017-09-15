@@ -63,6 +63,7 @@ public class MessageGetService extends IntentService {
         return null;
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         requestMessage();

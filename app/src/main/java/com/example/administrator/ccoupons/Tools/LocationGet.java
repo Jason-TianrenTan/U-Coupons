@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.Tools;
 import android.content.Context;
 import android.os.*;
 import android.os.Message;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -19,14 +20,25 @@ public class LocationGet {
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
     private Context mContext;
-    private Handler handler;
     private String city;
+    private TextView target;
 
-    public LocationGet(Context context, Handler handler) {
+
+    /**
+     * Default Constructor
+     * @param context context of activity
+     * @param textview textview to show location
+     */
+    public LocationGet(Context context, TextView textview) {
         this.mContext = context;
-        this.handler = handler;
+        this.target = textview;
+        target.setText("定位");
     }
 
+
+    /**
+     * Request location
+     */
     public void requestLocation() {
         mLocationClient = new AMapLocationClient(mContext.getApplicationContext());
         mLocationOption = new AMapLocationClientOption();
@@ -42,10 +54,8 @@ public class LocationGet {
                 if (aMapLocation != null) {
                     if (aMapLocation.getErrorCode() == 0) {
                         city = aMapLocation.getCity();
-
-                        Message msg = new Message();
-                        msg.what = MessageType.LOCATION_GET;
-                        handler.sendMessage(msg);
+                        target.setText(city);
+                        System.out.println("获取定位: " + city);
                     }
                 }
             }
@@ -55,6 +65,11 @@ public class LocationGet {
         mLocationClient.startLocation();
     }
 
+
+    /**
+     *
+     * @return current city
+     */
     public String getCity() {
         return this.city;
     }

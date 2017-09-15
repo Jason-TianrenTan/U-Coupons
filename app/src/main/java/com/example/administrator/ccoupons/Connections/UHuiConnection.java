@@ -40,6 +40,12 @@ public class UHuiConnection {
     private List<NameValuePair> urlParameters;
     private Handler handler;
 
+
+    /**
+     *
+     * @param url target URL
+     * @param handler handler
+     */
     public UHuiConnection(String url, Handler handler) {
         this.url = url;
         BasicHttpParams params = new BasicHttpParams();
@@ -50,21 +56,36 @@ public class UHuiConnection {
         this.handler = handler;
     }
 
+
+    //get Content
     public String getContent() {
         return this.content;
     }
 
+
+    /**
+     *
+     * @param name header name
+     * @param val header value
+     */
     public void setHeader(String name, String val) {
         post.setHeader(name, val);
     }
 
+
+    /**
+     *
+     * @param name add key
+     * @param val add corresponding value to key
+     */
     public void add(String name, String val) {
         urlParameters.add(new BasicNameValuePair(name, val));
     }
 
+
+    //connect
     public void connect() {
         try {
-            System.out.println("ON connect " + url);
 
             post.setEntity(new UrlEncodedFormEntity(urlParameters, HTTP.UTF_8));
             HttpResponse response = client.execute(post);

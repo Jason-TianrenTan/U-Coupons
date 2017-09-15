@@ -152,6 +152,11 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_identify);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> ttr
         checker = new RegisterCheck();
         Toolbar toolbar = (Toolbar) findViewById(R.id.register_identify_toolbar);
         setSupportActionBar(toolbar);
@@ -224,12 +229,20 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         startCountDown();
     }
 
+
+    /**
+     * request SMS Code from server
+     */
     private void sendSMS() {
         //发送验证码
         System.out.println("Sent SMS code to +86" + phoneString.trim());
         SMSSDK.getVerificationCode("86", phoneString.trim());//请求获取短信验证码
     }
 
+
+    /**
+     * start countdown
+     */
     private void startCountDown() {
         current = COUNTDOWN_TIME;
         Timer timer = new Timer();

@@ -48,11 +48,17 @@
     </android.support.v7.widget.Toolbar>
 
 
+<<<<<<< HEAD
     <android.support.v7.widget.RecyclerView
+=======
+    <FrameLayout
+        android:background="@color/white"
+        android:layout_marginTop="15dp"
+>>>>>>> ttr
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_result_recyclerview">
+        android:layout_height="match_parent"
+        android:id="@+id/search_result_fragment">
 
-    </android.support.v7.widget.RecyclerView>
+    </FrameLayout>
 
 </LinearLayout>

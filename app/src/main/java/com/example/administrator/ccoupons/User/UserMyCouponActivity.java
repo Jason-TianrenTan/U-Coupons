@@ -1,6 +1,14 @@
 package com.example.administrator.ccoupons.User;
 
+<<<<<<< HEAD
 import android.support.v4.app.Fragment;
+=======
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+>>>>>>> ttr
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -16,7 +24,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Data.DataHolder;
 import com.example.administrator.ccoupons.Fragments.Message;
 import com.example.administrator.ccoupons.Fragments.MessageClass;
@@ -30,11 +40,29 @@ import com.example.administrator.ccoupons.User.UserCouponFragments.OnSaleCouponF
 import com.example.administrator.ccoupons.User.UserCouponFragments.UnusedCouponFragment;
 
 import java.util.ArrayList;
+=======
+import com.example.administrator.ccoupons.Fragments.MainPageActivity;
+import com.example.administrator.ccoupons.Main.Coupon;
+import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.User.UserCoupons.User.MyCouponFragmentAdapter;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserOnsaleFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldFragment;
+import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedFragment;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+>>>>>>> ttr
 
 
 public class UserMyCouponActivity extends AppCompatActivity {
 
 
+<<<<<<< HEAD
     ArrayList<Coupon> unusedList, onsaleList, notonsaleList;
     UnusedCouponFragment UnusedFragment;
     OnSaleCouponFragment OnSaleFragment;
@@ -43,14 +71,63 @@ public class UserMyCouponActivity extends AppCompatActivity {
     TextView title_unused, title_onsale, title_nonsale;
     int screen_width;
     LinearLayout scrollBar;
+=======
+    int screen_width = 0;
+    int index = 0;
+    CouponCommonFragment usedFragment = new UserUsedFragment(),
+                        onsaleFragment = new UserOnsaleFragment(),
+                        unsoldFragment = new UserUnsoldFragment();
+    UpdateUIReceiver receiver;
+    @BindView(R.id.user_mycoupons_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.used_title_text)
+    TextView title_used;
+    @BindView(R.id.onsale_title_text)
+    TextView title_onsale;
+    @BindView(R.id.nonsale_title_text)
+    TextView title_unsold;
+    @BindView(R.id.mycoupon_scrollbar)
+    LinearLayout scrollBar;
+    @BindView(R.id.mycoupon_viewpager)
+    ViewPager mycouponViewpager;
+
+>>>>>>> ttr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_my_coupon);
+        ButterKnife.bind(this);
+        String indexstr = getIntent().getStringExtra("index");
+        if (indexstr != null)
+            index = Integer.parseInt(indexstr);
+        initViews();
+        selectPage(index);
+        initReceiver();
+        initTabs();
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        if (index == 0)
+            finish();
+        else {
+            finish();
+            startActivity(new Intent(UserMyCouponActivity.this, MainPageActivity.class));
+        }
+    }
+
+<<<<<<< HEAD
         scrollBar = (LinearLayout) findViewById(R.id.mycoupon_scrollbar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.user_mycoupons_toolbar);
+=======
+
+    /**
+     * Initialize views
+     */
+    private void initViews() {
+>>>>>>> ttr
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,6 +137,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
                 finish();
             }
         });
+<<<<<<< HEAD
         title_unused = (TextView) findViewById(R.id.unused_title_text);
         title_onsale = (TextView) findViewById(R.id.onsale_title_text);
         title_nonsale = (TextView) findViewById(R.id.nonsale_title_text);
@@ -75,10 +153,17 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
     private void initSlidingBar() {
+=======
+>>>>>>> ttr
         WindowManager wm = getWindowManager();
         screen_width = wm.getDefaultDisplay().getWidth();
     }
 
+
+    /**
+     * Slide to
+     * @param pos
+     */
     private void slideTo(int pos) {
         int preWidth = screen_width / 3;
         int margins = PixelUtils.dp2px(this, 12);
@@ -89,6 +174,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
         scrollBar.setLayoutParams(scrollParams);
     }
 
+<<<<<<< HEAD
     private void initData() {
         fr1 = new EmptyFragment();
         fr2 = new EmptyFragment();
@@ -117,12 +203,18 @@ public class UserMyCouponActivity extends AppCompatActivity {
             fr3 = NotOnSaleFragment;
         }
     }
+=======
+>>>>>>> ttr
 
+    /**
+     * Select page at
+     * @param position
+     */
     private void selectPage(int position) {
         slideTo(position);
         title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
         title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
-        title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
+        title_unsold.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
         switch (position) {
             case 0:
                 title_unused.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
@@ -131,23 +223,32 @@ public class UserMyCouponActivity extends AppCompatActivity {
                 title_onsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 break;
             case 2:
-                title_nonsale.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                title_unsold.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 break;
         }
     }
 
+
+    /**
+     * Init tabs
+     */
     private void initTabs() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ArrayList<Fragment> frList = new ArrayList<Fragment>();
-        frList.add(fr1);
-        frList.add(fr2);
-        frList.add(fr3);
+        ArrayList<CouponCommonFragment> frList = new ArrayList<CouponCommonFragment>();
+        frList.add(usedFragment);
+        frList.add(onsaleFragment);
+        frList.add(unsoldFragment);
         MyCouponFragmentAdapter frAdapter = new MyCouponFragmentAdapter(fragmentManager, frList);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.mycoupon_viewpager);
         viewPager.setAdapter(frAdapter);
+<<<<<<< HEAD
         viewPager.setCurrentItem(0);
 
         title_unused.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+=======
+        viewPager.setCurrentItem(index);
+        title_used.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+>>>>>>> ttr
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -181,16 +282,47 @@ public class UserMyCouponActivity extends AppCompatActivity {
             }
         });
 
-        title_nonsale.setOnClickListener(new View.OnClickListener() {
+        title_unsold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectPage(2);
                 viewPager.setCurrentItem(2);
             }
         });
+<<<<<<< HEAD
 
 
     }
 
+=======
+        System.out.println("init Views finished");
+    }
+
+
+    /**
+     * Initialize receiver
+     */
+    public void initReceiver() {
+        IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.UPDATEVIEWS");
+        receiver = new UpdateUIReceiver();
+        registerReceiver(receiver, filter);
+    }
+
+
+    //UI receiver
+    public class UpdateUIReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
+>>>>>>> ttr
 
 }

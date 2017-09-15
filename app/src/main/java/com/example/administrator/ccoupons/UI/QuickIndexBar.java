@@ -21,6 +21,7 @@ public class QuickIndexBar extends View {
     private String[] letterArr = {"热门", "A", "B", "C", "D", "E", "F", "G", "H",
              "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "W", "X", "Y", "Z"};
 
+    //Constructors
     public QuickIndexBar(Context context) {
         this(context, null);
     }
@@ -29,13 +30,21 @@ public class QuickIndexBar extends View {
         this(context, attrs, 0);
     }
 
+
     Paint paint;
+    Paint bg_paint;
     int ColorDefault = Color.GRAY;
     int ColorPressed = Color.BLACK;
     boolean pressed = false;
 
-    Paint bg_paint;
 
+
+    /**
+     *
+     * @param context
+     * @param attrs
+     * @param defStyle
+     */
     public QuickIndexBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
@@ -52,12 +61,14 @@ public class QuickIndexBar extends View {
     float cellHeight;//一个格子的高
     float x;
 
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         cellHeight = getMeasuredHeight() * 1f / letterArr.length;
         x = getMeasuredWidth() / 2;
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -83,6 +94,7 @@ public class QuickIndexBar extends View {
 
     int index = -1;
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -90,7 +102,7 @@ public class QuickIndexBar extends View {
             case MotionEvent.ACTION_MOVE:
                 pressed = true;
                 int tempIndex = (int) (event.getY() / cellHeight);
-                if (tempIndex != index) {
+                if (tempIndex != index && tempIndex > 0) {
                     index = tempIndex;
 
                     //对index进行合法性的判断
@@ -101,6 +113,9 @@ public class QuickIndexBar extends View {
                             listener.onLetterChange(letter);
                         }
                     }
+                }
+                if (tempIndex == 0) {
+                    listener.onLetterChange("START");
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -121,7 +136,7 @@ public class QuickIndexBar extends View {
     }
 
     /**
-     * 获取文字的高度
+     * get height of text
      *
      * @param text
      * @return
@@ -133,11 +148,18 @@ public class QuickIndexBar extends View {
         return bounds.height();
     }
 
+
     private OnLetterChangeListener listener;
 
+
+    /**
+     * set listener
+     * @param listener
+     */
     public void setOnLetterChangeListener(OnLetterChangeListener listener) {
         this.listener = listener;
     }
+
 
     public interface OnLetterChangeListener {
         void onLetterChange(String letter);

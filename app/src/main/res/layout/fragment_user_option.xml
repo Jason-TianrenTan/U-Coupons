@@ -50,6 +50,14 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+>>>>>>> ttr
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -264,12 +272,17 @@
 
     </android.support.v7.widget.Toolbar>
 
+<<<<<<< HEAD
     <com.example.administrator.ccoupons.Tools.XCRoundImageView
+=======
+    <de.hdodenhof.circleimageview.CircleImageView
+>>>>>>> ttr
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="top|left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="36dp"
+<<<<<<< HEAD
         android:src="@mipmap/android"
         android:id="@+id/user_portrait"
         app:finalHeight="32dp"
@@ -279,4 +292,14 @@
         app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior"
         />
 
+=======
+        android:src="@drawable/testportrait"
+        android:id="@+id/user_portrait"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/thistle"
+        app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior"
+        />
+
+
+>>>>>>> ttr
 </android.support.design.widget.CoordinatorLayout>
