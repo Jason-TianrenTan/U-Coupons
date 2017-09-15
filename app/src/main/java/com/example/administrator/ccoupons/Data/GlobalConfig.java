@@ -10,22 +10,22 @@ public class GlobalConfig {
 
     static final String dormBase = "http://10.132.55.96:8000";
     static final String localBase = "http://192.168.206.11:8000";
-    static final String teamBase = "http://192.168.207.222:8000";
+    static final String teamBase = "http://10.132.4.183:8000";
     static final String serverBase = "http://119.23.72.43";
     public static final String base_URL = teamBase;
-    public static final String login_URL = "/loginForAndroid";
-    public static final String register_URL = "/signUpForAndroid";
-    public static final String requestMsg_URL = "/sendMessage";
-    public static final String requestSearch_URL = "/searchForAndroid";
+    public static final String login_URL = "/loginForAndroid";//登录
+    public static final String register_URL = "/signUpForAndroid";//注册
+    public static final String requestMsg_URL = "/sendMessage";//请求信息
+    public static final String requestSearch_URL = "/searchForAndroid";//搜索
     public static final String requestPreSearch_URL = "/preSearch";//预搜索
-    public static final String requestDetail_URL = "/returnInformation";
-    public static final String purchase_URL = "/buyCoupon";
-    public static final String resetPass_URL = "/updatePassword";
+    public static final String requestDetail_URL = "/returnInformation";//请求优惠券信息
+    public static final String purchase_URL = "/buyCoupon";//购买
+    public static final String resetPass_URL = "/updatePassword";//修改密码
     public static final String requestBoughtList_URL = "/getBoughtList"; //已购买
     public static final String requestFollowList_URL = "/getLikeList";//已关注
     public static final String requestSoldList_URL = "/getSoldList";//已卖出
     public static final String updateUserInformation_URL = "/updateUserInformation";//修改个人资料
-    public static final String updatePhoneNumber_URL = "/updatePhonenumOrEmail";
+    public static final String updatePhoneNumber_URL = "/updatePhonenumOrEmail";//修改手机号
 
     public static final String postFollow_URL = "/likeCoupon";//关注
     public static final String postUnFollow_URL = "/dislikeCoupon";//取消关注
@@ -49,7 +49,7 @@ public class GlobalConfig {
 
     public static final String requestSellerInfo_URL = "/sellerInformation";//获取卖家信息
 
-
+    //优惠券种类
     public static class Categories {
         public static String[] nameList = "生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
         public static int[] covers = {R.drawable.category_daily, R.drawable.category_decorate, R.drawable.category_sports, R.drawable.category_furnitures,
@@ -71,7 +71,7 @@ public class GlobalConfig {
                 R.string.coupon_system_title};
     }
 
-    //无I O U V
+    //定位城市、无I O U V
     public static class Cities {
 
         public static final String[] popCityList = ("上海 北京 杭州 广州 成都 苏州" +

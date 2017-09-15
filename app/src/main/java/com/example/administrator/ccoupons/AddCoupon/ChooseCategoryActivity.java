@@ -19,6 +19,9 @@ import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
 
+/**
+ * 此界面为手动添加优惠券的子界面：选择优惠券
+ */
 public class ChooseCategoryActivity extends AppCompatActivity {
 
 

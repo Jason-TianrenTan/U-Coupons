@@ -44,8 +44,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 此界面为手动添加优惠券的界面
+ */
 public class FillFormActivity extends AppCompatActivity {
-
 
     public static int REQUEST_CATEGORY = 6;
     public static int REQUEST_DATE = 999;

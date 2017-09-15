@@ -25,6 +25,9 @@ import com.jph.takephoto.model.TResult;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * 此界面为扫描二维码添加优惠券的界面
+ */
 public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
     private static final String TAG = QRcodeActivity.class.getSimpleName();
     private boolean light = false;

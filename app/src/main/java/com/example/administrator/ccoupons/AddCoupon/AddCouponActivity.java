@@ -41,6 +41,9 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+/**
+ * 此界面为添加优惠券后跳转到的确认界面
+ */
 public class AddCouponActivity extends AppCompatActivity {
 
     private Coupon coupon;

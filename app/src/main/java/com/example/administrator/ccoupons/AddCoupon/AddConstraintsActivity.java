@@ -29,8 +29,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 此界面为手动添加优惠券的子界面：添加使用门槛
+ */
 public class AddConstraintsActivity extends AppCompatActivity {
-
 
     boolean requestFocus = false;
     ArrayList<String> constraintList = new ArrayList<>();
@@ -86,6 +88,7 @@ public class AddConstraintsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
 
+        //初始化信息
         adapter = new ConstraintsAdapter();
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
