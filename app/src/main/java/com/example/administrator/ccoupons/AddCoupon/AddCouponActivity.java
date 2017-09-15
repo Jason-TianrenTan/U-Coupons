@@ -1,7 +1,10 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,6 +20,8 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.MessageType;
+import com.example.administrator.ccoupons.User.UserMyCouponActivity;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -29,6 +34,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -42,8 +48,10 @@ public class AddCouponActivity extends AppCompatActivity {
             couponConstraintsText;
     private EditText couponListPriceText;
     private ImageView couponImg;
-    private TextView nextButton;
+    private TextView nextButton,
+        useEvalButton;
     private ZLoadingDialog dialog;
+    private String vid = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +74,7 @@ public class AddCouponActivity extends AppCompatActivity {
                 .setLoadingColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .setCanceledOnTouchOutside(false)
                 .setHintText("正在获取优惠券估值...")
+                .setHintTextSize(16)
                 .show();
         ConnectionManager connectionManager = new ConnectionManager(url, map, dialog);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -89,8 +98,27 @@ public class AddCouponActivity extends AppCompatActivity {
 
 
     private void parseMessage(String response) {
-        dialog.dismiss();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, 800);
         System.out.println("Response = " + response);
+        String value = null;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONObject valueObj = jsonArray.getJSONObject(0);
+            value = valueObj.getString("value");
+            vid = valueObj.getString("vid");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (value != null) {
+            System.out.println("coupon value = " + value);
+            coupon.setValue(value);
+        }
         couponEvalText.setText(coupon.getValue() + "");
         //TODO:如果一定要添加图片的话 请修改
         if (coupon.getPic() != null && !coupon.getPic().equals("")) {
@@ -101,7 +129,7 @@ public class AddCouponActivity extends AppCompatActivity {
         couponNameText.setText(coupon.getProduct());
         couponBrandText.setText(coupon.getBrandName());
         couponDiscountText.setText(coupon.getDiscount());
-        couponCatText.setText(coupon.getCategory());
+        couponCatText.setText(GlobalConfig.Categories.nameList[Integer.parseInt(coupon.getCategory()) - 1]);
         StringBuilder sb = new StringBuilder("");
         String[] constraints = coupon.getConstraints();
         for (int i = 0; i < constraints.length; i++) {
@@ -125,6 +153,7 @@ public class AddCouponActivity extends AppCompatActivity {
         map.put("listPrice", couponListPriceText.getText().toString());
         map.put("product", coupon.getProduct());
         map.put("discount", coupon.getDiscount());
+        map.put("value", vid);
         //    map.put("pic", coupon.getPic());
         new UpLoadCoupon(map, coupon.getConstraints(), coupon.getPic()).execute();
     }
@@ -153,6 +182,15 @@ public class AddCouponActivity extends AppCompatActivity {
         couponBrandText = (TextView) findViewById(R.id.coupon_brand_textview);
         couponCatText = (TextView) findViewById(R.id.coupon_cat_textview);
         couponConstraintsText = (TextView) findViewById(R.id.purchase_constraints_text);
+        useEvalButton = (TextView) findViewById(R.id.use_eval_button);
+        useEvalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String value = coupon.getValue();
+                if (value != null && value.length() > 0)
+                    couponListPriceText.setText(value);
+            }
+        });
     }
 
 
@@ -209,11 +247,32 @@ public class AddCouponActivity extends AppCompatActivity {
                 int statusCode = response.getStatusLine().getStatusCode();
 
                 String result = EntityUtils.toString(response.getEntity());
-                System.out.println("RRRRRRREEEEEEEEESULT = " + result);
+                if (result.contains("200")) {
+                    Message msg = new Message();
+                    msg.what = START_ACTIVITY;
+                    handler.sendMessage(msg);
+                }
                 httpclient.getConnectionManager().shutdown();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+
+    public static final int START_ACTIVITY = -190;
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case START_ACTIVITY:
+                    Toast.makeText(getApplicationContext(), "添加优惠券成功!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddCouponActivity.this, UserMyCouponActivity.class);
+                    intent.putExtra("index", "2");
+                    startActivity(intent);
+                    finish();
+                    break;
+            }
+        }
+    };
+
 }

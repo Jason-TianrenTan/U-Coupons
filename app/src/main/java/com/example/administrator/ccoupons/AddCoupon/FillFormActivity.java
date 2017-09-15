@@ -1,6 +1,8 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -20,10 +22,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -44,6 +48,7 @@ public class FillFormActivity extends AppCompatActivity {
 
 
     public static int REQUEST_CATEGORY = 6;
+    public static int REQUEST_DATE = 999;
     @BindView(R.id._toolbar)
     Toolbar toolbar;
     @BindView(R.id.coupon_picture)
@@ -63,7 +68,7 @@ public class FillFormActivity extends AppCompatActivity {
     @BindView(R.id.form_discount_inputlayout)
     TextInputLayout discountInputLayout;
     @BindView(R.id.form_expire_edittext)
-    ClearableEditText expireText;
+    EditText expireText;
     @BindView(R.id.form_expire_inputlayout)
     TextInputLayout expireInputLayout;
     @BindView(R.id.form_scrollview)
@@ -123,8 +128,14 @@ public class FillFormActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CATEGORY);
     }
 
-    @OnClick(R.id.form_next_button)
+    @OnClick(R.id.form_expire_edittext)
     public void onClick2() {
+        Intent intent = new Intent(FillFormActivity.this, SelectDateActivity.class);
+        startActivityForResult(intent, REQUEST_DATE);
+    }
+
+    @OnClick(R.id.form_next_button)
+    public void onClick3() {
         valid = true;
         Intent intent = new Intent(FillFormActivity.this, AddConstraintsActivity.class);
         Coupon coupon = new Coupon();
@@ -157,7 +168,7 @@ public class FillFormActivity extends AppCompatActivity {
         }
         if (expireDate.length() == 0) {
             valid = false;
-            expireInputLayout.setError("请输入过期时间");
+            expireInputLayout.setError("请输添加过期时间");
         }
 
         if (valid) {
@@ -175,6 +186,7 @@ public class FillFormActivity extends AppCompatActivity {
         }
 
     }
+
     private boolean hasImage = false;
     private TakePhotoUtil takePhotoUtil;
     private String path = "";
@@ -199,6 +211,18 @@ public class FillFormActivity extends AppCompatActivity {
                     Intent intent = new Intent(FillFormActivity.this, ChooseCategoryActivity.class);
                     //TODO: intialize intent
                     startActivityForResult(intent, REQUEST_CATEGORY);
+                }
+            }
+        });
+
+        expireText.setCompoundDrawables(null, null, drawable, null);
+        expireText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    Intent intent = new Intent(FillFormActivity.this, SelectDateActivity.class);
+                    //TODO: intialize intent
+                    startActivityForResult(intent, REQUEST_DATE);
                 }
             }
         });
@@ -230,6 +254,10 @@ public class FillFormActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CATEGORY) {
             System.out.println("选择了类别" + resultCode);
             categoryEditText.setText(GlobalConfig.Categories.nameList[resultCode]);
+        } else if (requestCode == REQUEST_DATE) {
+            String date = data.getStringExtra("date");
+            System.out.println("Chose date at " + date);
+            expireText.setText(date);
         } else {
             takePhotoUtil.onActivityResult(requestCode, resultCode, data);
         }

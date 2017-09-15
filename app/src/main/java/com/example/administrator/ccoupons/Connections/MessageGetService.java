@@ -66,8 +66,7 @@ public class MessageGetService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("on start command");
-        //requestMessage();
+        requestMessage();
         return super.onStartCommand(intent,flags,startId);
     }
 
