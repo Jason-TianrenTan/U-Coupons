@@ -44,6 +44,8 @@ public class MyApp extends MobApplication {
     private String phoneNumber;
     private int gender;
 
+
+    //Message list
     public ArrayList<Message> getMessageList() {
         return this.messageList;
     }
@@ -52,6 +54,8 @@ public class MyApp extends MobApplication {
         this.messageList = messageList;
     }
 
+
+    //Gender
     public int getGender() {
         return this.gender;
     }
@@ -60,6 +64,8 @@ public class MyApp extends MobApplication {
         this.gender = gender;
     }
 
+
+    //User ID
     public String getUserId() {
         return userId;
     }
@@ -68,6 +74,8 @@ public class MyApp extends MobApplication {
         this.userId = id;
     }
 
+
+    //User nickname
     public String getNickname() {
         return this.nickname;
     }
@@ -76,6 +84,8 @@ public class MyApp extends MobApplication {
         this.nickname = str;
     }
 
+
+    //User remaining Ucoins
     public int getUcoin() {
         return this.Ucoin;
     }
@@ -84,6 +94,8 @@ public class MyApp extends MobApplication {
         this.Ucoin = ucoin;
     }
 
+
+    //User avatar
     public void setAvatar(String url) {
         this.avatar = url;
     }
@@ -92,6 +104,8 @@ public class MyApp extends MobApplication {
         return this.avatar;
     }
 
+
+    //User phonenumber
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -100,12 +114,16 @@ public class MyApp extends MobApplication {
         return this.phoneNumber;
     }
 
+
+    //User location
     public void setLocation(String loc) {
         this.location = loc;
     }
+
     public String getLocation() {
         return this.location;
     }
+
 
     @Override
     protected void attachBaseContext(Context base) {

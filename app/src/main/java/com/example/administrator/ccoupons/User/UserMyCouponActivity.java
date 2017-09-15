@@ -56,6 +56,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
     @BindView(R.id.mycoupon_viewpager)
     ViewPager mycouponViewpager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,9 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Initialize views
+     */
     private void initViews() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -97,6 +101,10 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Slide to
+     * @param pos
+     */
     private void slideTo(int pos) {
         int preWidth = screen_width / 3;
         int margins = PixelUtils.dp2px(this, 12);
@@ -108,6 +116,10 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Select page at
+     * @param position
+     */
     private void selectPage(int position) {
         slideTo(position);
         title_used.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
@@ -126,6 +138,10 @@ public class UserMyCouponActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Init tabs
+     */
     private void initTabs() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         ArrayList<CouponCommonFragment> frList = new ArrayList<CouponCommonFragment>();
@@ -181,6 +197,9 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Initialize receiver
+     */
     public void initReceiver() {
         IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.UPDATEVIEWS");
         receiver = new UpdateUIReceiver();
@@ -188,6 +207,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    //UI receiver
     public class UpdateUIReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

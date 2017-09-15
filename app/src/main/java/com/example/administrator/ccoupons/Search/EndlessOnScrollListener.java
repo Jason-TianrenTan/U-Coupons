@@ -21,6 +21,13 @@ public abstract class EndlessOnScrollListener extends RecyclerView.OnScrollListe
         this.mLinearLayoutManager = linearLayoutManager;
     }
 
+
+    /**
+     *
+     * @param recyclerView
+     * @param dx current X position
+     * @param dy current Y position
+     */
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);

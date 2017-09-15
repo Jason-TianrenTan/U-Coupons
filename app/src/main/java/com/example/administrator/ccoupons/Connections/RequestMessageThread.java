@@ -17,6 +17,13 @@ public class RequestMessageThread extends Thread {
     private UHuiConnection connection;
     private static String Request_URL = GlobalConfig.base_URL + GlobalConfig.requestMsg_URL;//TODO:请求url
     private String userId;
+
+
+    /**
+     *
+     * @param handler handler
+     * @param context context
+     */
     public RequestMessageThread(Handler handler, Context context) {
         System.out.println("Initialize request thread...");
         connection = new UHuiConnection(Request_URL, handler);
@@ -31,9 +38,14 @@ public class RequestMessageThread extends Thread {
         connect();
     }
 
+
+    //return response
     public String getResponse() {
         return connection.getContent();
     }
+
+
+    //connect
     private void connect() {
         try {
             System.out.println("Connecting " + Request_URL);

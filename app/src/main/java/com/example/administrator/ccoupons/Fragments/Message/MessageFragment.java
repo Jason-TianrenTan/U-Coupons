@@ -58,6 +58,8 @@ public class MessageFragment extends Fragment {
         unbinder.unbind();
     }
 
+
+    //adapter for message class
     public class MessageClassAdapter extends RecyclerView.Adapter<MessageClassAdapter.MessageViewHolder> {
 
         private Context mContext;
@@ -123,6 +125,7 @@ public class MessageFragment extends Fragment {
         }
     }
 
+
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
         private int space;
@@ -173,6 +176,9 @@ public class MessageFragment extends Fragment {
     }
 
 
+    /**
+     * init view titles
+     */
     private void initTitles() {
         messageClasses = new ArrayList<MessageClass>();
 
@@ -183,6 +189,9 @@ public class MessageFragment extends Fragment {
     }
 
 
+    /**
+     * init data
+     */
     private void initData() {
 
         ArrayList<Message> messageList = ((MyApp) getActivity().getApplicationContext()).getMessageList();
@@ -198,6 +207,9 @@ public class MessageFragment extends Fragment {
     }
 
 
+    /**
+     * init Pull-To-Refresh
+     */
     private void initPTR() {
         PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
         header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);

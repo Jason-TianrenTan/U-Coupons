@@ -32,6 +32,7 @@ public abstract class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCou
     private CouponClickedListener listener;
     private Context mContext;
 
+
     public class UserCouponInfoViewHolder extends RecyclerView.ViewHolder {
         FrameLayout rootView;
         @BindView(R.id.coupon_listprice_text)

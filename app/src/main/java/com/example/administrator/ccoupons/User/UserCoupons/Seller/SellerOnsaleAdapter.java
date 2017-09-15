@@ -18,6 +18,11 @@ public class SellerOnsaleAdapter extends UserCouponInfoAdapter {
 
     private Context mContext;
 
+
+    /**
+     * Default constructor
+     * @param clist
+     */
     public SellerOnsaleAdapter(ArrayList<Coupon> clist) {
         super(clist);
         setCouponClickListener(new UserCouponInfoAdapter.CouponClickedListener() {

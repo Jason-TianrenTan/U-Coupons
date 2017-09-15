@@ -40,6 +40,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
 
+    /**
+     * Default constructor
+     * @param cList
+     */
     public LocationAdapter(ArrayList<String> cList) {
         this.mLocationList = cList;
     }

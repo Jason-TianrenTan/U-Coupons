@@ -59,6 +59,7 @@ public abstract class SearchCommonFragment extends Fragment {
     private Unbinder unbinder;
     private PtrFrameLayout currentRefreshLayout = null;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
@@ -75,12 +76,19 @@ public abstract class SearchCommonFragment extends Fragment {
     }
 
 
+    /**
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponModifiedEvent event) {
-        System.out.println("modified event");
+
     }
 
 
+    /**
+     * Initialize Pull-To-Refresh
+     */
     private void initPTR() {
         PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
         header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);
@@ -106,7 +114,11 @@ public abstract class SearchCommonFragment extends Fragment {
     }
 
 
+    /**
+     * abstract method, init data
+     */
     public abstract void initData();
+
 
     /**
      * @param start   beginning index
@@ -125,6 +137,7 @@ public abstract class SearchCommonFragment extends Fragment {
         adapter.notifyDataSetChanged();
 
     }
+
 
     @Override
     public void onDestroyView() {
@@ -155,6 +168,7 @@ public abstract class SearchCommonFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -162,12 +176,20 @@ public abstract class SearchCommonFragment extends Fragment {
     }
 
 
+    /**
+     * request sort by specific order
+     * @param order order preferred
+     */
     public void requestSort(String order) {
         this.order = order;
         initData();
     }
 
 
+    /**
+     * set data of list
+     * @param cList
+     */
     protected void setData(ArrayList<Coupon> cList) {
         this.fullList = cList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

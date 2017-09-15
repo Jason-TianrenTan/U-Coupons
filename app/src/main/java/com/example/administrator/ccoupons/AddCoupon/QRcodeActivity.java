@@ -26,6 +26,8 @@ import com.jph.takephoto.model.TResult;
 import java.lang.ref.WeakReference;
 
 public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
+
+
     private static final String TAG = QRcodeActivity.class.getSimpleName();
     private boolean light = false;
 
@@ -35,6 +37,7 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
     private LinearLayout gallery;
     private TakePhotoUtil takePhotoUtil;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);

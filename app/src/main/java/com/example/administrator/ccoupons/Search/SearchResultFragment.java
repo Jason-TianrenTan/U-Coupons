@@ -26,6 +26,7 @@ public class SearchResultFragment extends SearchCommonFragment {
 
     private String keyWord = null, order = "";
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -47,6 +48,10 @@ public class SearchResultFragment extends SearchCommonFragment {
 
     }
 
+
+    /**
+     * init data
+     */
     @Override
     public void initData() {
         if (keyWord == null)
@@ -59,7 +64,9 @@ public class SearchResultFragment extends SearchCommonFragment {
     }
 
 
-
+    /**
+     * clear list
+     */
     private void clear() {
         if (fullList != null) {
             int size = fullList.size();

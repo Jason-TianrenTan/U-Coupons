@@ -27,9 +27,8 @@ import android.support.v7.widget.AppCompatEditText;
 import com.example.administrator.ccoupons.R;
 
 public class PasswordToggleEditText extends AppCompatEditText implements OnFocusChangeListener, TextWatcher {
-    /**
-     * 眼睛按钮
-     */
+
+
     private Drawable mToggleDrawable;
     private boolean hidden = true;
 
@@ -47,7 +46,7 @@ public class PasswordToggleEditText extends AppCompatEditText implements OnFocus
     }
 
     /**
-     * 初始化右边小眼睛的控件
+     * Initialize icon on the right
      */
     private void init() {
         mToggleDrawable = getCompoundDrawables()[2];
@@ -59,6 +58,7 @@ public class PasswordToggleEditText extends AppCompatEditText implements OnFocus
         setOnFocusChangeListener(this);
         addTextChangedListener(this);
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -112,7 +112,7 @@ public class PasswordToggleEditText extends AppCompatEditText implements OnFocus
     }
 
     /**
-     * 当输入框里面内容发生变化的时候回调的方法
+     * called when text changes
      */
     @Override
     public void onTextChanged(CharSequence s, int start, int count,
@@ -130,16 +130,16 @@ public class PasswordToggleEditText extends AppCompatEditText implements OnFocus
     }
 
     /**
-     * 设置晃动动画
+     * set shaking animation
      */
     public void setShakeAnimation() {
         this.setAnimation(shakeAnimation(3));
     }
 
     /**
-     * 晃动动画
+     * Animation for shaking
      *
-     * @param counts 1秒钟晃动多少下
+     * @param counts shakes per second
      * @return
      */
     public Animation shakeAnimation(int counts) {

@@ -53,6 +53,7 @@ public class AddCouponActivity extends AppCompatActivity {
     private ZLoadingDialog dialog;
     private String vid = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
-    //请求优惠券估值
+    //request evaluation for coupon
     private void requestCouponValue() {
         String url = GlobalConfig.base_URL + GlobalConfig.postGetEvaluation_URL;
         HashMap<String, String> map = new HashMap<>();
@@ -97,6 +98,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //parse return message
     private void parseMessage(String response) {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -139,11 +141,13 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //get coupon
     private void getCouponInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
     }
 
 
+    //add coupon
     private void requestAddCoupon() {
         HashMap<String, String> map = new HashMap<>();
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
@@ -159,6 +163,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //bind views
     private void bindViews() {
 
         nextButton = (TextView) findViewById(R.id.form_preview_next);
@@ -194,6 +199,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //AsyncTask for uploading coupon to server
     public class UpLoadCoupon extends AsyncTask<Void, Integer, String> {
 
         private HashMap<String, String> map;

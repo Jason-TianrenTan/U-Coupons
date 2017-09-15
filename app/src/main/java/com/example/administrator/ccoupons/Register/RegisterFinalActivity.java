@@ -29,7 +29,6 @@ import java.util.HashMap;
 
 public class RegisterFinalActivity extends AppCompatActivity {
 
-    //127.0.0.1
 
     private String[] GenderChars = {"男", "女"};
     private LoginInformationManager loginInformationManager;
@@ -41,7 +40,10 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private String phoneString, password;
 
 
-    //处理返回回来的json
+    /**
+     * parse response string from server
+     * @param response
+     */
     private void parseMessage(String response) {
         System.out.println("response = " + response);
         try {
@@ -106,6 +108,10 @@ public class RegisterFinalActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Login
+     */
     private void Login() {
         Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
         MyApp app = (MyApp) getApplicationContext();
@@ -115,6 +121,11 @@ public class RegisterFinalActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * Register
+     * @param nickname user's nickname
+     */
     private void Register(String nickname) {
         String url_str = requestURL;
         String md5pass = null;

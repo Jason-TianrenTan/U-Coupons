@@ -144,7 +144,9 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * clear button view states
+     */
     private void clearStats() {
         sortByDateButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
         eval_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));

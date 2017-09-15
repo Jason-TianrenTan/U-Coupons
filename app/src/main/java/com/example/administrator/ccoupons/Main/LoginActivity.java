@@ -104,7 +104,12 @@ public class LoginActivity extends AppCompatActivity {
         initSoftKeyboard();
     }
 
-    //登录
+
+    /**
+     * Login to server
+     * @param username
+     * @param password
+     */
     private void requestLogin(String username, String password) {
         String url = GlobalConfig.base_URL + GlobalConfig.login_URL;
         String md5pass = null;
@@ -143,7 +148,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Initialize toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(loginToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -156,6 +163,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * initialize edittext
+     */
     private void initEditText() {
         LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -219,6 +230,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Initialize soft-keyboard actions
+     */
     private void initSoftKeyboard() {
         SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
         softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
@@ -244,6 +258,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Start animation in specific type
+     * @param anim_type type of animation
+     */
     private void startAnimation(int anim_type) {
 
         int mergeHeight = PixelUtils.dp2px(this, 120);
@@ -285,6 +303,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * parse response from server
+     * @param response
+     */
     private void parseMessage(String response) {
         System.out.println("response = " + response);
         if (response.indexOf("result") != -1) {

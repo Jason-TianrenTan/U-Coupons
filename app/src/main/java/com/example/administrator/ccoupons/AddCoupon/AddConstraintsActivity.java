@@ -93,6 +93,7 @@ public class AddConstraintsActivity extends AppCompatActivity {
     }
 
 
+    //Adapter for RecyclerView in coupon's constraints
     public class ConstraintsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private Context mContext;

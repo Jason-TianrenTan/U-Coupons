@@ -59,6 +59,10 @@ public class UserInformationActivity extends SlideBackActivity {
         super.onStart();
     }
 
+
+    /**
+     * Initially bind views
+     */
     private void bindViews() {
         name = (TextView) findViewById(R.id.user_name);
         sex = (TextView) findViewById(R.id.user_sex);
@@ -76,6 +80,10 @@ public class UserInformationActivity extends SlideBackActivity {
         toUpdatePhone = (LinearLayout) findViewById(R.id.to_update_phone);
     }
 
+
+    /**
+     * Init nickname and gender
+     */
     private void initinfo() {
         name.setText(app.getNickname());
         if (app.getGender() == Gender.MALE)
@@ -83,6 +91,10 @@ public class UserInformationActivity extends SlideBackActivity {
         else sex.setText("女");
     }
 
+
+    /**
+     * set listeners
+     */
     private void setOnClickListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,10 +212,16 @@ public class UserInformationActivity extends SlideBackActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+
     protected boolean useTakePhoto() {
         return true;
     }
 
+
+    /**
+     * update user portrait at path
+     * @param path file path
+     */
     public void updatePortrait(String path) {
         try {
             MyApp app = (MyApp) getApplicationContext();
@@ -221,6 +239,10 @@ public class UserInformationActivity extends SlideBackActivity {
                 .into(portrait);
     }
 
+
+    /**
+     * Initialize user portrait
+     */
     public void initPortrait() {
         String url = app.getAvatar();
         if (url != "") {

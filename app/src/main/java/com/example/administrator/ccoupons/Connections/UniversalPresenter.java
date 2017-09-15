@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by Administrator on 2017/8/18 0018.
  */
-
+//Universal Presenter for special list requests
 public class UniversalPresenter extends BasePresenter{
 
 

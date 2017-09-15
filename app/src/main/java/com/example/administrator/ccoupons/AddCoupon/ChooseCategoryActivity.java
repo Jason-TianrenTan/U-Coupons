@@ -35,6 +35,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         bindViews();
     }
 
+
+    //init data
     private void initData() {
         mCList = new ArrayList<>();
         for (int i = 0; i< GlobalConfig.Categories.covers.length; i++) {
@@ -46,6 +48,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
 
     }
 
+
+    //bind views
     private void bindViews() {
         recyclerView = (RecyclerView) findViewById(R.id.category_choose_recyclerview);
         adapter = new ChooseAdapter(mCList);
@@ -58,6 +62,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
+
+    //adapter for choosing category
     public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder> {
 
         private Context mContext;

@@ -229,6 +229,7 @@ public class FillFormActivity extends AppCompatActivity {
     }
 
 
+    //load picture into imageview
     private void updatePic() {
         Glide.with(this)
                 .load(path)

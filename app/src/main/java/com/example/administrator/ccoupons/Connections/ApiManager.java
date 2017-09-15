@@ -9,14 +9,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Administrator on 2017/8/17 0017.
+ * Class for Retrofit APIs
  */
 
-//Api维护管理类
+
 public class ApiManager {
+
 
     private RetrofitService myApi;
     private static ApiManager sApiManager;
 
+
+    //get instance of api
     public static ApiManager getInstance() {
         if (sApiManager == null) {
             synchronized (ApiManager.class) {
@@ -28,6 +32,8 @@ public class ApiManager {
         return sApiManager;
     }
 
+
+    //request Retrofit service
     public RetrofitService getRetrofitService() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HttpInterceptor())
