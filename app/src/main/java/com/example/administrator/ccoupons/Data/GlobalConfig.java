@@ -12,7 +12,7 @@ public class GlobalConfig {
     static final String localBase = "http://192.168.206.11:8000";
     static final String teamBase = "http://192.168.207.222:8000";
     static final String serverBase = "http://119.23.72.43";
-    public static final String base_URL = dormBase;
+    public static final String base_URL = teamBase;
     public static final String login_URL = "/loginForAndroid";
     public static final String register_URL = "/signUpForAndroid";
     public static final String requestMsg_URL = "/sendMessage";

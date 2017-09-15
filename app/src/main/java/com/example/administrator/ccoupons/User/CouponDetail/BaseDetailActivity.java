@@ -135,7 +135,6 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
 
 
     /**
-     *
      * @param isLiked 是否被关注
      */
     public abstract void initBottomViews(boolean isLiked);
@@ -172,36 +171,12 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
         String name = coupon.getProduct();
         nameText.setText(name);
 
-        //list price
-        String listprice = coupon.getListprice();
-        listpriceText.setText("¥" + listprice + "");
-
-        //eval price
-        String evalprice = coupon.getValue();
-        evalpriceText.setText("¥" + evalprice + "");
-
-        //优惠额度
-        String discount = coupon.getDiscount();
-        discountText.setText("¥" + discount);
-
-        //商家名
-        String brandName = "懒得起名字的公司" + coupon.getBrandName();
-        brandNameText.setText(brandName);
-
-        String expireDate = coupon.getExpiredtime();
-        expireText.setText(expireDate + "");
-
-
         String constraints = "后台居然懒到没加这个=.=";
         constaintsText.setText(constraints);
 
         HashMap<String, String> map = new HashMap<>();
         map.put("couponID", coupon.getCouponid() + "");
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
-
-        if (msgId != null) {
-            map.put("messageID", msgId);
-        }
 
         ConnectionManager connectionManager = new ConnectionManager(GlobalConfig.base_URL + GlobalConfig.requestDetail_URL, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
@@ -215,7 +190,6 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
                 //    ImageManager.GlideImage(GlobalConfig.base_URL + "/static/" + coupon.getSellerAvatarURL(), sellerAvatar);
                 //商家 品牌
                 brandNameText.setText(coupon.getBrandName());
-
                 //使用限制
                 String[] constraints = coupon.getConstraints();
                 StringBuilder sb = new StringBuilder();
@@ -225,6 +199,25 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
                     index++;
                 }
                 constaintsText.setText(sb.toString());
+                //list price
+                String listprice = coupon.getListprice();
+                listpriceText.setText("¥" + listprice + "");
+
+                //eval price
+                String evalprice = coupon.getValue();
+                evalpriceText.setText("¥" + evalprice + "");
+
+                //优惠额度
+                String discount = coupon.getDiscount();
+                discountText.setText("¥" + discount);
+
+                //商家名
+                String brandName =  coupon.getBrandName();
+                brandNameText.setText(brandName);
+
+                String expireDate = coupon.getExpiredtime();
+                expireText.setText(expireDate + "");
+
                 System.out.println("是否关注: " + coupon.isLiked());
                 initBottomViews(coupon.isLiked());
             }

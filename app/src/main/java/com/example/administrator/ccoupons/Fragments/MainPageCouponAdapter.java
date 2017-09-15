@@ -77,7 +77,7 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
         holder.nameText.setText(coupon.getProduct());
         holder.detailText.setText(coupon.getExpiredtime());
         holder.priceText.setText(coupon.getListprice() + "");
-        holder.specialText.setText(coupon.getWord());
+        holder.specialText.setText("估值: " + coupon.getValue() + "U");
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
