@@ -86,11 +86,12 @@
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
         <activity android:name=".Main.WelcomeActivity">
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <service android:name=".Connections.MessageGetService" />
@@ -100,7 +101,13 @@
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
