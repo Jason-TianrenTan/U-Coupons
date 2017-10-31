@@ -86,11 +86,6 @@
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
         <activity android:name=".Main.WelcomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name=".Connections.MessageGetService" />
@@ -126,7 +121,14 @@
         <activity android:name=".User.CouponDetail.BaseDetailActivity" />
         <activity android:name=".User.CouponDetail.DisplayCouponDetailActivity" />
         <activity android:name=".AddCoupon.AddConstraintsActivity" />
-        <activity android:name=".AddCoupon.SelectDateActivity"></activity>
+        <activity android:name=".AddCoupon.SelectDateActivity" />
+        <activity android:name=".Main.GuideActivity" android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
