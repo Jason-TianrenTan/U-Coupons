@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/splash_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Lorem ipsum dolor"
+        android:textColor="@color/white_pressed"
+        android:textSize="28dp" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/splash_content_above"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="2dp"
+            android:text="above"
+            android:textColor="@color/white_pressed"
+            android:textSize="27dp" />
+
+        <TextView
+            android:id="@+id/splash_content_below"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="below"
+            android:textColor="@color/white_pressed"
+            android:textSize="27dp" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
