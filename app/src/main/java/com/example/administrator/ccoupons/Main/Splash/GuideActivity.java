@@ -18,13 +18,21 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
+public class GuideActivity extends AppCompatActivity {
 
     @BindView(R.id.vp_guide)
     ViewPager vpGuide;
     @BindView(R.id.btn_enter)
     Button btnEnter;
+    @OnClick(R.id.btn_enter)
+    public void click() {
+        Intent intent = new Intent(GuideActivity.this, WelcomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private GuideViewPagerAdapter adapter;
     private List<SplashFragment> splashFragments;
 
@@ -109,21 +117,6 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         super.onDestroy();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getTag().equals("enter")) {
-            enterMainActivity();
-            return;
-        }
-    }
-
-
-    private void enterMainActivity() {
-        Intent intent = new Intent(GuideActivity.this,
-                WelcomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
 
     private class PageChangeListener implements ViewPager.OnPageChangeListener {
         // 当滑动状态改变时调用

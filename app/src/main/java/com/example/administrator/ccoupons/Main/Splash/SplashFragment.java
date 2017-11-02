@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Tools.FontUtils.FontUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,8 +44,11 @@ public class SplashFragment extends Fragment {
             String title = bundle.getString("title"), contentA = bundle.getString("content_above"),
                                                             contentB = bundle.getString("content_below");
             splashTitle.setText(title);
+            splashTitle.setTypeface(FontUtils.getTypeface(getActivity(), "PingFang Regular.ttf"));
             splashContentAbove.setText(contentA);
+            splashContentAbove.setTypeface(FontUtils.getTypeface(getActivity(), "PingFang Regular.ttf"));
             splashContentBelow.setText(contentB);
+            splashContentBelow.setTypeface(FontUtils.getTypeface(getActivity(), "PingFang Regular.ttf"));
             ivSplash.setBackgroundResource(res_id);
         }
         return view;
