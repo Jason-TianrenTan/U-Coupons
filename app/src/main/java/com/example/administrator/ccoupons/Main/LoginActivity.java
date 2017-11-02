@@ -52,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.login_toolbar)
     Toolbar loginToolbar;
-    @BindView(R.id.imglayout)
-    RelativeLayout imglayout;
+//    @BindView(R.id.imglayout)
+//    RelativeLayout imglayout;
     @BindView(R.id.Login_usernameEditText)
     EditText LoginUsernameEditText;
     @BindView(R.id.Login_usernameHolder)
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
         initToolbar();
         initEditText();
-        initSoftKeyboard();
+//        initSoftKeyboard();
     }
 
 
@@ -171,27 +171,27 @@ public class LoginActivity extends AppCompatActivity {
      * initialize edittext
      */
     private void initEditText() {
-        LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    editTextFocus = true;
-                if (!editTextFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-        LoginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    editTextFocus = true;
-                if (!editTextFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
+//        LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+//        LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus)
+//                    editTextFocus = true;
+//                if (!editTextFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
+//        LoginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus)
+//                    editTextFocus = true;
+//                if (!editTextFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
         LoginUsernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -233,68 +233,68 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Initialize soft-keyboard actions
-     */
-    private void initSoftKeyboard() {
-        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
-        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
-            @Override
-            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
-                //键盘打开
-                if (!stateShrinked)
-                    startAnimation(ANIM_SHRINK);
-            }
-
-            @Override
-            public void onSoftKeyboardClosed() {
-                //键盘关闭
-                if (stateShrinked)
-                    startAnimation(ANIM_EXPAND);
-            }
-        });
-    }
-
-    private void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-
-    /**
-     * Start animation in specific type
-     * @param anim_type type of animation
-     */
-    private void startAnimation(int anim_type) {
-
-        int mergeHeight = PixelUtils.dp2px(this, 120);
-        if (anim_type == ANIM_SHRINK) {
-
-            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
-            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop(), textRoot.getTop() - mergeHeight)
-                    .setDuration(500);
-            heightAnimator.start();
-
-            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
-            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_shrink);
-            anim.setFillAfter(true);
-            imgLayout.startAnimation(anim);
-            stateShrinked = true;
-        }
-        if (anim_type == ANIM_EXPAND) {
-
-            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
-            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop() - mergeHeight, textRoot.getTop())
-                    .setDuration(500);
-            heightAnimator.start();
-
-            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
-            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_expand);
-            anim.setFillAfter(true);
-            imgLayout.startAnimation(anim);
-            stateShrinked = false;
-        }
-    }
+//    /**
+//     * Initialize soft-keyboard actions
+//     */
+//    private void initSoftKeyboard() {
+//        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
+//        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+//            @Override
+//            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+//                //键盘打开
+//                if (!stateShrinked)
+//                    startAnimation(ANIM_SHRINK);
+//            }
+//
+//            @Override
+//            public void onSoftKeyboardClosed() {
+//                //键盘关闭
+//                if (stateShrinked)
+//                    startAnimation(ANIM_EXPAND);
+//            }
+//        });
+//    }
+//
+//    private void hideKeyboard(View view) {
+//        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    }
+//
+//
+//    /**
+//     * Start animation in specific type
+//     * @param anim_type type of animation
+//     */
+//    private void startAnimation(int anim_type) {
+//
+//        int mergeHeight = PixelUtils.dp2px(this, 80);
+//        if (anim_type == ANIM_SHRINK) {
+//
+//            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
+//            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop(), textRoot.getTop() - mergeHeight)
+//                    .setDuration(500);
+//            heightAnimator.start();
+//
+////            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
+////            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_shrink);
+////            anim.setFillAfter(true);
+////            imgLayout.startAnimation(anim);
+//            stateShrinked = true;
+//        }
+//        if (anim_type == ANIM_EXPAND) {
+//
+//            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
+//            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop() - mergeHeight, textRoot.getTop())
+//                    .setDuration(500);
+//            heightAnimator.start();
+//
+////            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
+////            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_expand);
+////            anim.setFillAfter(true);
+////            imgLayout.startAnimation(anim);
+//            stateShrinked = false;
+//        }
+//    }
 
 
     @Override

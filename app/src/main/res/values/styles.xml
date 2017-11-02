@@ -41,9 +41,16 @@
         <item name="android:background">@drawable/main_button_selector</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">22dp</item>
         <item name="android:textColor">@color/whitesmoke</item>
         <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <!--登录注册界面文本框容器样式-->
+    <style name="MainEditTextHolderStyle" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
     </style>
 
     <!--登录注册界面文本框样式-->
@@ -53,7 +60,17 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:saveEnabled">false</item>
         <item name="android:textSize">20dp</item>
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/whitesmoke</item>
+    </style>
+
+    <!--登录注册界面文本框主题-->
+    <style name="MainEditTextTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/white_with_alpha</item>
+        <item name="android:textColorHint">@color/whitesmoke</item>
+        <item name="colorControlNormal">@color/whitesmoke</item>
+        <item name="colorControlActivated">@color/whitesmoke</item>
+        <item name="colorControlHighlight">@color/whitesmoke</item>
+        <item name="errorTextAppearance">@color/design_textinput_error_color_light</item>
     </style>
 
     <!-- 顶部导航栏标题样式-->
