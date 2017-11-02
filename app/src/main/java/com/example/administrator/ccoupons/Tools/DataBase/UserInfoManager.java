@@ -23,6 +23,11 @@ public class UserInfoManager {
     private SharedPreferences.Editor editor;
     private ArrayList<String> history;
 
+
+    /**
+     * get the UserInfoManager instance
+     * @param activity
+     */
     public UserInfoManager(Activity activity) {
         username = (new LoginInformationManager(activity)).getUsername();
         preferences = activity.getSharedPreferences(username, MODE_PRIVATE);
@@ -34,10 +39,20 @@ public class UserInfoManager {
         }
     }
 
+
+    /**
+     * get the history list
+     * @return
+     */
     public ArrayList<String> getHistoryList() {
         return history;
     }
 
+
+    /**
+     * add a history record
+     * @param str
+     */
     public void addHistory(String str) {
         while (history.size() == MAX_SIZE)
             deleteHistory(MAX_SIZE);
@@ -48,16 +63,29 @@ public class UserInfoManager {
         changeHistoryData();
     }
 
+
+    /**
+     * delete the first history
+     * @param i
+     */
     public void deleteHistory(int i) {
         history.remove(i - 1);
         changeHistoryData();
     }
 
+
+    /**
+     * clear all history
+     */
     public void clearHistory() {
         history.clear();
         editor.clear().commit();
     }
 
+
+    /**
+     * update the history data
+     */
     private void changeHistoryData() {
         String historyData = "";
         for (String str : history) {
@@ -66,6 +94,11 @@ public class UserInfoManager {
         editor.putString("search_history", historyData).commit();
     }
 
+
+    /**
+     * set the history list
+     * @param history
+     */
     public void setHistory(ArrayList<String> history) {
         this.history = history;
         changeHistoryData();

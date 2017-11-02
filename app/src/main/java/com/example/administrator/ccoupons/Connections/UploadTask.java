@@ -40,7 +40,10 @@ public class UploadTask extends AsyncTask<Void, Integer, String> {
 
     }
 
-    // upload photos
+    /**
+     * upload file to server
+     * @param uploadFile
+     */
     public void uploadFile(String uploadFile) {
         try{
             HttpClient httpclient = new DefaultHttpClient();

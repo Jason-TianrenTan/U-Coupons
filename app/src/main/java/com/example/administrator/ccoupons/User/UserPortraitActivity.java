@@ -50,7 +50,10 @@ public class UserPortraitActivity extends AppCompatActivity {
         initPortrait();
     }
 
-    //Todo:尚无法修改注入
+
+    /**
+     * set OnLongClickListener
+     */
     private void setOnLongClickListeners() {
 
         bg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -100,6 +103,11 @@ public class UserPortraitActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * update user portrait
+     * @param path
+     */
     public void updatePortrait(final String path) {
         try {
             MyApp app = (MyApp) getApplicationContext();
@@ -117,6 +125,10 @@ public class UserPortraitActivity extends AppCompatActivity {
                 .into(portrait);
     }
 
+
+    /**
+     * init user portrait
+     */
     public void initPortrait() {
         MyApp app = (MyApp) this.getApplicationContext();
         String url = app.getAvatar();
@@ -127,6 +139,11 @@ public class UserPortraitActivity extends AppCompatActivity {
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 
+
+    /**
+     * init the camera
+     * @return
+     */
     protected boolean useTakePhoto() {
         return true;
     }

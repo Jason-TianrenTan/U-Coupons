@@ -5,12 +5,21 @@ package com.example.administrator.ccoupons.Fragments.Category;
  */
 
 public class Category {
+
     private String name;
     private int resId;
+
+
+    /**
+     *
+     * @param cname category name
+     * @param cid category id
+     */
     public Category(String cname,int cid) {
         this.name = cname;
         this.resId = cid;
     }
+
     public String getProduct() {
         return this.name;
     }

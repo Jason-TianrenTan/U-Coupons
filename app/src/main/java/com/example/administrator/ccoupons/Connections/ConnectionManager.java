@@ -42,21 +42,40 @@ public class ConnectionManager {
         }
     };
 
+
+    /**
+     *
+     * @param url connect url
+     * @param reqMap request key-value hashmap
+     */
     public ConnectionManager(String url, HashMap<String, String> reqMap) {
         this.attributes = reqMap;
         this.url = url;
     }
 
+    /**
+     *
+     * @param url
+     * @param reqMap
+     * @param dialog request with UI loading
+     */
     public ConnectionManager(String url, HashMap<String,String> reqMap, ZLoadingDialog dialog) {
         this.attributes = reqMap;
         this.url = url;
         this.dialog = dialog;
     }
 
+
+    /**
+     *
+     * @param listener
+     */
     public void setConnectionListener(UHuiConnectionListener listener) {
         this.listener = listener;
     }
 
+
+    //connect to server
     public void connect() {
         new Thread(new Runnable() {
             @Override
@@ -84,6 +103,8 @@ public class ConnectionManager {
 
     }
 
+
+    //custom listener
     public interface UHuiConnectionListener {
         public void onConnectionSuccess(String response);
 

@@ -26,9 +26,11 @@ import com.jph.takephoto.model.TResult;
 import java.lang.ref.WeakReference;
 
 /**
- * 此界面为扫描二维码添加优惠券的界面
+ * This interface for adding coupons to scanned QR codes
  */
 public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
+
+
     private static final String TAG = QRcodeActivity.class.getSimpleName();
     private boolean light = false;
 
@@ -38,6 +40,7 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
     private LinearLayout gallery;
     private TakePhotoUtil takePhotoUtil;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);

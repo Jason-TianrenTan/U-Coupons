@@ -91,6 +91,11 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
     }
 
 
+    /**
+     * set the coupon image
+     * @param holder
+     * @param coupon
+     */
     private void setImage(CouponViewHolder holder, Coupon coupon) {
         String url = GlobalConfig.base_URL + "/static/" + coupon.getPic();
         Glide.with(mContext)
@@ -129,6 +134,10 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
     }
 
 
+    /**
+     * set the footerview
+     * @param footer
+     */
     public void setFooterView(View footer) {
         footerView = footer;
         System.out.println("cat item count = " + getItemCount());

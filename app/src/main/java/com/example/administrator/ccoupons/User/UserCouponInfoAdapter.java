@@ -32,6 +32,7 @@ public abstract class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCou
     private CouponClickedListener listener;
     private Context mContext;
 
+
     public class UserCouponInfoViewHolder extends RecyclerView.ViewHolder {
         FrameLayout rootView;
         @BindView(R.id.coupon_listprice_text)
@@ -96,7 +97,7 @@ public abstract class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCou
         holder.couponDiscountText.setText(coupon.getDiscount());
         holder.couponExpireText.setText(coupon.getExpiredtime());
         holder.couponEvalText.setText("¥" + coupon.getValue());
-        holder.couponListText.setText("¥" + coupon.getListprice());
+        //holder.couponListText.setText("¥" + coupon.getListprice());
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

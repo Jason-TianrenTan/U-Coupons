@@ -59,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,10 @@ public class RegisterActivity extends AppCompatActivity {
         initEditText();
     }
 
+
+    /**
+     * init edit text view
+     */
     private void initEditText(){
         phoneInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -92,6 +97,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

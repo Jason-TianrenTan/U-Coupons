@@ -50,6 +50,10 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         initData();
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -62,11 +66,20 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * init information data
+     */
     private void initData() {
         app = (MyApp) getApplicationContext();
         nicknameEdit.setHint(app.getNickname());
     }
 
+
+    /**
+     * update saved information
+     * @param nickname
+     */
     private void update(String nickname) {
         String url_str = updateUserInformationURL;
         HashMap<String, String> map = new HashMap<String, String>();
@@ -100,6 +113,11 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
+
+    /**
+     * prase the massage json
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);

@@ -40,6 +40,10 @@ public class UserWalletActivity extends SlideBackActivity {
         initData();
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -52,6 +56,10 @@ public class UserWalletActivity extends SlideBackActivity {
         });
     }
 
+
+    /**
+     * init Ucoin data
+     */
     private void initData() {
         ub = (TextView) findViewById(R.id.uwal_ub);
         MyApp app = (MyApp) getApplicationContext();

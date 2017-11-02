@@ -47,12 +47,14 @@ public class LocationSelectActivity extends AppCompatActivity {
     NestedScrollView locationNestscrollview;
     @BindView(R.id.location_sideindexbar)
     QuickIndexBar locationSideindexbar;
+
     private String location = null;
     private LocationGet locationFetchr;
     private ArrayList<String> cityList = new ArrayList<>();
     private ArrayList<String> pop_cityList = new ArrayList<>();
     private RecyclerView popCityRecyclerView, recyclerView;
     private int[] CharIndex = new int[26];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,12 @@ public class LocationSelectActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Scroll to index
+     * @param scrollView current scrollview activated
+     * @param index target index
+     */
     private void scroll(NestedScrollView scrollView, int index) {
         int ViewHeight = popCityRecyclerView.getHeight() + gpsCardView.getHeight();
         int y = ViewHeight + CharIndex[index] * PixelUtils.dp2px(this, 45) + PixelUtils.dp2px(this, CharIndex[index]);
@@ -132,7 +140,10 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * return list of popular cities
+     * @return
+     */
     private ArrayList<String> getPopularCityList() {
         ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < GlobalConfig.Cities.popCityList.length; i++) {
@@ -143,7 +154,10 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
 
-    //获取城市列表
+    /**
+     * return city list
+     * @return
+     */
     private ArrayList<String> getCityList() {
 
         ArrayList<String> arrayList = new ArrayList<>();
@@ -160,6 +174,7 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
 
+    //Popular Cities Adapter
     public class PCityAdapter extends RecyclerView.Adapter<PCityAdapter.PCityViewHolder> {
 
         private Context mContext;

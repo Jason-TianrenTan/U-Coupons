@@ -16,6 +16,10 @@ public class SellerSoldAdapter extends UserCouponInfoAdapter {
 
     private Context mContext;
 
+    /**
+     * Default constructor
+     * @param clist
+     */
     public SellerSoldAdapter(ArrayList<Coupon> clist) {
         super(clist);
     }

@@ -1,18 +1,15 @@
 package com.example.administrator.ccoupons.User;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
-import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
 import butterknife.BindView;
@@ -20,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class UserSettingActivity extends SlideBackActivity {
+
     @BindView(R.id.uset_toolbar)
     Toolbar toolbar;
     @BindView(R.id.uset_clear)
@@ -38,6 +36,9 @@ public class UserSettingActivity extends SlideBackActivity {
         initToolbar();
     }
 
+    /**
+     * Initially Toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -50,6 +51,10 @@ public class UserSettingActivity extends SlideBackActivity {
         });
     }
 
+
+    /**
+     * Show dialog confirming clear
+     */
     private void showClearDialog() {
         final AlertDialog.Builder clearDialog =
                 new AlertDialog.Builder(UserSettingActivity.this);

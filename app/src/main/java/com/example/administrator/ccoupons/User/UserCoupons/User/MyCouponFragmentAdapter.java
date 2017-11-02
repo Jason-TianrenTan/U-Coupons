@@ -21,12 +21,23 @@ public class MyCouponFragmentAdapter extends FragmentPagerAdapter {
         frList = list;
     }
 
+
+    /**
+     * get item
+     * @param arg0
+     * @return
+     */
     @Override
     public Fragment getItem(int arg0) {
         // TODO Auto-generated method stub
         return frList.get(arg0);
     }
 
+
+    /**
+     * get list count
+     * @return
+     */
     @Override
     public int getCount() {
         // TODO Auto-generated method stub

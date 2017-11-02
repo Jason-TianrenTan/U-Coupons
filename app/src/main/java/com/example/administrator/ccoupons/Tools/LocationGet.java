@@ -23,12 +23,22 @@ public class LocationGet {
     private String city;
     private TextView target;
 
+
+    /**
+     * Default Constructor
+     * @param context context of activity
+     * @param textview textview to show location
+     */
     public LocationGet(Context context, TextView textview) {
         this.mContext = context;
         this.target = textview;
         target.setText("定位");
     }
 
+
+    /**
+     * Request location
+     */
     public void requestLocation() {
         mLocationClient = new AMapLocationClient(mContext.getApplicationContext());
         mLocationOption = new AMapLocationClientOption();
@@ -55,6 +65,11 @@ public class LocationGet {
         mLocationClient.startLocation();
     }
 
+
+    /**
+     *
+     * @return current city
+     */
     public String getCity() {
         return this.city;
     }

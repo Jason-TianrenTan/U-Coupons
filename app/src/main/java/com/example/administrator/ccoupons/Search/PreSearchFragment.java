@@ -31,6 +31,8 @@ public class PreSearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<String> preList;
     private PreSearchAdapter adapter;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.presearch_fragment, container, false);
@@ -51,17 +53,31 @@ public class PreSearchFragment extends Fragment {
         return view;
     }
 
+
+    /**
+     * update view list
+     * @param arrayList
+     * @param catId category id
+     */
     public void upDate(ArrayList<String> arrayList, String catId) {
         this.preList = arrayList;
         adapter = new PreSearchAdapter(preList);
         adapter.catId = catId;
         recyclerView.setAdapter(adapter);
     }
+
+
+    /**
+     * initialize arraylist
+     */
     private void initData() {
         preList = new ArrayList<>();
     }
 
-    
+
+    /**
+     * adapter for presearch
+     */
     public class PreSearchAdapter extends RecyclerView.Adapter<PreSearchAdapter.PreSearchViewHolder> {
 
         private Context mContext;

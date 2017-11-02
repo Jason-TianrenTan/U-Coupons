@@ -84,6 +84,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
     protected View bottomView;
     protected boolean onDisplay = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,12 +136,12 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
 
 
     /**
-     * @param isLiked 是否被关注
+     * @param isLiked whther coupon is liked
      */
     public abstract void initBottomViews(boolean isLiked);
 
     /**
-     * 回调
+     * todo on back pressed
      */
     public abstract void onKeyBack();
 
@@ -158,6 +159,8 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
 
     }
 
+
+    //show coupon info
     private void showInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
@@ -171,7 +174,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
         String name = coupon.getProduct();
         nameText.setText(name);
 
-        String constraints = "后台居然懒到没加这个=.=";
+        String constraints = "暂无限制";
         constaintsText.setText(constraints);
 
         HashMap<String, String> map = new HashMap<>();

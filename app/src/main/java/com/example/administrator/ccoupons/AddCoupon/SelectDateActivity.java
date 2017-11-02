@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
 /**
- * 此界面为手动添加优惠券的子界面：选择过期日期
+ * This interface is the sub interface for manually adding Coupons: select expiration dates
  */
 public class SelectDateActivity extends AppCompatActivity {
 

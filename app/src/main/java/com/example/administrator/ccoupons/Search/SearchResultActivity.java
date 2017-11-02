@@ -147,6 +147,9 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * clear button view states
+     */
     private void clearStats() {
         sortByDateButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
         eval_sortText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
@@ -249,7 +252,7 @@ public class SearchResultActivity extends AppCompatActivity {
             holder.nameText.setText(coupon.getProduct());
             holder.detailText.setText(coupon.getExpiredtime());
             holder.priceText.setText(coupon.getListprice() + "");
-            holder.specialText.setText(coupon.getWord());
+            holder.specialText.setText("限量优惠");
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

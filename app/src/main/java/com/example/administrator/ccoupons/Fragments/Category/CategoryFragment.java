@@ -92,7 +92,6 @@ public class CategoryFragment extends Fragment {
     NestedScrollView mainNestedscrollview;
     @BindView(R.id.category_ptr_frame)
     PtrFrameLayout categoryPtrFrame;
-
     PtrFrameLayout currentRefreshLayout = null;
     @BindView(R.id.fab_action_fillform)
     FloatingActionButton fillFormFab;
@@ -100,9 +99,9 @@ public class CategoryFragment extends Fragment {
     FloatingActionButton scanQRFab;
     @BindView(R.id.multiple_actions)
     FloatingActionsMenu fab_menu;
-
     @BindView(R.id.category_rootview)
     LinearLayout rootView;
+
 
     @OnClick({R.id.location_textview, R.id.category_message_button})
     public void click(View view) {
@@ -177,6 +176,10 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    /**
+     * init Floating Action Button
+     * @param view
+     */
     private void initFAB(final View view) {
         fillFormFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +197,10 @@ public class CategoryFragment extends Fragment {
     }
 
 
-
+    /**
+     * init RecyclerViews
+     * @param view
+     */
     private void initRecyclerViews(View view) {
         categoryView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
@@ -227,6 +233,9 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    /**
+     * init Pull-To-Refresh view
+     */
     private void initPTR() {
         PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
         header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);
@@ -248,7 +257,10 @@ public class CategoryFragment extends Fragment {
     }
 
 
-    //设置footer
+    /**
+     * set Footer
+     * @param type type of footer
+     */
     private void setFooterView(int type) {
         switch (type) {
             case FOOTER_LOADMORE:
@@ -259,6 +271,12 @@ public class CategoryFragment extends Fragment {
 
     }
 
+
+    /**
+     * request more data
+     * @param start beginning index
+     * @param ceiling max numbers for request
+     */
     private void requestData(int start, int ceiling) {
         int count = 0;
         try {
@@ -280,6 +298,11 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+
+    /**
+     * parse result
+     * @param response
+     */
     private void parseBannerMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
@@ -301,8 +324,10 @@ public class CategoryFragment extends Fragment {
         }
     }
 
-    //{"result": ["images/banner/banner_1.jpg", "images/banner/banner_2.jpg", "images/banner/banner_3.jpg", "images/banner/banner_4.jpg", "images/banner/banner_5.jpg"]}
-    //初始化展示板
+
+    /**
+     * init banner
+     */
     private void initBanner() {
         networkImages = new ArrayList<String>();
         //post
@@ -331,6 +356,10 @@ public class CategoryFragment extends Fragment {
 
     }
 
+
+    /**
+     * init Image Loader
+     */
     private void initImageLoader() {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.mascot_nothing)
@@ -346,7 +375,9 @@ public class CategoryFragment extends Fragment {
     }
 
 
-    //初始化数据
+    /**
+     * init category data
+     */
     private void initCategory() {
         categoryList = new ArrayList<Category>();
         for (int i = 0; i < GlobalConfig.Categories.covers.length; i++) {
@@ -356,6 +387,9 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    /**
+     * request location data
+     */
     public void initLocation() {
         (new LocationGet(getActivity(), locationTextview)).requestLocation();
     }

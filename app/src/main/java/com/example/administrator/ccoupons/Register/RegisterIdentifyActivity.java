@@ -76,6 +76,10 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
 
     int current = COUNTDOWN_TIME;
 
+
+    /**
+     * SMS timer
+     */
     private void updateTimer() {
         if (!reget_permission) {
             current--;
@@ -216,12 +220,20 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
         startCountDown();
     }
 
+
+    /**
+     * request SMS Code from server
+     */
     private void sendSMS() {
         //发送验证码
         System.out.println("Sent SMS code to +86" + phoneString.trim());
         SMSSDK.getVerificationCode("86", phoneString.trim());//请求获取短信验证码
     }
 
+
+    /**
+     * start countdown
+     */
     private void startCountDown() {
         current = COUNTDOWN_TIME;
         Timer timer = new Timer();

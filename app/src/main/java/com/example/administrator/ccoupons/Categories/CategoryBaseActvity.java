@@ -12,11 +12,15 @@ import com.example.administrator.ccoupons.R;
 
 public class CategoryBaseActvity extends AppCompatActivity {
 
+
     Toolbar toolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public void setContentView(int resId) {
@@ -24,6 +28,8 @@ public class CategoryBaseActvity extends AppCompatActivity {
         initViews();
     }
 
+
+    //init views
     private void initViews() {
         toolbar = (Toolbar) findViewById(R.id.common_coupons_toolbar);
         setSupportActionBar(toolbar);
@@ -31,6 +37,11 @@ public class CategoryBaseActvity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
+    /**
+     *
+     * @param title
+     */
     public void setTitle(String title) {
 
     }

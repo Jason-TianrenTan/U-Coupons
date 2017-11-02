@@ -40,7 +40,6 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     public static final int TYPE_ITEM = 1; // normal list item
 
 
-
     public class ResultViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -66,7 +65,10 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
 
     }
 
-
+    /**
+     * Default constructor
+     * @param cList
+     */
     public ResultAdapter(ArrayList<Coupon> cList) {
         mCouponList = cList;
         this.setCouponClickListener(new UserCouponInfoAdapter.CouponClickedListener() {
@@ -81,6 +83,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     }
 
 
+    /**
+     * return type for ViewHolder at position
+     * @param position
+     * @return
+     */
     @Override
     public int getItemViewType(int position) {
         if (footerView == null)
@@ -110,10 +117,17 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         });
     }
 
+
+    /**
+     * set coupon image
+     * @param holder container of image
+     * @param coupon coupon corresponding
+     */
     private void setImage(ResultViewHolder holder, Coupon coupon) {
         String url = GlobalConfig.base_URL + "/static/" + coupon.getPic();
         Glide.with(mContext).load(url).into(holder.imageView);
     }
+
 
     @Override
     public ResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -128,17 +142,27 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         return new ResultViewHolder(LayoutInflater.from(mContext).inflate(R.layout.coupon_item, parent, false));
     }
 
+
     @Override
     public int getItemCount() {
         return mCouponList.size();
     }
 
 
+    /**
+     * set footer view
+     * @param footer
+     */
     public void setFooterView(View footer) {
         footerView = footer;
         notifyItemInserted(getItemCount() - 1);
     }
 
+
+    /**
+     *
+     * @param listener
+     */
     public void setCouponClickListener(UserCouponInfoAdapter.CouponClickedListener listener) {
         this.listener = listener;
     }

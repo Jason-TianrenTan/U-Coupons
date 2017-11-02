@@ -15,11 +15,21 @@ public class SearchHistoryManager {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
+
+    /**
+     * init SearchHistoryManager
+     * @param p
+     */
     public SearchHistoryManager(SharedPreferences p) {
         preferences = p;
         editor = preferences.edit();
     }
 
+
+    /**
+     * add a history record
+     * @param str
+     */
     public void addHistory(String str) {
         List<String> stringList = Arrays.asList(getHistoryList());
         if (stringList.size() == 10) {
@@ -33,6 +43,10 @@ public class SearchHistoryManager {
         editor.putString("search_history", history);
     }
 
+
+    /**
+     * get the record list
+     */
     private String[] getHistoryList() {
         String history = preferences.getString("search_history", "");
         String[] list = history.split(";");

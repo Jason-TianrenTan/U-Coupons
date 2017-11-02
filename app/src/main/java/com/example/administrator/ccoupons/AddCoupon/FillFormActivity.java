@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 此界面为手动添加优惠券的界面
+ * This interface is for manually adding coupons
  */
 public class FillFormActivity extends AppCompatActivity {
 
@@ -231,6 +231,7 @@ public class FillFormActivity extends AppCompatActivity {
     }
 
 
+    //load picture into imageview
     private void updatePic() {
         Glide.with(this)
                 .load(path)

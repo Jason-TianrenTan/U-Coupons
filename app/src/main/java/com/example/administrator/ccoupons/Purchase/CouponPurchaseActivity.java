@@ -69,7 +69,11 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
-    //处理返回回来的json
+
+    /**
+     * parse response message
+     * @param response response string from server
+     */
     private void parseMessage(String response) {
         System.out.println("Response for purchase = " + response);
         if (response.contains("error")) { //error while purchase
@@ -88,6 +92,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
         //页面跳转
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +114,10 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         initInfo();
     }
 
+
+    /**
+     * Initialize information
+     */
     private void initInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
         Glide.with(this)
@@ -125,6 +134,4 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         couponConstraintsText.setText(sb.toString());
         couponDiscountText.setText(coupon.getDiscount());
     }
-
-
 }
