@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LocationGet;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.UI.QuickIndexBar;
 
 import java.util.ArrayList;

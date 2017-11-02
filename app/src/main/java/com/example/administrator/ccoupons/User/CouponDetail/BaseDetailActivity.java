@@ -21,7 +21,7 @@ import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;

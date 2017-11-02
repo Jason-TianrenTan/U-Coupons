@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.EndlessOnScrollListener;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.EventBus;

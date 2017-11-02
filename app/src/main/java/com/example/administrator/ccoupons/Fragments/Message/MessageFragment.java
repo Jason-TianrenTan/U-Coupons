@@ -20,7 +20,7 @@ import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Events.MessageRefreshEvent;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

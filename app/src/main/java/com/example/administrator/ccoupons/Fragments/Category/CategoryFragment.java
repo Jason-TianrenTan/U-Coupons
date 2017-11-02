@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
 import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
 import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
@@ -36,7 +35,7 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
