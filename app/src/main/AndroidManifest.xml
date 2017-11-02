@@ -57,7 +57,6 @@
         <meta-data
             android:name="Mob-AppSecret"
             android:value="e890303b7e846ea8defa4cc59fdb9887" />
-
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -86,14 +85,15 @@
         <activity android:name=".Register.RegisterFinalActivity" />
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
-        <activity
-            android:name=".Main.WelcomeActivity"
-            android:launchMode="singleTask">
+
+        <activity android:name=".Main.WelcomeActivity">
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
+
         </activity>
 
         <service android:name=".Connections.MessageGetService" />
@@ -103,7 +103,8 @@
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan">
+        </activity>
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
@@ -126,10 +127,16 @@
         <activity android:name=".Fragments.Message.MessageDetailActivity" />
         <activity android:name=".User.CouponDetail.SellerDetailActivity" />
         <activity android:name=".User.CouponDetail.MyCouponDetailActivity" />
-        <activity android:name=".User.CouponDetail.BaseDetailActivity" />
         <activity android:name=".User.CouponDetail.DisplayCouponDetailActivity" />
         <activity android:name=".AddCoupon.AddConstraintsActivity" />
-        <activity android:name=".AddCoupon.SelectDateActivity"></activity>
+        <activity android:name=".AddCoupon.SelectDateActivity" />
+        <activity android:name=".Main.Splash.GuideActivity" android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

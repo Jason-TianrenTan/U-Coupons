@@ -4,6 +4,17 @@
     <string name="document_string">假装这是文案</string>
     <string name="mainpage_title_string">"推荐"</string>
 
+    <!--Splash Activity-->
+    <string name="splash_title1">出售闲置券</string>
+    <string name="splash_title2">购买所需券</string>
+    <string name="splash_title3">U惠</string>
+    <string name="splash_content_above1">官方估值</string>
+    <string name="splash_content_above2">样式齐全</string>
+    <string name="splash_content_above3">便利优惠券交易平台</string>
+    <string name="splash_content_below1">合理开价卖更快</string>
+    <string name="splash_content_below2">让你各方面优惠</string>
+    <string name="splash_content_below3"></string>
+
     <!-- 登录与注册 -->
     <string name="login">登录</string>
     <string name="register">注册</string>
