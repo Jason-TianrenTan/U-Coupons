@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User.CouponDetail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +35,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
 
     @BindView(R.id.coupon_image)
@@ -208,7 +216,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
 
                 //eval price
                 String evalprice = coupon.getValue();
-                evalpriceText.setText("¥" + evalprice + "");
+                evalpriceText.setText("估值：¥" + evalprice + "");
 
                 //优惠额度
                 String discount = coupon.getDiscount();

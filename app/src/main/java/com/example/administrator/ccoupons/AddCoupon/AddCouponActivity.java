@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,10 +42,18 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * This interface jumps to the confirmation interface after adding coupons
  */
 public class AddCouponActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
     private Coupon coupon;
     private TextView couponEvalText, couponNameText, couponDiscountText, couponBrandText, couponCatText,

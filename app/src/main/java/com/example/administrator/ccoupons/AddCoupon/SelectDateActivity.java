@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * This interface is the sub interface for manually adding Coupons: select expiration dates
  */
 public class SelectDateActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @BindView(R.id.form_datepicker)
     DatePicker datePicker;

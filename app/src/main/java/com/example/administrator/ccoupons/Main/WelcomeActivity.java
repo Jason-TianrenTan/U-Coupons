@@ -1,6 +1,7 @@
 package com.example.administrator.ccoupons.Main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +13,17 @@ import com.example.administrator.ccoupons.Register.RegisterActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class WelcomeActivity extends Activity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     @BindView(R.id.Welcome_LoginButton)
     Button Welcome_LoginButton;
     @BindView(R.id.Welcome_RegisterButton)

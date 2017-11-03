@@ -19,11 +19,18 @@ import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * This interface is the sub interface for manually adding Coupons: select coupons
  */
 public class ChooseCategoryActivity extends AppCompatActivity {
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     private ArrayList<Category> mCList;
     private ChooseAdapter adapter;

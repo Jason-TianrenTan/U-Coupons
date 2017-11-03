@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,8 +38,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ResetPasswordActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     public static final int COUNTDOWN_TIME = 30;

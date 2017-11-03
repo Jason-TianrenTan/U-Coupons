@@ -52,9 +52,17 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainPageActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     @BindView(R.id.main_bottombar)
@@ -80,7 +88,7 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
         ButterKnife.bind(this);
         initFragments();
         initNavigationBar();
-        initService();
+    //    initService();
     }
 
 

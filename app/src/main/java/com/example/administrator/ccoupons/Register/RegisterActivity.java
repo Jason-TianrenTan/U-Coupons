@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -21,8 +22,16 @@ import com.example.administrator.ccoupons.Tools.RegisterCheck;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private RegisterCheck checker;
     private String[] AlertStrings = "不能含有非法字符,长度必须为11位".split(",");
 

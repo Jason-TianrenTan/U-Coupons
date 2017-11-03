@@ -41,8 +41,6 @@ public class MessageGetService extends IntentService {
                     Intent intent = new Intent(MESSAGE_BROADCAST);
                     intent.putExtra("content", messageThread.getResponse());
                     sendBroadcast(intent);
-                    System.out.println("go message");
-                    System.out.println("message broadcast sent");
                     break;
             }
         }

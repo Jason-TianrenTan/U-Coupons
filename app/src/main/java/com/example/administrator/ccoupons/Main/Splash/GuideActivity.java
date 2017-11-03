@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Main.Splash;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 
@@ -19,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class GuideActivity extends AppCompatActivity {
 
@@ -28,7 +31,7 @@ public class GuideActivity extends AppCompatActivity {
     Button btnEnter;
     @OnClick(R.id.btn_enter)
     public void click() {
-        Intent intent = new Intent(GuideActivity.this, WelcomeActivity.class);
+        Intent intent = new Intent(GuideActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
@@ -144,5 +147,10 @@ public class GuideActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
