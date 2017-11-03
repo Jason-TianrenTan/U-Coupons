@@ -156,7 +156,7 @@
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginBottom="5dp"
                                     app:civ_border_width="2dp"
-                                    app:civ_border_color="@color/thistle"
+                                    app:civ_border_color="@color/whitesmoke"
                                     android:layout_width="35dp"
                                     android:layout_height="35dp" />
                             </LinearLayout>

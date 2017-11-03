@@ -271,7 +271,7 @@
         android:src="@drawable/testportrait"
         android:id="@+id/user_portrait"
         app:civ_border_width="2dp"
-        app:civ_border_color="@color/thistle"
+        app:civ_border_color="@color/whitesmoke"
         app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior"
         />
 
