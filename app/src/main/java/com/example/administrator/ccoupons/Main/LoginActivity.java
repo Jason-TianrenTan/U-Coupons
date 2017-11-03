@@ -163,14 +163,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void initToolbar() {
         setSupportActionBar(loginToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        loginToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
 
@@ -306,9 +300,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
         finish();
-        super.onBackPressed();
     }
 
 

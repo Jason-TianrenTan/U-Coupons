@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
+import com.example.administrator.ccoupons.AddCoupon.FirstAddActivity;
 import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
@@ -183,7 +184,7 @@ public class CategoryFragment extends Fragment {
         fillFormFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), FillFormActivity.class));
+               startActivity(new Intent(getActivity(), FirstAddActivity.class));
             }
         });
 

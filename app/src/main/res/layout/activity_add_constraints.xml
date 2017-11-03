@@ -98,7 +98,6 @@
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:layout_gravity="center"
-                            android:editable="false"
                             android:hint="添加新的限制"
                             android:maxLength="16"
                             android:textColorHint="@color/gainsboro" />

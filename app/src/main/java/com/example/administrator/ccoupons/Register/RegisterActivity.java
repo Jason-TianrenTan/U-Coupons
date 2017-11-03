@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.administrator.ccoupons.Main.LoginActivity;
-import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
