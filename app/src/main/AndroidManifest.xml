@@ -131,7 +131,8 @@
         </activity>
         <activity android:name=".AddCoupon.AddCouponBaseActivity" />
         <activity android:name=".AddCoupon.FirstAddActivity" />
-        <activity android:name=".AddCoupon.SecondAddActivity"></activity>
+        <activity android:name=".AddCoupon.SecondAddActivity" />
+        <activity android:name=".AddCoupon.ThirdAddActivity"></activity>
     </application>
 
 </manifest>

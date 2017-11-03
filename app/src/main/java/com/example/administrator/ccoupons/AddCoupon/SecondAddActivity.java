@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.administrator.ccoupons.R;
 
@@ -89,7 +90,7 @@ public class SecondAddActivity extends AddCouponBaseActivity {
 
     @Override
     public void NextOnClick() {
-        Intent intent = new Intent(SecondAddActivity.this, AddCouponActivity.class);
+        Intent intent = new Intent(SecondAddActivity.this, ThirdAddActivity.class);
         //TODO: add constrains
         Iterator<String> iterator = constraintList.iterator();
         while (iterator.hasNext()) {
@@ -103,6 +104,13 @@ public class SecondAddActivity extends AddCouponBaseActivity {
             constraint_array[i] = str;
             i++;
         }
+        if (constraint_array.length > 0)
+            intent.putExtra("constraints", constraint_array);
+        Intent gI = getIntent();
+        intent.putExtra("category", gI.getStringExtra("category"));
+        intent.putExtra("product", gI.getStringExtra("product"));
+        intent.putExtra("brand", gI.getStringExtra("brand"));
+        intent.putExtra("expire", gI.getStringExtra("expire"));
         startActivity(intent);
     }
 

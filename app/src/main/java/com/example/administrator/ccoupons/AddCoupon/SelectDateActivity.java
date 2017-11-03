@@ -3,6 +3,7 @@ package com.example.administrator.ccoupons.AddCoupon;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.administrator.ccoupons.R;
@@ -46,6 +47,11 @@ public class SelectDateActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }

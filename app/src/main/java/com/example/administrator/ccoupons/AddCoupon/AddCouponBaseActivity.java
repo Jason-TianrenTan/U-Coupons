@@ -56,6 +56,14 @@ public abstract class AddCouponBaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_coupon_base);
         ButterKnife.bind(this);
 
+        TextView backTV = (TextView)findViewById(R.id.tv_addcoupon_back);
+        backTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         initToolbar();
         initViews();
     }

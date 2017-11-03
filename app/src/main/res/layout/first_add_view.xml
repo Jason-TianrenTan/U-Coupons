@@ -19,7 +19,8 @@
             
             <TextView
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:text="商品名"
                 android:textSize="20dp"
@@ -42,9 +43,10 @@
 
             <TextView
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="商品名"
+                android:text="商家名"
                 android:textSize="20dp"
                 android:textColor="@color/black"/>
 
@@ -65,16 +67,42 @@
 
             <TextView
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="商品名"
+                android:text="分类"
                 android:textSize="20dp"
                 android:textColor="@color/black"/>
 
             <EditText style="@style/coupon_constraint_style"
                 android:hint="请选择分类"
-                android:clickable="false"
+                android:editable="false"
                 android:id="@+id/et_constraint_category"/>
+
+        </LinearLayout>
+
+        <ImageView style="@style/add_divider"
+            android:layout_marginLeft="21dp"/>
+
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="过期时间"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+            <EditText style="@style/coupon_constraint_style"
+                android:hint="请选择过期时间"
+                android:editable="false"
+                android:id="@+id/et_constraint_expiredate"/>
 
         </LinearLayout>
 
