@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.GlobalConfig;
@@ -21,6 +22,7 @@ public class FirstAddActivity extends AddCouponBaseActivity {
 
     EditText categoryEditText,
             productEditText, brandEditText,expireEditText;
+    LinearLayout addImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,7 @@ public class FirstAddActivity extends AddCouponBaseActivity {
         productEditText = inflate_View.findViewById(R.id.et_constraint_productname);
         brandEditText = inflate_View.findViewById(R.id.et_constraint_brandname);
         expireEditText = inflate_View.findViewById(R.id.et_constraint_expiredate);
+        addImage  = (LinearLayout) findViewById(R.id.btn_select_image);
 
         Drawable drawable1 = ContextCompat.getDrawable(this, R.drawable.arrow);
         drawable1.setBounds(0, 0, 40, 40);
@@ -61,6 +64,13 @@ public class FirstAddActivity extends AddCouponBaseActivity {
                     //TODO: intialize intent
                     startActivityForResult(intent, REQUEST_DATE);
                 }
+            }
+        });
+
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO:select photo
             }
         });
 

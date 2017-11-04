@@ -38,6 +38,8 @@ public class SelectDateActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         datePicker.setDate(2017, 9);
         datePicker.setMode(DPMode.SINGLE);
+        datePicker.getChildAt(0).setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        datePicker.getChildAt(1).setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         datePicker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
