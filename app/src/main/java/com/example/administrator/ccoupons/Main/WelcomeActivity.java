@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Register.RegisterActivity;
+import com.example.administrator.ccoupons.Register.RegisterNewActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +27,7 @@ public class WelcomeActivity extends Activity {
                 startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
                 break;
             case R.id.Welcome_RegisterButton:
-                startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, RegisterNewActivity.class));
                 break;
         }
     }

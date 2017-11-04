@@ -137,8 +137,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 }
 
             }
-
-
         }
     };
 
@@ -193,18 +191,13 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                     String iCord = editText.getText().toString().trim();
                     SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
                     verify_cord = true;
-                    /*
-                    */
                 }
             }
         });
 
 
         EventHandler eh = new EventHandler() {
-
-
             @Override
-
             public void afterEvent(int event, int result, Object data) {
                 Message msg = new Message();
                 msg.arg1 = event;
@@ -212,8 +205,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 msg.obj = data;
                 SMShandler.sendMessage(msg);
             }
-
-
         };
         SMSSDK.registerEventHandler(eh);
         sendSMS();

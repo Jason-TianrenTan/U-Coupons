@@ -59,7 +59,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:saveEnabled">false</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/whitesmoke</item>
     </style>
 
@@ -78,7 +78,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/whitesmoke</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">24dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
@@ -278,6 +278,7 @@
         <item name="android:background">@color/white</item>
         <item name="android:textSize">20dp</item>
     </style>
+
     <style name="coupon_detail_text">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">5</item>
@@ -366,9 +367,9 @@
         <attr name="pwRadius" format="dimension" />
         <attr name="pwBarWidth" format="dimension" />
         <attr name="pwBarLength" format="dimension" />
-        <attr name="pwDelayMillis" format="dimension"/>
-        <attr name="pwContourColor" format="color"/>
-        <attr name="pwContourSize" format="float"/>
+        <attr name="pwDelayMillis" format="dimension" />
+        <attr name="pwContourColor" format="color" />
+        <attr name="pwContourSize" format="float" />
     </declare-styleable>
 
     <!-- fab style -->
@@ -376,4 +377,8 @@
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
