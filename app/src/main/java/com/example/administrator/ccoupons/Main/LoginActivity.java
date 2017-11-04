@@ -1,7 +1,5 @@
 package com.example.administrator.ccoupons.Main;
 
-import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,14 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +22,8 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Register.RegisterNewActivity;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
-import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -46,7 +39,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -59,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.login_toolbar)
     Toolbar loginToolbar;
-//    @BindView(R.id.imglayout)
+    //    @BindView(R.id.imglayout)
 //    RelativeLayout imglayout;
     @BindView(R.id.Login_usernameEditText)
     EditText LoginUsernameEditText;
@@ -69,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText LoginPasswordEditText;
     @BindView(R.id.Login_passwordHolder)
     TextInputLayout LoginPasswordHolder;
+    @BindView(R.id.Login_registerTextView)
+    TextView LoginRegisterTextView;
     @BindView(R.id.Login_forgetTextView)
     TextView LoginForgetTextView;
     @BindView(R.id.Login_loginButton)
@@ -78,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.rootLayout)
     LinearLayout rootLayout;
 
-    @OnClick({R.id.Login_loginButton, R.id.Login_forgetTextView})
+    @OnClick({R.id.Login_loginButton, R.id.Login_forgetTextView, R.id.Login_registerTextView})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.Login_loginButton:
@@ -100,6 +94,13 @@ public class LoginActivity extends AppCompatActivity {
                     //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
                     requestLogin(username, password);
                 }
+                break;
+            case R.id.Login_forgetTextView:
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+                break;
+            case R.id.Login_registerTextView:
+                startActivity(new Intent(LoginActivity.this, RegisterNewActivity.class));
+                break;
         }
     }
 
@@ -117,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Login to server
+     *
      * @param username
      * @param password
      */
@@ -306,6 +308,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * parse response from server
+     *
      * @param response
      */
     private void parseMessage(String response) {

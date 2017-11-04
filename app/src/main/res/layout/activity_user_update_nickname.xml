@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/user_bg">
+    style="@style/user_bg"
+    android:background="@drawable/login_register_bg"
+    android:theme="@style/MainEditTextTheme">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/user_update_nickname_toolbar"
@@ -33,6 +35,7 @@
         <TextView
             android:layout_width="130dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/whitesmoke"
             android:text="输入昵称:"
             android:textSize="24dp"
             />
@@ -40,7 +43,7 @@
         <com.example.administrator.ccoupons.CustomEditText.ClearableEditText
             android:id="@+id/update_nickname_edit"
             style="@style/MainEditTextStyle"
-            android:textColorHint="@color/colorAccent"
+            android:textColorHint="@color/whitesmoke"
             android:inputType="text"
             android:maxLength="20"
             android:maxLines="1" />
