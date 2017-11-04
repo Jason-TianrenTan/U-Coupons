@@ -61,7 +61,7 @@ public class AddCouponActivity extends AppCompatActivity {
     private EditText couponListPriceText;
     private ImageView couponImg;
     private TextView nextButton,
-        useEvalButton;
+            useEvalButton;
     private ZLoadingDialog dialog;
     private String vid = null;
 
@@ -126,7 +126,7 @@ public class AddCouponActivity extends AppCompatActivity {
             JSONObject valueObj = jsonArray.getJSONObject(0);
             value = valueObj.getString("value");
             vid = valueObj.getString("vid");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (value != null) {

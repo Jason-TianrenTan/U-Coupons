@@ -2,6 +2,7 @@ package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +19,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.GlobalConfig;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.Events.SelectLocationEvent;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.UI.QuickIndexBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -62,12 +69,18 @@ public class LocationSelectActivity extends AppCompatActivity {
     private RecyclerView popCityRecyclerView, recyclerView;
     private int[] CharIndex = new int[26];
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(SelectLocationEvent locEvent) {
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_select);
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

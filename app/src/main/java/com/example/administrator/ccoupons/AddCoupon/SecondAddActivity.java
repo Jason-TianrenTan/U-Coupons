@@ -34,6 +34,7 @@ public class SecondAddActivity extends AddCouponBaseActivity {
     ImageView addButton;
     RecyclerView recyclerView;
     NestedScrollView scrollView;
+    EditText discountEditText;
     boolean requestFocus = false;
 
     ArrayList<String> constraintList = new ArrayList<>();
@@ -58,6 +59,7 @@ public class SecondAddActivity extends AddCouponBaseActivity {
         super.inflateView(R.layout.second_add_view);
         scrollView = inflate_View.findViewById(R.id.add_constraint_scrollview);
         addButton = inflate_View.findViewById(R.id.s_add_constraint_button);
+        discountEditText = inflate_View.findViewById(R.id.et_constraint_discount);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,28 +92,35 @@ public class SecondAddActivity extends AddCouponBaseActivity {
 
     @Override
     public void NextOnClick() {
-        Intent intent = new Intent(SecondAddActivity.this, ThirdAddActivity.class);
-        //TODO: add constrains
-        Iterator<String> iterator = constraintList.iterator();
-        while (iterator.hasNext()) {
-            String str = iterator.next();
-            if (str == null || str.length() == 0)
-                iterator.remove();
+        String discount = discountEditText.getText().toString();
+        if (discount != null && discount.length() > 0) {
+            Intent intent = new Intent(SecondAddActivity.this, ThirdAddActivity.class);
+            //TODO: add constrains
+            Iterator<String> iterator = constraintList.iterator();
+            while (iterator.hasNext()) {
+                String str = iterator.next();
+                if (str == null || str.length() == 0)
+                    iterator.remove();
+            }
+            String[] constraint_array = new String[constraintList.size()];
+            int i = 0;
+            for (String str : constraintList) {
+                constraint_array[i] = str;
+                i++;
+            }
+            if (constraint_array.length > 0)
+                intent.putExtra("constraints", constraint_array);
+            Intent gI = getIntent();
+            intent.putExtra("category", gI.getStringExtra("category"));
+            intent.putExtra("product", gI.getStringExtra("product"));
+            intent.putExtra("brand", gI.getStringExtra("brand"));
+            intent.putExtra("expire", gI.getStringExtra("expire"));
+            intent.putExtra("picture", gI.getStringExtra("picture"));
+            intent.putExtra("discount", discount);
+            startActivity(intent);
         }
-        String[] constraint_array = new String[constraintList.size()];
-        int i = 0;
-        for (String str : constraintList) {
-            constraint_array[i] = str;
-            i++;
-        }
-        if (constraint_array.length > 0)
-            intent.putExtra("constraints", constraint_array);
-        Intent gI = getIntent();
-        intent.putExtra("category", gI.getStringExtra("category"));
-        intent.putExtra("product", gI.getStringExtra("product"));
-        intent.putExtra("brand", gI.getStringExtra("brand"));
-        intent.putExtra("expire", gI.getStringExtra("expire"));
-        startActivity(intent);
+        else
+            makeToast("请输入优惠额度!");
     }
 
 

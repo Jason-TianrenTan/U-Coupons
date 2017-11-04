@@ -30,6 +30,7 @@ import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.Events.SelectLocationEvent;
 import com.example.administrator.ccoupons.Fragments.LocationSelectActivity;
 import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
@@ -146,6 +147,12 @@ public class CategoryFragment extends Fragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(SelectLocationEvent locEvent) {
+        String location = locEvent.getLocation();
+        locationTextview.setText(location);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
@@ -178,13 +185,14 @@ public class CategoryFragment extends Fragment {
 
     /**
      * init Floating Action Button
+     *
      * @param view
      */
     private void initFAB(final View view) {
         fillFormFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               startActivity(new Intent(getActivity(), FirstAddActivity.class));
+                startActivity(new Intent(getActivity(), FirstAddActivity.class));
             }
         });
 
@@ -199,6 +207,7 @@ public class CategoryFragment extends Fragment {
 
     /**
      * init RecyclerViews
+     *
      * @param view
      */
     private void initRecyclerViews(View view) {
@@ -259,6 +268,7 @@ public class CategoryFragment extends Fragment {
 
     /**
      * set Footer
+     *
      * @param type type of footer
      */
     private void setFooterView(int type) {
@@ -274,7 +284,8 @@ public class CategoryFragment extends Fragment {
 
     /**
      * request more data
-     * @param start beginning index
+     *
+     * @param start   beginning index
      * @param ceiling max numbers for request
      */
     private void requestData(int start, int ceiling) {
@@ -301,6 +312,7 @@ public class CategoryFragment extends Fragment {
 
     /**
      * parse result
+     *
      * @param response
      */
     private void parseBannerMessage(String response) {

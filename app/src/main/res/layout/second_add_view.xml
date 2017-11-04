@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="优惠额度"
+                android:text="使用门槛"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 

@@ -1,5 +1,7 @@
 package com.example.administrator.ccoupons.Main;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,9 @@ public class Coupon implements Serializable {
     private String address;
 
     //类别
+    @SerializedName("category")
     private String catId;
+
 
     //品牌
     private String brandName;
