@@ -1,7 +1,9 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.administrator.ccoupons.R;
@@ -13,10 +15,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * This interface is the sub interface for manually adding Coupons: select expiration dates
  */
 public class SelectDateActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @BindView(R.id.form_datepicker)
     DatePicker datePicker;
@@ -29,6 +38,8 @@ public class SelectDateActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         datePicker.setDate(2017, 9);
         datePicker.setMode(DPMode.SINGLE);
+        datePicker.getChildAt(0).setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        datePicker.getChildAt(1).setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         datePicker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
@@ -38,6 +49,11 @@ public class SelectDateActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }

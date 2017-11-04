@@ -28,6 +28,7 @@ import java.util.Iterator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * This interface is the sub interface for manually adding Coupons: add the use threshold
@@ -178,5 +179,10 @@ public class AddConstraintsActivity extends AppCompatActivity {
                 deleteButton = (ImageView) view.findViewById(R.id.delete_constraint_button);
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
