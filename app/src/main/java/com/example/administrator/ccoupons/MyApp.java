@@ -5,8 +5,10 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.Message.Message;
 import com.example.administrator.ccoupons.Tools.FontUtils.FontUtils;
+import com.example.administrator.ccoupons.Tools.MessageUtils.MessageUtil;
 import com.mob.MobApplication;
 
 import java.util.ArrayList;
@@ -45,6 +47,17 @@ public class MyApp extends MobApplication {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        initMessages();
+    }
+
+
+    private void initMessages() {
+        messageList = new ArrayList<>();
+        for (int i=0;i< GlobalConfig.MessageClasses.strings.length;i++) {
+            Message message = MessageUtil.generateMessage(i);
+            messageList.add(message);
+        }
     }
 
 

@@ -2,12 +2,14 @@ package com.example.administrator.ccoupons.Fragments.Category;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,8 +77,6 @@ public class CategoryFragment extends Fragment {
     ZLoadingView loadingView;
     @BindView(R.id.location_textview)
     TextView locationTextview;
-    @BindView(R.id.category_message_button)
-    Button categoryMessageButton;
     @BindView(R.id.search_text)
     EditText searchText;
     @BindView(R.id.search_input_layout)
@@ -103,8 +103,12 @@ public class CategoryFragment extends Fragment {
     @BindView(R.id.category_rootview)
     LinearLayout rootView;
 
+    @OnClick(R.id.category_about_button)
+    public void click() {
 
-    @OnClick({R.id.location_textview, R.id.category_message_button})
+    }
+
+    @OnClick({R.id.location_textview, R.id.category_about_button})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.location_textview:
@@ -113,8 +117,33 @@ public class CategoryFragment extends Fragment {
                     intent.putExtra("location", location);
                 startActivity(intent);
                 break;
-            case R.id.category_message_button:
+            case R.id.category_about_button:
                 //getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
+                /*
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                LayoutInflater inflater = LayoutInflater.from(view.getContext());
+                final View dia_view = inflater.inflate(R.layout.help_layout, null);
+                builder.setView(dia_view);
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();*/
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialog = inflater.inflate(R.layout.help_layout, (ViewGroup) getActivity().findViewById(R.id.help_root));
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("U惠 Release 2.0");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setView(dialog);
+                builder.setIcon(R.drawable.welcome_logo_new);
+                builder.show();
                 break;
         }
 

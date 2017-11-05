@@ -13,7 +13,7 @@
         android:id="@+id/register_main_toolbar_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@android:color/transparent"
         android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/MainToolBarStyle">

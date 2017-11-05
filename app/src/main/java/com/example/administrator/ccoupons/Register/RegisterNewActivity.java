@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,8 +44,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class RegisterNewActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     public static final int SMS_FAILED = 1;//验证失败
     public static final int SMS_SUCCESS = 2;//验证通过
     private boolean verify_cord = false;
@@ -424,11 +433,11 @@ public class RegisterNewActivity extends AppCompatActivity {
                 case SMS_FAILED:
                     registerIdentifyInputlayoutNew.setErrorEnabled(true);
                     registerIdentifyInputlayoutNew.setError("验证码错误!");
-                    System.out.println("Error!!!!!!!!!!!!!!!!!");
                     verify_cord = false;
                     break;
                 case SMS_SUCCESS:
                     verify_cord = true;
+                    System.out.println("SMS验证成功");
                     break;
             }
         }
@@ -478,7 +487,6 @@ public class RegisterNewActivity extends AppCompatActivity {
      * Submit
      */
     private void Submit() {
-        Toast.makeText(RegisterNewActivity.this, "TJ", Toast.LENGTH_SHORT).show();
         if (checkEnter()) {
             checkSMS();
         }

@@ -23,12 +23,21 @@ public class Message implements Serializable {
     private String messageId;
     private int userId;
     private Coupon coupon;
+    private String content;
 
     public Message() {
         coupon = new Coupon();
     }
 
 
+    //content
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
     //value
     public void setValue(String value) {
         this.coupon.setValue(value);
@@ -39,7 +48,7 @@ public class Message implements Serializable {
     }
     //discount for coupon
     public void setDiscount(String discount) {
-        this.setDiscount(discount);
+        this.coupon.setDiscount(discount);
     }
 
     public String getDiscount() {
@@ -87,6 +96,10 @@ public class Message implements Serializable {
 
     public int getMessageCat() {
         return this.messageCat;
+    }
+
+    public void setMessageCat(int i) {
+        this.messageCat = i;
     }
 
     public String getCouponid() {

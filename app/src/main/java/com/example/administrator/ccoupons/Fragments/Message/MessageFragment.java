@@ -106,6 +106,7 @@ public class MessageFragment extends Fragment {
             holder.timeTextView.setText(msgClass.getTime());
             Glide.with(mContext).load(msgClass.getResId()).into(holder.imageView);
 
+
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -165,7 +166,7 @@ public class MessageFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
 
-        adapter = new MessageClassAdapter(messageClasses);
+        initData();
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpacesItemDecoration(3));
         initPTR();
@@ -183,9 +184,11 @@ public class MessageFragment extends Fragment {
         messageClasses = new ArrayList<MessageClass>();
 
         for (int i = 0; i < GlobalConfig.MessageClasses.strings.length; i++) {
-            MessageClass msgClass = new MessageClass(getResources().getString(GlobalConfig.MessageClasses.strings[i]));
+            MessageClass msgClass = new MessageClass(getResources().getString(GlobalConfig.MessageClasses.strings[i]), i);
             messageClasses.add(msgClass);
         }
+
+        adapter = new MessageClassAdapter(messageClasses);
     }
 
 
@@ -201,6 +204,7 @@ public class MessageFragment extends Fragment {
                 System.out.println("message from global list: " + msg.getCouponName());
                 int catId = msg.getMessageCat();
                 messageClasses.get(catId).add(msg);
+                System.out.println("add to " + catId);
             }
         }
 
