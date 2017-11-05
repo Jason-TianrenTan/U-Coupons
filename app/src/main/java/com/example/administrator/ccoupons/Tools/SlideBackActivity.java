@@ -1,14 +1,24 @@
 package com.example.administrator.ccoupons.Tools;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Activities inherit from this activity to support slide rightward
  */
 public class SlideBackActivity extends AppCompatActivity {
-        //手指上下滑动时的最小速度
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
+    //手指上下滑动时的最小速度
         private static final int YSPEED_MIN = 1000;
         //手指向右滑动时的最小距离
         private static final int XDISTANCE_MIN = 50;

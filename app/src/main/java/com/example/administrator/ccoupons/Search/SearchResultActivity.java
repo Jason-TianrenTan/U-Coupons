@@ -43,8 +43,16 @@ import java.util.Iterator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SearchResultActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     SearchCommonFragment fragment;
@@ -188,6 +196,7 @@ public class SearchResultActivity extends AppCompatActivity {
         fragmentTransaction.show(fragment);
     }
 
+    /*
     public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultViewHolder> {
 
         private View footerView;
@@ -210,9 +219,9 @@ public class SearchResultActivity extends AppCompatActivity {
             ImageView imageView;
             @BindView(R.id.coupon_name_text)
             TextView nameText;
-            @BindView(R.id.coupon_detail_text)
+        //    @BindView(R.id.coupon_detail_text)
             TextView detailText;
-            @BindView(R.id.coupon_special_word)
+        //    @BindView(R.id.coupon_special_word)
             TextView specialText;
             @BindView(R.id.coupon_price_text)
             TextView priceText;
@@ -293,4 +302,5 @@ public class SearchResultActivity extends AppCompatActivity {
             notifyItemInserted(getItemCount() - 1);
         }
     }
+    */
 }

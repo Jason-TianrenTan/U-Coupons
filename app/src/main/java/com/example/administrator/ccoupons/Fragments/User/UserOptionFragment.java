@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.administrator.ccoupons.Main.WelcomeActivity;
+import com.example.administrator.ccoupons.Main.LoginActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
@@ -151,7 +151,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
                         LoginInformationManager loginInformationManager =
                                 new LoginInformationManager(getActivity());
                         loginInformationManager.setAutoLogin(false).removePassword();
-                        startActivity(new Intent(getActivity(), WelcomeActivity.class));
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         getActivity().finish();
                     }
                 });

@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -22,9 +23,18 @@ import java.util.TimerTask;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 //注册界面 验证码界面
 public class RegisterIdentifyActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
 
     public static final int SMS_FAILED = 1;//验证失败
     public static final int SMS_SUCCESS = 2;//验证通过
@@ -137,8 +147,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 }
 
             }
-
-
         }
     };
 
@@ -193,18 +201,13 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                     String iCord = editText.getText().toString().trim();
                     SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
                     verify_cord = true;
-                    /*
-                    */
                 }
             }
         });
 
 
         EventHandler eh = new EventHandler() {
-
-
             @Override
-
             public void afterEvent(int event, int result, Object data) {
                 Message msg = new Message();
                 msg.arg1 = event;
@@ -212,8 +215,6 @@ public class RegisterIdentifyActivity extends AppCompatActivity {
                 msg.obj = data;
                 SMShandler.sendMessage(msg);
             }
-
-
         };
         SMSSDK.registerEventHandler(eh);
         sendSMS();

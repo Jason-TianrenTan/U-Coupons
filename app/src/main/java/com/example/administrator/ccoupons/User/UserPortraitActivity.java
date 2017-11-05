@@ -1,6 +1,7 @@
 package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +22,16 @@ import com.jph.takephoto.model.TResult;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UserPortraitActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private TakePhotoUtil takePhotoUtil;
     @BindView(R.id.user_portrait_view)
     ImageView portrait;

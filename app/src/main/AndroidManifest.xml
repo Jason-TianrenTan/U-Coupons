@@ -57,6 +57,7 @@
         <meta-data
             android:name="Mob-AppSecret"
             android:value="e890303b7e846ea8defa4cc59fdb9887" />
+
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -86,16 +87,6 @@
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
 
-        <activity android:name=".Main.WelcomeActivity">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-
         <service android:name=".Connections.MessageGetService" />
         <service android:name="com.amap.api.location.APSService" />
 
@@ -103,8 +94,7 @@
             android:name=".Fragments.MainPageActivity"
             android:fitsSystemWindows="true"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Fragments.LocationSelectActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
@@ -130,15 +120,20 @@
         <activity android:name=".User.CouponDetail.DisplayCouponDetailActivity" />
         <activity android:name=".AddCoupon.AddConstraintsActivity" />
         <activity android:name=".AddCoupon.SelectDateActivity" />
-        <activity android:name=".Main.Splash.GuideActivity" android:theme="@style/SplashTheme">
-            <!--
+        <activity
+            android:name=".Main.Splash.GuideActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
+        <activity android:name=".Register.RegisterNewActivity"></activity>
+        <activity android:name=".AddCoupon.AddCouponBaseActivity" />
+        <activity android:name=".AddCoupon.FirstAddActivity" />
+        <activity android:name=".AddCoupon.SecondAddActivity" />
+        <activity android:name=".AddCoupon.ThirdAddActivity"></activity>
     </application>
 
 </manifest>

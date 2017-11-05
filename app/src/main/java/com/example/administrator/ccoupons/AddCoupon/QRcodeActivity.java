@@ -17,6 +17,7 @@ import android.widget.Toast;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
@@ -30,6 +31,11 @@ import java.lang.ref.WeakReference;
  */
 public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     private static final String TAG = QRcodeActivity.class.getSimpleName();
     private boolean light = false;

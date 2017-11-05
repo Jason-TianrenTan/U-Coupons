@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -64,7 +65,8 @@ public class SearchCatResultFragment extends SearchCommonFragment {
             catId = getArguments().getString("catId");
         clear();
         adapterList = new ArrayList<>();
-        adapter = new ResultAdapter(adapterList);
+     //   adapter = new ResultAdapter(adapterList);
+        adapter = new MainPageCouponAdapter(adapterList);
         System.out.println("at init data in fragment, keyWord = " + keyWord + ", catId = " + catId);
         new UniversalPresenter().getCatSearchResultByRxRetrofit(keyWord, order, catId);
     }

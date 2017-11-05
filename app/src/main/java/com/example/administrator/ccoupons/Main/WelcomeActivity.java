@@ -1,46 +1,46 @@
-package com.example.administrator.ccoupons.Main;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-
-import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Register.RegisterActivity;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-
-public class WelcomeActivity extends Activity {
-    @BindView(R.id.Welcome_LoginButton)
-    Button Welcome_LoginButton;
-    @BindView(R.id.Welcome_RegisterButton)
-    Button Welcome_RegisterButton;
-
-    @OnClick({R.id.Welcome_LoginButton, R.id.Welcome_RegisterButton})
-    public void click(View view) {
-        switch (view.getId()) {
-            case R.id.Welcome_LoginButton:
-                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-                break;
-            case R.id.Welcome_RegisterButton:
-                startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
-                break;
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));//Todo:for test
-        setContentView(R.layout.activity_welcome);
-        ButterKnife.bind(this);
-    }
-
-}
+//package com.example.administrator.ccoupons.Main;
+//
+//import android.app.Activity;
+//import android.content.Intent;
+//import android.os.Bundle;
+//import android.view.View;
+//import android.widget.Button;
+//
+//import com.example.administrator.ccoupons.R;
+//import com.example.administrator.ccoupons.Register.RegisterNewActivity;
+//
+//import butterknife.BindView;
+//import butterknife.ButterKnife;
+//import butterknife.OnClick;
+//
+//
+//public class WelcomeActivity extends Activity {
+//    @BindView(R.id.Welcome_LoginButton)
+//    Button Welcome_LoginButton;
+//    @BindView(R.id.Welcome_RegisterButton)
+//    Button Welcome_RegisterButton;
+//
+//    @OnClick({R.id.Welcome_LoginButton, R.id.Welcome_RegisterButton})
+//    public void click(View view) {
+//        switch (view.getId()) {
+//            case R.id.Welcome_LoginButton:
+//                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+//                break;
+//            case R.id.Welcome_RegisterButton:
+//                startActivity(new Intent(WelcomeActivity.this, RegisterNewActivity.class));
+//                break;
+//        }
+//    }
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        //startActivity(new Intent(WelcomeActivity.this, MainPageActivity.class));//Todo:for test
+//        setContentView(R.layout.activity_welcome);
+//        ButterKnife.bind(this);
+//    }
+//
+//}
 
 
 

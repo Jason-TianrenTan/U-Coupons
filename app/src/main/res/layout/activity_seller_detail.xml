@@ -27,7 +27,7 @@
                 android:layout_marginTop="16dp"
                 android:src="@mipmap/android"
                 app:civ_border_width="2dp"
-                app:civ_border_color="@color/thistle"
+                app:civ_border_color="@color/whitesmoke"
                 app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior" />
 
             <TextView

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/login_register_bg"
+    android:theme="@style/MainEditTextTheme"
     tools:context="com.example.administrator.ccoupons.Register.RegisterActivity">
 
     <android.support.v7.widget.Toolbar
@@ -35,6 +37,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:text="+86"
+            android:textColor="@color/whitesmoke"
             android:textSize="24dp" />
 
         <android.support.design.widget.TextInputLayout
@@ -70,6 +73,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
+        android:textColor="@color/whitesmoke"
         android:text="已经有账户了?直接登录" />
 
 

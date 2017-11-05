@@ -26,16 +26,19 @@
     <string name="check_string">验证码</string>
 
     <!--注册界面-->
-    <string name="register_phone_hint">输入手机号码</string>
+    <string name="register_phone_hint">手机号码</string>
     <string name="register_title_string">快速注册</string>
     <string name="register_next_string">下一步</string>
     <string name="register_identify_title">获取验证码</string>
     <string name="register_identify_text">我们发送了验证码至</string>
-    <string name="register_indentify_timertext">s后可重新获取验证码</string>
+    <string name="register_indentify_timertext">s</string>
+    <string name="register_indentify_resent_text">重新发送</string>
+    <string name="register_complete_button_string">完成注册</string>
+    <string name="register_return_text_string">已经有账户了?直接登录</string>
 
     <string name="register_password_title">设置密码</string>
-    <string name="register_password_hint">输入密码</string>
-    <string name="register_password_confirm_hint">再次输入密码</string>
+    <string name="register_password_hint">密码</string>
+    <string name="register_password_confirm_hint">确认密码</string>
 
     <string name="register_final_title">完善个人信息</string>
     <string name="register_final_hint">昵称</string>
@@ -106,5 +109,7 @@
     <string name="user_update_gender">修改性别</string>
     <string name="user_update">修改</string>
     <string name="user_update_phone">修改手机号</string>
+    <string name="title_activity_register_new">RegisterNewActivity</string>
 
+    <string name="upload_image"><u>上传图片</u></string>
 </resources>
