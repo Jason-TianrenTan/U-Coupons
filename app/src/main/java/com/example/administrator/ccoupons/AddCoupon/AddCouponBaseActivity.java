@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.example.administrator.ccoupons.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class AddCouponBaseActivity extends AppCompatActivity {
 
@@ -99,6 +101,11 @@ public abstract class AddCouponBaseActivity extends AppCompatActivity {
             if (i == index)
                 textViews[i].setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 }

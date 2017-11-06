@@ -103,10 +103,6 @@ public class CategoryFragment extends Fragment {
     @BindView(R.id.category_rootview)
     LinearLayout rootView;
 
-    @OnClick(R.id.category_about_button)
-    public void click() {
-
-    }
 
     @OnClick({R.id.location_textview, R.id.category_about_button})
     public void click(View view) {
@@ -118,32 +114,7 @@ public class CategoryFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.category_about_button:
-                //getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
-                /*
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                LayoutInflater inflater = LayoutInflater.from(view.getContext());
-                final View dia_view = inflater.inflate(R.layout.help_layout, null);
-                builder.setView(dia_view);
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();*/
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View dialog = inflater.inflate(R.layout.help_layout, (ViewGroup) getActivity().findViewById(R.id.help_root));
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("U惠 Release 2.0");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.setView(dialog);
-                builder.setIcon(R.drawable.welcome_logo_new);
-                builder.show();
+                startActivity(new Intent(getActivity(), QRcodeActivity.class));
                 break;
         }
 

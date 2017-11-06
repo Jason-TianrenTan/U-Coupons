@@ -47,7 +47,7 @@
                 android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/ic_help"
+                android:background="@drawable/ic_scan_qr"
                 android:layout_marginRight="5dp"
                 android:padding="5dp" />
 

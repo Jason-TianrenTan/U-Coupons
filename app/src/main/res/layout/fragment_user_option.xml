@@ -180,7 +180,9 @@
 
                 <ImageView style="@style/user_divider" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout
+                    android:id="@+id/user_to_about"
+                    style="@style/user_option_layout">
 
                     <ImageView
                         style="@style/user_icon_layout"
