@@ -2,12 +2,14 @@ package com.example.administrator.ccoupons.Fragments.Category;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,8 +77,6 @@ public class CategoryFragment extends Fragment {
     ZLoadingView loadingView;
     @BindView(R.id.location_textview)
     TextView locationTextview;
-    @BindView(R.id.category_message_button)
-    Button categoryMessageButton;
     @BindView(R.id.search_text)
     EditText searchText;
     @BindView(R.id.search_input_layout)
@@ -104,7 +104,7 @@ public class CategoryFragment extends Fragment {
     LinearLayout rootView;
 
 
-    @OnClick({R.id.location_textview, R.id.category_message_button})
+    @OnClick({R.id.location_textview, R.id.category_about_button})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.location_textview:
@@ -113,8 +113,8 @@ public class CategoryFragment extends Fragment {
                     intent.putExtra("location", location);
                 startActivity(intent);
                 break;
-            case R.id.category_message_button:
-                //getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
+            case R.id.category_about_button:
+                startActivity(new Intent(getActivity(), QRcodeActivity.class));
                 break;
         }
 

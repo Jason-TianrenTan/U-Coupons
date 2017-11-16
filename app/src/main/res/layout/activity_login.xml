@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:text="Demo 1.2"
+                android:text="Release 2.0 beta"
                 android:textColor="@color/darkgray" />
         </RelativeLayout>
     </LinearLayout>

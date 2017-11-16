@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserInformationActivity extends SlideBackActivity {
+
     private TakePhotoUtil takePhotoUtil;
     private MyApp app;
 

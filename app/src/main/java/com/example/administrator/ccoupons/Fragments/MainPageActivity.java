@@ -284,7 +284,8 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(receiver);
+        if (receiver != null)
+            unregisterReceiver(receiver);
         super.onDestroy();
     }
 

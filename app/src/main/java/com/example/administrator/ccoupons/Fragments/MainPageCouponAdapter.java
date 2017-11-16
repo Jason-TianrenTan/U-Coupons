@@ -83,7 +83,6 @@ public class MainPageCouponAdapter extends RecyclerView.Adapter<MainPageCouponAd
         setImage(holder, coupon);
         String fontname = "PingFang Light.ttf";
         Typeface typeface = FontUtils.getTypeface(mContext, fontname);
-        System.out.println("category = " + coupon.getCategory());
         holder.nameText.setText(coupon.getProduct());
         holder.expireText.setText("截止日期： " +coupon.getExpiredtime());
         holder.expireText.setTypeface(typeface);
