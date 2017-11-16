@@ -59,6 +59,13 @@ public class GlobalConfig {
                 R.drawable.category_electronics, R.drawable.category_cloths, R.drawable.category_travel, R.drawable.category_food};
     }
 
+    public static class ThingsCategories{
+        public static String[] thingsList = "热门推荐 生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
+        public static int[] thingsCovers = {R.drawable.category_command_color, R.drawable.category_daily_color, R.drawable.category_decorate_color,
+                R.drawable.category_sports_color, R.drawable.category_furnitures_color, R.drawable.category_electronics_color,
+                R.drawable.category_cloths_color, R.drawable.category_travel_color, R.drawable.category_food_color};
+        }
+
     //用户信息
     public static class User {
         public static String username = "用户名";
