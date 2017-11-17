@@ -174,7 +174,6 @@ public class SearchResultActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         catId = getIntent().getStringExtra("categoryId");
-        System.out.println("cat id = " + catId);
         bindViews();
 
         requestString = getIntent().getStringExtra("search_string");

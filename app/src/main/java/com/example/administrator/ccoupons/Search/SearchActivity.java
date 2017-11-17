@@ -56,7 +56,6 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         catId = getIntent().getStringExtra("type");
-        System.out.println("at oncreate, catid = " + catId);
 
         userInfoManager = new UserInfoManager(this);
         searchText = (EditText) findViewById(R.id.input_search);

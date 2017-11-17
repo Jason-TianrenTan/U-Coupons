@@ -7,14 +7,20 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.administrator.ccoupons.AddCoupon.FakeData.FakeCoupon;
+import com.example.administrator.ccoupons.AddCoupon.FakeData.SimilarItemAdapter;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
+import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
@@ -31,11 +37,15 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -87,14 +97,56 @@ public class ThirdAddActivity extends AppCompatActivity {
     EditText listPriceEditText;
     @BindView(R.id.tv_add_coupon_eval)
     TextView evalTextView;
+    @BindView(R.id.similar_recyclerview)
+    RecyclerView recyclerView;
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(CouponListEvent clistEvent) {
+        if (clistEvent.getListname().equals("UserSearch")) {
+            setData(clistEvent.getList());
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.third_add_view);
         ButterKnife.bind(this);
-
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         initCoupon();
+        initRecyclerView();
+    }
+
+
+    private void initRecyclerView() {
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setNestedScrollingEnabled(false);
+        new UniversalPresenter().getSearchResultByRxRetrofit(coupon.getBrandName(), "");
+    }
+
+
+    private void setData(ArrayList<Coupon> clist) {
+        ArrayList<FakeCoupon> fakeList = new ArrayList<>();
+        int count = 0;
+        for (Coupon coupon:clist) {
+            FakeCoupon fc = new FakeCoupon();
+            fc.setBrand(coupon.getBrandName());
+            fc.setCategory(coupon.getCategory());
+            fc.setDicount(coupon.getDiscount());
+            fc.setImg_url(coupon.getPic());
+            fc.setPrice(coupon.getListprice());
+            fc.setName(coupon.getProduct());
+            fakeList.add(fc);
+            count++;
+            if (count >= 2)
+                break;
+        }
+
+        SimilarItemAdapter adapter = new SimilarItemAdapter(fakeList);
+        recyclerView.setAdapter(adapter);
     }
 
 
@@ -161,8 +213,8 @@ public class ThirdAddActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         }, 800);
-        System.out.println("Response = " + response);
         String value = null;
+        System.out.println("response = " + response);
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -194,7 +246,6 @@ public class ThirdAddActivity extends AppCompatActivity {
         map.put("product", coupon.getProduct());
         map.put("discount", coupon.getDiscount());
         map.put("value", vid);
-        //    map.put("pic", coupon.getPic());
         new UpLoadCoupon(map, coupon.getConstraints(), coupon.getPic(), type).execute();
     }
 

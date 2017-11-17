@@ -17,6 +17,7 @@ import java.util.List;
  */
 
 public class ThingsCategoryAdpater extends ArrayAdapter<ThingsCategory> {
+
     private int resourceId;
     private int chosen;
     public ThingsCategoryAdpater(Context context, int textViewResourceId,

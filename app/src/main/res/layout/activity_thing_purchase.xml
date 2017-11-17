@@ -16,9 +16,27 @@
         app:layout_scrollFlags="scroll|enterAlways|snap"
         app:theme="@style/SearchToolBarStyle">
 
-        <TextView
-            style="@style/MainToolbarTitleStyle"
-            android:text="实体商品" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_thingpurchase_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:paddingRight="5dp"
+                android:text="返回"
+                android:textColor="@color/whitesmoke"
+                android:textSize="18dp" />
+
+            <TextView
+                style="@style/MainToolbarTitleStyle"
+                android:layout_centerHorizontal="true"
+                android:text="实体商品" />
+
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -30,9 +48,9 @@
             android:id="@+id/thing_purchase_listView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.1"
+            android:layout_weight="1.3"
             android:divider="@null"
-            android:listSelector="@color/space_transparent"/>
+            android:listSelector="@color/space_transparent" />
 
         <ImageView
             android:layout_width="1dp"

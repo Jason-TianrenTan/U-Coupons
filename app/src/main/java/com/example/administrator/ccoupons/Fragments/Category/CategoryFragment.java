@@ -38,6 +38,7 @@ import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
+import com.example.administrator.ccoupons.Things.ThingPurchaseActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
 import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -114,7 +115,7 @@ public class CategoryFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.category_about_button:
-                startActivity(new Intent(getActivity(), QRcodeActivity.class));
+                startActivity(new Intent(getActivity(), ThingPurchaseActivity.class));
                 break;
         }
 

@@ -78,7 +78,7 @@ public class ThingAdapter extends RecyclerView.Adapter<ThingAdapter.ThingViewHol
         holder.thingName.setText(thing.getName());
         holder.thingBrand.setText("品牌：" + thing.getBrand());
         holder.thingCat.setText("种类：" + thing.getCategory());
-        holder.thingPrize.setText("￥" + thing.getPrize());
+        holder.thingPrize.setText("U" + thing.getPrize());
         holder.thingNumber.setText("剩余数量：" + thing.getNumber());
     }
 

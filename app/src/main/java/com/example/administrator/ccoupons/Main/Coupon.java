@@ -32,6 +32,7 @@ public class Coupon implements Serializable {
 
 
     //品牌
+    @SerializedName("brand")
     private String brandName;
 
     //状态

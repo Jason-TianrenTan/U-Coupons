@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Things;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,14 +17,29 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ThingPurchaseActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     @BindView(R.id.thing_purchase_toolbar)
     Toolbar toolbar;
     @BindView(R.id.thing_purchase_listView)
     ListView thingPurchaseListView;
     @BindView(R.id.thing_purchase_thingsList)
     RecyclerView thingPurchaseThingsList;
+
+    @OnClick(R.id.tv_thingpurchase_back)
+    public void onClick() {
+        finish();
+    }
+
 
     private ArrayList<ThingsCategory> categoryList;
     private ThingsCategoryAdpater cat_adapter;
@@ -42,7 +58,7 @@ public class ThingPurchaseActivity extends AppCompatActivity {
 
     private void initToolBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
