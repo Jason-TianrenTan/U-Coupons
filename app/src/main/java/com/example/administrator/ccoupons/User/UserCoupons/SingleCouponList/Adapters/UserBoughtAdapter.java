@@ -22,14 +22,15 @@ public class UserBoughtAdapter extends UserCouponInfoAdapter {
     private Context mContext;
     public UserBoughtAdapter(ArrayList<Coupon> clist) {
         super(clist);
-        setCouponClickListener(new CouponClickedListener() {
+        /*setCouponClickListener(new CouponClickedListener() {
             @Override
+
             public void onCouponClicked(Coupon coupon) {
                 Intent intent = new Intent(mContext, MyCouponDetailActivity.class);
                 intent.putExtra("Coupon", coupon);
                 mContext.startActivity(intent);
             }
-        });
+        });*/
     }
 
 

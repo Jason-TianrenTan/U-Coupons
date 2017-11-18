@@ -65,7 +65,7 @@ public class ThirdAddActivity extends AppCompatActivity {
 
     @OnClick(R.id.use_eval_button)
     public void onClick1() {
-        listPriceEditText.setText("100");
+        listPriceEditText.setText(coupon.getListprice());
     }
 
     @OnClick(R.id.btn_add2mycoupon)
@@ -246,6 +246,13 @@ public class ThirdAddActivity extends AppCompatActivity {
         map.put("product", coupon.getProduct());
         map.put("discount", coupon.getDiscount());
         map.put("value", vid);
+        dialog = new ZLoadingDialog(ThirdAddActivity.this);
+        dialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)
+                .setLoadingColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setCanceledOnTouchOutside(false)
+                .setHintText("正在上传优惠券...")
+                .setHintTextSize(16)
+                .show();
         new UpLoadCoupon(map, coupon.getConstraints(), coupon.getPic(), type).execute();
     }
 
@@ -304,8 +311,10 @@ public class ThirdAddActivity extends AppCompatActivity {
                     System.out.println("key = " + key + ", entry = " + entry);
                     mpEntity.addPart(key, new StringBody(value, Charset.forName("UTF-8")));
                 }
-                for (int i = 0; i < list.length; i++) {
-                    mpEntity.addPart("limit[]", new StringBody(list[i], Charset.forName("UTF-8")));
+                if (list != null) {
+                    for (int i = 0; i < list.length; i++) {
+                        mpEntity.addPart("limit[]", new StringBody(list[i], Charset.forName("UTF-8")));
+                    }
                 }
                 mpEntity.addPart("stat", new StringBody(statStr[type - 1], Charset.forName("UTF-8")));
                 mpEntity.addPart("pic", cbFile);
@@ -316,6 +325,7 @@ public class ThirdAddActivity extends AppCompatActivity {
 
                 String result = EntityUtils.toString(response.getEntity());
                 if (result.contains("200")) {
+                    System.out.println("result = " + result + ", response = " + response.toString());
                     Message msg = new Message();
                     msg.what = START_ACTIVITY;
                     handler.sendMessage(msg);
@@ -335,8 +345,8 @@ public class ThirdAddActivity extends AppCompatActivity {
                 case START_ACTIVITY:
                     Toast.makeText(getApplicationContext(), "添加优惠券成功!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ThirdAddActivity.this, UserMyCouponActivity.class);
-                    intent.putExtra("index", "2");
                     startActivity(intent);
+                    dialog.dismiss();
                     finish();
                     break;
             }

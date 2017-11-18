@@ -133,7 +133,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
                 .load(GlobalConfig.base_URL + "/static/" + coupon.getPic())
                 .into(couponImg);
         couponNameText.setText(coupon.getProduct());
-        couponPriceText.setText("¥" + coupon.getListprice());
+        couponPriceText.setText(coupon.getListprice() + "U");
 
         String[] constraints = coupon.getConstraints();
         StringBuilder sb = new StringBuilder();

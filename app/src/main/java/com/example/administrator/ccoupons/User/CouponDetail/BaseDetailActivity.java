@@ -212,15 +212,15 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
                 constaintsText.setText(sb.toString());
                 //list price
                 String listprice = coupon.getListprice();
-                listpriceText.setText("¥" + listprice + "");
+                listpriceText.setText(listprice + "U");
 
                 //eval price
                 String evalprice = coupon.getValue();
-                evalpriceText.setText("估值：¥" + evalprice + "");
+                evalpriceText.setText("估值：" + evalprice + "U");
 
                 //优惠额度
                 String discount = coupon.getDiscount();
-                discountText.setText("¥" + discount);
+                discountText.setText(discount);
 
                 //商家名
                 String brandName =  coupon.getBrandName();
