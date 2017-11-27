@@ -17,27 +17,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
-import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerOnsaleFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.Seller.SellerSoldFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.User.MyCouponFragmentAdapter;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SellerDetailActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
 
     SellerOnsaleFragment onsaleFragment;
@@ -84,7 +85,6 @@ public class SellerDetailActivity extends AppCompatActivity {
                     .load(url)
                     .into(sellerAvatar);
         }
-
         WindowManager wm = getWindowManager();
         screen_width = wm.getDefaultDisplay().getWidth();
     }

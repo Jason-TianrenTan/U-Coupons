@@ -6,8 +6,13 @@
     android:orientation="vertical">
 
     <FrameLayout
+<<<<<<< HEAD
         android:layout_width="60dp"
         android:layout_height="60dp"
+=======
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+>>>>>>> Czj
         android:layout_gravity="center">
         <ImageView
             android:layout_width="match_parent"
@@ -16,8 +21,8 @@
 
         <ImageView
             android:id="@+id/category_imageview"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop" />
     </FrameLayout>
@@ -30,6 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="5dp"
-        android:textSize="15dp" />
+        android:textSize="12dp" />
 
 </LinearLayout>

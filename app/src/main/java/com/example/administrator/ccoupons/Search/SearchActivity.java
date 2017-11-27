@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -69,9 +70,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class SearchActivity extends AppCompatActivity {
 
     private static final int VERTICAL_ITEM_SPACE = 48;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
 
     private static final int HISTORY_MAX_RESULT = 10;//最大历史结果数
 
@@ -98,7 +108,6 @@ public class SearchActivity extends AppCompatActivity {
 
 =======
         catId = getIntent().getStringExtra("type");
-        System.out.println("at oncreate, catid = " + catId);
 
         userInfoManager = new UserInfoManager(this);
         searchText = (EditText) findViewById(R.id.input_search);

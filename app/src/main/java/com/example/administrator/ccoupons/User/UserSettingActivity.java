@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -12,40 +13,52 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class UserSettingActivity extends SlideBackActivity {
 
-    private Toolbar toolbar;
-    private LinearLayout clear;
+    @BindView(R.id.uset_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.uset_clear)
+    LinearLayout clear;
 
+<<<<<<< HEAD
+=======
+    @OnClick(R.id.uset_clear)
+    public void click(View view) {
+        showClearDialog();
+    }
+
+>>>>>>> Czj
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setting);
-        initView();
-        setOnClickListeners();
+        ButterKnife.bind(this);
+        initToolbar();
     }
 
+<<<<<<< HEAD
 
     private void initView(){
         toolbar = (Toolbar) findViewById(R.id.uset_toolbar);
         clear = (LinearLayout) findViewById(R.id.uset_clear);;
+=======
+    /**
+     * Initially Toolbar
+     */
+    private void initToolbar() {
+>>>>>>> Czj
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-
-    private void setOnClickListeners(){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showClearDialog();
             }
         });
     }

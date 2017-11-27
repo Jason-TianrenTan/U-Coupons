@@ -14,7 +14,6 @@ import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.Purchase.CouponPurchaseActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
-
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 

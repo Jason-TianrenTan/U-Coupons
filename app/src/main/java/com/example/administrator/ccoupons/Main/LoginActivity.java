@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.Main;
 
-import android.animation.ObjectAnimator;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 <<<<<<< HEAD
 import android.os.Handler;
@@ -21,14 +20,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 >>>>>>> ttr
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +37,7 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.MessageType;
 import com.example.administrator.ccoupons.Tools.PixelUtils;
@@ -51,8 +46,10 @@ import com.example.administrator.ccoupons.UI.CustomDialog;
 import org.json.JSONObject;
 
 =======
+=======
+import com.example.administrator.ccoupons.Register.RegisterNewActivity;
+>>>>>>> Czj
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -63,11 +60,16 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 >>>>>>> ttr
 
 public class LoginActivity extends AppCompatActivity {
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
 <<<<<<< HEAD
     private static String url = DataHolder.base_URL + DataHolder.login_URL;
@@ -86,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.login_toolbar)
     Toolbar loginToolbar;
-    @BindView(R.id.imglayout)
-    RelativeLayout imglayout;
+    //    @BindView(R.id.imglayout)
+//    RelativeLayout imglayout;
     @BindView(R.id.Login_usernameEditText)
     EditText LoginUsernameEditText;
     @BindView(R.id.Login_usernameHolder)
@@ -96,6 +98,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText LoginPasswordEditText;
     @BindView(R.id.Login_passwordHolder)
     TextInputLayout LoginPasswordHolder;
+    @BindView(R.id.Login_registerTextView)
+    TextView LoginRegisterTextView;
     @BindView(R.id.Login_forgetTextView)
     TextView LoginForgetTextView;
     @BindView(R.id.Login_loginButton)
@@ -105,22 +109,25 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.rootLayout)
     LinearLayout rootLayout;
 
-    @OnClick(R.id.Login_loginButton)
-    public void click() {
-        boolean check = true;
-        String username = LoginUsernameEditText.getText().toString(),
-                password = LoginPasswordEditText.getText().toString();
+    @OnClick({R.id.Login_loginButton, R.id.Login_forgetTextView, R.id.Login_registerTextView})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.Login_loginButton:
+                boolean check = true;
+                String username = LoginUsernameEditText.getText().toString(),
+                        password = LoginPasswordEditText.getText().toString();
 
-        if (username.length() == 0) {
-            check = false;
-            LoginUsernameHolder.setErrorEnabled(true);
-            LoginUsernameHolder.setError("请输入用户名!");
-        } else if (password.length() == 0) {
-            check = false;
-            LoginPasswordHolder.setErrorEnabled(true);
-            LoginPasswordHolder.setError("请输入密码!");
-        }
+                if (username.length() == 0) {
+                    check = false;
+                    LoginUsernameHolder.setErrorEnabled(true);
+                    LoginUsernameHolder.setError("请输入用户名!");
+                } else if (password.length() == 0) {
+                    check = false;
+                    LoginPasswordHolder.setErrorEnabled(true);
+                    LoginPasswordHolder.setError("请输入密码!");
+                }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             switch (msg.what) {
                 case MessageType.CONNECTION_ERROR:
@@ -143,6 +150,19 @@ public class LoginActivity extends AppCompatActivity {
             //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
             requestLogin(username, password);
 >>>>>>> ttr
+=======
+                if (check) {
+                    //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
+                    requestLogin(username, password);
+                }
+                break;
+            case R.id.Login_forgetTextView:
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+                break;
+            case R.id.Login_registerTextView:
+                startActivity(new Intent(LoginActivity.this, RegisterNewActivity.class));
+                break;
+>>>>>>> Czj
         }
     }
 
@@ -154,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
         initToolbar();
         initEditText();
-        initSoftKeyboard();
+//        initSoftKeyboard();
     }
 
 <<<<<<< HEAD
@@ -202,6 +222,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Login to server
+     *
      * @param username
      * @param password
      */
@@ -249,14 +270,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void initToolbar() {
         setSupportActionBar(loginToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        loginToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
 
@@ -264,27 +279,27 @@ public class LoginActivity extends AppCompatActivity {
      * initialize edittext
      */
     private void initEditText() {
-        LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    editTextFocus = true;
-                if (!editTextFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-        LoginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    editTextFocus = true;
-                if (!editTextFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
+//        LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+//        LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus)
+//                    editTextFocus = true;
+//                if (!editTextFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
+//        LoginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus)
+//                    editTextFocus = true;
+//                if (!editTextFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
         LoginUsernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -331,6 +346,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+<<<<<<< HEAD
     /**
      * Initialize soft-keyboard actions
      */
@@ -406,18 +422,81 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+=======
+//    /**
+//     * Initialize soft-keyboard actions
+//     */
+//    private void initSoftKeyboard() {
+//        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
+//        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+//            @Override
+//            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+//                //键盘打开
+//                if (!stateShrinked)
+//                    startAnimation(ANIM_SHRINK);
+//            }
+//
+//            @Override
+//            public void onSoftKeyboardClosed() {
+//                //键盘关闭
+//                if (stateShrinked)
+//                    startAnimation(ANIM_EXPAND);
+//            }
+//        });
+//    }
+//
+//    private void hideKeyboard(View view) {
+//        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    }
+//
+//
+//    /**
+//     * Start animation in specific type
+//     * @param anim_type type of animation
+//     */
+//    private void startAnimation(int anim_type) {
+//
+//        int mergeHeight = PixelUtils.dp2px(this, 80);
+//        if (anim_type == ANIM_SHRINK) {
+//
+//            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
+//            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop(), textRoot.getTop() - mergeHeight)
+//                    .setDuration(500);
+//            heightAnimator.start();
+//
+////            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
+////            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_shrink);
+////            anim.setFillAfter(true);
+////            imgLayout.startAnimation(anim);
+//            stateShrinked = true;
+//        }
+//        if (anim_type == ANIM_EXPAND) {
+//
+//            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
+//            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop() - mergeHeight, textRoot.getTop())
+//                    .setDuration(500);
+//            heightAnimator.start();
+//
+////            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
+////            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_expand);
+////            anim.setFillAfter(true);
+////            imgLayout.startAnimation(anim);
+//            stateShrinked = false;
+//        }
+//    }
+>>>>>>> Czj
 
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
         finish();
-        super.onBackPressed();
     }
 
 
     /**
      * parse response from server
+     *
      * @param response
      */
     private void parseMessage(String response) {
@@ -444,7 +523,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 app.setPhoneNumber("13111111111");
 
-                startActivity(new Intent(LoginActivity.this, MainPageActivity.class));
+                Intent intent = new Intent(LoginActivity.this, MainPageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             } catch (Exception e) {
                 e.printStackTrace();

@@ -60,7 +60,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="¥100"
+                            android:text="100U"
                             android:textColor="@color/colorPrimary"
                             android:textSize="40dp" />
 
@@ -69,13 +69,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:text="估值：¥90"
+                            android:text="估值：90U"
                             android:textColor="@color/colorPrimary"
                             android:textSize="20dp" />
 
                     </LinearLayout>
 
-                    <ImageView style="@style/user_edgeline" />
+                    <ImageView style="@style/user_divider" />
 
                     <LinearLayout style="@style/coupon_wrap_layout">
 
@@ -95,7 +95,7 @@
 
                     </LinearLayout>
 
-                    <ImageView style="@style/user_edgeline" />
+                    <ImageView style="@style/user_divider" />
 
                     <LinearLayout style="@style/coupon_wrap_layout">
 
@@ -122,14 +122,15 @@
                             android:id="@+id/detail_seller_rootview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginTop="15dp"
                             android:orientation="horizontal">
 
                             <TextView
 
                                 style="@style/coupon_label_text"
-                                android:layout_marginBottom="15dp"
-                                android:text="出售者：" />
+                                android:text="出售者："
+                                android:layout_marginBottom="5dp"/>
 
 <<<<<<< HEAD:app/src/main/res/layout/activity_coupon_detail.xml
                             <TextView
@@ -149,17 +150,18 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="陈乌金"
+                                    android:layout_marginTop="5dp"
                                     android:textColor="@color/darkgray"
-                                    android:textSize="20dp" />
+                                    android:textSize="16dp" />
 
                                 <de.hdodenhof.circleimageview.CircleImageView
                                     xmlns:app="http://schemas.android.com/apk/res-auto"
                                     android:id="@+id/seller_avatar_img"
                                     android:src="@drawable/mascot_nothing"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="5dp"
                                     app:civ_border_width="2dp"
-                                    app:civ_border_color="@color/thistle"
+                                    app:civ_border_color="@color/whitesmoke"
                                     android:layout_width="35dp"
                                     android:layout_height="35dp" />
                             </LinearLayout>
@@ -198,14 +200,14 @@
                             <TextView
                                 style="@style/coupon_label_text"
                                 android:text="使用限制："
-                                android:textSize="20dp" />
+                                android:textSize="16dp" />
 
                             <TextView
                                 android:id="@+id/coupon_detail_constraints_text"
                                 style="@style/coupon_detail_text"
                                 android:text="满100送1000\n啦啦啦\n啦啦啦\n我只是\n啦啦啦\n一个\n啦啦啦\n换行符\n啦啦啦"
                                 android:textColor="@color/black"
-                                android:textSize="20dp" />
+                                android:textSize="15dp" />
                         </LinearLayout>
 
                     </LinearLayout>

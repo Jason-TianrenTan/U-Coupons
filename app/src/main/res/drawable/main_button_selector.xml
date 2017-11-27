@@ -6,4 +6,7 @@
 
     <item android:state_enabled="false"
         android:drawable="@drawable/main_buttons_background_disabled"/>
+
+    <item android:state_pressed="true"
+        android:drawable="@drawable/main_buttons_background_disabled"/>
 </selector>

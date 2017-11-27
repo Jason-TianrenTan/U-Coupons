@@ -1,6 +1,11 @@
 package com.example.administrator.ccoupons.Purchase;
 
+<<<<<<< HEAD
 import android.speech.tts.TextToSpeech;
+=======
+import android.content.Context;
+import android.os.Bundle;
+>>>>>>> Czj
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,8 +37,16 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class CouponPurchaseActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     @BindView(R.id.coupon_purchase_toolbar)
@@ -153,8 +166,12 @@ public class CouponPurchaseActivity extends AppCompatActivity {
                 .load(GlobalConfig.base_URL + "/static/" + coupon.getPic())
                 .into(couponImg);
         couponNameText.setText(coupon.getProduct());
+<<<<<<< HEAD
         couponPriceText.setText("¥" + coupon.getListprice());
 >>>>>>> ttr
+=======
+        couponPriceText.setText(coupon.getListprice() + "U");
+>>>>>>> Czj
 
         String[] constraints = coupon.getConstraints();
         StringBuilder sb = new StringBuilder();
@@ -164,6 +181,4 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         couponConstraintsText.setText(sb.toString());
         couponDiscountText.setText("¥" + coupon.getDiscount());
     }
-
-
 }

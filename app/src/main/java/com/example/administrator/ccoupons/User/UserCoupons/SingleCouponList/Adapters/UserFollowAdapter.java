@@ -20,6 +20,7 @@ public class UserFollowAdapter extends UserCouponInfoAdapter {
     private Context mContext;
     public UserFollowAdapter(ArrayList<Coupon> clist) {
         super(clist);
+        /*
         setCouponClickListener(new CouponClickedListener() {
             @Override
             public void onCouponClicked(Coupon coupon) {
@@ -28,6 +29,7 @@ public class UserFollowAdapter extends UserCouponInfoAdapter {
                 mContext.startActivity(intent);
             }
         });
+        */
     }
 
 

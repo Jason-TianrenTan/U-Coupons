@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,49 +21,75 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class UserUpdateNicknameActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private TextView updatenick;
-    private EditText nicknameEdit;
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private String nickname;
     private MyApp app;
     private final static String updateUserInformationURL = GlobalConfig.base_URL + GlobalConfig.updateUserInformation_URL;
+    @BindView(R.id.user_update_nickname_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.user_update_nickname)
+    TextView updatenick;
+    @BindView(R.id.update_nickname_edit)
+    EditText nicknameEdit;
+
+    @OnClick(R.id.user_update_nickname)
+    public void onclick(View view) {
+        nickname = nicknameEdit.getText().toString();
+        update(nickname);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_update_nickname);
-        bindViews();
-        setOnClinckListeners();
+        ButterKnife.bind(this);
+        initToolbar();
+        initData();
     }
 
-    private void bindViews() {
-        app = (MyApp) getApplicationContext();
-        toolbar = (Toolbar) findViewById(R.id.user_update_nickname_toolbar);
-        updatenick = (TextView) findViewById(R.id.user_update_nickname);
-        nicknameEdit = (EditText) findViewById(R.id.update_nickname_edit);
-        nicknameEdit.setHint(app.getNickname());
+
+    /**
+     * init toolbar
+     */
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void setOnClinckListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        updatenick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nickname = nicknameEdit.getText().toString();
-                update(nickname);
-            }
-        });
     }
 
+
+    /**
+     * init information data
+     */
+    private void initData() {
+        app = (MyApp) getApplicationContext();
+        nicknameEdit.setHint(app.getNickname());
+    }
+
+
+    /**
+     * update saved information
+     * @param nickname
+     */
     private void update(String nickname) {
         String url_str = updateUserInformationURL;
         HashMap<String, String> map = new HashMap<String, String>();
@@ -79,6 +106,7 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
+                System.out.println(response.toString());
                 parseMessage(response);
             }
 
@@ -95,16 +123,27 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
+
+    /**
+     * prase the massage json
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            String result = jsonObject.getString("result");
-            if (result.equals("success")) {
-                app.setNickname(nickname);
-                Toast.makeText(UserUpdateNicknameActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                finish();
-            } else if (result.equals("nickname exist")) {
-                Toast.makeText(UserUpdateNicknameActivity.this, "用户名已存在", Toast.LENGTH_SHORT).show();
+            if (jsonObject.has("result")) {
+                String result = jsonObject.getString("result");
+                if (result.equals("200")) {
+                    app.setNickname(nickname);
+                    Toast.makeText(UserUpdateNicknameActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+            if (jsonObject.has("error")) {
+                String error = jsonObject.getString("error");
+                if (error.equals("110")) {
+                    Toast.makeText(UserUpdateNicknameActivity.this, "昵称已存在", Toast.LENGTH_SHORT).show();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

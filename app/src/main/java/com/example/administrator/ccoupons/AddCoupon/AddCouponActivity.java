@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,7 +42,18 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+/**
+ * This interface jumps to the confirmation interface after adding coupons
+ */
 public class AddCouponActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
     private Coupon coupon;
     private TextView couponEvalText, couponNameText, couponDiscountText, couponBrandText, couponCatText,
@@ -49,7 +61,7 @@ public class AddCouponActivity extends AppCompatActivity {
     private EditText couponListPriceText;
     private ImageView couponImg;
     private TextView nextButton,
-        useEvalButton;
+            useEvalButton;
     private ZLoadingDialog dialog;
     private String vid = null;
 
@@ -114,7 +126,7 @@ public class AddCouponActivity extends AppCompatActivity {
             JSONObject valueObj = jsonArray.getJSONObject(0);
             value = valueObj.getString("value");
             vid = valueObj.getString("vid");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (value != null) {

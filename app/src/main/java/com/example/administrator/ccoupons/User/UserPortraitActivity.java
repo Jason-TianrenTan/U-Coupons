@@ -1,6 +1,7 @@
 package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 <<<<<<< HEAD
 import android.graphics.Bitmap;
@@ -34,35 +35,61 @@ import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.TakePhotoUtil;
 import com.jph.takephoto.model.TResult;
 
+<<<<<<< HEAD
 >>>>>>> ttr
+=======
+import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+>>>>>>> Czj
 public class UserPortraitActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private TakePhotoUtil takePhotoUtil;
+<<<<<<< HEAD
     private LoginInformationManager informationManager;
     private ImageView portrait;
     private LinearLayout bg;
+=======
+    @BindView(R.id.user_portrait_view)
+    ImageView portrait;
+    @BindView(R.id.portrait_bg)
+    LinearLayout bg;
+
+    @OnClick({R.id.portrait_bg})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.portrait_bg:
+                finish();
+                overridePendingTransition(R.anim.noanim, R.anim.portrait_out);//Todo:动画需要调整
+        }
+    }
+>>>>>>> Czj
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_portrait);
-        initView();
-
         takePhotoUtil = new TakePhotoUtil(this);
         if (useTakePhoto()) {
             takePhotoUtil.onCreate(savedInstanceState);
         }
-        initPortrait();
         setOnLongClickListeners();
+        initPortrait();
     }
 
+
+    /**
+     * set OnLongClickListener
+     */
     private void setOnLongClickListeners() {
-        bg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.noanim, R.anim.portrait_out);
-            }
-        });
 
         bg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -121,6 +148,7 @@ public class UserPortraitActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
     private void initView() {
         informationManager = new LoginInformationManager(this);
         portrait = (ImageView) findViewById(R.id.user_portrait_view);
@@ -172,13 +200,20 @@ public class UserPortraitActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(s);
             portrait.setImageBitmap(bitmap);
 =======
+=======
+
+    /**
+     * update user portrait
+     * @param path
+     */
+>>>>>>> Czj
     public void updatePortrait(final String path) {
         try {
             MyApp app = (MyApp) getApplicationContext();
             String userId = app.getUserId();
             new UploadTask(userId, path).execute();
             app.setAvatar(path);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //Todo:上传图片到服务器 并返回图片对应的url
@@ -189,6 +224,10 @@ public class UserPortraitActivity extends AppCompatActivity {
                 .into(portrait);
     }
 
+
+    /**
+     * init user portrait
+     */
     public void initPortrait() {
         MyApp app = (MyApp) this.getApplicationContext();
         String url = app.getAvatar();
@@ -198,5 +237,38 @@ public class UserPortraitActivity extends AppCompatActivity {
                     .into(portrait);
 >>>>>>> ttr
         } else portrait.setImageResource(R.drawable.testportrait);
+    }
+
+
+    /**
+     * init the camera
+     * @return
+     */
+    protected boolean useTakePhoto() {
+        return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onSaveInstanceState(outState);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onActivityResult(requestCode, resultCode, data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (useTakePhoto()) {
+            takePhotoUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

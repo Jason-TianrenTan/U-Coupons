@@ -8,6 +8,7 @@ import com.example.administrator.ccoupons.R;
 
 public class GlobalConfig {
 
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/administrator/ccoupons/Data/DataHolder.java
     static final String dormBase = "http://172.29.35.1:8000";
     static final String localBase = "http://192.168.207.221:8000";
@@ -27,25 +28,29 @@ public class GlobalConfig {
     }
 =======
     static final String dormBase = "http://10.132.4.183:8000";
+=======
+    static final String dormBase = "http://10.132.40.193:8000";
+>>>>>>> Czj
     static final String localBase = "http://192.168.206.11:8000";
-    static final String teamBase = "http://192.168.207.222:8000";
+    static final String teamBase = "http://10.132.4.183:8000";
     static final String serverBase = "http://119.23.72.43";
-    public static final String base_URL = dormBase;
+
+    public static final String base_URL = serverBase;
     public static final String login_URL = "/loginForAndroid";
     public static final String register_URL = "/signUpForAndroid";
     public static final String requestMsg_URL = "/sendMessage";
 
     public static final String requestSearch_URL = "/searchForAndroid";
-    public static final String requestPreSearch_URL = "/preSearch";//预搜索
 
-    public static final String requestDetail_URL = "/returnInformation";
-    public static final String purchase_URL = "/buyCoupon";
-    public static final String resetPass_URL = "/updatePassword";
+    public static final String requestPreSearch_URL = "/preSearch";//预搜索
+    public static final String requestDetail_URL = "/returnInformation";//请求优惠券信息
+    public static final String purchase_URL = "/buyCoupon";//购买
+    public static final String resetPass_URL = "/updatePassword";//修改密码
     public static final String requestBoughtList_URL = "/getBoughtList"; //已购买
     public static final String requestFollowList_URL = "/getLikeList";//已关注
     public static final String requestSoldList_URL = "/getSoldList";//已卖出
     public static final String updateUserInformation_URL = "/updateUserInformation";//修改个人资料
-    public static final String updatePhoneNumber_URL = "/updatePhonenumOrEmail";
+    public static final String updatePhoneNumber_URL = "/updatePhonenumOrEmail";//修改手机号
 
     public static final String postFollow_URL = "/likeCoupon";//关注
     public static final String postUnFollow_URL = "/dislikeCoupon";//取消关注
@@ -70,13 +75,14 @@ public class GlobalConfig {
     public static final String requestSellerInfo_URL = "/sellerInformation";//获取卖家信息
 >>>>>>> ttr:app/src/main/java/com/example/administrator/ccoupons/Data/GlobalConfig.java
 
-
+    //优惠券种类
     public static class Categories {
         public static String[] nameList = "生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
         public static int[] covers = {R.drawable.category_daily, R.drawable.category_decorate, R.drawable.category_sports, R.drawable.category_furnitures,
                 R.drawable.category_electronics, R.drawable.category_cloths, R.drawable.category_travel, R.drawable.category_food};
     }
 
+<<<<<<< HEAD
     public static class History {
         public static String requestData(int index) {
             return historyList[index];
@@ -85,6 +91,15 @@ public class GlobalConfig {
         public static String[] historyList = ("history1,h2,str3,a4,c5,v6,k7,s8,o9,i10,g234").split(",");
     }
 
+=======
+    public static class ThingsCategories{
+        public static String[] thingsList = "热门推荐 生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
+        public static int[] thingsCovers = {R.drawable.category_command_color, R.drawable.category_daily_color, R.drawable.category_decorate_color,
+                R.drawable.category_sports_color, R.drawable.category_furnitures_color, R.drawable.category_electronics_color,
+                R.drawable.category_cloths_color, R.drawable.category_travel_color, R.drawable.category_food_color};
+        }
+
+>>>>>>> Czj
     //用户信息
     public static class User {
         public static String username = "用户名";
@@ -100,7 +115,7 @@ public class GlobalConfig {
                 R.string.coupon_system_title};
     }
 
-    //无I O U V
+    //定位城市、无I O U V
     public static class Cities {
 
         public static final String[] popCityList = ("上海 北京 杭州 广州 成都 苏州" +

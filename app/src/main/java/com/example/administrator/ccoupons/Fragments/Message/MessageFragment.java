@@ -25,7 +25,7 @@ import com.example.administrator.ccoupons.Events.MessageRefreshEvent;
 import com.example.administrator.ccoupons.MyApp;
 >>>>>>> ttr:app/src/main/java/com/example/administrator/ccoupons/Fragments/Message/MessageFragment.java
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -123,6 +123,7 @@ public class MessageFragment extends Fragment {
 <<<<<<< HEAD:app/src/main/java/com/example/administrator/ccoupons/Fragments/MessageFragment.java
 =======
 
+
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -182,6 +183,7 @@ public class MessageFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
 
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/administrator/ccoupons/Fragments/MessageFragment.java
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.messageclass_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -189,6 +191,9 @@ public class MessageFragment extends Fragment {
 =======
 >>>>>>> ttr:app/src/main/java/com/example/administrator/ccoupons/Fragments/Message/MessageFragment.java
         adapter = new MessageClassAdapter(messageClasses);
+=======
+        initData();
+>>>>>>> Czj
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpacesItemDecoration(3));
         initPTR();
@@ -213,9 +218,11 @@ public class MessageFragment extends Fragment {
 =======
 
         for (int i = 0; i < GlobalConfig.MessageClasses.strings.length; i++) {
-            MessageClass msgClass = new MessageClass(getResources().getString(GlobalConfig.MessageClasses.strings[i]));
+            MessageClass msgClass = new MessageClass(getResources().getString(GlobalConfig.MessageClasses.strings[i]), i);
             messageClasses.add(msgClass);
         }
+
+        adapter = new MessageClassAdapter(messageClasses);
     }
 
 
@@ -231,6 +238,7 @@ public class MessageFragment extends Fragment {
                 System.out.println("message from global list: " + msg.getCouponName());
                 int catId = msg.getMessageCat();
                 messageClasses.get(catId).add(msg);
+                System.out.println("add to " + catId);
             }
 >>>>>>> ttr:app/src/main/java/com/example/administrator/ccoupons/Fragments/Message/MessageFragment.java
         }
@@ -262,7 +270,7 @@ public class MessageFragment extends Fragment {
                     }
                 }, 1600);
                 //    categoryAppbar.setVisibility(View.INVISIBLE);
-            //    new UniversalPresenter().getRecommendByRxRetrofit();
+                //    new UniversalPresenter().getRecommendByRxRetrofit();
             }
         });
     }

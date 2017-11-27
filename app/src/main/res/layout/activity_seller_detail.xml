@@ -27,7 +27,7 @@
                 android:layout_marginTop="16dp"
                 android:src="@mipmap/android"
                 app:civ_border_width="2dp"
-                app:civ_border_color="@color/thistle"
+                app:civ_border_color="@color/whitesmoke"
                 app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior" />
 
             <TextView
@@ -72,6 +72,11 @@
 
         </LinearLayout>
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/seller_coupon_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -89,11 +94,6 @@
                 android:orientation="horizontal" />
         </FrameLayout>
 
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/seller_coupon_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </LinearLayout>
 </LinearLayout>

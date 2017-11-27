@@ -28,9 +28,12 @@ import java.util.Iterator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+/**
+ * This interface is the sub interface for manually adding Coupons: add the use threshold
+ */
 public class AddConstraintsActivity extends AppCompatActivity {
-
 
     boolean requestFocus = false;
     ArrayList<String> constraintList = new ArrayList<>();
@@ -86,6 +89,7 @@ public class AddConstraintsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
 
+        //初始化信息
         adapter = new ConstraintsAdapter();
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -175,5 +179,10 @@ public class AddConstraintsActivity extends AppCompatActivity {
                 deleteButton = (ImageView) view.findViewById(R.id.delete_constraint_button);
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

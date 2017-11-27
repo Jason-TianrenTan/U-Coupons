@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,41 +23,81 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class UserUpdateGenderActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private TextView updateGender;
-    private RadioGroup genderRadio;
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private int gender;
     private MyApp app;
     private final static String updateUserInformationURL = GlobalConfig.base_URL + GlobalConfig.updateUserInformation_URL;
     private final String[] genderStr = {"男", "女"};
 
+    @BindView(R.id.user_update_gender_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.user_update_gender)
+    TextView updateGender;
+    @BindView(R.id.user_update_gender_radio)
+    RadioGroup genderRadio;
+
+    @OnClick(R.id.user_update_gender)
+    public void onclick(View view) {
+        if (gender == Gender.MALE) {
+            update(genderStr[0]);
+        } else update(genderStr[1]);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_update_gender);
-        bindViews();
-        setOnClinckListeners();
+        ButterKnife.bind(this);
+        initToolbar();
+        initData();
+        initRadio();
     }
 
-    private void bindViews() {
-        app = (MyApp) getApplicationContext();
-        toolbar = (Toolbar) findViewById(R.id.user_update_gender_toolbar);
-        updateGender = (TextView) findViewById(R.id.user_update_gender);
-        genderRadio = (RadioGroup) findViewById(R.id.user_update_gender_radio);
+
+    /**
+     * init toolbar
+     */
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-    }
-
-    private void setOnClinckListeners() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+    }
+
+
+    /**
+     * init information data
+     */
+    private void initData() {
+        app = (MyApp) getApplicationContext();
+        if (app.getGender() == Gender.MALE) {
+            genderRadio.check(R.id.radio_button_male);
+        } else genderRadio.check(R.id.radio_button_female);
+    }
+
+
+    /**
+     * init the gender choose radio
+     */
+    private void initRadio() {
         genderRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
@@ -66,21 +107,13 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
                 else gender = Gender.FEMALE;
             }
         });
-
-        if (app.getGender() == Gender.MALE) {
-            genderRadio.check(R.id.radio_button_male);
-        } else genderRadio.check(R.id.radio_button_female);
-
-        updateGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (gender == Gender.MALE) {
-                    update(genderStr[0]);
-                } else update(genderStr[1]);
-            }
-        });
     }
 
+
+    /**
+     * update saved data
+     * @param gender
+     */
     private void update(String gender) {
         String url_str = updateUserInformationURL;
         HashMap<String, String> map = new HashMap<String, String>();
@@ -97,6 +130,7 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override
             public void onConnectionSuccess(String response) {
+                System.out.println("Result: " + response.toString());
                 parseMessage(response);
             }
 
@@ -113,15 +147,23 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
+
+    /**
+     * parse the message data
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            String result = jsonObject.getString("result");
-            if (result.equals("success")) {
-                app.setGender(gender);
-                Toast.makeText(UserUpdateGenderActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
+            if (jsonObject.has("result")) {
+                String result = jsonObject.getString("result");
+                if (result.equals("200")) {
+                    app.setGender(gender);
+                    Toast.makeText(UserUpdateGenderActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+            if (jsonObject.has("error")) {
                 Toast.makeText(UserUpdateGenderActivity.this, "好像出了点问题哟", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {

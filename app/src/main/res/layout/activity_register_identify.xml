@@ -49,16 +49,16 @@
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:layout_height="wrap_content">
+
                 <EditText
+                    android:id="@+id/register_identify_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="1234567890"
+                    android:hint="验证码"
                     android:inputType="number"
                     android:maxLength="4"
-                    android:textSize="28dp"
-                    android:hint="验证码"
-                    android:id="@+id/register_identify_edittext"
-                    />
+                    android:textSize="28dp" />
             </android.support.design.widget.TextInputLayout>
             <Button
                 android:id="@+id/register_identify_button_reget"

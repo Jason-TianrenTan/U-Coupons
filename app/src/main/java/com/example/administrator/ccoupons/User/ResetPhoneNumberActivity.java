@@ -1,9 +1,11 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,49 +24,104 @@ import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 import com.example.administrator.ccoupons.Tools.DataBase.UserInfoManager;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ResetPhoneNumberActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
 
     public static final int COUNTDOWN_TIME = 30;
     public static final int SMS_FAILED = 1;//验证失败
     public static final int SMS_SUCCESS = 2;//验证通过
-    private Toolbar toolbar;
     private boolean verify_cord = false, valid = false;
     private String phoneString;
-
-    private TextView requestCordButton;
-    private Button button_next;
-    private EditText phoneText, cordText;
-    private TextInputLayout phoneInputLayout, cordInputLayout;
-
     //reset timer
     private int current = COUNTDOWN_TIME;
     private boolean reget_permission = false;
+    private String url = GlobalConfig.base_URL + GlobalConfig.updatePhoneNumber_URL;
+    //Todo:失败可能会跳转到设定密码的界面？ 尚未解决的未知BUG
 
-    private void bindViews() {
-        requestCordButton = (TextView) findViewById(R.id.update_request_cord_button);
-        button_next = (Button) findViewById(R.id.update_button_ok);
-        phoneText = (EditText) findViewById(R.id.update_phone_edittext);
-        cordText = (EditText) findViewById(R.id.update_cord_edittext);
-        phoneInputLayout = (TextInputLayout) findViewById(R.id.update_phone_inputlayout);
-        cordInputLayout = (TextInputLayout) findViewById(R.id.update_cord_inputlayout);
+    @BindView(R.id.update_phone_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.update_request_cord_button)
+    TextView requestCordButton;
+    @BindView(R.id.update_button_ok)
+    Button button_next;
+    @BindView(R.id.update_phone_edittext)
+    EditText phoneText;
+    @BindView(R.id.update_cord_edittext)
+    EditText cordText;
+    @BindView(R.id.update_phone_inputlayout)
+    TextInputLayout phoneInputLayout;
+    @BindView(R.id.update_cord_inputlayout)
+    TextInputLayout cordInputLayout;
+    @BindView(R.id.update_timer_text)
+    TextView timerText;
+
+    @OnClick({R.id.update_request_cord_button, R.id.update_button_ok})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.update_request_cord_button:
+                ClickRequestCordButton();
+                break;
+            case R.id.update_button_ok:
+                ClickOkButton();
+                break;
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_phone_number);
+        ButterKnife.bind(this);
+        initToolbar();
+        initEditText();
 
-        bindViews();
-        toolbar = (Toolbar) findViewById(R.id.update_phone_toolbar);
+        EventHandler eh = new EventHandler() {
+
+
+            @Override
+
+            public void afterEvent(int event, int result, Object data) {
+                Message msg = new Message();
+                msg.arg1 = event;
+                msg.arg2 = result;
+                msg.obj = data;
+                SMShandler.sendMessage(msg);
+            }
+
+
+        };
+        SMSSDK.registerEventHandler(eh);
+    }
+
+
+    /**
+     * init toolbar
+     */
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -74,22 +131,13 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
 
-        requestCordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                phoneString = phoneText.getText().toString();
-                if (phoneString.length() < 11) {
-                    phoneInputLayout.setError("长度必须为11位");
-                } else {
-                    sendSMS();
-                    requestCordButton.setEnabled(false);
-                    startCountDown();
-                }
-            }
-        });
-
+    /**
+     * init edit text view
+     */
+    private void initEditText() {
         phoneText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -107,21 +155,6 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-            }
-        });
-
-        button_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                valid = true;
-                String cord = cordText.getText().toString();
-                if (cord.length() < 4)
-                    cordInputLayout.setError("验证码必须为4位");
-                if (valid) {
-                    String iCord = cordText.getText().toString().trim();
-                    SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
-                    verify_cord = true;
-                }
             }
         });
 
@@ -145,26 +178,44 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
 
             }
         });
-
-        EventHandler eh = new EventHandler() {
-
-
-            @Override
-
-            public void afterEvent(int event, int result, Object data) {
-                Message msg = new Message();
-                msg.arg1 = event;
-                msg.arg2 = result;
-                msg.obj = data;
-                SMShandler.sendMessage(msg);
-            }
-
-
-        };
-        SMSSDK.registerEventHandler(eh);
     }
 
 
+    /**
+     * init ClickRequestCordButton
+     */
+    private void ClickRequestCordButton() {
+        phoneString = phoneText.getText().toString();
+        if (phoneString.length() < 11) {
+            phoneInputLayout.setError("长度必须为11位");
+        } else {
+            sendSMS();
+            requestCordButton.setText("重新发送");
+            requestCordButton.setEnabled(false);
+            startCountDown();
+        }
+    }
+
+
+    /**
+     * init ClickOkButton
+     */
+    private void ClickOkButton() {
+        valid = true;
+        String cord = cordText.getText().toString();
+        if (cord.length() < 4)
+            cordInputLayout.setError("验证码必须为4位");
+        if (valid) {
+            String iCord = cordText.getText().toString().trim();
+            SMSSDK.submitVerificationCode("86", phoneString, iCord);//验证验证码
+            verify_cord = true;
+        }
+    }
+
+
+    /**
+     * send SMS
+     */
     private void sendSMS() {
         //发送验证码
         System.out.println("Sent SMS code to +86" + phoneString.trim());
@@ -189,14 +240,17 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("userID", ((MyApp) getApplicationContext()).getUserId());
                     map.put("username", phoneString);
-                    ConnectionManager connectionManager = new ConnectionManager(url, map);
+                    ZLoadingDialog dialog = new ZLoadingDialog(ResetPhoneNumberActivity.this);
+                    dialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)
+                            .setLoadingColor(ContextCompat.getColor(ResetPhoneNumberActivity.this, R.color.colorPrimary))
+                            .setCanceledOnTouchOutside(false)
+                            .show();
+                    ConnectionManager connectionManager = new ConnectionManager(url, map, dialog);
                     connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
                         @Override
                         public void onConnectionSuccess(String response) {
-                            Toast.makeText(getApplicationContext(), "修改手机号成功", Toast.LENGTH_SHORT).show();
-                            updateUserInfo(phoneString);
-                            Intent intent = new Intent(ResetPhoneNumberActivity.this, MainPageActivity.class);
-                            startActivity(intent);
+                            System.out.println(response.toString());
+                            parseMessage(response);
                         }
 
                         @Override
@@ -264,18 +318,26 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * start timer
+     */
     private void startCountDown() {
         current = COUNTDOWN_TIME;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new ResetPhoneNumberActivity.CountDownTask(), 0, 1000);
     }
 
+
+    /**
+     * update timer
+     */
     private void updateTimer() {
         if (!reget_permission) {
             current--;
-            requestCordButton.setText(current + "s");
+            timerText.setText(current + getResources().getString(R.string.register_indentify_timertext));
             if (current == 0) {
-                requestCordButton.setText("重新获取");
+                timerText.setText("");
                 reget_permission = true;
                 requestCordButton.setEnabled(true);
             }
@@ -283,6 +345,7 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
     }
 
     private class CountDownTask extends TimerTask {// public abstract class TimerTask implements Runnable{}
+
         @Override
         public void run() {
             Message msg = new Message();
@@ -291,12 +354,51 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUserInfo(String newPhoneNum){
+
+    /**
+     * update saved uset information
+     * @param newPhoneNum
+     */
+    private void updateUserInfo(String newPhoneNum) {
         LoginInformationManager loginInformationManager = new LoginInformationManager(this);
         UserInfoManager oldUserInfoManager = new UserInfoManager(this);
         ArrayList<String> old = oldUserInfoManager.getHistoryList();
         loginInformationManager.setUsername(newPhoneNum);
         UserInfoManager newUserInfoManager = new UserInfoManager(this);
         newUserInfoManager.setHistory(old);
+    }
+
+
+    /**
+     * parse the massage json
+     * @param response
+     */
+    private void parseMessage(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            if (jsonObject.has("result")) {
+                String result = jsonObject.getString("result");
+                if (result.equals("200")) {
+                    Toast.makeText(getApplicationContext(), "修改手机号成功", Toast.LENGTH_SHORT).show();
+                    updateUserInfo(phoneString);
+                    Intent intent = new Intent(ResetPhoneNumberActivity.this, MainPageActivity.class);
+                    startActivity(intent);
+                }
+            }
+            if (jsonObject.has("error")) {
+                String error = jsonObject.getString("error");
+                if (error.equals("109")) {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "手机或邮箱已存在", Toast.LENGTH_SHORT).show();
+                } else if (error.equals("111")) {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "该账户使用手机注册", Toast.LENGTH_SHORT).show();
+                } else if (error.equals("112")) {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "该账户使用邮箱注册", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ResetPhoneNumberActivity.this, "好像出了点问题哟", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

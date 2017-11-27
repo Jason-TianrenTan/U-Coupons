@@ -67,12 +67,21 @@ public class Message {
         return this.couponName;
 =======
     private Coupon coupon;
+    private String content;
 
     public Message() {
         coupon = new Coupon();
     }
 
 
+    //content
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
     //value
     public void setValue(String value) {
         this.coupon.setValue(value);
@@ -83,7 +92,7 @@ public class Message {
     }
     //discount for coupon
     public void setDiscount(String discount) {
-        this.setDiscount(discount);
+        this.coupon.setDiscount(discount);
     }
 
     public String getDiscount() {
@@ -139,7 +148,14 @@ public class Message {
         return this.time;
     }
 
+<<<<<<< HEAD
 =======
+=======
+    public void setMessageCat(int i) {
+        this.messageCat = i;
+    }
+
+>>>>>>> Czj
     public String getCouponid() {
         return this.coupon.getCouponid();
     }

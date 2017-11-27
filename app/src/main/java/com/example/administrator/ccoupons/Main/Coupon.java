@@ -1,5 +1,7 @@
 package com.example.administrator.ccoupons.Main;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -50,8 +52,10 @@ public class Coupon implements Serializable {
 >>>>>>> ttr
 
     //类别
+    @SerializedName("category")
     private String catId;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     public Coupon(String name, String couponId, String brand, String catId, double listPrice, double evaluatePrice, double discount, int stat, String imgURL, String expireDate) {
         this.name = name;
@@ -72,7 +76,11 @@ public class Coupon implements Serializable {
 
 
 =======
+=======
+
+>>>>>>> Czj
     //品牌
+    @SerializedName("brand")
     private String brandName;
 
     //状态

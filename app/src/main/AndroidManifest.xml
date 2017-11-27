@@ -69,8 +69,13 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Main.LoginActivity"
+<<<<<<< HEAD
             android:fitsSystemWindows="true" />
 
+=======
+            android:fitsSystemWindows="true"
+            android:launchMode="singleTask" />
+>>>>>>> Czj
         <activity
             android:name=".Search.SearchActivity"
             android:fitsSystemWindows="true"
@@ -86,6 +91,7 @@
         <activity android:name=".Register.RegisterFinalActivity" />
         <activity android:name=".User.UserWalletActivity" />
         <activity android:name=".User.UserSettingActivity" />
+<<<<<<< HEAD
         <activity android:name=".Main.WelcomeActivity">
 
         </activity>
@@ -101,6 +107,8 @@
 <<<<<<< HEAD
 =======
         </activity>
+=======
+>>>>>>> Czj
 
         <service android:name=".Connections.MessageGetService" />
         <service android:name="com.amap.api.location.APSService" />
@@ -139,11 +147,35 @@
         <activity android:name=".Fragments.Message.MessageDetailActivity" />
         <activity android:name=".User.CouponDetail.SellerDetailActivity" />
         <activity android:name=".User.CouponDetail.MyCouponDetailActivity" />
-        <activity android:name=".User.CouponDetail.BaseDetailActivity" />
         <activity android:name=".User.CouponDetail.DisplayCouponDetailActivity" />
         <activity android:name=".AddCoupon.AddConstraintsActivity" />
+<<<<<<< HEAD
         <activity android:name=".AddCoupon.SelectDateActivity"></activity>
 >>>>>>> ttr
+=======
+        <activity android:name=".AddCoupon.SelectDateActivity" />
+        <activity
+            android:name=".Main.Splash.GuideActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Register.RegisterNewActivity" />
+        <activity android:name=".AddCoupon.AddCouponBaseActivity" />
+        <activity android:name=".AddCoupon.FirstAddActivity" />
+        <activity android:name=".AddCoupon.SecondAddActivity" />
+        <activity android:name=".AddCoupon.ThirdAddActivity" />
+        <activity android:name=".Things.ThingPurchaseActivity">
+            <!--intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter-->
+        </activity>
+>>>>>>> Czj
     </application>
 
 </manifest>

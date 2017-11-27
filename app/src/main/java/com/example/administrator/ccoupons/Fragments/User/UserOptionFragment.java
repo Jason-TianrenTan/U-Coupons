@@ -24,7 +24,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Main.WelcomeActivity;
+=======
+import com.example.administrator.ccoupons.Main.LoginActivity;
+import com.example.administrator.ccoupons.MyApp;
+>>>>>>> Czj
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.DataBase.LoginInformationManager;
 <<<<<<< HEAD:app/src/main/java/com/example/administrator/ccoupons/Fragments/UserOptionFragment.java
@@ -77,7 +82,9 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
     @BindView(R.id.user_portrait)
     CircleImageView portrait;
 
-    @OnClick({R.id.user_main_toolbar, R.id.user_nickname_text, R.id.user_to_mycoupons, R.id.user_to_wal, R.id.user_to_inf, R.id.user_sell, R.id.user_buy, R.id.user_follow, R.id.user_to_set, R.id.user_logoff, R.id.user_portrait})
+    @OnClick({R.id.user_main_toolbar, R.id.user_nickname_text, R.id.user_to_mycoupons,
+            R.id.user_to_wal, R.id.user_to_inf, R.id.user_sell, R.id.user_buy,
+            R.id.user_follow, R.id.user_to_set, R.id.user_logoff, R.id.user_portrait, R.id.user_to_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_main_toolbar:
@@ -110,8 +117,24 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
             case R.id.user_portrait:
                 getActivity().startActivity(new Intent(getActivity(), UserInformationActivity.class));
                 break;
+            case R.id.user_to_about:
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialog = inflater.inflate(R.layout.help_layout, (ViewGroup) getActivity().findViewById(R.id.help_root));
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("U惠 Release 2.0");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setView(dialog);
+                builder.setIcon(R.drawable.welcome_logo_new);
+                builder.show();
+                break;
         }
     }
+
     Unbinder unbinder;
     private UserInfoManager userInfoManager;
 >>>>>>> ttr:app/src/main/java/com/example/administrator/ccoupons/Fragments/User/UserOptionFragment.java
@@ -247,7 +270,7 @@ public class UserOptionFragment extends Fragment implements AppBarLayout.OnOffse
                         LoginInformationManager loginInformationManager =
                                 new LoginInformationManager(getActivity());
                         loginInformationManager.setAutoLogin(false).removePassword();
-                        startActivity(new Intent(getActivity(), WelcomeActivity.class));
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         getActivity().finish();
                     }
                 });

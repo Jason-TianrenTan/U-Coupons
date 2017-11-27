@@ -12,15 +12,23 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.mob.MobApplication;
 
 public class MyApp extends MobApplication {
 
 =======
+=======
+import com.example.administrator.ccoupons.Data.GlobalConfig;
+>>>>>>> Czj
 import com.example.administrator.ccoupons.Fragments.Message.Message;
+import com.example.administrator.ccoupons.Tools.FontUtils.FontUtils;
+import com.example.administrator.ccoupons.Tools.MessageUtils.MessageUtil;
 import com.mob.MobApplication;
 
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by Administrator on 2017/9/13 0013.
@@ -31,6 +39,11 @@ public class MyApp extends MobApplication {
 
 >>>>>>> ttr
     private static MyApp instance = null;
+
+    private static final String DROID_ITALIC_FONT = "DroidSerif-Italic.ttf",
+                                DROID_REGULAR_FONT = "DroidSerif-Regular.ttf",
+                                PINGFANG_FONT = "PingFang Regular.ttf",
+                                PINGFANG_LIGHT_FONT = "PingFang Light.ttf";
 
     public static MyApp getInstance() {
         return instance;
@@ -48,9 +61,36 @@ public class MyApp extends MobApplication {
         nickname = "default_str";
         avatar = "";
         gender = Gender.MALE;
+<<<<<<< HEAD
 >>>>>>> ttr
     }
 
+=======
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath(PINGFANG_FONT)
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+
+        initMessages();
+    }
+
+
+    private void initMessages() {
+        messageList = new ArrayList<>();
+        for (int i=0;i< GlobalConfig.MessageClasses.strings.length;i++) {
+            Message message = MessageUtil.generateMessage(i);
+            messageList.add(message);
+        }
+    }
+
+
+
+    private ArrayList<Message> messageList;
+
+    private String location;
+>>>>>>> Czj
     private String userId;
 <<<<<<< HEAD
 =======

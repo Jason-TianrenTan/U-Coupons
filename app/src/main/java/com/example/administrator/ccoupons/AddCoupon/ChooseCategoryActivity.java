@@ -13,15 +13,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.Category.Category;
 import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+/**
+ * This interface is the sub interface for manually adding Coupons: select coupons
+ */
 public class ChooseCategoryActivity extends AppCompatActivity {
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     private ArrayList<Category> mCList;
     private ChooseAdapter adapter;

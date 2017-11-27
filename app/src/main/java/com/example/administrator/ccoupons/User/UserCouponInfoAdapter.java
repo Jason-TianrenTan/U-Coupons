@@ -145,8 +145,9 @@ public abstract class UserCouponInfoAdapter extends RecyclerView.Adapter<UserCou
         holder.couponNameText.setText(coupon.getProduct());
         holder.couponDiscountText.setText(coupon.getDiscount());
         holder.couponExpireText.setText(coupon.getExpiredtime());
-        holder.couponEvalText.setText("¥" + coupon.getValue());
-        holder.couponListText.setText("¥" + coupon.getListprice());
+        holder.couponEvalText.setText(coupon.getValue() + "U");
+        //holder.couponListText.setText("¥" + coupon.getListprice());
+
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

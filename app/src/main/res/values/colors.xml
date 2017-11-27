@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#3F51B5</color>
 =======
@@ -8,7 +9,13 @@
     <color name="colorPrimaryDark">#F5705D</color>
 >>>>>>> ttr
     <color name="colorAccent">#1e90ff</color>
+=======
+    <color name="colorPrimary">#f08b1b</color><!--#ff5a00 --><!--粉红#F5705D-->
+    <color name="colorPrimaryDark">#f08b1b</color>
+    <color name="colorAccent">#1e90ff</color><!--1e90ff-->
+>>>>>>> Czj
     <color name="black_semi_transparent">#B2000000</color>
+    <color name="step_light">#fdb765</color>
     <color name="pink">#ffc0cb</color><!--粉红色 -->
     <color name="lightpink">#ffb6c1</color><!--亮粉红色 -->
     <color name="white">#ffffff</color><!--白色 -->

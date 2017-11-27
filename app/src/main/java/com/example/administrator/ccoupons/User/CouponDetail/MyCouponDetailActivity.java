@@ -13,8 +13,9 @@ import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
-
 import java.util.HashMap;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 属于我的优惠券
@@ -29,6 +30,7 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         String statString = getIntent().getStringExtra("stat");
         if (statString.equals("onsale"))
             isOnsale = true;
@@ -45,7 +47,7 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
     @Override
     public void initBottomViews(boolean isLiked) {
         super.inflateBottomView(R.layout.stat_bottom_bar);
-        statButton = (ImageView) bottomView.findViewById(R.id.page_button_stat);
+        statButton = (ImageView)bottomView.findViewById(R.id.page_button_stat);
         refreshStat();
 
         statButton.setOnClickListener(new View.OnClickListener() {
@@ -71,13 +73,13 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
         System.out.println("received response = " + response);
         try {
             JSONObject obj = new JSONObject(response);
-            String result = obj.getString("result");
-            if (result.equals("200")) { //状态修改成功
+            String result = obj.getString("errno");
+            if (result.equals("0")) { //状态修改成功
                 Toast.makeText(getApplicationContext(), "修改成功！", Toast.LENGTH_SHORT).show();
                 isOnsale = !isOnsale;
             }
             else {
-                if (result.equals("113") || result.equals("114"))
+                if (result.equals("1"))
                     Toast.makeText(getApplicationContext(), "遇到了错误，请刷新后重试", Toast.LENGTH_SHORT).show();
             }
             refreshStat();
@@ -87,11 +89,16 @@ public class MyCouponDetailActivity extends BaseDetailActivity {
     }
 
 
+    private static final String putOnSaleURL = "/post_putOnSale",
+                                putOffSaleURL = "/post_putOffSale";
     private void sendStatRequest(String type) {
-        String url = GlobalConfig.base_URL + GlobalConfig.postChangeCouponState_URL;
+        String url;
+        if (type.equals("store"))
+            url = GlobalConfig.base_URL + this.putOffSaleURL;
+        else url = GlobalConfig.base_URL + this.putOnSaleURL;
+        System.out.println("url = " + url);
         HashMap<String, String> map = new HashMap<>();
         map.put("couponID", coupon.getCouponid());
-        map.put("state", type);
         ConnectionManager connectionManager = new ConnectionManager(url, map);
         connectionManager.setConnectionListener(new ConnectionManager.UHuiConnectionListener() {
             @Override

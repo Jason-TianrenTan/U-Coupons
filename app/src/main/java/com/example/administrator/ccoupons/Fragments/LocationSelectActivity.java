@@ -9,7 +9,11 @@ import android.os.*;
 import android.os.Message;
 =======
 import android.os.Bundle;
+<<<<<<< HEAD
 >>>>>>> ttr
+=======
+import android.os.Handler;
+>>>>>>> Czj
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -35,16 +39,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.GlobalConfig;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.Events.SelectLocationEvent;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Register.RegisterIdentifyActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
+<<<<<<< HEAD
 import com.example.administrator.ccoupons.Tools.PixelUtils;
 <<<<<<< HEAD
 import com.example.administrator.ccoupons.UI.CustomDialog;
 import com.example.administrator.ccoupons.UI.CustomLoader;
 =======
 >>>>>>> ttr
+=======
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
+>>>>>>> Czj
 import com.example.administrator.ccoupons.UI.QuickIndexBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -52,8 +66,15 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LocationSelectActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
 
     @BindView(R.id.input_search)
@@ -80,12 +101,18 @@ public class LocationSelectActivity extends AppCompatActivity {
     private RecyclerView popCityRecyclerView, recyclerView;
     private int[] CharIndex = new int[26];
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(SelectLocationEvent locEvent) {
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_select);
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -68,6 +68,9 @@ public class CategorySearchActivity extends AppCompatActivity {
     };
 
 
+    /**
+     * Load the user location
+     */
     private void initLocation() {
         String str = ((MyApp) getApplicationContext()).getLocation();
         if (str != null && str.length() > 0) {
@@ -78,6 +81,10 @@ public class CategorySearchActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * init views
+     */
     private void bindViews() {
         categoryText.setText(GlobalConfig.Categories.nameList[Integer.parseInt(catId) - 1]);
         setSupportActionBar(toolbar);
@@ -114,7 +121,9 @@ public class CategorySearchActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * init recyclerView
+     */
     private void initRecyclerView() {
         recommendList = new ArrayList<>();
         requestData();
@@ -124,7 +133,9 @@ public class CategorySearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    //请求推送数据
+    /**
+     * request for push data
+     */
     private void requestData() {
         String url = GlobalConfig.base_URL + GlobalConfig.requestCatRecommend_URL;
         HashMap<String, String> map = new HashMap<>();
@@ -151,6 +162,10 @@ public class CategorySearchActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * parse the massage json
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject mainObj = new JSONObject(response);

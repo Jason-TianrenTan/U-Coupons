@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +36,7 @@ import com.zyao89.view.zloading.Z_TYPE;
 
 import org.json.JSONObject;
 
+<<<<<<< HEAD
 public class RegisterFinalActivity extends AppCompatActivity {
 
 
@@ -44,6 +46,22 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private RegisterThread thread;
     private final static String requestURL = DataHolder.base_URL + DataHolder.register_URL;
 =======
+=======
+import java.util.HashMap;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+public class RegisterFinalActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
+
+>>>>>>> Czj
     private String[] GenderChars = {"男", "女"};
     private LoginInformationManager loginInformationManager;
     private final static String requestURL = GlobalConfig.base_URL + GlobalConfig.register_URL;
@@ -160,8 +178,16 @@ public class RegisterFinalActivity extends AppCompatActivity {
      */
     private void Login() {
         Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
+<<<<<<< HEAD
         intent.putExtra("phone_number",phoneString)
                 .putExtra("nickname",nickname_edittext.getText().toString());
+=======
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        MyApp app = (MyApp) getApplicationContext();
+        app.setNickname(nickname_edittext.getText().toString());
+        app.setPhoneNumber(phoneString);
+        app.setGender(gender);
+>>>>>>> Czj
         startActivity(intent);
     }
 

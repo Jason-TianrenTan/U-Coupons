@@ -41,7 +41,10 @@ public class MessageGetService extends IntentService {
                     Intent intent = new Intent(MESSAGE_BROADCAST);
                     intent.putExtra("content", messageThread.getResponse());
                     sendBroadcast(intent);
+<<<<<<< HEAD
                     System.out.println("broadcast sent");
+=======
+>>>>>>> Czj
                     break;
             }
         }

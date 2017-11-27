@@ -190,7 +190,9 @@
 
                 <ImageView style="@style/user_divider" />
 
-                <LinearLayout style="@style/user_option_layout">
+                <LinearLayout
+                    android:id="@+id/user_to_about"
+                    style="@style/user_option_layout">
 
                     <ImageView
                         style="@style/user_icon_layout"
@@ -296,7 +298,7 @@
         android:src="@drawable/testportrait"
         android:id="@+id/user_portrait"
         app:civ_border_width="2dp"
-        app:civ_border_color="@color/thistle"
+        app:civ_border_color="@color/whitesmoke"
         app:layout_behavior="com.example.administrator.ccoupons.UI.AvatarImageBehavior"
         />
 

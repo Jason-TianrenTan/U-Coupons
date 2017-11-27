@@ -24,7 +24,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 <<<<<<< HEAD
 import com.example.administrator.ccoupons.Data.DataHolder;
@@ -42,26 +41,28 @@ import com.example.administrator.ccoupons.User.UserCouponFragments.UnusedCouponF
 import java.util.ArrayList;
 =======
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
-import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.User.UserCoupons.User.MyCouponFragmentAdapter;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserOnsaleFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedFragment;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+<<<<<<< HEAD
 >>>>>>> ttr
+=======
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+>>>>>>> Czj
 
 
 public class UserMyCouponActivity extends AppCompatActivity {
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     ArrayList<Coupon> unusedList, onsaleList, notonsaleList;
     UnusedCouponFragment UnusedFragment;
@@ -72,6 +73,15 @@ public class UserMyCouponActivity extends AppCompatActivity {
     int screen_width;
     LinearLayout scrollBar;
 =======
+=======
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
+
+>>>>>>> Czj
     int screen_width = 0;
     int index = 0;
     CouponCommonFragment usedFragment = new UserUsedFragment(),

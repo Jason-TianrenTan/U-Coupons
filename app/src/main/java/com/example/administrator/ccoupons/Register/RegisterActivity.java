@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,27 +13,57 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.administrator.ccoupons.Main.LoginActivity;
-import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    TextView text_return;
-    Toolbar toolbar;
-    Button button_next;
-    EditText phoneInput;
-    RegisterCheck checker;
-    TextInputLayout inputLayout;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
+    private RegisterCheck checker;
     private String[] AlertStrings = "不能含有非法字符,长度必须为11位".split(",");
 
+    @BindView(R.id.text_return)
+    TextView text_return;
+    @BindView(R.id.register_main_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.register_button_next)
+    Button button_next;
+    @BindView(R.id.register_phone_input)
+    EditText phoneInput;
+    @BindView(R.id.register_phone_inputlayout)
+    TextInputLayout inputLayout;
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(RegisterActivity.this, WelcomeActivity.class));
-        super.onBackPressed();
+    @OnClick({R.id.text_return, R.id.register_button_next})
+    public void onclick(View view){
+        switch (view.getId()){
+            case R.id.text_return:
+                finish();
+                break;
+            case R.id.register_button_next:
+                String str = phoneInput.getText().toString();
+                int err_type = checker.alertPhoneNumber(str);
+                if (err_type != AlertType.NO_ERROR) {
+                    //有错误
+                    inputLayout.setError(AlertStrings[err_type - 1]);
+                }
+                else {
+                    Intent intent = new Intent(RegisterActivity.this, RegisterIdentifyActivity.class);
+                    intent.putExtra("phone_number", phoneInput.getText().toString());
+                    startActivity(intent);
+                }
+                break;
+        }
     }
 
 
@@ -40,13 +71,14 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
         checker = new RegisterCheck();
         //    getSupportActionBar().hide();
-        toolbar = (Toolbar) findViewById(R.id.register_main_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        initToolbar();
+        initEditText();
+    }
 
+<<<<<<< HEAD
         phoneInput = (EditText) findViewById(R.id.register_phone_input);
         inputLayout = (TextInputLayout) findViewById(R.id.register_phone_inputlayout);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -62,7 +94,13 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
+=======
+>>>>>>> Czj
 
+    /**
+     * init edit text view
+     */
+    private void initEditText(){
         phoneInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -82,24 +120,22 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-        button_next = (Button) findViewById(R.id.register_button_next);
-        button_next.setOnClickListener(new View.OnClickListener() {
+    }
+
+
+    /**
+     * init toolbar
+     */
+    private void initToolbar(){
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String str = phoneInput.getText().toString();
-                int err_type = checker.alertPhoneNumber(str);
-                if (err_type != AlertType.NO_ERROR) {
-                    //有错误
-                    inputLayout.setError(AlertStrings[err_type - 1]);
-                }
-                else {
-                    Intent intent = new Intent(RegisterActivity.this, RegisterIdentifyActivity.class);
-                    intent.putExtra("phone_number", phoneInput.getText().toString());
-                    startActivity(intent);
-                }
+            public void onClick(View v) {
+                finish();
             }
         });
-
     }
 
 }

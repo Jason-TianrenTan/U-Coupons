@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 public class MessageClass {
 
+    private static int[] resIds = {R.drawable.ic_coupon_bought, R.drawable.ic_coupon_abouttoexpire, R.drawable.ic_coupon_expired,
+                                R.drawable.ic_coupon_followed_abouttoexpire, R.drawable.ic_coupon_mine_aboutto_expire,
+                                R.drawable.ic_coupon_system};
     private String ClassName;
     private ArrayList<Message> messageList;
     private int resId;//测试
@@ -33,9 +36,9 @@ public class MessageClass {
      *
      * @param clsName name of message class
      */
-    public MessageClass(String clsName) {
+    public MessageClass(String clsName, int index) {
         this.ClassName = clsName;
-        this.resId = R.drawable.message_icon;
+        this.resId = resIds[index];
         this.messageList = new ArrayList<>();
     }
 
@@ -78,10 +81,15 @@ public class MessageClass {
         String ret = "反正你嫖不到的哟~";
 =======
         String ret = "暂无消息";
+<<<<<<< HEAD
 >>>>>>> ttr:app/src/main/java/com/example/administrator/ccoupons/Fragments/Message/MessageClass.java
         for (Message msg:messageList) {
             ret = msg.getCouponName();
         }
+=======
+        if (messageList.size() > 0)
+            ret = messageList.get(messageList.size() -1).getContent();
+>>>>>>> Czj
         return ret;
     }
 
@@ -91,10 +99,16 @@ public class MessageClass {
      * @return
      */
     public String getTime() {
+<<<<<<< HEAD
         String ret = "嫖不到了还在嫖";
         for (Message msg:messageList) {
             ret = msg.getExpireTime();
         }
+=======
+        String ret = "暂无消息";
+        if (messageList.size() > 0)
+            ret = messageList.get(messageList.size() -1).getExpireTime();
+>>>>>>> Czj
         return ret;
     }
 
