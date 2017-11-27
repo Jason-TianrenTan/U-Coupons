@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,8 +13,15 @@ import com.example.administrator.ccoupons.Tools.SlideBackActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UserWalletActivity extends SlideBackActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     @BindView(R.id.uwal_toolbar)
     Toolbar toolbar;
     @BindView(R.id.uwal_ub)
@@ -40,6 +48,10 @@ public class UserWalletActivity extends SlideBackActivity {
         initData();
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -52,9 +64,12 @@ public class UserWalletActivity extends SlideBackActivity {
         });
     }
 
+
+    /**
+     * init Ucoin data
+     */
     private void initData() {
-        ub = (TextView) findViewById(R.id.uwal_ub);
         MyApp app = (MyApp) getApplicationContext();
-        ub.setText(app.getUcoin() + "");
+        ub.setText(String.format("%.2f", (float)app.getUcoin()));
     }
 }

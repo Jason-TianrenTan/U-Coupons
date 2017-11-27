@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,8 +24,17 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UserUpdateNicknameActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private String nickname;
     private MyApp app;
     private final static String updateUserInformationURL = GlobalConfig.base_URL + GlobalConfig.updateUserInformation_URL;
@@ -50,6 +60,10 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         initData();
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -62,11 +76,20 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * init information data
+     */
     private void initData() {
         app = (MyApp) getApplicationContext();
         nicknameEdit.setHint(app.getNickname());
     }
 
+
+    /**
+     * update saved information
+     * @param nickname
+     */
     private void update(String nickname) {
         String url_str = updateUserInformationURL;
         HashMap<String, String> map = new HashMap<String, String>();
@@ -100,6 +123,11 @@ public class UserUpdateNicknameActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
+
+    /**
+     * prase the massage json
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);

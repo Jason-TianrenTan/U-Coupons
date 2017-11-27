@@ -2,12 +2,14 @@ package com.example.administrator.ccoupons.Fragments.Category;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,21 +24,23 @@ import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.example.administrator.ccoupons.AddCoupon.AddCouponActivity;
 import com.example.administrator.ccoupons.AddCoupon.FillFormActivity;
+import com.example.administrator.ccoupons.AddCoupon.FirstAddActivity;
 import com.example.administrator.ccoupons.AddCoupon.QRcodeActivity;
 import com.example.administrator.ccoupons.Banner.NetworkImageHolderView;
 import com.example.administrator.ccoupons.Connections.ConnectionManager;
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.Events.SelectLocationEvent;
 import com.example.administrator.ccoupons.Fragments.LocationSelectActivity;
 import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.SearchActivity;
+import com.example.administrator.ccoupons.Things.ThingPurchaseActivity;
 import com.example.administrator.ccoupons.Tools.LocationGet;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -74,8 +78,6 @@ public class CategoryFragment extends Fragment {
     ZLoadingView loadingView;
     @BindView(R.id.location_textview)
     TextView locationTextview;
-    @BindView(R.id.category_message_button)
-    Button categoryMessageButton;
     @BindView(R.id.search_text)
     EditText searchText;
     @BindView(R.id.search_input_layout)
@@ -92,7 +94,6 @@ public class CategoryFragment extends Fragment {
     NestedScrollView mainNestedscrollview;
     @BindView(R.id.category_ptr_frame)
     PtrFrameLayout categoryPtrFrame;
-
     PtrFrameLayout currentRefreshLayout = null;
     @BindView(R.id.fab_action_fillform)
     FloatingActionButton fillFormFab;
@@ -100,11 +101,11 @@ public class CategoryFragment extends Fragment {
     FloatingActionButton scanQRFab;
     @BindView(R.id.multiple_actions)
     FloatingActionsMenu fab_menu;
-
     @BindView(R.id.category_rootview)
     LinearLayout rootView;
 
-    @OnClick({R.id.location_textview, R.id.category_message_button})
+
+    @OnClick({R.id.location_textview, R.id.category_about_button})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.location_textview:
@@ -113,8 +114,8 @@ public class CategoryFragment extends Fragment {
                     intent.putExtra("location", location);
                 startActivity(intent);
                 break;
-            case R.id.category_message_button:
-                //getActivity().startActivity(new Intent(getActivity(), MyMessageActivity.class));
+            case R.id.category_about_button:
+                startActivity(new Intent(getActivity(), ThingPurchaseActivity.class));
                 break;
         }
 
@@ -147,6 +148,12 @@ public class CategoryFragment extends Fragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(SelectLocationEvent locEvent) {
+        String location = locEvent.getLocation();
+        locationTextview.setText(location);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
@@ -177,11 +184,16 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    /**
+     * init Floating Action Button
+     *
+     * @param view
+     */
     private void initFAB(final View view) {
         fillFormFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), FillFormActivity.class));
+                startActivity(new Intent(getActivity(), FirstAddActivity.class));
             }
         });
 
@@ -194,7 +206,11 @@ public class CategoryFragment extends Fragment {
     }
 
 
-
+    /**
+     * init RecyclerViews
+     *
+     * @param view
+     */
     private void initRecyclerViews(View view) {
         categoryView = (RecyclerView) view.findViewById(R.id.category_recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
@@ -227,6 +243,9 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    /**
+     * init Pull-To-Refresh view
+     */
     private void initPTR() {
         PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
         header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);
@@ -248,7 +267,11 @@ public class CategoryFragment extends Fragment {
     }
 
 
-    //设置footer
+    /**
+     * set Footer
+     *
+     * @param type type of footer
+     */
     private void setFooterView(int type) {
         switch (type) {
             case FOOTER_LOADMORE:
@@ -259,6 +282,13 @@ public class CategoryFragment extends Fragment {
 
     }
 
+
+    /**
+     * request more data
+     *
+     * @param start   beginning index
+     * @param ceiling max numbers for request
+     */
     private void requestData(int start, int ceiling) {
         int count = 0;
         try {
@@ -280,6 +310,12 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+
+    /**
+     * parse result
+     *
+     * @param response
+     */
     private void parseBannerMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
@@ -301,8 +337,10 @@ public class CategoryFragment extends Fragment {
         }
     }
 
-    //{"result": ["images/banner/banner_1.jpg", "images/banner/banner_2.jpg", "images/banner/banner_3.jpg", "images/banner/banner_4.jpg", "images/banner/banner_5.jpg"]}
-    //初始化展示板
+
+    /**
+     * init banner
+     */
     private void initBanner() {
         networkImages = new ArrayList<String>();
         //post
@@ -331,6 +369,10 @@ public class CategoryFragment extends Fragment {
 
     }
 
+
+    /**
+     * init Image Loader
+     */
     private void initImageLoader() {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.mascot_nothing)
@@ -346,7 +388,9 @@ public class CategoryFragment extends Fragment {
     }
 
 
-    //初始化数据
+    /**
+     * init category data
+     */
     private void initCategory() {
         categoryList = new ArrayList<Category>();
         for (int i = 0; i < GlobalConfig.Categories.covers.length; i++) {
@@ -356,6 +400,9 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    /**
+     * request location data
+     */
     public void initLocation() {
         (new LocationGet(getActivity(), locationTextview)).requestLocation();
     }

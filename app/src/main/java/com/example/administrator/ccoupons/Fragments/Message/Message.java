@@ -8,6 +8,7 @@ import com.example.administrator.ccoupons.Main.Coupon;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/7/18 0018.
@@ -15,19 +16,44 @@ import java.io.Serializable;
 
 public class Message implements Serializable {
 
+
     private boolean hasRead = false;
     public int resId;//测试
     private int messageCat;
     private String messageId;
     private int userId;
-    private String time;
-    private String content;
     private Coupon coupon;
+    private String content;
 
     public Message() {
         coupon = new Coupon();
     }
 
+
+    //content
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+    //value
+    public void setValue(String value) {
+        this.coupon.setValue(value);
+    }
+
+    public String getValue() {
+        return this.coupon.getValue();
+    }
+    //discount for coupon
+    public void setDiscount(String discount) {
+        this.coupon.setDiscount(discount);
+    }
+
+    public String getDiscount() {
+        return this.getDiscount();
+    }
 
     public void setCouponPrice(String price) {
         coupon.setListprice(price);
@@ -37,6 +63,7 @@ public class Message implements Serializable {
         this.coupon.setPic(url);
     }
 
+    //if is read
     public boolean hasRead() {
         return this.hasRead;
     }
@@ -45,8 +72,14 @@ public class Message implements Serializable {
         this.hasRead = true;
     }
 
-    public String getTime() {
-        return this.time;
+
+    //expired time
+    public void setExpireTime(String time) {
+        this.coupon.setExpiredtime(time);
+    }
+
+    public String getExpireTime() {
+        return this.coupon.getExpiredtime();
     }
 
     public String getMessageId() {
@@ -65,6 +98,10 @@ public class Message implements Serializable {
         return this.messageCat;
     }
 
+    public void setMessageCat(int i) {
+        this.messageCat = i;
+    }
+
     public String getCouponid() {
         return this.coupon.getCouponid();
     }
@@ -73,17 +110,17 @@ public class Message implements Serializable {
         return this.coupon;
     }
 
-    /*
-    {"messageid": "001", "content": "lalala", "time": "2017-01-01",
-        "messagecat": "\u4e0a\u67b6\u7684\u4f18\u60e0\u5238\u88ab\u8d2d\u4e70", "hasread": 0, "couponid": "001"},
-    */
+
+    /**
+     *
+     * @param context
+     * @param obj JSON object to decode
+     * @return
+     */
     public static Message decodeFromJSON(Context context, JSONObject obj) {
         Message message = new Message();
         try {
             message.messageId = obj.getString("messageid");
-            message.content = obj.getString("content");
-            message.time = obj.getString("time");
-
             String cat_str = obj.getString("messagecat");
             for (int i = 0; i < GlobalConfig.MessageClasses.strings.length; i++) {
                 String str = context.getResources().getString(GlobalConfig.MessageClasses.strings[i]);

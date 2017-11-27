@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -16,7 +17,17 @@ import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.EditTextTools;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class RegisterPasswordActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
 
     private PasswordToggleEditText inputPass, confirmPass;
     private RegisterCheck checker = new RegisterCheck();
@@ -24,6 +35,7 @@ public class RegisterPasswordActivity extends AppCompatActivity {
     private boolean valid = false;
     private TextInputLayout firstlayout, confirmLayout;
     private String phoneString,password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

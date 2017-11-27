@@ -15,26 +15,30 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.ccoupons.Fragments.MainPageActivity;
-import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.User.UserCoupons.User.MyCouponFragmentAdapter;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserOnsaleFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUnsoldFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.User.UserUsedFragment;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class UserMyCouponActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     int screen_width = 0;
@@ -55,6 +59,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
     LinearLayout scrollBar;
     @BindView(R.id.mycoupon_viewpager)
     ViewPager mycouponViewpager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,9 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Initialize views
+     */
     private void initViews() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -97,6 +105,10 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Slide to
+     * @param pos
+     */
     private void slideTo(int pos) {
         int preWidth = screen_width / 3;
         int margins = PixelUtils.dp2px(this, 12);
@@ -108,6 +120,10 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Select page at
+     * @param position
+     */
     private void selectPage(int position) {
         slideTo(position);
         title_used.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gray));
@@ -126,6 +142,10 @@ public class UserMyCouponActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Init tabs
+     */
     private void initTabs() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         ArrayList<CouponCommonFragment> frList = new ArrayList<CouponCommonFragment>();
@@ -181,6 +201,9 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Initialize receiver
+     */
     public void initReceiver() {
         IntentFilter filter = new IntentFilter("com.example.administrator.ccoupons.UPDATEVIEWS");
         receiver = new UpdateUIReceiver();
@@ -188,6 +211,7 @@ public class UserMyCouponActivity extends AppCompatActivity {
     }
 
 
+    //UI receiver
     public class UpdateUIReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

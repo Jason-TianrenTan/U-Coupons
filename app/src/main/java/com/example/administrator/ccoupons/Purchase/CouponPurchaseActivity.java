@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Purchase;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,8 +23,16 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class CouponPurchaseActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     @BindView(R.id.coupon_purchase_toolbar)
@@ -69,7 +78,11 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
-    //处理返回回来的json
+
+    /**
+     * parse response message
+     * @param response response string from server
+     */
     private void parseMessage(String response) {
         System.out.println("Response for purchase = " + response);
         if (response.contains("error")) { //error while purchase
@@ -88,6 +101,7 @@ public class CouponPurchaseActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
         //页面跳转
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,13 +123,17 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         initInfo();
     }
 
+
+    /**
+     * Initialize information
+     */
     private void initInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
         Glide.with(this)
                 .load(GlobalConfig.base_URL + "/static/" + coupon.getPic())
                 .into(couponImg);
         couponNameText.setText(coupon.getProduct());
-        couponPriceText.setText("¥" + coupon.getListprice());
+        couponPriceText.setText(coupon.getListprice() + "U");
 
         String[] constraints = coupon.getConstraints();
         StringBuilder sb = new StringBuilder();
@@ -125,6 +143,4 @@ public class CouponPurchaseActivity extends AppCompatActivity {
         couponConstraintsText.setText(sb.toString());
         couponDiscountText.setText(coupon.getDiscount());
     }
-
-
 }

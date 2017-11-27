@@ -43,11 +43,18 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
- * 此界面为手动添加优惠券的界面
+ * This interface is for manually adding coupons
  */
 public class FillFormActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
     public static int REQUEST_CATEGORY = 6;
     public static int REQUEST_DATE = 999;
@@ -231,6 +238,7 @@ public class FillFormActivity extends AppCompatActivity {
     }
 
 
+    //load picture into imageview
     private void updatePic() {
         Glide.with(this)
                 .load(path)

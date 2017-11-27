@@ -19,6 +19,14 @@ public class PurchaseThread extends Thread{
     private Handler handler;
     private Context mContext;
     private String userId;
+
+    /**
+     *
+     * @param url connection target URL
+     * @param couponId ID for coupon
+     * @param mContext context
+     * @param handler handler
+     */
     public PurchaseThread(String url, String couponId, Context mContext, Handler handler) {
         this.url = url;
         this.handler = handler;
@@ -28,11 +36,17 @@ public class PurchaseThread extends Thread{
         userId = app.getUserId();
     }
 
+
+    //return response
     public String getResponse() {
         return connection.getContent();
     }
 
 
+    /**
+     * connect to target URL
+     * @param url
+     */
     private void connect(String url) {
         try {
             connection = new UHuiConnection(url, handler);

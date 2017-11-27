@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -38,8 +39,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ResetPhoneNumberActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
 
     public static final int COUNTDOWN_TIME = 30;
     public static final int SMS_FAILED = 1;//验证失败
@@ -107,6 +117,10 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         SMSSDK.registerEventHandler(eh);
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -119,6 +133,10 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * init edit text view
+     */
     private void initEditText() {
         phoneText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -162,6 +180,10 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * init ClickRequestCordButton
+     */
     private void ClickRequestCordButton() {
         phoneString = phoneText.getText().toString();
         if (phoneString.length() < 11) {
@@ -174,6 +196,10 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * init ClickOkButton
+     */
     private void ClickOkButton() {
         valid = true;
         String cord = cordText.getText().toString();
@@ -186,6 +212,10 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * send SMS
+     */
     private void sendSMS() {
         //发送验证码
         System.out.println("Sent SMS code to +86" + phoneString.trim());
@@ -288,12 +318,20 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * start timer
+     */
     private void startCountDown() {
         current = COUNTDOWN_TIME;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new ResetPhoneNumberActivity.CountDownTask(), 0, 1000);
     }
 
+
+    /**
+     * update timer
+     */
     private void updateTimer() {
         if (!reget_permission) {
             current--;
@@ -316,6 +354,11 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * update saved uset information
+     * @param newPhoneNum
+     */
     private void updateUserInfo(String newPhoneNum) {
         LoginInformationManager loginInformationManager = new LoginInformationManager(this);
         UserInfoManager oldUserInfoManager = new UserInfoManager(this);
@@ -325,6 +368,11 @@ public class ResetPhoneNumberActivity extends AppCompatActivity {
         newUserInfoManager.setHistory(old);
     }
 
+
+    /**
+     * parse the massage json
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);

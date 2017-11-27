@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserInformationActivity extends SlideBackActivity {
+
     private TakePhotoUtil takePhotoUtil;
     private MyApp app;
 
@@ -99,6 +100,10 @@ public class UserInformationActivity extends SlideBackActivity {
         super.onStart();
     }
 
+
+    /**
+     * Initially Toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -111,12 +116,17 @@ public class UserInformationActivity extends SlideBackActivity {
         });
     }
 
+
+    /**
+     * Init nickname, gender and camera
+     */
     private void initData() {
         app = (MyApp) this.getApplicationContext();
         name.setText(app.getNickname());
         if (app.getGender() == Gender.MALE)
             sex.setText("男");
         else sex.setText("女");
+        takePhotoUtil = new TakePhotoUtil(this);
     }
 
     @Override
@@ -143,11 +153,17 @@ public class UserInformationActivity extends SlideBackActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+
     protected boolean useTakePhoto() {
         return true;
     }
 
-    private void updatePortrait(String path) {
+
+    /**
+     * update user portrait at path
+     * @param path file path
+     */
+    public void updatePortrait(String path) {
         try {
             MyApp app = (MyApp) getApplicationContext();
             String userId = app.getUserId();
@@ -164,7 +180,11 @@ public class UserInformationActivity extends SlideBackActivity {
                 .into(portrait);
     }
 
-    private void initPortrait() {
+
+    /**
+     * Initialize user portrait
+     */
+    public void initPortrait() {
         String url = app.getAvatar();
         if (url != "") {
             Glide.with(this)
@@ -173,6 +193,10 @@ public class UserInformationActivity extends SlideBackActivity {
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 
+
+    /**
+     * update user portrait
+     */
     private void changePortrait() {
         View view = getLayoutInflater().inflate(R.layout.portrait_bottom_dialog, null);
         TextView tv_account = (TextView) view.findViewById(R.id.tv_take_photo);

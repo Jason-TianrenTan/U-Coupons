@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class SearchActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     private static final int HISTORY_MAX_RESULT = 10;//最大历史结果数
@@ -39,13 +49,13 @@ public class SearchActivity extends AppCompatActivity {
     private UserInfoManager userInfoManager;
     private String catId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         catId = getIntent().getStringExtra("type");
-        System.out.println("at oncreate, catid = " + catId);
 
         userInfoManager = new UserInfoManager(this);
         searchText = (EditText) findViewById(R.id.input_search);
@@ -136,6 +146,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
+    /**
+     *
+     * @param fragment fragment to show
+     */
     private void showFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.hide(historyFragment);
@@ -144,6 +158,11 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+
+    /**
+     * parse response string from server
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject obj = new JSONObject(response);
@@ -160,7 +179,11 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    //{"result": [{"product": "what"}, {"product": "where"}, {"product": "why"}]}
+
+    /**
+     * pre-search for input text
+     * @param text
+     */
     private void preSearch(String text) {
         String url = null;
         HashMap<String,String> map = new HashMap<String,String>();
@@ -190,6 +213,10 @@ public class SearchActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
+
+    /**
+     * hide soft-keyboard
+     */
     public void hideSoftKeyBoard() {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) this.getSystemService(
@@ -199,7 +226,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * search with requested string inputted
+     * @param requestStr requested string
+     */
     private void search(String requestStr) {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         intent.putExtra("search_string", requestStr);
@@ -222,6 +252,13 @@ public class SearchActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
+
+    /**
+     *
+     * @param v view
+     * @param event event
+     * @return whether should hide the soft keyboard
+     */
     private boolean isShouldHideKeyboard(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] l = {0, 0};

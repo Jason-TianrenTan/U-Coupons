@@ -50,10 +50,20 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
         }
     }
 
+
+    /**
+     *
+     * @param isSoftKeyboardOpened
+     */
     public void setIsSoftKeyboardOpened(boolean isSoftKeyboardOpened) {
         this.isSoftKeyboardOpened = isSoftKeyboardOpened;
     }
 
+
+    /**
+     * check whether soft-keyboard is opened
+     * @return
+     */
     public boolean isSoftKeyboardOpened() {
         return isSoftKeyboardOpened;
     }
@@ -66,14 +76,29 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
         return lastSoftKeyboardHeightInPx;
     }
 
+
+    /**
+     *
+     * @param listener
+     */
     public void addSoftKeyboardStateListener(SoftKeyboardStateListener listener) {
         listeners.add(listener);
     }
 
+
+    /**
+     *
+     * @param listener
+     */
     public void removeSoftKeyboardStateListener(SoftKeyboardStateListener listener) {
         listeners.remove(listener);
     }
 
+
+    /**
+     *
+     * @param keyboardHeightInPx Height of keyboard in pixels
+     */
     private void notifyOnSoftKeyboardOpened(int keyboardHeightInPx) {
         this.lastSoftKeyboardHeightInPx = keyboardHeightInPx;
 
@@ -84,6 +109,10 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
         }
     }
 
+
+    /**
+     * notify that keyboard is closed
+     */
     private void notifyOnSoftKeyboardClosed() {
         for (SoftKeyboardStateListener listener : listeners) {
             if (listener != null) {

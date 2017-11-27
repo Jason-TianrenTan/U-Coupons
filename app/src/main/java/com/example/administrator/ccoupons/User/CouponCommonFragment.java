@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Search.EndlessOnScrollListener;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,6 +58,7 @@ public abstract class CouponCommonFragment extends Fragment {
     private Unbinder unbinder;
     private PtrFrameLayout currentRefreshLayout = null;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(
@@ -74,12 +75,19 @@ public abstract class CouponCommonFragment extends Fragment {
     }
 
 
+    /**
+     * Called when a coupon if modified
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCall(CouponModifiedEvent event) {
-        System.out.println("modified event");
+
     }
 
 
+    /**
+     * Initialize Pull-To-Refresh
+     */
     private void initPTR() {
         PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
         header.setPadding(0, PixelUtils.dp2px(getActivity(), 15), 0, 0);
@@ -106,6 +114,9 @@ public abstract class CouponCommonFragment extends Fragment {
     }
 
 
+    /**
+     * init data
+     */
     public abstract void initData();
 
     /**
@@ -162,6 +173,10 @@ public abstract class CouponCommonFragment extends Fragment {
     }
 
 
+    /**
+     * set data of list
+     * @param cList
+     */
     protected void setData(ArrayList<Coupon> cList) {
         this.fullList = cList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -7,15 +7,16 @@ package com.example.administrator.ccoupons.Tools;
 
 public class RegisterCheck {
 
+
+    /**
+     1.13位数但是有非法字符
+     2. 不足13位数暂不警告
+     3. 出现非法字符直接警告
+     4. 警告返回true
+     * @param phoneStr
+     * @return
+     */
     public int alertPhoneNumber(String phoneStr) {
-
-        /*
-        1. 13位数但是有非法字符
-        2. 不足13位数暂不警告
-        3. 出现非法字符直接警告
-        4. 警告返回true
-         */
-
         char[] pArray = phoneStr.toCharArray();
         int length = phoneStr.length();
         if (length < 11)
@@ -50,6 +51,12 @@ public class RegisterCheck {
         return AlertType.NO_ERROR;
     }
 
+
+    /**
+     * Check strength of password
+     * @param pass
+     * @return
+     */
     private boolean passwordStrength(String pass) {
         //判断密码是否过于简单
         int strength = 0;

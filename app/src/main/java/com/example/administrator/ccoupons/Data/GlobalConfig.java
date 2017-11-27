@@ -8,15 +8,18 @@ import com.example.administrator.ccoupons.R;
 
 public class GlobalConfig {
 
-    static final String dormBase = "http://10.132.55.96:8000";
+    static final String dormBase = "http://10.132.40.193:8000";
     static final String localBase = "http://192.168.206.11:8000";
     static final String teamBase = "http://10.132.4.183:8000";
     static final String serverBase = "http://119.23.72.43";
-    public static final String base_URL = teamBase;
-    public static final String login_URL = "/loginForAndroid";//登录
-    public static final String register_URL = "/signUpForAndroid";//注册
-    public static final String requestMsg_URL = "/sendMessage";//请求信息
-    public static final String requestSearch_URL = "/searchForAndroid";//搜索
+
+    public static final String base_URL = serverBase;
+    public static final String login_URL = "/loginForAndroid";
+    public static final String register_URL = "/signUpForAndroid";
+    public static final String requestMsg_URL = "/sendMessage";
+
+    public static final String requestSearch_URL = "/searchForAndroid";
+
     public static final String requestPreSearch_URL = "/preSearch";//预搜索
     public static final String requestDetail_URL = "/returnInformation";//请求优惠券信息
     public static final String purchase_URL = "/buyCoupon";//购买
@@ -55,6 +58,13 @@ public class GlobalConfig {
         public static int[] covers = {R.drawable.category_daily, R.drawable.category_decorate, R.drawable.category_sports, R.drawable.category_furnitures,
                 R.drawable.category_electronics, R.drawable.category_cloths, R.drawable.category_travel, R.drawable.category_food};
     }
+
+    public static class ThingsCategories{
+        public static String[] thingsList = "热门推荐 生活百货 美妆装饰 文娱体育 家具家居 电子产品 服装装饰 旅行住宿 饮食保健".split(" ");
+        public static int[] thingsCovers = {R.drawable.category_command_color, R.drawable.category_daily_color, R.drawable.category_decorate_color,
+                R.drawable.category_sports_color, R.drawable.category_furnitures_color, R.drawable.category_electronics_color,
+                R.drawable.category_cloths_color, R.drawable.category_travel_color, R.drawable.category_food_color};
+        }
 
     //用户信息
     public static class User {

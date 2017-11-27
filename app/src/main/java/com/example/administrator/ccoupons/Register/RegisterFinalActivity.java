@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.os.Bundle;
@@ -27,9 +28,17 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class RegisterFinalActivity extends AppCompatActivity {
 
-    //127.0.0.1
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
 
     private String[] GenderChars = {"男", "女"};
     private LoginInformationManager loginInformationManager;
@@ -41,7 +50,10 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private String phoneString, password;
 
 
-    //处理返回回来的json
+    /**
+     * parse response string from server
+     * @param response
+     */
     private void parseMessage(String response) {
         System.out.println("response = " + response);
         try {
@@ -106,6 +118,10 @@ public class RegisterFinalActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Login
+     */
     private void Login() {
         Intent intent = new Intent(RegisterFinalActivity.this, MainPageActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -116,6 +132,11 @@ public class RegisterFinalActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * Register
+     * @param nickname user's nickname
+     */
     private void Register(String nickname) {
         String url_str = requestURL;
         String md5pass = null;

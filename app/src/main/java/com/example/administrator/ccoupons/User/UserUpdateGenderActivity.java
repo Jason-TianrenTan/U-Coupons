@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User;
 
+import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,8 +26,17 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UserUpdateGenderActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private int gender;
     private MyApp app;
     private final static String updateUserInformationURL = GlobalConfig.base_URL + GlobalConfig.updateUserInformation_URL;
@@ -56,6 +66,10 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         initRadio();
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -68,6 +82,10 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * init information data
+     */
     private void initData() {
         app = (MyApp) getApplicationContext();
         if (app.getGender() == Gender.MALE) {
@@ -75,6 +93,10 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         } else genderRadio.check(R.id.radio_button_female);
     }
 
+
+    /**
+     * init the gender choose radio
+     */
     private void initRadio() {
         genderRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -87,6 +109,11 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * update saved data
+     * @param gender
+     */
     private void update(String gender) {
         String url_str = updateUserInformationURL;
         HashMap<String, String> map = new HashMap<String, String>();
@@ -120,6 +147,11 @@ public class UserUpdateGenderActivity extends AppCompatActivity {
         connectionManager.connect();
     }
 
+
+    /**
+     * parse the message data
+     * @param response
+     */
     private void parseMessage(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);

@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Register;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -12,8 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.administrator.ccoupons.Main.LoginActivity;
-import com.example.administrator.ccoupons.Main.WelcomeActivity;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.AlertType;
 import com.example.administrator.ccoupons.Tools.RegisterCheck;
@@ -21,8 +20,16 @@ import com.example.administrator.ccoupons.Tools.RegisterCheck;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private RegisterCheck checker;
     private String[] AlertStrings = "不能含有非法字符,长度必须为11位".split(",");
 
@@ -59,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +78,10 @@ public class RegisterActivity extends AppCompatActivity {
         initEditText();
     }
 
+
+    /**
+     * init edit text view
+     */
     private void initEditText(){
         phoneInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -92,6 +104,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * init toolbar
+     */
     private void initToolbar(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

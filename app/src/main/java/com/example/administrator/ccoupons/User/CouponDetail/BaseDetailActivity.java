@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.User.CouponDetail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +22,7 @@ import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -34,8 +35,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
 
     @BindView(R.id.coupon_image)
@@ -83,6 +91,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
     protected Coupon coupon;
     protected View bottomView;
     protected boolean onDisplay = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,12 +144,12 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
 
 
     /**
-     * @param isLiked 是否被关注
+     * @param isLiked whther coupon is liked
      */
     public abstract void initBottomViews(boolean isLiked);
 
     /**
-     * 回调
+     * todo on back pressed
      */
     public abstract void onKeyBack();
 
@@ -158,6 +167,8 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
 
     }
 
+
+    //show coupon info
     private void showInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("Coupon");
 
@@ -171,7 +182,7 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
         String name = coupon.getProduct();
         nameText.setText(name);
 
-        String constraints = "后台居然懒到没加这个=.=";
+        String constraints = "暂无限制";
         constaintsText.setText(constraints);
 
         HashMap<String, String> map = new HashMap<>();
@@ -201,15 +212,15 @@ public abstract class BaseDetailActivity extends AppCompatActivity implements Ob
                 constaintsText.setText(sb.toString());
                 //list price
                 String listprice = coupon.getListprice();
-                listpriceText.setText("¥" + listprice + "");
+                listpriceText.setText(listprice + "U");
 
                 //eval price
                 String evalprice = coupon.getValue();
-                evalpriceText.setText("¥" + evalprice + "");
+                evalpriceText.setText("估值：" + evalprice + "U");
 
                 //优惠额度
                 String discount = coupon.getDiscount();
-                discountText.setText("¥" + discount);
+                discountText.setText(discount);
 
                 //商家名
                 String brandName =  coupon.getBrandName();

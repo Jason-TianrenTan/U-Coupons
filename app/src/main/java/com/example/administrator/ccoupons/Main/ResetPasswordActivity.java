@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.Main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,8 +38,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ResetPasswordActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     public static final int COUNTDOWN_TIME = 30;
@@ -104,6 +113,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private String[] errorStrings = "不能含有非法字符,长度必须为6~16位,密码强度太弱".split(",");
     private RegisterCheck checker = new RegisterCheck();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,12 +272,20 @@ public class ResetPasswordActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * send SMS
+     */
     private void sendSMS() {
         //发送验证码
         System.out.println("Sent SMS code to +86" + phoneString.trim());
         SMSSDK.getVerificationCode("86", phoneString.trim());//请求获取短信验证码
     }
 
+
+    /**
+     * handler for receiving SMS results
+     */
     private Handler SMSVerifyHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -358,6 +376,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
     };
 
+
     private Handler TimerHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -369,12 +388,20 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * begin countdown for re-request SMS Verification code
+     */
     private void startCountDown() {
         current = COUNTDOWN_TIME;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new CountDownTask(), 0, 1000);
     }
 
+
+    /**
+     * update seconds in timer
+     */
     private void updateTimer() {
         if (!reget_permission) {
             current--;
@@ -386,6 +413,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     private class CountDownTask extends TimerTask {// public abstract class TimerTask implements Runnable{}
 

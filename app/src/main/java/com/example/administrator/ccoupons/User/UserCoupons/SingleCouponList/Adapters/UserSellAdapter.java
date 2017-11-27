@@ -21,6 +21,7 @@ public class UserSellAdapter extends UserCouponInfoAdapter {
     private Context mContext;
     public UserSellAdapter(ArrayList<Coupon> clist) {
         super(clist);
+        /*
         setCouponClickListener(new CouponClickedListener() {
             @Override
             public void onCouponClicked(Coupon coupon) {
@@ -29,6 +30,7 @@ public class UserSellAdapter extends UserCouponInfoAdapter {
                 mContext.startActivity(intent);
             }
         });
+        */
     }
 
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/8/23 0023.
  */
 
+//Event called when list requested successfully from server
 public class CouponListEvent {
 
     private String listname;

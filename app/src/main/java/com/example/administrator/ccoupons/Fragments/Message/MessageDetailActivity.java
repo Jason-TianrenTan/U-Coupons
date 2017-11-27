@@ -24,11 +24,20 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MessageDetailActivity extends AppCompatActivity {
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private RecyclerView recyclerView;
     private String[] statList = "已出售 即将过期 已过期 即将过期 即将过期 系统消息".split(" ");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,8 @@ public class MessageDetailActivity extends AppCompatActivity {
         initRecyclerView();
     }
 
+
+    //init views
     private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.message_detail_recyclerview);
 
@@ -48,6 +59,8 @@ public class MessageDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
     }
 
+
+    //bind views
     private void bindViews() {
         int index = getIntent().getIntExtra("index", 0);
 
@@ -67,6 +80,7 @@ public class MessageDetailActivity extends AppCompatActivity {
     }
 
 
+    //adapter for message detail
     public class MessageDetailAdapter extends RecyclerView.Adapter<MessageDetailAdapter.MessageDetailViewHolder> {
 
 
@@ -133,6 +147,10 @@ public class MessageDetailActivity extends AppCompatActivity {
     }
 
 
+    /**
+     *
+     * @param msg
+     */
     private void requestCouponDetail(Message msg) {
         Class<?> target = null;
         switch (msg.getMessageCat()) {
@@ -146,8 +164,6 @@ public class MessageDetailActivity extends AppCompatActivity {
                 break;
         }
         Intent intent = new Intent(MessageDetailActivity.this, target);
-        intent.putExtra("type", "message");
-        intent.putExtra("msgCat", msg.getMessageCat() + "");
         intent.putExtra("Coupon", msg.getCoupon());
         intent.putExtra("msgId", msg.getMessageId());
         startActivity(intent);

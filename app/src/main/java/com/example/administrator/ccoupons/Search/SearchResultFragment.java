@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.administrator.ccoupons.Connections.UniversalPresenter;
 import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.Fragments.MainPageCouponAdapter;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.User.CouponCommonFragment;
 import com.example.administrator.ccoupons.User.UserCoupons.CouponModifiedEvent;
@@ -25,6 +26,7 @@ public class SearchResultFragment extends SearchCommonFragment {
 
 
     private String keyWord = null, order = "";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +49,10 @@ public class SearchResultFragment extends SearchCommonFragment {
 
     }
 
+
+    /**
+     * init data
+     */
     @Override
     public void initData() {
         if (keyWord == null)
@@ -54,12 +60,15 @@ public class SearchResultFragment extends SearchCommonFragment {
         clear();
         System.out.println("at init data in normal search, key word = " + keyWord + ", order = " + order);
         adapterList = new ArrayList<>();
-        adapter = new ResultAdapter(adapterList);
+    //    adapter = new ResultAdapter(adapterList);
+        adapter = new MainPageCouponAdapter(adapterList);
         new UniversalPresenter().getSearchResultByRxRetrofit(keyWord, order);
     }
 
 
-
+    /**
+     * clear list
+     */
     private void clear() {
         if (fullList != null) {
             int size = fullList.size();

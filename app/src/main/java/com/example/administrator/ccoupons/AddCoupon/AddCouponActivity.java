@@ -1,5 +1,6 @@
 package com.example.administrator.ccoupons.AddCoupon;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,10 +42,18 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
- * 此界面为添加优惠券后跳转到的确认界面
+ * This interface jumps to the confirmation interface after adding coupons
  */
 public class AddCouponActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
     private Coupon coupon;
     private TextView couponEvalText, couponNameText, couponDiscountText, couponBrandText, couponCatText,
@@ -52,9 +61,10 @@ public class AddCouponActivity extends AppCompatActivity {
     private EditText couponListPriceText;
     private ImageView couponImg;
     private TextView nextButton,
-        useEvalButton;
+            useEvalButton;
     private ZLoadingDialog dialog;
     private String vid = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +77,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
-    //请求优惠券估值
+    //request evaluation for coupon
     private void requestCouponValue() {
         String url = GlobalConfig.base_URL + GlobalConfig.postGetEvaluation_URL;
         HashMap<String, String> map = new HashMap<>();
@@ -100,6 +110,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //parse return message
     private void parseMessage(String response) {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -115,7 +126,7 @@ public class AddCouponActivity extends AppCompatActivity {
             JSONObject valueObj = jsonArray.getJSONObject(0);
             value = valueObj.getString("value");
             vid = valueObj.getString("vid");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (value != null) {
@@ -142,11 +153,13 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //get coupon
     private void getCouponInfo() {
         coupon = (Coupon) getIntent().getSerializableExtra("coupon");
     }
 
 
+    //add coupon
     private void requestAddCoupon() {
         HashMap<String, String> map = new HashMap<>();
         map.put("userID", ((MyApp) getApplicationContext()).getUserId());
@@ -162,6 +175,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //bind views
     private void bindViews() {
 
         nextButton = (TextView) findViewById(R.id.form_preview_next);
@@ -197,6 +211,7 @@ public class AddCouponActivity extends AppCompatActivity {
     }
 
 
+    //AsyncTask for uploading coupon to server
     public class UpLoadCoupon extends AsyncTask<Void, Integer, String> {
 
         private HashMap<String, String> map;

@@ -38,6 +38,7 @@ import com.example.administrator.ccoupons.Fragments.Category.CategoryFragment;
 import com.example.administrator.ccoupons.Fragments.Message.Message;
 import com.example.administrator.ccoupons.Fragments.Message.MessageFragment;
 import com.example.administrator.ccoupons.Fragments.User.UserOptionFragment;
+import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
 
@@ -51,9 +52,17 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainPageActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
 
     @BindView(R.id.main_bottombar)
@@ -79,9 +88,11 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
         ButterKnife.bind(this);
         initFragments();
         initNavigationBar();
-        initService();
+    //    initService();
     }
 
+
+    //init service for requesting message
     private void initService() {
 
         receiver = new AlarmReceiver();
@@ -95,7 +106,7 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     }
 
 
-
+    //init mainpage fragments
     private void initFragments() {
         categoryFragment = new CategoryFragment();
         userOptionFragment = new UserOptionFragment();
@@ -113,6 +124,10 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     }
 
 
+    /**
+     * show fragment at index
+     * @param index the selected index
+     */
     private void showFragment(int index) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         hideAllFragments(ft);
@@ -120,6 +135,11 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
         ft.commitAllowingStateLoss();
     }
 
+
+    /**
+     * hide fragments
+     * @param ft
+     */
     private void hideAllFragments(FragmentTransaction ft) {
         if (categoryFragment != null)
             ft.hide(categoryFragment);
@@ -129,7 +149,8 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
             ft.hide(messageFragment);
     }
 
-    //初始化底部导航栏
+
+    //init bottom navigation bar
     private void initNavigationBar() {
         mainNavItem = new BottomNavigationItem(R.drawable.main_mainpage, "主页").setActiveColor(R.color.blue);
         messageNavItem = new BottomNavigationItem(R.drawable.message, "消息").setActiveColor(R.color.red);
@@ -158,13 +179,14 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     public void onTabUnselected(int position) {
     }
 
+
     @Override
     public void onTabReselected(int position) {
 
     }
 
 
-    //按返回键回到F1,在F1双击返回键退出
+    //press back twice to exit
     @Override
     public void onBackPressed() {
         if (exit) {
@@ -185,14 +207,9 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
     }
 
 
-    /*
-
-    {"messageResult":
-    [{"messageid": "001", "content": "lalala", "time": "2017-01-01",
-    "messagecat": "\u4e0a\u67b6\u7684\u4f18\u60e0\u5238\u88ab\u8d2d\u4e70", "hasread": 0, "couponid": "001"},
-    {"messageid": "002", "content": "dididi", "time": "2017-01-01", "messagecat": "\u4e0a\u67b6\u7684\u4f18\u60e0\u5238\u5373\u5c06\u8fc7\u671f",
-    "hasread": 0, "couponid": "002"}],
-    "couponResult": [{"product": "\u542e\u6307\u539f\u5473\u9e21wh"}, {"product": "\u829d\u58eb\u85af\u6761wh"}]}
+    /**
+     * parse message from main page
+     * @param msg
      */
     private void parseMessageJSON(String msg) {
         System.out.println("message = " + msg);
@@ -213,10 +230,14 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
                     String listprice = couponObj.getString("listprice");
                     String img_url = couponObj.getString("pic");
                     String discount = couponObj.getString("discount");
+                    String value = couponObj.getString("value");
                     String expireTime = couponObj.getString("expiredtime");
-                    //TODO:set discount, set expiretime
+
+                    message.setDiscount(discount);
+                    message.setExpireTime(expireTime);
                     message.setCouponPrice(listprice);
                     message.setCouponURL(img_url);
+                    message.setValue(value);
                     messageList.add(message);
                 }
             }
@@ -245,6 +266,8 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
         messageBadgeItem.hide();
     }
 
+
+    //alarm receiver
     public class AlarmReceiver extends BroadcastReceiver {
 
         @Override
@@ -261,58 +284,13 @@ public class MainPageActivity extends AppCompatActivity implements BottomNavigat
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(receiver);
+        if (receiver != null)
+            unregisterReceiver(receiver);
         super.onDestroy();
     }
 
-    private void setDialog() {
-        final Dialog mCameraDialog = new Dialog(this, R.style.BottomDialog);
-        RelativeLayout root = (RelativeLayout) LayoutInflater.from(this).inflate(
-                R.layout.bottom_sheet, null);
 
-        mCameraDialog.setContentView(root);
-        Window dialogWindow = mCameraDialog.getWindow();
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-        lp.x = 0; // 新位置X坐标
-        lp.y = 0; // 新位置Y坐标
-        root.measure(0, 0);
-
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        lp.width = displayMetrics.widthPixels;
-        lp.height = displayMetrics.heightPixels;
-
-        lp.alpha = 1f; // 透明度
-
-        //设置监听器
-        ImageView closeButton = (ImageView) mCameraDialog.findViewById(R.id.close_btn_bottom_sheet);
-        ImageView QRScanButton = (ImageView) mCameraDialog.findViewById(R.id.sell_btn_scanqr),
-                FillFormButton = (ImageView) mCameraDialog.findViewById(R.id.sell_btn_fillform);
-        QRScanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainPageActivity.this, QRcodeActivity.class));
-                mCameraDialog.dismiss();
-            }
-        });
-        FillFormButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainPageActivity.this, FillFormActivity.class));
-            }
-        });
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCameraDialog.dismiss();
-            }
-        });
-        dialogWindow.setAttributes(lp);
-        mCameraDialog.show();
-    }
-
-
-    //发送通知
+    //send notifications to user
     public void sendNotification(String str) {
         Intent i = new Intent(this, MainPageActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);

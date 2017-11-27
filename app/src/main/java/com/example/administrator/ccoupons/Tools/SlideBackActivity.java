@@ -1,15 +1,24 @@
 package com.example.administrator.ccoupons.Tools;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 
-/**
- * 从该类继承活动使活动支持向右滑动返回
- */
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+/**
+ * Activities inherit from this activity to support slide rightward
+ */
 public class SlideBackActivity extends AppCompatActivity {
-        //手指上下滑动时的最小速度
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
+    //手指上下滑动时的最小速度
         private static final int YSPEED_MIN = 1000;
         //手指向右滑动时的最小距离
         private static final int XDISTANCE_MIN = 50;
@@ -37,15 +46,9 @@ public class SlideBackActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_MOVE:
                     xMove = event.getRawX();
                     yMove= event.getRawY();
-                    //滑动的距离
                     int distanceX = (int) (xMove - xDown);
                     int distanceY= (int) (yMove - yDown);
-                    //获取顺时速度
                     int ySpeed = getScrollVelocity();
-                    //关闭Activity需满足以下条件：
-                    //1.x轴滑动的距离>XDISTANCE_MIN
-                    //2.y轴滑动的距离在YDISTANCE_MIN范围内
-                    //3.y轴上（即上下滑动的速度）<XSPEED_MIN，如果大于，则认为用户意图是在上下滑动而非左滑结束Activity
                     if(distanceX > XDISTANCE_MIN &&(distanceY<YDISTANCE_MIN&&distanceY>-YDISTANCE_MIN)&& ySpeed < YSPEED_MIN) {
                         finish();
                     }
@@ -59,7 +62,7 @@ public class SlideBackActivity extends AppCompatActivity {
             return super.dispatchTouchEvent(event);
         }
         /**
-         * 创建VelocityTracker对象，并将触摸界面的滑动事件加入到VelocityTracker当中。
+         * creat VelocityTracker object and add the slide incident
          *
          * @param event
          *
@@ -72,7 +75,7 @@ public class SlideBackActivity extends AppCompatActivity {
         }
 
         /**
-         * 回收VelocityTracker对象。
+         * recycle VelocityTracker object
          */
         private void recycleVelocityTracker() {
             mVelocityTracker.recycle();
@@ -80,7 +83,7 @@ public class SlideBackActivity extends AppCompatActivity {
         }
         /**
          *
-         * @return 滑动速度，以每秒钟移动了多少像素值为单位。
+         * @return speed of slide
          */
         private int getScrollVelocity() {
             mVelocityTracker.computeCurrentVelocity(1000);

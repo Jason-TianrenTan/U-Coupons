@@ -4,6 +4,17 @@
     <string name="document_string">假装这是文案</string>
     <string name="mainpage_title_string">"推荐"</string>
 
+    <!--Splash Activity-->
+    <string name="splash_title1">出售闲置券</string>
+    <string name="splash_title2">购买所需券</string>
+    <string name="splash_title3">U惠</string>
+    <string name="splash_content_above1">官方估值</string>
+    <string name="splash_content_above2">样式齐全</string>
+    <string name="splash_content_above3">便利优惠券交易平台</string>
+    <string name="splash_content_below1">合理开价卖更快</string>
+    <string name="splash_content_below2">让你各方面优惠</string>
+    <string name="splash_content_below3"></string>
+
     <!-- 登录与注册 -->
     <string name="login">登录</string>
     <string name="register">注册</string>
@@ -15,16 +26,19 @@
     <string name="check_string">验证码</string>
 
     <!--注册界面-->
-    <string name="register_phone_hint">输入手机号码</string>
+    <string name="register_phone_hint">手机号码</string>
     <string name="register_title_string">快速注册</string>
     <string name="register_next_string">下一步</string>
     <string name="register_identify_title">获取验证码</string>
     <string name="register_identify_text">我们发送了验证码至</string>
-    <string name="register_indentify_timertext">s后可重新获取验证码</string>
+    <string name="register_indentify_timertext">s</string>
+    <string name="register_indentify_resent_text">重新发送</string>
+    <string name="register_complete_button_string">完成注册</string>
+    <string name="register_return_text_string">已经有账户了?直接登录</string>
 
     <string name="register_password_title">设置密码</string>
-    <string name="register_password_hint">输入密码</string>
-    <string name="register_password_confirm_hint">再次输入密码</string>
+    <string name="register_password_hint">密码</string>
+    <string name="register_password_confirm_hint">确认密码</string>
 
     <string name="register_final_title">完善个人信息</string>
     <string name="register_final_hint">昵称</string>
@@ -95,5 +109,13 @@
     <string name="user_update_gender">修改性别</string>
     <string name="user_update">修改</string>
     <string name="user_update_phone">修改手机号</string>
+    <string name="title_activity_register_new">RegisterNewActivity</string>
 
+    <string name="upload_image"><u>上传图片</u></string>
+
+    <string name="title_activity_thing_purchase">ThingPurchaseActivity</string>
+
+
+    <string name="help_content">U惠——基于P2P的在线优惠券交易平台\n
+        在这里你可以购买别人的优惠券、添加并上架自己的优惠券!</string>
 </resources>

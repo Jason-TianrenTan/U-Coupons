@@ -19,11 +19,18 @@ import com.example.administrator.ccoupons.R;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
- * 此界面为手动添加优惠券的子界面：选择优惠券
+ * This interface is the sub interface for manually adding Coupons: select coupons
  */
 public class ChooseCategoryActivity extends AppCompatActivity {
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     private ArrayList<Category> mCList;
     private ChooseAdapter adapter;
@@ -37,6 +44,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         bindViews();
     }
 
+
+    //init data
     private void initData() {
         mCList = new ArrayList<>();
         for (int i = 0; i< GlobalConfig.Categories.covers.length; i++) {
@@ -48,6 +57,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
 
     }
 
+
+    //bind views
     private void bindViews() {
         recyclerView = (RecyclerView) findViewById(R.id.category_choose_recyclerview);
         adapter = new ChooseAdapter(mCList);
@@ -60,6 +71,8 @@ public class ChooseCategoryActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
+
+    //adapter for choosing category
     public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder> {
 
         private Context mContext;

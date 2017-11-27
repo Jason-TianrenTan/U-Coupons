@@ -1,7 +1,6 @@
 package com.example.administrator.ccoupons.Main;
 
-import android.animation.ObjectAnimator;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -11,14 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +22,8 @@ import com.example.administrator.ccoupons.Fragments.MainPageActivity;
 import com.example.administrator.ccoupons.Gender;
 import com.example.administrator.ccoupons.MyApp;
 import com.example.administrator.ccoupons.R;
+import com.example.administrator.ccoupons.Register.RegisterNewActivity;
 import com.example.administrator.ccoupons.Tools.PasswordEncoder;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
@@ -40,10 +34,15 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class LoginActivity extends AppCompatActivity {
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     public static final int ANIM_SHRINK = 0,
             ANIM_EXPAND = 1;
@@ -52,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.login_toolbar)
     Toolbar loginToolbar;
-    @BindView(R.id.imglayout)
-    RelativeLayout imglayout;
+    //    @BindView(R.id.imglayout)
+//    RelativeLayout imglayout;
     @BindView(R.id.Login_usernameEditText)
     EditText LoginUsernameEditText;
     @BindView(R.id.Login_usernameHolder)
@@ -62,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText LoginPasswordEditText;
     @BindView(R.id.Login_passwordHolder)
     TextInputLayout LoginPasswordHolder;
+    @BindView(R.id.Login_registerTextView)
+    TextView LoginRegisterTextView;
     @BindView(R.id.Login_forgetTextView)
     TextView LoginForgetTextView;
     @BindView(R.id.Login_loginButton)
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.rootLayout)
     LinearLayout rootLayout;
 
-    @OnClick({R.id.Login_loginButton, R.id.Login_forgetTextView})
+    @OnClick({R.id.Login_loginButton, R.id.Login_forgetTextView, R.id.Login_registerTextView})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.Login_loginButton:
@@ -93,6 +94,13 @@ public class LoginActivity extends AppCompatActivity {
                     //   requestLogin(GlobalConfig.base_URL + GlobalConfig.login_URL, username, password);
                     requestLogin(username, password);
                 }
+                break;
+            case R.id.Login_forgetTextView:
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+                break;
+            case R.id.Login_registerTextView:
+                startActivity(new Intent(LoginActivity.this, RegisterNewActivity.class));
+                break;
         }
     }
 
@@ -104,10 +112,16 @@ public class LoginActivity extends AppCompatActivity {
 
         initToolbar();
         initEditText();
-        initSoftKeyboard();
+//        initSoftKeyboard();
     }
 
-    //登录
+
+    /**
+     * Login to server
+     *
+     * @param username
+     * @param password
+     */
     private void requestLogin(String username, String password) {
         String url = GlobalConfig.base_URL + GlobalConfig.login_URL;
         String md5pass = null;
@@ -146,40 +160,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Initialize toolbar
+     */
     private void initToolbar() {
         setSupportActionBar(loginToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        loginToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
+
+    /**
+     * initialize edittext
+     */
     private void initEditText() {
-        LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    editTextFocus = true;
-                if (!editTextFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-        LoginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    editTextFocus = true;
-                if (!editTextFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
+//        LoginUsernameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+//        LoginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus)
+//                    editTextFocus = true;
+//                if (!editTextFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
+//        LoginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus)
+//                    editTextFocus = true;
+//                if (!editTextFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
         LoginUsernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -221,62 +236,81 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void initSoftKeyboard() {
-        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
-        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
-            @Override
-            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
-                //键盘打开
-                if (!stateShrinked)
-                    startAnimation(ANIM_SHRINK);
-            }
+//    /**
+//     * Initialize soft-keyboard actions
+//     */
+//    private void initSoftKeyboard() {
+//        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rootLayout));
+//        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+//            @Override
+//            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+//                //键盘打开
+//                if (!stateShrinked)
+//                    startAnimation(ANIM_SHRINK);
+//            }
+//
+//            @Override
+//            public void onSoftKeyboardClosed() {
+//                //键盘关闭
+//                if (stateShrinked)
+//                    startAnimation(ANIM_EXPAND);
+//            }
+//        });
+//    }
+//
+//    private void hideKeyboard(View view) {
+//        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    }
+//
+//
+//    /**
+//     * Start animation in specific type
+//     * @param anim_type type of animation
+//     */
+//    private void startAnimation(int anim_type) {
+//
+//        int mergeHeight = PixelUtils.dp2px(this, 80);
+//        if (anim_type == ANIM_SHRINK) {
+//
+//            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
+//            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop(), textRoot.getTop() - mergeHeight)
+//                    .setDuration(500);
+//            heightAnimator.start();
+//
+////            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
+////            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_shrink);
+////            anim.setFillAfter(true);
+////            imgLayout.startAnimation(anim);
+//            stateShrinked = true;
+//        }
+//        if (anim_type == ANIM_EXPAND) {
+//
+//            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
+//            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop() - mergeHeight, textRoot.getTop())
+//                    .setDuration(500);
+//            heightAnimator.start();
+//
+////            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
+////            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_expand);
+////            anim.setFillAfter(true);
+////            imgLayout.startAnimation(anim);
+//            stateShrinked = false;
+//        }
+//    }
 
-            @Override
-            public void onSoftKeyboardClosed() {
-                //键盘关闭
-                if (stateShrinked)
-                    startAnimation(ANIM_EXPAND);
-            }
-        });
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
-    private void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
 
-
-    private void startAnimation(int anim_type) {
-
-        int mergeHeight = PixelUtils.dp2px(this, 120);
-        if (anim_type == ANIM_SHRINK) {
-
-            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
-            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop(), textRoot.getTop() - mergeHeight)
-                    .setDuration(500);
-            heightAnimator.start();
-
-            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
-            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_shrink);
-            anim.setFillAfter(true);
-            imgLayout.startAnimation(anim);
-            stateShrinked = true;
-        }
-        if (anim_type == ANIM_EXPAND) {
-
-            LinearLayout textRoot = (LinearLayout) findViewById(R.id.text_root_view);
-            ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(textRoot, "y", textRoot.getTop() - mergeHeight, textRoot.getTop())
-                    .setDuration(500);
-            heightAnimator.start();
-
-            RelativeLayout imgLayout = (RelativeLayout) findViewById(R.id.imglayout);
-            Animation anim = new AnimationUtils().loadAnimation(this, R.anim.image_expand);
-            anim.setFillAfter(true);
-            imgLayout.startAnimation(anim);
-            stateShrinked = false;
-        }
-    }
-
+    /**
+     * parse response from server
+     *
+     * @param response
+     */
     private void parseMessage(String response) {
         System.out.println("response = " + response);
         if (response.indexOf("result") != -1) {

@@ -35,6 +35,7 @@ public class SearchHistoryFragment extends Fragment {
     private UserInfoManager userInfoManager;
     private String catId = null;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.search_history_fragment, container, false);
@@ -43,12 +44,20 @@ public class SearchHistoryFragment extends Fragment {
         return view;
     }
 
-    //history
+
+    /**
+     * Initialize history data
+     */
     private void initHistoryData() {
         userInfoManager =new UserInfoManager(getActivity());
         mHistoryList = userInfoManager.getHistoryList();
     }
-    //设置RecyclerView
+
+
+    /**
+     * set RecyclerView
+     * @param view
+     */
     private void setRecyclerView(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.history_recyclerview);
         adapter = new HistoryAdapter(mHistoryList);
@@ -62,10 +71,19 @@ public class SearchHistoryFragment extends Fragment {
 
     }
 
+
+    /**
+     * set Category ID
+     * @param catId
+     */
     public void setCatId(String catId) {
         this.catId = catId;
     }
-    //确定清空记录对话框
+
+
+    /**
+     * show dialog confirming clear
+     */
     private void showClearDialog() {
         final AlertDialog.Builder clearDialog =
                 new AlertDialog.Builder(getActivity());
@@ -90,12 +108,18 @@ public class SearchHistoryFragment extends Fragment {
         clearDialog.show();
     }
 
+
+    /**
+     * add history
+     * @param str history string
+     */
     public void addHistory(String str) {
         userInfoManager.addHistory(str);
         adapter.notifyDataSetChanged();
     }
 
 
+    //adapter for history
     private class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private static final int HISTORY_TYPE = 1;
@@ -169,7 +193,7 @@ public class SearchHistoryFragment extends Fragment {
     }
 
 
-    //底部清除历史记录ViewHolder
+    //Special ViewHolder for clear history
     private class ClearHistoryViewHolder extends RecyclerView.ViewHolder {
 
         public ClearHistoryViewHolder(View view) {
@@ -186,7 +210,8 @@ public class SearchHistoryFragment extends Fragment {
         }
     }
 
-    //历史记录ViewHolder
+
+    //ViewHolder for normal history item
     private class HistoryViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         //public ImageView imageView;

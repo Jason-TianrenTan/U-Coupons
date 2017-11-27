@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/thing_img"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:src="@mipmap/huaji" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/thing_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="台式电脑音响"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/thing_brand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="品牌：戴尔"
+                android:textColor="@color/gray"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/thing_cat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="种类：电子产品"
+                android:textColor="@color/gray"
+                android:textSize="10dp" />
+
+
+            <TextView
+                android:id="@+id/thing_prize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="￥5.99"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/thing_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="剩余数量：99"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10dp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray" />
+</LinearLayout>

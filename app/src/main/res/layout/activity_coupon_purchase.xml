@@ -92,7 +92,7 @@
                 android:paddingLeft="15dp"
                 android:text="使用门槛: "
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:layout_width="match_parent"

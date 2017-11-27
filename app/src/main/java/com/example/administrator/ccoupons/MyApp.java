@@ -5,10 +5,15 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.example.administrator.ccoupons.Data.GlobalConfig;
 import com.example.administrator.ccoupons.Fragments.Message.Message;
+import com.example.administrator.ccoupons.Tools.FontUtils.FontUtils;
+import com.example.administrator.ccoupons.Tools.MessageUtils.MessageUtil;
 import com.mob.MobApplication;
 
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by Administrator on 2017/9/13 0013.
@@ -18,6 +23,11 @@ public class MyApp extends MobApplication {
 
 
     private static MyApp instance = null;
+
+    private static final String DROID_ITALIC_FONT = "DroidSerif-Italic.ttf",
+                                DROID_REGULAR_FONT = "DroidSerif-Regular.ttf",
+                                PINGFANG_FONT = "PingFang Regular.ttf",
+                                PINGFANG_LIGHT_FONT = "PingFang Light.ttf";
 
     public static MyApp getInstance() {
         return instance;
@@ -31,7 +41,25 @@ public class MyApp extends MobApplication {
         nickname = "default_str";
         avatar = "";
         gender = Gender.MALE;
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath(PINGFANG_FONT)
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+
+        initMessages();
     }
+
+
+    private void initMessages() {
+        messageList = new ArrayList<>();
+        for (int i=0;i< GlobalConfig.MessageClasses.strings.length;i++) {
+            Message message = MessageUtil.generateMessage(i);
+            messageList.add(message);
+        }
+    }
+
 
 
     private ArrayList<Message> messageList;
@@ -44,6 +72,8 @@ public class MyApp extends MobApplication {
     private String phoneNumber;
     private int gender;
 
+
+    //Message list
     public ArrayList<Message> getMessageList() {
         return this.messageList;
     }
@@ -52,6 +82,8 @@ public class MyApp extends MobApplication {
         this.messageList = messageList;
     }
 
+
+    //Gender
     public int getGender() {
         return this.gender;
     }
@@ -60,6 +92,8 @@ public class MyApp extends MobApplication {
         this.gender = gender;
     }
 
+
+    //User ID
     public String getUserId() {
         return userId;
     }
@@ -68,6 +102,8 @@ public class MyApp extends MobApplication {
         this.userId = id;
     }
 
+
+    //User nickname
     public String getNickname() {
         return this.nickname;
     }
@@ -76,6 +112,8 @@ public class MyApp extends MobApplication {
         this.nickname = str;
     }
 
+
+    //User remaining Ucoins
     public int getUcoin() {
         return this.Ucoin;
     }
@@ -84,6 +122,8 @@ public class MyApp extends MobApplication {
         this.Ucoin = ucoin;
     }
 
+
+    //User avatar
     public void setAvatar(String url) {
         this.avatar = url;
     }
@@ -92,6 +132,8 @@ public class MyApp extends MobApplication {
         return this.avatar;
     }
 
+
+    //User phonenumber
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -100,12 +142,16 @@ public class MyApp extends MobApplication {
         return this.phoneNumber;
     }
 
+
+    //User location
     public void setLocation(String loc) {
         this.location = loc;
     }
+
     public String getLocation() {
         return this.location;
     }
+
 
     @Override
     protected void attachBaseContext(Context base) {

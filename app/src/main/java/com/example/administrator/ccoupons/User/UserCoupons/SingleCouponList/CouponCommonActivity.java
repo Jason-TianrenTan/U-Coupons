@@ -31,12 +31,20 @@ public abstract class CouponCommonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * set view id
+     * @param resId
+     */
     @Override
     public void setContentView(int resId) {
         super.setContentView(resId);
         initViews();
     }
 
+
+    /**
+     * init view
+     */
     private void initViews() {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);

@@ -15,7 +15,10 @@ import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bumptech.glide.Glide;
+import com.example.administrator.ccoupons.Events.SelectLocationEvent;
 import com.example.administrator.ccoupons.R;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -40,6 +43,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
 
+    /**
+     * Default constructor
+     * @param cList
+     */
     public LocationAdapter(ArrayList<String> cList) {
         this.mLocationList = cList;
     }
@@ -56,7 +63,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 String Location = mLocationList.get(position);
-                Toast.makeText(mContext, "Location = " + Location, Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new SelectLocationEvent(Location));
             }
         });
         return holder;

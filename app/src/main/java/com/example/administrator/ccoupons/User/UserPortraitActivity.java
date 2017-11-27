@@ -1,6 +1,7 @@
 package com.example.administrator.ccoupons.User;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +22,16 @@ import com.jph.takephoto.model.TResult;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UserPortraitActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+
     private TakePhotoUtil takePhotoUtil;
     @BindView(R.id.user_portrait_view)
     ImageView portrait;
@@ -50,7 +59,10 @@ public class UserPortraitActivity extends AppCompatActivity {
         initPortrait();
     }
 
-    //Todo:尚无法修改注入
+
+    /**
+     * set OnLongClickListener
+     */
     private void setOnLongClickListeners() {
 
         bg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -100,6 +112,11 @@ public class UserPortraitActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * update user portrait
+     * @param path
+     */
     public void updatePortrait(final String path) {
         try {
             MyApp app = (MyApp) getApplicationContext();
@@ -117,6 +134,10 @@ public class UserPortraitActivity extends AppCompatActivity {
                 .into(portrait);
     }
 
+
+    /**
+     * init user portrait
+     */
     public void initPortrait() {
         MyApp app = (MyApp) this.getApplicationContext();
         String url = app.getAvatar();
@@ -127,6 +148,11 @@ public class UserPortraitActivity extends AppCompatActivity {
         } else portrait.setImageResource(R.drawable.testportrait);
     }
 
+
+    /**
+     * init the camera
+     * @return
+     */
     protected boolean useTakePhoto() {
         return true;
     }

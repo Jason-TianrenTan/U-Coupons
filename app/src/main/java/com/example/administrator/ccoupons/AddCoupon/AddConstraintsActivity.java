@@ -28,9 +28,10 @@ import java.util.Iterator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
- * 此界面为手动添加优惠券的子界面：添加使用门槛
+ * This interface is the sub interface for manually adding Coupons: add the use threshold
  */
 public class AddConstraintsActivity extends AppCompatActivity {
 
@@ -96,6 +97,7 @@ public class AddConstraintsActivity extends AppCompatActivity {
     }
 
 
+    //Adapter for RecyclerView in coupon's constraints
     public class ConstraintsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private Context mContext;
@@ -177,5 +179,10 @@ public class AddConstraintsActivity extends AppCompatActivity {
                 deleteButton = (ImageView) view.findViewById(R.id.delete_constraint_button);
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

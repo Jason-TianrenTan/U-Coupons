@@ -17,6 +17,7 @@ import android.widget.Toast;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import com.example.administrator.ccoupons.Main.Coupon;
 import com.example.administrator.ccoupons.R;
@@ -26,9 +27,16 @@ import com.jph.takephoto.model.TResult;
 import java.lang.ref.WeakReference;
 
 /**
- * 此界面为扫描二维码添加优惠券的界面
+ * This interface for adding coupons to scanned QR codes
  */
 public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     private static final String TAG = QRcodeActivity.class.getSimpleName();
     private boolean light = false;
 
@@ -38,6 +46,7 @@ public class QRcodeActivity extends AppCompatActivity implements QRCodeView.Dele
     private LinearLayout gallery;
     private TakePhotoUtil takePhotoUtil;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);

@@ -37,9 +37,9 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
     }
 
     /**
-     * 获取TakePhoto实例
+     * get TakePhoto Instance
      *
-     * @return
+     * @return the TakePhoto instance
      */
     public TakePhoto getTakePhoto() {
         if (takePhoto == null) {
@@ -200,7 +200,7 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
     }
 
     /**
-     * 图片的裁剪配置选项内部类
+     * the config of conpress
      */
     public class PhotoConfigOptions {
         //裁剪配置
@@ -224,7 +224,7 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
         private int width = 200;
 
         /**
-         * 裁剪相关配置
+         * the config of crop
          *
          * @return
          */
@@ -241,7 +241,7 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
         }
 
         /**
-         * 图片压缩相关配置
+         * the config of conpress
          */
         public void configCompress() {
             if (isCompress == false) {
@@ -335,7 +335,7 @@ public class TakePhotoUtil implements TakePhoto.TakeResultListener, InvokeListen
     }
 
     /**
-     * 照片获取方式, 从相册获取或拍照处理
+     * the way to get picture
      */
     public enum Select_type {
         PICK_BY_SELECT, PICK_BY_TAKE, PICK_BY_SELECT_NOT_CROP, PICK_BY_TAKE_NOT_CROP

@@ -1,5 +1,7 @@
 package com.example.administrator.ccoupons.Main;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,20 +27,26 @@ public class Coupon implements Serializable {
     private String address;
 
     //类别
+    @SerializedName("category")
     private String catId;
+
+
     //品牌
+    @SerializedName("brand")
     private String brandName;
 
     //状态
     private int stat;
+
     //卖家id
     private String sellerId;
 
-
     // 限制
     private String[] constraints;
+
     //卖家名字
     private String sellerNickname;
+
     // 头像URL
     private String sellerAvatarURL;
 
@@ -133,6 +141,10 @@ public class Coupon implements Serializable {
     }
 
 
+    /**
+     * set current state of coupon
+     * @param statStr
+     */
     private void setCouponStat(String statStr) {
         int coupon_stat = -1;
         if (statStr.equals("onSale"))
@@ -145,7 +157,12 @@ public class Coupon implements Serializable {
             coupon_stat = STAT_STORE;
     }
 
-    //Todo:改一改
+
+    /**
+     * decode JSON Object
+     * @param jsonObject
+     * @return
+     */
     public static Coupon decodeFromJSON(JSONObject jsonObject) {
         Coupon coupon = new Coupon();
         try {
@@ -165,7 +182,8 @@ public class Coupon implements Serializable {
         return coupon;
     }
 
-    //二次解析
+
+    //Second, more detailed decode
     public void getDetails(String str) {
         System.out.println("response = " + str);
         try {
@@ -204,13 +222,13 @@ public class Coupon implements Serializable {
             e.printStackTrace();
         }
     }
-    /*{"brand": [{"name": "\u80af\u5fb7\u57fa",
-    "address": "\u7fa4\u5149"}],
-    "limit": [{"content": "\u53ea\u9650\u7fa4\u5149\u4f7f\u7528"},
-     {"content": "\u6bcf\u4e2a\u5ba2\u6237\u4f7f\u7528\u4e00\u4e00\u5f20"},
-     {"content": "\u6ee140\u5143\u53ef\u4f7f\u7528"}], "seller": [{"nickname": "\u5988\u5356\u6279\u54e6", "avatar": null}]}
-      */
 
+
+    /**
+     * Auto generate JSON with user ID
+     * @param userID
+     * @return
+     */
     public JSONObject generateJSON(String userID) {
         JSONObject json = new JSONObject();
         try {
@@ -234,6 +252,12 @@ public class Coupon implements Serializable {
         return json;
     }
 
+
+    /**
+     * decode JSON Object from QRScanning Acitivity
+     * @param jsonString
+     * @return
+     */
     public static Coupon decodeFromQRJSON(String jsonString) {
         Coupon coupon = new Coupon();
         try {
@@ -257,11 +281,6 @@ public class Coupon implements Serializable {
         }
         return coupon;
     }
-
-    public String getWord() {
-        return "这是一条用来DEBUG的" + couponid;
-    }
-
 
 
     public String getCouponid() {

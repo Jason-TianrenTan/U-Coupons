@@ -2,6 +2,7 @@ package com.example.administrator.ccoupons.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -18,17 +19,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.ccoupons.Data.GlobalConfig;
+import com.example.administrator.ccoupons.Events.CouponListEvent;
+import com.example.administrator.ccoupons.Events.SelectLocationEvent;
 import com.example.administrator.ccoupons.R;
 import com.example.administrator.ccoupons.Tools.LocationGet;
-import com.example.administrator.ccoupons.Tools.PixelUtils;
+import com.example.administrator.ccoupons.Tools.PixelUtils.PixelUtils;
 import com.example.administrator.ccoupons.UI.QuickIndexBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LocationSelectActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
 
     @BindView(R.id.input_search)
@@ -47,6 +61,7 @@ public class LocationSelectActivity extends AppCompatActivity {
     NestedScrollView locationNestscrollview;
     @BindView(R.id.location_sideindexbar)
     QuickIndexBar locationSideindexbar;
+
     private String location = null;
     private LocationGet locationFetchr;
     private ArrayList<String> cityList = new ArrayList<>();
@@ -54,11 +69,18 @@ public class LocationSelectActivity extends AppCompatActivity {
     private RecyclerView popCityRecyclerView, recyclerView;
     private int[] CharIndex = new int[26];
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCall(SelectLocationEvent locEvent) {
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_select);
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -125,6 +147,12 @@ public class LocationSelectActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Scroll to index
+     * @param scrollView current scrollview activated
+     * @param index target index
+     */
     private void scroll(NestedScrollView scrollView, int index) {
         int ViewHeight = popCityRecyclerView.getHeight() + gpsCardView.getHeight();
         int y = ViewHeight + CharIndex[index] * PixelUtils.dp2px(this, 45) + PixelUtils.dp2px(this, CharIndex[index]);
@@ -132,7 +160,10 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * return list of popular cities
+     * @return
+     */
     private ArrayList<String> getPopularCityList() {
         ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < GlobalConfig.Cities.popCityList.length; i++) {
@@ -143,7 +174,10 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
 
-    //获取城市列表
+    /**
+     * return city list
+     * @return
+     */
     private ArrayList<String> getCityList() {
 
         ArrayList<String> arrayList = new ArrayList<>();
@@ -160,6 +194,7 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
 
+    //Popular Cities Adapter
     public class PCityAdapter extends RecyclerView.Adapter<PCityAdapter.PCityViewHolder> {
 
         private Context mContext;

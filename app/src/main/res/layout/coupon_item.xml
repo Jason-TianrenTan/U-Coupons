@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/coupon_item_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true" />
 
@@ -23,73 +23,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
 
             <TextView
                 android:id="@+id/coupon_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="名字很长很长很长很长"
-                android:textSize="18dp" />
+                android:paddingBottom="3dp"
+                android:paddingTop="5dp"
+                android:text="张家界旅游 特惠"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/coupon_discount_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:text="满100减1元，满50减49元"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/coupon_expire_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="截止日期2017年11月5日"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/coupon_eval_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/coupon_orange_bg"
+                android:padding="3dp"
+                android:text="官方估值 ¥1.99"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10dp" />
+
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="3dp">
 
                 <TextView
-                    android:id="@+id/coupon_detail_text"
+                    android:id="@+id/coupon_price_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="说明"
+                    android:paddingBottom="3dp"
+                    android:text="¥999.98"
+                    android:textColor="@color/darkorange"
                     android:textSize="15dp" />
 
-            </LinearLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:text="¥"
-                        android:textColor="@color/darkorange"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/coupon_price_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="3dp"
-                        android:text="999.98"
-                        android:textColor="@color/darkorange"
-
-                        android:textSize="25dp" />
-
-                </LinearLayout>
-
                 <TextView
-                    android:id="@+id/coupon_special_word"
+                    android:layout_marginLeft="40dp"
+                    android:id="@+id/coupon_category_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/colorPrimary"
-                    android:padding="5dp"
-                    android:text="限时优惠"
-                    android:textColor="@color/whitesmoke" />
-            </RelativeLayout>
+                    android:paddingBottom="3dp"
+                    android:text="分类：文娱体育"
+                    android:textColor="@color/gray"
+                    android:textSize="12dp" />
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -42,20 +42,20 @@
 
 
             <Button
-                android:id="@+id/category_message_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentRight="true"
+                android:id="@+id/category_about_button"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/message"
+                android:background="@drawable/ic_scan_qr"
+                android:layout_marginRight="5dp"
                 android:padding="5dp" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/search_input_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:layout_toLeftOf="@id/category_message_button"
+                android:layout_toLeftOf="@id/category_about_button"
                 android:layout_toRightOf="@id/pos_img"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
@@ -162,9 +162,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            fab:fab_addButtonColorNormal="@color/white"
-            fab:fab_addButtonColorPressed="@color/white_pressed"
-            fab:fab_addButtonPlusIconColor="@color/half_black"
+            fab:fab_addButtonColorNormal="#ffab00"
+            fab:fab_addButtonColorPressed="@color/darkorange"
+            fab:fab_addButtonPlusIconColor="@color/white_pressed"
             fab:fab_labelStyle="@style/menu_labels_style"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
