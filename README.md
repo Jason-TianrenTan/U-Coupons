@@ -1,4 +1,3 @@
-# U惠——P2P优惠券交易平台
 # U-Coupons, a Peer-to-Peer Coupon Exchange Platform
 - 2017第十三届“花旗杯” 最佳移动应用
 - Prize winner of "Best Mobile Application" for the 13th Citi Cup.
