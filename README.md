@@ -4,3 +4,6 @@
 
 ## Dependencies
 Android sdk (> 5.0)
+
+## App Preview
+<img src='./images/IMG_1822.JPG' width="300"/>
